@@ -1,0 +1,313 @@
+.hover-menu {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transition: var(--transition) 0.3s ease;
+}
+
+.hover-content {
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-primary);
+  padding: 1rem;
+  width: 320px;
+  max-width: 90vw;
+  pointer-events: auto;
+  color: var(--text-primary);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-primary);
+
+  .card-image {
+    width: 80px;
+    height: 80px;
+    object-fit: fill;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+
+    .card-name {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .card-stats {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .current-score {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--accent-primary);
+      }
+
+      .tier-chip {
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--border-radius);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        box-shadow: var(--shadow-sm);
+      }
+    }
+  }
+}
+
+.progression-section {
+  margin-bottom: 1rem;
+
+  h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .chart-container {
+    height: 180px; // Increased height for tier chips
+    position: relative;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    border: 1px solid var(--border-primary);
+  }
+}
+
+.quick-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+
+    .label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .value {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hover-menu {
+  animation: fadeInUp 0.3s ease;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .hover-content {
+    width: 280px;
+    padding: 0.75rem;
+  }
+
+  .card-header {
+    .card-image {
+      width: 48px;
+      height: 64px;
+    }
+
+    .card-info .card-name {
+      font-size: 1rem;
+    }
+  }
+
+  .progression-section .chart-container {
+    height: 120px;
+  }
+
+  .quick-stats .stat-item {
+    font-size: 0.8rem;
+  }
+}
+
+// Tier-specific styling
+.tier-s\+ {
+  border-left: 4px solid #ff1744;
+}
+
+.tier-s {
+  border-left: 4px solid #ff6b35;
+}
+
+.tier-a {
+  border-left: 4px solid #f7931e;
+}
+
+.tier-b {
+  border-left: 4px solid #ffcd3c;
+}
+
+.tier-c {
+  border-left: 4px solid #7cb342;
+}
+
+.tier-d {
+  border-left: 4px solid #26a69a;
+}
+
+// Tier progression styling
+.tier-progression {
+  margin-top: 1rem;
+  
+  h5 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .tier-progression-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    
+    .tier-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0.25rem;
+      border-radius: var(--border-radius);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-primary);
+      
+      &.unavailable {
+        opacity: 0.5;
+        background: var(--bg-quaternary);
+        
+        .tier-badge {
+          background: #9e9e9e !important;
+        }
+      }
+      
+      .lb-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+      
+      .tier-badge {
+        display: inline-block;
+        padding: 0.15rem 0.4rem;
+        border-radius: calc(var(--border-radius) / 2);
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: var(--shadow-sm);
+        min-width: 24px;
+        text-align: center;
+        
+        &.na-tier {
+          background: #9e9e9e !important;
+          color: var(--text-muted);
+        }
+      }
+      
+      .score {
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+    }
+  }
+  
+  .tier-changes {
+    margin-top: 0.75rem;
+    
+    h6 {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .tier-change-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      
+      .tier-change {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.3rem 0.5rem;
+        border-radius: calc(var(--border-radius) / 2);
+        font-size: 0.75rem;
+        
+        &.improvement {
+          background: rgba(129, 199, 132, 0.15);
+          color: var(--accent-secondary);
+          border: 1px solid rgba(129, 199, 132, 0.3);
+          
+          .change-icon {
+            color: var(--accent-secondary);
+          }
+        }
+        
+        &.decline {
+          background: rgba(244, 67, 54, 0.15);
+          color: #f44336;
+          border: 1px solid rgba(244, 67, 54, 0.3);
+          
+          .change-icon {
+            color: #f44336;
+          }
+        }
+        
+        .change-text {
+          flex: 1;
+          font-weight: 500;
+        }
+        
+        .change-icon {
+          font-size: 1rem;
+          width: 1rem;
+          height: 1rem;
+        }
+      }
+    }
+  }
+}

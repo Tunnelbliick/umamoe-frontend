@@ -1,0 +1,272 @@
+[
+  {
+    "event_name": "June's Vibrant Statices",
+    "image": "05_junes_vibrant_statices_banner.png",
+    "start_date": "30 May 2025, 5:00",
+    "end_date": "13 Jun 2025, 4:59"
+  },
+  {
+    "event_name": "Illuminate the Skies, Dreamy Night Parade",
+    "image": "04_dreamy_night_parade_banner.png",
+    "start_date": "30 Apr 2025, 5:00",
+    "end_date": "12 May 2025, 4:59"
+  },
+  {
+    "event_name": "Phantasmagoria: Phantom Step",
+    "image": "03_phantasmagoria_banner.png",
+    "start_date": "31 Mar 2025, 5:00",
+    "end_date": "10 Apr 2025, 4:59"
+  },
+  {
+    "event_name": "Melty♡ for U",
+    "image": "01_melty_for_u_banner.png",
+    "start_date": "31 Jan 2025, 4:00",
+    "end_date": "14 Feb 2025, 3:59"
+  },
+  {
+    "event_name": "The Painted Dragon Heralds Dawn",
+    "image": "12_the_painted_dragon_banner.png",
+    "start_date": "27 Dec 2024, 4:00",
+    "end_date": "10 Jan 2025, 3:59"
+  },
+  {
+    "event_name": "Gather and Sing, Stars of the Sky!",
+    "image": "11_gather_and_sing_banner.png",
+    "start_date": "28 Nov 2024, 4:00",
+    "end_date": "10 Dec 2024, 3:59"
+  },
+  {
+    "event_name": "Slapstick Crash!",
+    "image": "09_slapstick_crash_banner.png",
+    "start_date": "30 Sept 2024, 5:00",
+    "end_date": "11 Oct 2024, 4:59"
+  },
+  {
+    "event_name": "Gazing at the Harvest Moon With You",
+    "image": "08_gazing_at_the_harvest_moon_banner.png",
+    "start_date": "30 Aug 2024, 5:00",
+    "end_date": "10 Sept 2024, 4:59"
+  },
+  {
+    "event_name": "Sunset-Lit Jugend by the Shore",
+    "image": "07_sunset_lit_jugend_banner.png",
+    "start_date": "29 Jul 2024, 5:00",
+    "end_date": "14 Aug 2024, 4:59"
+  },
+  {
+    "event_name": "A Letter From the Baroque Pearl",
+    "image": "05_a_letter_from_the_baroque_pearl_banner.png",
+    "start_date": "30 May 2024, 5:00",
+    "end_date": "13 Jun 2024, 4:59"
+  },
+  {
+    "event_name": "Uprising: The Soldiers' Battle Cry",
+    "image": "04_uprising_the_soldiers_battle_cry_banner.png",
+    "start_date": "30 Apr 2024, 5:00",
+    "end_date": "10 May 2024, 4:59"
+  },
+  {
+    "event_name": "Dear Comet Orchid: Let's Dance Now!",
+    "image": "03_dear_comet_orchid_banner.png",
+    "start_date": "29 Mar 2024, 4:00",
+    "end_date": "9 Apr 2024, 4:59"
+  },
+  {
+    "event_name": "Come One, Come All, To Calming Koumian!",
+    "image": "01_calming_koumian_banner.png",
+    "start_date": "31 Jan 2024, 4:00",
+    "end_date": "14 Feb 2024, 3:59"
+  },
+  {
+    "event_name": "Together with Everyone",
+    "image": "12_together_with_everyone_banner.png",
+    "start_date": "28 Dec 2023, 4:00",
+    "end_date": "9 Jan 2024, 3:59"
+  },
+  {
+    "event_name": "A Gleaming Mejiro Gala",
+    "image": "11_a_gleaming_mejiro_gala_banner.png",
+    "start_date": "30 Nov 2023, 4:00",
+    "end_date": "11 Dec 2023, 3:59"
+  },
+  {
+    "event_name": "As the Leaves Rust, Feelings Blossom",
+    "image": "10_as_the_leaves_rust_feelings_blossom_banner.png",
+    "start_date": "30 Oct 2023, 4:00",
+    "end_date": "9 Nov 2023, 3:59"
+  },
+  {
+    "event_name": "A Patchwork's Farewell",
+    "image": "09_patchworks_farewell_banner.png",
+    "start_date": "29 Sept 2023, 5:00",
+    "end_date": "10 Oct 2023, 4:59"
+  },
+  {
+    "event_name": "Summer's Sunlight Fades to Blue",
+    "image": "07_summers_sunlight_fades_to_blue_banner.png",
+    "start_date": "31 Jul 2023, 5:00",
+    "end_date": "14 Aug 2023, 4:59"
+  },
+  {
+    "event_name": "#summer #besties",
+    "image": "06_summer_besties_banner.png",
+    "start_date": "29 Jun 2023, 5:00",
+    "end_date": "10 Jul 2023, 4:59"
+  },
+  {
+    "event_name": "An Oath to My Dear Challengers",
+    "image": "05_an_oath_to_my_dear_challengers_banner.png",
+    "start_date": "29 May 2023, 5:00",
+    "end_date": "9 Jun 2023, 4:59"
+  },
+  {
+    "event_name": "Tagball Rumble: Witty Warfare!",
+    "image": "04_tagball_rumble_banner.png",
+    "start_date": "28 Apr 2023, 5:00",
+    "end_date": "10 May 2023, 4:59"
+  },
+  {
+    "event_name": "Wherefore I Adore You",
+    "image": "03_wherefore_i_adore_you_banner.png",
+    "start_date": "29 Mar 2023, 5:00",
+    "end_date": "10 Apr 2023, 4:59"
+  },
+  {
+    "event_name": "Leap Into a New World!",
+    "image": "02_leap_into_a_new_world_banner.png",
+    "start_date": "24 Feb 2023, 4:00",
+    "end_date": "10 Mar 2023, 3:59"
+  },
+  {
+    "event_name": "Sweet Memories ♥ Tea Time",
+    "image": "01_sweet_memories_banner.png",
+    "start_date": "30 Jan 2023, 4:00",
+    "end_date": "13 Feb 2023, 3:59"
+  },
+  {
+    "event_name": "Happy New Future: Bonds Dyed in the Sunrise",
+    "image": "12_happy_new_future_banner.png",
+    "start_date": "29 Dec 2022, 4:00",
+    "end_date": "10 Jan 2023, 3:59"
+  },
+  {
+    "event_name": "Illuminate the Heart",
+    "image": "11_illuminate_the_heart_banner.png",
+    "start_date": "28 Nov 2022, 4:00",
+    "end_date": "12 Dec 2022, 3:59"
+  },
+  {
+    "event_name": "Intertwined Memories, Galloping Thoughts",
+    "image": "10_intertwined_memories_banner.png",
+    "start_date": "28 Oct 2022, 5:00",
+    "end_date": "9 Nov 2022, 3:59"
+  },
+  {
+    "event_name": "Days in a Flash",
+    "image": "09_days_in_a_flash_banner.png",
+    "start_date": "29 Sept 2022, 5:00",
+    "end_date": "11 Oct 2022, 4:59"
+  },
+  {
+    "event_name": "Wings of Iron: Hazy Tales",
+    "image": "08_wings_of_iron_banner.png",
+    "start_date": "29 Aug 2022, 5:00",
+    "end_date": "12 Sept 2022, 4:59"
+  },
+  {
+    "event_name": "Super Smashing☆Summer Vacation",
+    "image": "07_super_smashing_summer_vacation_banner.png",
+    "start_date": "29 Jul 2022, 5:00",
+    "end_date": "10 Aug 2022, 4:59"
+  },
+  {
+    "event_name": "Seek, Solve, Summer Walk!",
+    "image": "06_seek_solve_summer_walk_banner.png",
+    "start_date": "30 Jun 2022, 5:00",
+    "end_date": "11 Jul 2022, 4:59"
+  },
+  {
+    "event_name": "The Promised Time: Silks & Three Riddles",
+    "image": "05_silks_and_three_riddles_banner.png",
+    "start_date": "30 May 2022, 5:00",
+    "end_date": "10 Jun 2022, 4:59"
+  },
+  {
+    "event_name": "Roar, Tracen Academy Cheerleading Squad!",
+    "image": "04_roar_tracen_cheerleading_squad_banner.png",
+    "start_date": "28 Apr 2022, 5:00",
+    "end_date": "10 May 2022, 4:59"
+  },
+  {
+    "event_name": "Tonight at the Ligne Droite",
+    "image": "03_tonight_at_the_ligne_droite_banner.png",
+    "start_date": "29 Mar 2022, 5:00",
+    "end_date": "11 Apr 2022, 4:59"
+  },
+  {
+    "event_name": "Flapping Run-up!",
+    "image": "02_flapping_run_up_banner.png",
+    "start_date": "24 Feb 2022, 4:00",
+    "end_date": "7 Mar 2022, 3:59"
+  },
+  {
+    "event_name": "Patisserie Grandeur",
+    "image": "01_patisserie_grandeur_banner.png",
+    "start_date": "28 Jan 2022, 4:00",
+    "end_date": "8 Feb 2022, 3:59"
+  },
+  {
+    "event_name": "Blossoming New Year's Karuta Contest",
+    "image": "12_blossoming_new_years_karuta_contest_banner.png",
+    "start_date": "31 Dec 2021, 4:00",
+    "end_date": "11 Jan 2022, 3:59"
+  },
+  {
+    "event_name": "Miracles of the Holy Night",
+    "image": "11_miracles_of_the_holy_night_banner.png",
+    "start_date": "29 Nov 2021, 4:00",
+    "end_date": "14 Dec 2021, 3:59"
+  },
+  {
+    "event_name": "The Sounds of Autumn",
+    "image": "10_the_sounds_of_autumn_banner.png",
+    "start_date": "28 Oct 2021, 5:00",
+    "end_date": "8 Nov 2021, 3:59"
+  },
+  {
+    "event_name": "Make up in Halloween!",
+    "image": "09_make_up_in_halloween_banner.png",
+    "start_date": "29 Sept 2021, 5:00",
+    "end_date": "11 Oct 2021, 4:59"
+  },
+  {
+    "event_name": "Uma Musume Summer Story",
+    "image": "07_uma_musume_summer_story_banner.png",
+    "start_date": "29 Jul 2021, 5:00",
+    "end_date": "11 Aug 2021, 4:59"
+  },
+  {
+    "event_name": "Fantasy World Uma Nest",
+    "image": "06_fantasy_world_uma_nest_banner.png",
+    "start_date": "29 Jun 2021, 5:00",
+    "end_date": "12 Jul 2021, 4:59"
+  },
+  {
+    "event_name": "Blooming Maiden's June Pride",
+    "image": "05_blooming_maidens_june_pride_banner.png",
+    "start_date": "28 May 2021, 5:00",
+    "end_date": "10 Jun 2021, 4:59"
+  },
+  {
+    "event_name": "Brand-new Friend",
+    "image": "03_brand_new_friend_banner.png",
+    "start_date": "30 Mar 2021, 5:00",
+    "end_date": "15 Apr 2021, 4:59"
+  },
+  {
+    "event_name": "Chase Your Dreams!",
+    "image": "03_chase_your_dreams_banner.png",
+    "start_date": "2 Mar 2021, 4:00",
+    "end_date": "15 Mar 2021, 3:59"
+  }
+]

@@ -1,0 +1,846 @@
+.support-cards-database {
+  min-height: calc(100vh - 60px);
+  background: #121212;
+}
+
+.page-header {
+  background: linear-gradient(135deg, rgba(129, 199, 132, 0.1) 0%, rgba(255, 183, 77, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem 0;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+    background: linear-gradient(45deg, #81c784, #ffb74d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 1.125rem;
+  }
+}
+
+.quick-actions {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+}
+
+.content-container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  transition: all 0.3s ease;
+
+  app-support-card-filter {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 400px;
+    min-width: 0;
+  }
+}
+
+.search-section {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 2rem;
+  flex: 0 0 350px;
+  min-width: 0;
+}
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 1.5rem;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0.25rem 0 0 0;
+    font-size: 0.875rem;
+  }
+
+  .sorting-controls {
+    display: flex;
+    align-items: center;
+
+    .sort-select {
+      min-width: 180px;
+
+      ::ng-deep .mat-mdc-form-field-wrapper {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 8px !important;
+      }
+
+      ::ng-deep .mat-mdc-text-field-wrapper {
+        background: transparent !important;
+      }
+
+      ::ng-deep .mdc-notched-outline__leading,
+      ::ng-deep .mdc-notched-outline__notch,
+      ::ng-deep .mdc-notched-outline__trailing {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+      }
+
+      ::ng-deep .mat-mdc-form-field-focus-overlay {
+        background: transparent !important;
+      }
+
+      ::ng-deep .mat-mdc-select-value,
+      ::ng-deep .mat-mdc-form-field-label {
+        color: #fff !important;
+      }
+
+      ::ng-deep .mat-mdc-select-arrow {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+    }
+  }
+}
+
+.filter-indicator {
+  color: #81c784;
+  font-weight: 500;
+}
+
+.trainer-filter-indicator {
+  color: #ffb74d;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 183, 77, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 183, 77, 0.3);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.results-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.record-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.record-header {
+  padding: 1.5rem;
+
+  .record-main-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1em;
+    width: 100%;
+  }
+}
+
+.performance-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+
+  .support-card-meta-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0.5rem;
+
+    .card-image-header {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
+
+    .card-limit-break {
+      display: flex;
+      align-items: center;
+      gap: 0.125rem;
+
+      .limit-break-icon {
+        display: inline-flex;
+        align-items: center;
+
+        svg {
+          fill: rgba(255, 255, 255, 0.3);
+
+          &[fill="#2196F3"] {
+            fill: #2196f3;
+          }
+        }
+      }
+    }
+  }
+
+  .main-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    flex: 1;
+    min-width: 0;
+
+    .card-title-line {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+
+      .card-name-stat {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      .card-tags {
+        display: flex;
+        gap: 0.375rem;
+
+        .type-tag,
+        .rarity-tag {
+          font-size: 0.75rem;
+          padding: 0.125rem 0.5rem;
+          border-radius: 6px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.025em;
+        }
+
+        .type-tag {
+          background: rgba(100, 181, 246, 0.2);
+          color: #64b5f6;
+          border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .rarity-tag {
+          background: rgba(255, 193, 7, 0.2);
+          color: #ffc107;
+          border: 1px solid rgba(255, 193, 7, 0.3);
+
+          // SSR specific styling
+          &:contains("SSR") {
+            background: rgba(255, 193, 7, 0.25);
+            color: #ffb74d;
+          }
+        }
+      }
+    }
+
+    .verification-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.625rem;
+      border-radius: 12px;
+      background: rgba(158, 158, 158, 0.1);
+      border: 1px solid rgba(158, 158, 158, 0.3);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      white-space: nowrap;
+      max-width: fit-content;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #9e9e9e;
+        flex-shrink: 0;
+      }
+
+      .badge-date {
+        color: #9e9e9e;
+        font-size: 0.75rem;
+      }
+
+      &.verified {
+        background: rgba(76, 175, 80, 0.15);
+        border: 1px solid rgba(76, 175, 80, 0.4);
+
+        mat-icon {
+          color: #4caf50;
+        }
+
+        .badge-date {
+          color: rgba(76, 175, 80, 0.9);
+          font-weight: 500;
+        }
+      }
+    }
+
+    .inheritance-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      align-items: center;
+      margin-top: 0.125rem; // Reduced from 0.25rem
+    }
+  }
+}
+
+// Right side actions and trainer info - updated styling
+.right-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.625rem;
+  flex-shrink: 0;
+}
+
+.trainer-section {
+  display: flex;
+  align-items: center;
+
+  .trainer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .trainer-details {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+
+      .trainer-label {
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        font-size: 0.6875rem;
+        letter-spacing: 0.05em;
+      }
+
+      .trainer-name {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+      }
+    }
+
+    .user-id-copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      min-height: auto;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(100, 181, 246, 0.5);
+      }
+
+      .user-id {
+        font-weight: 600;
+        margin-left: -0.2rem;
+      }
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+}
+
+.unavailable-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(255, 152, 0, 0.1) !important;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  color: #ff9800 !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  min-height: auto;
+  font-size: 0.8125rem;
+
+  &:hover {
+    background: rgba(255, 152, 0, 0.2);
+    border-color: rgba(255, 152, 0, 0.5);
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .btn-text {
+    font-weight: 500;
+  }
+}
+
+// Spark styles - keep compact and subtle
+.spark-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: flex-start;
+
+  &:not(:last-child) {
+    padding-right: 0.35rem;
+  }
+}
+
+.spark-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid;
+
+  .tiny-icon {
+    font-size: 11px !important;
+    width: 11px !important;
+    height: 11px !important;
+    line-height: 11px !important;
+  }
+
+  &.blue {
+    background: rgba(33, 150, 243, 0.08);
+    border-color: rgba(33, 150, 243, 0.2);
+    color: #64b5f6;
+
+    .tiny-icon {
+      color: #2196f3;
+    }
+  }
+
+  &.pink {
+    background: rgba(233, 30, 99, 0.08);
+    border-color: rgba(233, 30, 99, 0.2);
+    color: #f48fb1;
+
+    .tiny-icon {
+      color: #e91e63;
+    }
+  }
+
+  &.green {
+    background: rgba(76, 175, 80, 0.08);
+    border-color: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+
+    .tiny-icon {
+      color: #4caf50;
+    }
+  }
+
+  &.white {
+    background: rgba(158, 158, 158, 0.08);
+    border-color: rgba(158, 158, 158, 0.2);
+    color: #bdbdbd;
+
+    .tiny-icon {
+      color: #9e9e9e;
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 1400px) {
+  .content-container {
+    max-width: 100%;
+    padding: 2rem 3%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .content-container {
+
+    app-support-card-filter,
+    .search-section {
+      flex: 0 0 320px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    padding: 1.5rem;
+
+    app-support-card-filter,
+    .search-section {
+      flex: 1 1 auto;
+      width: 100%;
+      position: static;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 1.5rem;
+
+    .quick-actions {
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  .search-section {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .record-header {
+    padding: 1rem;
+  }
+
+  .record-main-info {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .right-actions {
+    align-items: flex-end;
+    gap: 0.5rem;
+    flex-shrink: 0;
+
+    .trainer-section .trainer-info {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.375rem;
+
+      .trainer-details {
+        font-size: 0.75rem;
+      }
+
+      .user-id-copy-btn {
+        .user-id {
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .unavailable-btn {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.625rem;
+    }
+  }
+
+  .performance-section {
+    .support-card-meta-header {
+      .card-image-header {
+        width: 60px;
+        height: 60px;
+      }
+
+      .card-limit-break {
+        .limit-break-icon svg {
+          height: 18px;
+          width: 18px;
+        }
+      }
+    }
+
+    .main-stats {
+      .card-title-line {
+        .card-name-stat {
+          font-size: 0.95rem;
+        }
+
+        .card-tags {
+
+          .type-tag,
+          .rarity-tag {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.425rem;
+          }
+        }
+      }
+
+      .verification-badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+
+        .badge-date {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .header-content {
+    padding: 0 1rem;
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .quick-actions {
+      width: 100%;
+
+      .action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .content-container {
+    padding: 0.75rem;
+  }
+
+  .record-header {
+    padding: 0.75rem;
+  }
+
+  .record-main-info {
+    flex-direction: column;
+    gap: 0.625rem; // Reduced from 0.75rem
+  }
+
+  .performance-section {
+    .support-card-meta-header {
+      .card-image-header {
+        width: 50px;
+        height: 50px;
+      }
+
+      .card-limit-break {
+        .limit-break-icon svg {
+          height: 16px;
+          width: 16px;
+        }
+      }
+    }
+
+    .main-stats {
+      .card-name-stat {
+        font-size: 0.875rem;
+      }
+
+      .inheritance-inline {
+        margin-top: 0; // Remove top margin on mobile
+      }
+    }
+  }
+
+  .right-actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.75rem;
+
+    .trainer-section {
+      flex: 1;
+      min-width: 0;
+
+      .trainer-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.375rem; // Reduced from 0.5rem
+        width: 100%;
+
+        .trainer-details {
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
+          width: 100%;
+
+          .trainer-label {
+            font-size: 0.625rem;
+            flex-shrink: 0;
+          }
+
+          .trainer-name {
+            font-size: 0.75rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .user-id-copy-btn {
+          width: 100%;
+          justify-content: center;
+          padding: 0.3rem 0.5rem; // Reduced padding
+
+          .user-id {
+            font-size: 0.75rem; // Reduced from 0.8125rem
+            letter-spacing: 0.025em;
+          }
+
+          mat-icon {
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+          }
+        }
+      }
+    }
+
+    .unavailable-btn {
+      flex-shrink: 0;
+      align-self: flex-end;
+      white-space: nowrap;
+      padding: 0.3rem 0.5rem; // Reduced padding
+      font-size: 0.7rem; // Smaller font
+
+      .btn-text {
+        display: inline; // Keep text visible
+        font-size: 0.7rem;
+      }
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .inheritance-inline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem; // Reduced from 0.25rem
+  }
+
+  .spark-group {
+    width: 100%;
+    border-right: none !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+
+    &:not(:last-child) {
+      padding-bottom: 0.125rem; // Reduced from 0.25rem
+      margin-bottom: 0.125rem; // Reduced from 0.25rem
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .header-content {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .performance-section {
+    .support-card-meta-header {
+      .card-image-header {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  }
+
+  .right-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem; // Reduced from 0.625rem
+
+    .trainer-section {
+      width: 100%;
+
+      .trainer-info {
+        align-items: stretch;
+
+        .user-id-copy-btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+
+    .unavailable-btn {
+      width: 100%;
+      justify-content: center;
+
+      .btn-text {
+        display: inline;
+      }
+    }
+  }
+}

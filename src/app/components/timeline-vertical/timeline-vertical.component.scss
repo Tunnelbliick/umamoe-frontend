@@ -1,0 +1,622 @@
+.timeline-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  overflow: hidden;
+
+  .header {
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+
+    .header-info {
+      margin-bottom: 16px;
+
+      h2 {
+        margin: 0 0 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        .page-icon {
+          font-size: 1.5rem;
+        }
+      }
+
+      .subtitle {
+        margin: 0 0 4px 0;
+        opacity: 0.8;
+        font-size: 0.9rem;
+      }
+
+      .event-count {
+        margin: 0;
+        opacity: 0.7;
+        font-size: 0.8rem;
+      }
+    }
+
+    .search-field {
+      width: 100%;
+      margin-bottom: 16px;
+
+      ::ng-deep {
+        .mat-mdc-form-field-flex {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+        }
+
+        .mat-mdc-text-field-wrapper {
+          background: transparent;
+        }
+
+        .mat-mdc-form-field-outline {
+          color: rgba(255, 255, 255, 0.3);
+        }
+
+        .mat-mdc-form-field-outline-thick {
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .mdc-floating-label {
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        .mat-mdc-input-element {
+          color: white;
+        }
+
+        .mat-icon {
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+
+    .search-navigation {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+
+      button {
+        color: white;
+      }
+
+      .search-results-count {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .no-results {
+        color: rgba(255, 255, 255, 0.6);
+        font-style: italic;
+      }
+    }
+  }
+
+  .filter-controls {
+    padding: 0 20px 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+
+    .filter-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      mat-checkbox {
+        ::ng-deep {
+          .mdc-checkbox {
+            --mdc-checkbox-unselected-icon-color: rgba(255, 255, 255, 0.7);
+            --mdc-checkbox-selected-icon-color: white;
+          }
+
+          .mdc-form-field {
+            color: white;
+          }
+        }
+
+        .checkbox-content {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.85rem;
+
+          mat-icon {
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+
+        // Event type specific colors
+        &.character-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #4fc3f7;
+          }
+        }
+
+        &.support-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #66bb6a;
+          }
+        }
+
+        &.story-events-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #ffb74d;
+          }
+        }
+
+        &.champions-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #ab47bc;
+          }
+        }
+
+        &.legend-races-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #f06292;
+          }
+        }
+
+        &.paid-banners-toggle {
+          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
+            --mdc-checkbox-selected-icon-color: #ff8a65;
+          }
+        }
+      }
+    }
+  }
+
+  .timeline-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+
+    .timeline-track {
+      width: 80px;
+      flex-shrink: 0;
+      position: relative;
+      background: rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+      .timeline-line {
+        position: absolute;
+        left: 39px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, 
+          rgba(255, 255, 255, 0.3) 0%, 
+          rgba(255, 255, 255, 0.6) 50%, 
+          rgba(255, 255, 255, 0.3) 100%);
+      }
+
+      .timeline-markers {
+        position: relative;
+        z-index: 2;
+        padding: 20px 0;
+
+        .timeline-marker {
+          position: relative;
+          padding: 8px 0;
+
+          &.marker-year,
+          &.marker-month {
+            .marker-label {
+              position: absolute;
+              left: 8px;
+              top: 50%;
+              transform: translateY(-50%);
+              font-size: 0.7rem;
+              font-weight: 600;
+              color: rgba(255, 255, 255, 0.8);
+              text-align: left;
+              line-height: 1.2;
+            }
+          }
+
+          &.marker-year .marker-label {
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 700;
+          }
+
+          &.marker-event,
+          &.marker-grouped-events,
+          &.marker-today {
+            .marker-dot {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: white;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+              mat-icon {
+                font-size: 14px;
+                width: 14px;
+                height: 14px;
+              }
+            }
+          }
+
+          &.marker-today .marker-dot {
+            background: #ff9800;
+            animation: pulse 2s infinite;
+
+            .today-icon {
+              color: white;
+            }
+          }
+
+          &.marker-grouped-events .marker-dot {
+            background: #9c27b0;
+
+            .group-icon {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    .events-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      -webkit-overflow-scrolling: touch;
+
+      .timeline-item {
+        margin-bottom: 16px;
+
+        &.item-year {
+          .year-marker {
+            text-align: center;
+            margin: 32px 0 16px 0;
+
+            h3 {
+              margin: 0;
+              font-size: 1.8rem;
+              font-weight: 700;
+              color: white;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+          }
+        }
+
+        &.item-month {
+          .month-marker {
+            margin: 24px 0 12px 0;
+
+            h4 {
+              margin: 0;
+              font-size: 1.2rem;
+              font-weight: 600;
+              color: rgba(255, 255, 255, 0.9);
+              text-align: center;
+            }
+          }
+        }
+
+        &.item-today {
+          .today-marker {
+            display: flex;
+            justify-content: center;
+            margin: 16px 0;
+
+            .today-label {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              padding: 8px 16px;
+              background: rgba(255, 152, 0, 0.2);
+              border: 2px solid #ff9800;
+              border-radius: 20px;
+              animation: pulse 2s infinite;
+
+              .today-icon {
+                color: #ff9800;
+              }
+
+              span {
+                color: #ff9800;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+
+        &.item-event {
+          .event-card {
+            mat-card {
+              background: rgba(255, 255, 255, 0.95);
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              border-left: 4px solid #2196f3;
+
+              // Event type colors
+              &.event-type-character_banner {
+                border-left-color: #4fc3f7;
+              }
+
+              &.event-type-support_banner {
+                border-left-color: #66bb6a;
+              }
+
+              &.event-type-story_event {
+                border-left-color: #ffb74d;
+              }
+
+              &.event-type-champions_meeting {
+                border-left-color: #ab47bc;
+              }
+
+              &.event-type-legend_race {
+                border-left-color: #f06292;
+              }
+
+              &.event-type-paid_banner {
+                border-left-color: #ff8a65;
+              }
+
+              ::ng-deep {
+                .mat-mdc-card-header {
+                  padding: 16px 16px 8px 16px;
+                }
+
+                .mat-mdc-card-content {
+                  padding: 0 16px 8px 16px;
+                }
+
+                .mat-mdc-card-actions {
+                  padding: 8px 16px 16px 16px;
+                }
+
+                .mat-mdc-card-title {
+                  color: #333;
+                  font-weight: 600;
+                  font-size: 1rem;
+                  line-height: 1.3;
+                }
+
+                .mat-mdc-card-subtitle {
+                  color: #666;
+                  font-size: 0.9rem;
+                }
+              }
+
+              .event-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f5f5f5;
+
+                mat-icon {
+                  color: #666;
+                }
+              }
+
+              .event-image {
+                margin: 8px 0;
+                border-radius: 8px;
+                overflow: hidden;
+
+                img {
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                }
+              }
+
+              .related-items {
+                mat-chip-set {
+                  margin-bottom: 8px;
+
+                  &:last-child {
+                    margin-bottom: 0;
+                  }
+                }
+
+                ::ng-deep .mat-mdc-chip {
+                  font-size: 0.75rem;
+                  height: 24px;
+                }
+              }
+            }
+          }
+        }
+
+        &.item-grouped-events {
+          .grouped-events {
+            .group-header {
+              margin-bottom: 12px;
+
+              h5 {
+                margin: 0;
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 1rem;
+                font-weight: 600;
+                text-align: center;
+              }
+            }
+
+            .events-grid {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 8px;
+
+              .mini-event-card {
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 8px;
+                border-left: 3px solid #2196f3;
+
+                // Event type colors
+                &.event-type-character_banner {
+                  border-left-color: #4fc3f7;
+                }
+
+                &.event-type-support_banner {
+                  border-left-color: #66bb6a;
+                }
+
+                &.event-type-story_event {
+                  border-left-color: #ffb74d;
+                }
+
+                &.event-type-champions_meeting {
+                  border-left-color: #ab47bc;
+                }
+
+                &.event-type-legend_race {
+                  border-left-color: #f06292;
+                }
+
+                &.event-type-paid_banner {
+                  border-left-color: #ff8a65;
+                }
+
+                ::ng-deep {
+                  .mat-mdc-card-header {
+                    padding: 12px;
+                  }
+
+                  .mat-mdc-card-content {
+                    padding: 0 12px 12px 12px;
+                  }
+
+                  .mat-mdc-card-title {
+                    color: #333;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    line-height: 1.3;
+                  }
+                }
+
+                .event-icon {
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  background: #f5f5f5;
+
+                  mat-icon {
+                    color: #666;
+                    font-size: 16px;
+                    width: 16px;
+                    height: 16px;
+                  }
+                }
+
+                .mini-event-image {
+                  margin-top: 8px;
+                  border-radius: 4px;
+                  overflow: hidden;
+
+                  img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments for very small screens
+@media (max-width: 360px) {
+  .timeline-vertical {
+    .header {
+      padding: 12px 16px;
+    }
+
+    .filter-controls {
+      padding: 0 16px 12px 16px;
+
+      .filter-toggles {
+        gap: 6px;
+
+        mat-checkbox .checkbox-content {
+          font-size: 0.8rem;
+
+          span {
+            display: none; // Hide text on very small screens, keep only icons
+          }
+        }
+      }
+    }
+
+    .timeline-content {
+      .timeline-track {
+        width: 60px;
+
+        .timeline-markers .timeline-marker {
+          &.marker-year,
+          &.marker-month {
+            .marker-label {
+              font-size: 0.6rem;
+              left: 4px;
+            }
+          }
+
+          &.marker-event,
+          &.marker-grouped-events,
+          &.marker-today {
+            .marker-dot {
+              width: 20px;
+              height: 20px;
+
+              mat-icon {
+                font-size: 12px;
+                width: 12px;
+                height: 12px;
+              }
+            }
+          }
+        }
+      }
+
+      .events-section {
+        padding: 16px;
+      }
+    }
+  }
+}

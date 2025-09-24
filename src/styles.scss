@@ -1,0 +1,435 @@
+// Angular Material theming imports
+@use '@angular/material' as mat;
+
+// Core CSS
+@include mat.core();
+
+// Define color palettes
+$primary-palette: mat.define-palette(mat.$blue-palette, 400);
+$accent-palette: mat.define-palette(mat.$green-palette, 400);
+$warn-palette: mat.define-palette(mat.$red-palette, 400);
+
+// Create dark theme
+$dark-theme: mat.define-dark-theme((color: (primary: $primary-palette,
+        accent: $accent-palette,
+        warn: $warn-palette,
+      )));
+
+// Apply theme
+@include mat.all-component-themes($dark-theme);
+
+// Import utilities
+@import 'styles/utilities';
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #1e1e1e;
+  --bg-quaternary: #2a2a2a;
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  --accent-primary: #64b5f6;
+  --accent-secondary: #81c784;
+
+  --border-primary: rgba(255, 255, 255, 0.12);
+  --border-secondary: rgba(255, 255, 255, 0.2);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+// Global dark theme styles
+body {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: #121212 !important;
+}
+
+// Angular Material overrides
+.mat-mdc-card {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: var(--bg-tertiary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-input-control {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-panel {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.mat-mdc-chip {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-paginator {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+
+// Typography improvements
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--accent-secondary);
+  }
+}
+
+// Utility classes
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+}
+
+.container-sm {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+.text-success {
+  color: var(--accent-success);
+}
+
+.text-warning {
+  color: var(--accent-warning);
+}
+
+.text-error {
+  color: var(--accent-error);
+}
+
+.bg-primary {
+  background: var(--bg-primary);
+}
+
+.bg-secondary {
+  background: var(--bg-secondary);
+}
+
+.bg-tertiary {
+  background: var(--bg-tertiary);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.rounded {
+  border-radius: var(--border-radius);
+}
+
+.rounded-lg {
+  border-radius: 12px;
+}
+
+.rounded-xl {
+  border-radius: 16px;
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+// Card component
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--border-secondary);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+// Button improvements
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  &.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+
+    &:hover {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+    }
+  }
+}
+
+// Form controls
+.form-field {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    transition: var(--transition);
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+}
+
+// Loading states
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+// Responsive breakpoints
+@media (max-width: 1200px) {
+
+  .container,
+  .container-sm {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --content-padding: 1rem;
+  }
+
+  .container,
+  .container-sm {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --content-padding: 0.75rem;
+  }
+
+  .container,
+  .container-sm {
+    padding: 0 0.75rem;
+  }
+}
+
+// Angular Material overrides for dark theme
+.mat-mdc-card {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: var(--bg-tertiary) !important;
+  }
+
+  .mat-mdc-form-field-input-control {
+    color: var(--text-primary) !important;
+  }
+}
+
+.mat-mdc-menu-panel {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.mat-mdc-chip {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-paginator {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+app-root {
+  overflow-x: hidden;
+}
+
+// Domain Migration Dialog Styles
+.domain-migration-dialog .mat-mdc-dialog-container {
+  background: var(--bg-secondary) !important;
+  border-radius: 16px !important;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.domain-migration-dialog .mat-mdc-dialog-surface {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+.domain-migration-dialog .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px);
+}

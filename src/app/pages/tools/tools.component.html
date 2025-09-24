@@ -1,0 +1,100 @@
+<div class="tools">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-branding">
+        <mat-icon class="hero-icon">build</mat-icon>
+        <h1 class="hero-title">Tools & Calculators</h1>
+      </div>
+      <p class="hero-subtitle">Calculation tools and utilities for Umamusume trainers</p>
+
+      <div class="quick-links">
+        <a routerLink="/tools/statistics" class="quick-link statistics new-feature">
+          <mat-icon>bar_chart</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Team Stadium Statistics<span class="new-badge">NEW</span></span>
+            <span class="link-desc">Interactive charts and data analysis</span>
+          </div>
+        </a>
+
+        <div class="quick-link stamina disabled">
+          <mat-icon>battery_charging_full</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Stamina Calculator</span>
+            <span class="link-desc">Calculate optimal stamina for races</span>
+          </div>
+          <div class="coming-soon-badge">COMING SOON</div>
+        </div>
+
+        <div class="quick-link simulator disabled">
+          <mat-icon>speed</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Race Simulator</span>
+            <span class="link-desc">Simulate race outcomes and performance</span>
+          </div>
+          <div class="coming-soon-badge">COMING SOON</div>
+        </div>
+
+        <div class="quick-link factor-calc disabled">
+          <mat-icon>family_restroom</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Factor Calculator</span>
+            <span class="link-desc">Plan inheritance combinations</span>
+          </div>
+          <div class="coming-soon-badge">COMING SOON</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Grid -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <mat-icon>group</mat-icon>
+        <div class="stat-value">{{ dailyUsers | number }}</div>
+        <div class="stat-label">Daily Users</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>person</mat-icon>
+        <div class="stat-value">{{ totalAccounts | number }}</div>
+        <div class="stat-label">Accounts Tracked</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>groups</mat-icon>
+        <div class="stat-value">{{ totalCircles | number }}</div>
+        <div class="stat-label">Circles Tracked</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>face</mat-icon>
+        <div class="stat-value">{{ totalCharacters | number }}</div>
+        <div class="stat-label">Umas Tracked</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://x.com/Tunnelblick4" target="_blank">
+        <mat-icon>tag</mat-icon>
+        Twitter
+      </a>
+      <a href="https://discord.uma.moe" target="_blank">
+        <mat-icon>chat</mat-icon>
+        Discord
+      </a>
+      <a href="https://reddit.com/r/UmaMusume" target="_blank">
+        <mat-icon>forum</mat-icon>
+        Reddit
+      </a>
+      <a routerLink="/privacy-policy">
+        <mat-icon>privacy_tip</mat-icon>
+        Privacy Policy
+      </a>
+    </div>
+    <p class="footer-text">
+      Not affiliated with Cygames. Built for the Umamusume community.
+    </p>
+  </footer>
+</div>

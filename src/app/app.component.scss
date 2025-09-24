@@ -1,0 +1,7 @@
+// Main app component styles
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}

@@ -1,0 +1,55 @@
+# Honsemoe - Uma Musume Database Project
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# ===== COMPILED OUTPUT =====
+/dist
+
+# ===== NODE.JS =====
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# ===== ANGULAR =====
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+
+
+# ===== PYTHON =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+.history/
+*.sublime-workspace
+*.sublime-project
+.c9/
+*.launch
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+/src/environments/environment.prod.ts
+
+# Statistics and data files
+/statistics
+
+.github/copilot-instructions.md

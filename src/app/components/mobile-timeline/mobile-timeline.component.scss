@@ -1,0 +1,1109 @@
+                    // Gametora link button in top right corner
+                    .gametora-link-btn-header {
+                        position: absolute !important;
+                        z-index: 10;
+                        top: 0.25rem;
+                        right: 0.25rem;
+
+                        // Override Material button touch target
+                        .mat-mdc-button-touch-target {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            width: 100% !important;
+                            height: 100% !important;
+                        }
+
+                        .mdc-button__label {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        /*mat-icon {
+                            font-size: 14px;
+                            width: 14px;
+                            height: 14px;
+                            color: var(--accent-primary);
+                        }*/
+                    }
+
+                    .mobile-timeline-container {
+                        padding: 16px;
+                        max-width: 100%;
+                        overflow-x: hidden;
+                        background: var(--bg-primary);
+                        min-height: 100vh;
+
+                        .timeline-header {
+                            margin-bottom: 24px;
+                            padding: 20px;
+                            background: var(--bg-secondary);
+                            border-radius: var(--border-radius);
+                            border: 1px solid var(--border-primary);
+                            backdrop-filter: blur(10px);
+
+                            h2 {
+                                margin: 0 0 16px 0;
+                                color: var(--accent-primary);
+                                font-weight: 600;
+                                font-size: 1.5rem;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+
+                                &::before {
+                                    content: '📅';
+                                    font-size: 1.2rem;
+                                }
+                            }
+
+                            .search-field {
+                                width: 100%;
+                                margin-bottom: 16px;
+
+                                .mat-mdc-form-field-wrapper {
+                                    background: var(--bg-tertiary) !important;
+                                    border-radius: var(--border-radius);
+                                }
+
+                                .mat-mdc-form-field-input-control {
+                                    color: var(--text-primary) !important;
+                                }
+
+                                .mat-mdc-form-field-label {
+                                    color: var(--text-secondary) !important;
+                                }
+                            }
+
+                            .filter-toggles {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 12px;
+                                margin-bottom: 16px;
+
+                                .filter-toggle {
+                                    margin: 0;
+
+                                    .mdc-label {
+                                        color: var(--text-primary) !important;
+                                    }
+
+                                    &.character-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: var(--accent-primary) !important;
+                                            border-color: var(--accent-primary) !important;
+                                        }
+                                    }
+
+                                    &.support-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: var(--accent-secondary) !important;
+                                            border-color: var(--accent-secondary) !important;
+                                        }
+                                    }
+
+                                    &.story-events-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #ffb74d !important;
+                                            border-color: #ffb74d !important;
+                                        }
+                                    }
+
+                                    &.champions-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #9c27b0 !important;
+                                            border-color: #9c27b0 !important;
+                                        }
+                                    }
+
+                                    &.legend-races-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #e91e63 !important;
+                                            border-color: #e91e63 !important;
+                                        }
+                                    }
+
+                                    &.paid-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #ff9800 !important;
+                                            border-color: #ff9800 !important;
+                                        }
+                                    }
+
+                                    &.special-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #ffb74d !important;
+                                            border-color: #ffb74d !important;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .header-info {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 12px;
+                                align-items: stretch;
+
+                                .event-count {
+                                    font-size: 14px;
+                                    color: var(--text-secondary);
+                                    text-align: center;
+                                    font-weight: 500;
+                                }
+
+                                .scroll-today-btn {
+                                    width: 100%;
+                                    background: var(--accent-primary) !important;
+                                    color: var(--bg-primary) !important;
+
+                                    .mat-icon {
+                                        color: var(--bg-primary) !important;
+                                    }
+                                }
+
+                                @media (min-width: 480px) {
+                                    flex-direction: row;
+                                    justify-content: space-between;
+                                    align-items: center;
+
+                                    .scroll-today-btn {
+                                        width: auto;
+                                    }
+                                }
+                            }
+                        }
+
+                        .timeline-content {
+                            position: relative;
+                            padding-bottom: 80px; // Add space for the fixed bottom filter
+
+                            .timeline-track {
+                                position: absolute;
+                                left: 10px;
+                                top: 0;
+                                bottom: 0;
+                                width: 4px;
+                                background: linear-gradient(to bottom,
+                                        var(--accent-primary),
+                                        var(--accent-secondary),
+                                        #ffb74d,
+                                        #ff8a65);
+                                border-radius: 2px;
+                                box-shadow: var(--shadow-md);
+                                z-index: 1;
+                                box-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+                            }
+
+                            .timeline-items {
+                                .timeline-item {
+                                    position: relative;
+                                    margin-bottom: 32px;
+                                    display: flex;
+                                    align-items: flex-start;
+                                    min-height: 40px;
+
+                                    .timeline-marker {
+                                        position: relative;
+                                        width: 15px;
+                                        height: 15px;
+                                        border-radius: 50%;
+                                        left: 4px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        z-index: 2;
+                                        flex-shrink: 0;
+                                        margin-right: 20px;
+                                        background: var(--accent-secondary);
+                                        border: 3px solid #26C6DA;
+                                        box-shadow: var(--shadow-sm);
+
+                                        mat-icon {
+                                            font-size: 22px;
+                                            width: 22px;
+                                            height: 22px;
+                                            color: white;
+                                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                                        }
+
+                                        // Special marker styles - matching horizontal timeline
+                                        &.milestone-marker {
+                                            background: linear-gradient(45deg, #ff6b6b, #ffd700);
+                                            border-color: #ffa500;
+                                            box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), var(--shadow-md);
+                                            width: 30px;
+                                            height: 30px;
+                                            left: -3px;
+
+                                            &::before {
+                                                content: '🚀';
+                                                font-size: 20px;
+                                            }
+
+                                            mat-icon {
+                                                display: none;
+                                            }
+                                        }
+
+                                        &.anniversary-marker {
+                                            background: linear-gradient(45deg, #e91e63, #f8bbd9);
+                                            border-color: #c2185b;
+                                            box-shadow: 0 0 12px rgba(233, 30, 99, 0.5), var(--shadow-md);
+                                            width: 30px;
+                                            height: 30px;
+                                            left: -3px;
+
+                                            &::before {
+                                                content: '🎁';
+                                                font-size: 20px;
+                                            }
+
+                                            mat-icon {
+                                                display: none;
+                                            }
+                                        }
+
+                                        &.today-marker {
+                                            background: linear-gradient(45deg, #ff5722, #ff8a65);
+                                            border-color: #d84315;
+                                            box-shadow: 0 0 15px rgba(255, 87, 34, 0.6), var(--shadow-md);
+                                            animation: pulse-today 2s infinite;
+
+                                            .today-icon {
+                                                animation: glow 2s infinite alternate;
+                                            }
+                                        }
+
+                                        &.year-marker {
+                                            background: linear-gradient(135deg, #607d8b, #455a64);
+                                            border-color: var(--border-primary);
+                                            width: 30px;
+                                            height: 30px;
+                                            left: -3px;
+                                        }
+
+                                        // Event type markers - using same colors as horizontal timeline
+                                    }
+                                }
+
+                                &.legend-race-marker {
+                                    background: linear-gradient(135deg, #e91e63, #c2185b);
+                                }
+
+                                &.paid-banner-marker {
+                                    background: linear-gradient(135deg, #ff5722, #d84315);
+                                }
+
+                                &.grouped-marker {
+                                    background: linear-gradient(135deg, #795548, #5d4037);
+                                }
+                            }
+
+                            .timeline-content-area {
+                                flex: 1;
+                                min-width: 0;
+
+                                .timeline-date {
+                                    font-size: 14px;
+                                    color: var(--text-secondary);
+                                    margin-bottom: 8px;
+                                    font-weight: 500;
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 4px;
+
+                                    .primary-date {
+                                        font-weight: 600;
+                                        color: var(--text-primary);
+                                    }
+
+                                    .approximate-date {
+                                        font-size: 12px;
+                                        color: var(--text-muted);
+                                        font-style: italic;
+                                        padding: 2px 6px;
+                                        background: var(--bg-tertiary);
+                                        border-radius: 4px;
+                                        border: 1px solid var(--border-primary);
+                                        align-self: flex-start;
+                                    }
+
+                                    .days-from-today {
+                                        font-size: 12px;
+                                        color: var(--text-muted);
+                                        background: var(--bg-tertiary);
+                                        padding: 2px 6px;
+                                        border-radius: 4px;
+                                        border: 1px solid var(--border-primary);
+                                        align-self: flex-start;
+                                    }
+                                }
+
+                                .special-marker-content {
+                                    .marker-title {
+                                        margin: 0 0 4px 0;
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                        color: var(--accent-primary);
+                                    }
+
+                                    .today-description {
+                                        margin: 0;
+                                        font-size: 14px;
+                                        color: var(--text-secondary);
+                                        font-style: italic;
+                                    }
+                                }
+
+                                // Event type indicators - matching horizontal timeline colors
+
+                                .event-card {
+                                    background: var(--bg-tertiary);
+                                    border: 1px solid var(--border-secondary);
+                                    color: var(--text-primary);
+                                    padding: 0;
+                                    border-radius: var(--border-radius);
+                                    overflow: hidden;
+                                    position: relative; // For absolute positioning of gametora button
+
+                                    // Simplified performance optimizations
+                                    will-change: auto; // Remove will-change to prevent unnecessary layer creation
+                                    // Removed backdrop-filter as it's expensive during scroll
+                                    // Reduced box-shadow complexity
+                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+                                    // Use simpler transitions
+                                    transition: border-color 0.2s ease, background-color 0.2s ease;
+
+                                    &:hover {
+                                        background: var(--bg-quaternary);
+                                        border-color: var(--accent-primary);
+                                        // Removed expensive hover effects that cause repaints during scroll
+                                    }
+
+                                    mat-card-content {
+                                        position: relative; // For positioning gametora button
+                                    }
+
+                                    // Event type specific styling using classes
+                                    &.event-type-champions_meeting {
+                                        border-left: 4px solid #9c27b0;
+
+                                        &:hover {
+                                            border-color: #9c27b0;
+                                            box-shadow: 0 2px 8px rgba(156, 39, 176);
+                                        }
+                                    }
+
+                                    &.event-type-legend_race {
+                                        border-left: 4px solid #e91e63;
+
+                                        &:hover {
+                                            border-color: #e91e63;
+                                            box-shadow: 0 1px 8px rgba(233, 30, 99);
+                                        }
+                                    }
+
+                                    &.event-type-paid_banner {
+                                        border-left: 4px solid #ff9800;
+
+                                        &:hover {
+                                            border-color: #ff9800;
+                                            box-shadow: 0 1px 8px rgba(255, 152, 0);
+                                        }
+                                    }
+
+                                    &.event-type-story_event {
+                                        border-left: 4px solid #ffb74d;
+
+                                        &:hover {
+                                            border-color: #ffb74d;
+                                            box-shadow: 0 1px 8px rgba(255, 183, 77);
+                                        }
+                                    }
+
+                                    &.event-type-character_banner {
+                                        border-left: 4px solid var(--accent-primary);
+
+                                        &:hover {
+                                            border-color: var(--accent-primary);
+                                            box-shadow: 0 1px 8px var(--accent-primary);
+                                        }
+                                    }
+
+                                    &.event-type-support_card_banner {
+                                        border-left: 4px solid var(--accent-secondary);
+
+                                        &:hover {
+                                            border-color: var(--accent-secondary);
+                                            box-shadow: 0 1px 8px var(--accent-secondary);
+                                        }
+                                    }
+
+                                    .event-header {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                    }
+
+                                    .event-title {
+                                        display: flex;
+                                        flex: 1 1 100%;
+                                        gap: 0.5rem;
+                                        align-items: center;
+                                    }
+
+                                    .event-description {
+                                        font-size: 14px;
+                                        color: var(--text-secondary);
+                                        margin: 0.25rem 0;
+                                    }
+                                }
+
+                                .mat-mdc-card-content {
+                                    color: var(--text-primary) !important;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                    padding: 16px !important; // Add some padding for the button space
+                                    padding-top: 24px !important; // Extra top padding for gametora button
+
+                                    .event-content {
+                                        flex: 1;
+                                        gap: 0.25rem;
+                                        display: flex;
+                                        align-items: center;
+                                        font-size: 1.5rem;
+
+                                        mat-icon {
+                                            font-size: 1.5rem;
+                                            width: 1.5rem;
+                                            height: 1.5rem;
+                                            flex-shrink: 0;
+                                        }
+                                    }
+                                }
+
+                                img {
+                                    height: 4rem;
+                                    //transform: scale(1.2);
+                                    border-radius: var(--border-radius);
+                                    max-width: 100%;
+                                }
+
+                                .event-placeholder {
+                                    display: flex;
+                                    height: 4rem;
+                                    text-align: center;
+                                    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-quaternary));
+                                    border-radius: var(--border-radius);
+                                    border: 1px solid var(--border-primary);
+
+                                    .placeholder-icon {
+                                        font-size: 2.5rem;
+                                        width: 2.5rem;
+                                        height: 2.5rem;
+                                        opacity: 0.7;
+                                        color: var(--text-secondary);
+                                    }
+
+                                    .placeholder-text {
+                                        margin: 0;
+                                        color: var(--text-secondary);
+                                        font-size: 14px;
+                                        font-weight: 500;
+                                    }
+
+                                    // Event type specific placeholder colors
+                                    &.character-placeholder .placeholder-icon {
+                                        color: var(--accent-primary);
+                                    }
+
+                                    &.support-placeholder .placeholder-icon {
+                                        color: #ba68c8;
+                                    }
+
+                                    &.story-event-placeholder .placeholder-icon {
+                                        color: #ff9800;
+                                    }
+
+                                    &.champions-meeting-placeholder .placeholder-icon {
+                                        color: #9c27b0;
+                                    }
+
+                                    &.legend-race-placeholder .placeholder-icon {
+                                        color: #e91e63;
+                                    }
+
+                                    &.paid-banner-placeholder .placeholder-icon {
+                                        color: #ff5722;
+                                    }
+                                }
+
+                                .related-items {
+                                    margin-top: 12px;
+
+                                    .related-label {
+                                        margin: 0 0 6px 0;
+                                        font-size: 13px;
+                                        font-weight: 600;
+                                        color: var(--text-secondary);
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    .character-chips,
+                                    .support-chips {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        gap: 4px;
+
+                                        mat-chip {
+                                            font-size: 0.7rem;
+                                            height: 20px;
+                                            font-weight: 500;
+                                            border-radius: var(--border-radius);
+                                            padding: 0.2rem 0.5rem;
+                                        }
+                                    }
+
+                                    .character-chips mat-chip,
+                                    .character-chip {
+                                        background: rgba(100, 181, 246, 0.2) !important;
+                                        color: var(--accent-primary) !important;
+                                        border: 1px solid rgba(100, 181, 246, 0.3) !important;
+                                    }
+
+                                    .support-chips mat-chip,
+                                    .support-chip {
+                                        background: rgba(186, 104, 200, 0.2) !important;
+                                        color: #ba68c8 !important;
+                                        border: 1px solid rgba(186, 104, 200, 0.3) !important;
+                                    }
+                                }
+                            }
+
+                            .event-image {
+                                width: 100%;
+                                height: auto;
+                                border-radius: 4px;
+                                display: block;
+                            }
+                        }
+
+                        .event-placeholder {
+                            text-align: center;
+                            border-radius: 4px;
+                            display: flex;
+                            flex: 0 1 4rem;
+                            justify-content: center;
+                            align-items: center;
+
+                            .placeholder-icon {
+                                font-size: 32px;
+                                width: 32px;
+                                height: 32px;
+                                opacity: 0.7;
+                            }
+
+                            .placeholder-text {
+                                margin: 0;
+                                font-size: 14px;
+                                font-weight: 500;
+                            }
+
+                            // Placeholder colors by event type
+                            &.character-placeholder {
+                                background-color: #e8f5e8;
+                                color: #2e7d2e;
+                            }
+
+                            &.support-placeholder {
+                                background-color: #e3f2fd;
+                                color: #1565c0;
+                            }
+
+                            &.story-event-placeholder {
+                                background-color: #fff3e0;
+                                color: #ef6c00;
+                            }
+
+                            &.champions-meeting-placeholder {
+                                background-color: #f3e5f5;
+                                color: #7b1fa2;
+                            }
+
+                            &.legend-race-placeholder {
+                                background-color: #fce4ec;
+                                color: #c2185b;
+                            }
+
+                            &.paid-banner-placeholder {
+                                background-color: #fbe9e7;
+                                color: #d84315;
+                            }
+                        }
+
+                        .related-items {
+                            margin-bottom: 12px;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            .related-label {
+                                margin: 0 0 6px 0;
+                                font-size: 12px;
+                                font-weight: 500;
+                                color: #666;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                            }
+
+                            .character-chips,
+                            .support-chips {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 4px;
+
+                                mat-chip {
+                                    font-size: 11px;
+                                    height: 20px;
+                                    padding: 0 6px;
+                                    background-color: #f5f5f5;
+                                    color: #333;
+                                }
+                            }
+                        }
+
+
+                        // Grouped events - new flex row layout
+                        .grouped-events-wrapper {
+                            margin-bottom: 16px;
+
+                            .grouped-events-header {
+                                margin-bottom: 12px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 8px 0;
+
+                                .grouped-date-label {
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    color: var(--text-primary);
+                                }
+
+                                .grouped-count {
+                                    font-size: 12px;
+                                    color: var(--text-secondary);
+                                    background: var(--bg-tertiary);
+                                    padding: 4px 8px;
+                                    border-radius: 12px;
+                                    border: 1px solid var(--border-primary);
+                                }
+                            }
+
+                            .grouped-events-row {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.5rem;
+                                overflow-x: auto;
+                                padding-bottom: 8px;
+
+                                // Custom scrollbar for horizontal scroll
+                                &::-webkit-scrollbar {
+                                    height: 6px;
+                                }
+
+                                &::-webkit-scrollbar-track {
+                                    background: var(--bg-tertiary);
+                                    border-radius: 3px;
+                                }
+
+                                &::-webkit-scrollbar-thumb {
+                                    background: var(--bg-quaternary);
+                                    border-radius: 3px;
+                                    border: 1px solid var(--border-primary);
+
+                                    &:hover {
+                                        background: var(--accent-primary);
+                                    }
+                                }
+
+                                .grouped-event-card {
+                                    flex: 1 1 100%;
+                                    min-width: 250px;
+                                    background: var(--bg-secondary) !important;
+                                    border: 1px solid var(--border-primary) !important;
+                                    box-shadow: var(--shadow-md);
+                                    border-radius: var(--border-radius);
+                                    backdrop-filter: blur(10px);
+
+                                    // Event type specific border colors
+                                    &.event-type-character_banner {
+                                        border-left: 4px solid var(--accent-primary) !important;
+                                    }
+
+                                    &.event-type-support_card_banner {
+                                        border-left: 4px solid #ba68c8 !important;
+                                    }
+
+                                    &.event-type-story_event {
+                                        border-left: 4px solid #ff9800 !important;
+                                    }
+
+                                    &.event-type-champions_meeting {
+                                        border-left: 4px solid #9c27b0 !important;
+                                    }
+
+                                    &.event-type-legend_race {
+                                        border-left: 4px solid #e91e63 !important;
+                                    }
+
+                                    &.event-type-paid_banner {
+                                        border-left: 4px solid #ff5722 !important;
+                                    }
+
+                                    .mat-mdc-card-content {
+                                        color: var(--text-primary) !important;
+                                        padding: 16px !important;
+
+                                        .event-content {
+                                            .event-header {
+                                                .event-title {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 8px;
+                                                    font-size: 14px;
+                                                    font-weight: 600;
+                                                    color: var(--text-primary);
+                                                    margin-bottom: 8px;
+
+                                                    mat-icon {
+                                                        font-size: 18px;
+                                                        width: 18px;
+                                                        height: 18px;
+                                                        color: var(--text-secondary);
+                                                    }
+                                                }
+
+                                                .event-description {
+                                                    font-size: 13px;
+                                                    color: var(--text-secondary);
+                                                    line-height: 1.4;
+                                                    margin-bottom: 8px;
+                                                }
+
+                                                .related-items {
+                                                    margin-top: 8px;
+
+                                                    .related-label {
+                                                        margin: 0 0 4px 0;
+                                                        font-size: 11px;
+                                                        font-weight: 600;
+                                                        color: var(--text-secondary);
+                                                        text-transform: uppercase;
+                                                        letter-spacing: 0.5px;
+                                                    }
+
+                                                    .character-chips,
+                                                    .support-chips {
+                                                        display: flex;
+                                                        flex-wrap: wrap;
+                                                        gap: 4px;
+
+                                                        mat-chip {
+                                                            font-size: 0.7rem;
+                                                            height: 18px;
+                                                            font-weight: 500;
+                                                            border-radius: var(--border-radius);
+                                                            padding: 0.2rem 0.4rem;
+                                                        }
+                                                    }
+
+                                                    .character-chips mat-chip,
+                                                    .character-chip {
+                                                        background: rgba(100, 181, 246, 0.2) !important;
+                                                        color: var(--accent-primary) !important;
+                                                        border: 1px solid rgba(100, 181, 246, 0.3) !important;
+                                                    }
+
+                                                    .support-chips mat-chip,
+                                                    .support-chip {
+                                                        background: rgba(186, 104, 200, 0.2) !important;
+                                                        color: #ba68c8 !important;
+                                                        border: 1px solid rgba(186, 104, 200, 0.3) !important;
+                                                    }
+                                                }
+                                            }
+
+                                            .event-actions {
+                                                display: flex;
+                                                justify-content: flex-end;
+                                                margin-top: 8px;
+
+                                                .gametora-link-btn {
+                                                    width: 28px;
+                                                    height: 28px;
+                                                    min-width: 28px;
+
+                                                    mat-icon {
+                                                        font-size: 14px;
+                                                        width: 14px;
+                                                        height: 14px;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .event-image-container {
+                                            margin-top: 12px;
+
+                                            img {
+                                                border-radius: var(--border-radius);
+                                                max-width: 100%;
+                                                height: auto;
+                                                box-shadow: var(--shadow-sm);
+                                            }
+                                        }
+
+                                        .event-placeholder {
+                                            padding: 16px;
+                                            text-align: center;
+                                            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-quaternary));
+                                            border-radius: var(--border-radius);
+                                            border: 1px solid var(--border-primary);
+                                            margin-top: 12px;
+
+                                            .placeholder-icon {
+                                                font-size: 2rem;
+                                                width: 2rem;
+                                                height: 2rem;
+                                                margin-bottom: 4px;
+                                                opacity: 0.7;
+                                                color: var(--text-secondary);
+                                            }
+
+                                            // Event type specific placeholder colors
+                                            &.character-placeholder .placeholder-icon {
+                                                color: var(--accent-primary);
+                                            }
+
+                                            &.support-placeholder .placeholder-icon {
+                                                color: #ba68c8;
+                                            }
+
+                                            &.story-event-placeholder .placeholder-icon {
+                                                color: #ff9800;
+                                            }
+
+                                            &.champions-meeting-placeholder .placeholder-icon {
+                                                color: #9c27b0;
+                                            }
+
+                                            &.legend-race-placeholder .placeholder-icon {
+                                                color: #e91e63;
+                                            }
+
+                                            &.paid-banner-placeholder .placeholder-icon {
+                                                color: #ff5722;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Special item styling for today marker
+                        &.today-marker {
+                            .timeline-content-area {
+                                .special-marker-content {
+                                    .marker-title {
+                                        color: #ff5722;
+                                        animation: glow 2s infinite alternate;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Animations - matching horizontal timeline
+                    @keyframes pulse-today {
+                        0% {
+                            box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.7), var(--shadow-md);
+                        }
+
+                        70% {
+                            box-shadow: 0 0 0 10px rgba(255, 87, 34, 0), var(--shadow-md);
+                        }
+
+                        100% {
+                            box-shadow: 0 0 0 0 rgba(255, 87, 34, 0), var(--shadow-md);
+                        }
+                    }
+
+                    @keyframes glow {
+                        from {
+                            text-shadow: 0 0 8px #ff5722, 0 1px 2px rgba(0, 0, 0, 0.3);
+                        }
+
+                        to {
+                            text-shadow: 0 0 16px #ff5722, 0 0 20px #ff8a65, 0 1px 2px rgba(0, 0, 0, 0.3);
+                        }
+                    }
+
+                    // Fixed Bottom Filter Panel
+                    .bottom-filter-panel {
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 1000;
+                        background: var(--bg-secondary);
+                        border-top: 1px solid var(--border-primary);
+                        backdrop-filter: blur(20px);
+                        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        transform: translateY(calc(100% - 50px)); // Show only the button initially
+
+                        &.expanded {
+                            transform: translateY(0); // Show full panel when expanded
+                        }
+
+                        .filter-toggle-btn {
+                            position: absolute;
+                            top: -28px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: var(--accent-primary) !important;
+                            color: var(--bg-primary) !important;
+                            box-shadow: var(--shadow-lg);
+                            z-index: 1001;
+
+                            mat-icon {
+                                transition: transform 0.3s ease;
+                            }
+
+                            &:hover {
+                                transform: translateX(-50%) scale(1.05);
+                            }
+                        }
+
+                        .filter-content {
+                            padding: 25px;
+                            max-height: 0;
+                            overflow: hidden;
+                            opacity: 0;
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                            &.visible {
+                                max-height: 70vh;
+                                opacity: 1;
+                                overflow-y: auto;
+                            }
+
+                            .search-field {
+                                width: 100%;
+                                margin-bottom: 16px;
+
+                                .mat-mdc-form-field-wrapper {
+                                    background: var(--bg-tertiary) !important;
+                                    border-radius: var(--border-radius);
+                                }
+
+                                .mat-mdc-form-field-input-control {
+                                    color: var(--text-primary) !important;
+                                }
+
+                                .mat-mdc-form-field-label {
+                                    color: var(--text-secondary) !important;
+                                }
+                            }
+
+                            .filter-toggles {
+                                display: grid;
+                                grid-template-columns: 1fr;
+                                gap: 12px;
+
+                                @media (min-width: 480px) {
+                                    grid-template-columns: repeat(2, 1fr);
+                                    gap: 8px 16px;
+                                }
+
+                                .filter-toggle {
+                                    margin: 0;
+
+                                    .mdc-label {
+                                        color: var(--text-primary) !important;
+                                        font-size: 14px;
+                                    }
+
+                                    &.character-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: var(--accent-primary) !important;
+                                            border-color: var(--accent-primary) !important;
+                                        }
+                                    }
+
+                                    &.support-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: var(--accent-secondary) !important;
+                                            border-color: var(--accent-secondary) !important;
+                                        }
+                                    }
+
+                                    &.story-events-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #ffb74d !important;
+                                            border-color: #ffb74d !important;
+                                        }
+                                    }
+
+                                    &.champions-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #9c27b0 !important;
+                                            border-color: #9c27b0 !important;
+                                        }
+                                    }
+
+                                    &.legend-races-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #e91e63 !important;
+                                            border-color: #e91e63 !important;
+                                        }
+                                    }
+
+                                    &.paid-toggle {
+                                        ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+                                            background-color: #ff9800 !important;
+                                            border-color: #ff9800 !important;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Custom scrollbar for filter content
+                            &::-webkit-scrollbar {
+                                width: 6px;
+                            }
+
+                            &::-webkit-scrollbar-track {
+                                background: var(--bg-tertiary);
+                                border-radius: 3px;
+                            }
+
+                            &::-webkit-scrollbar-thumb {
+                                background: var(--bg-quaternary);
+                                border-radius: 3px;
+                                border: 1px solid var(--border-primary);
+
+                                &:hover {
+                                    background: var(--accent-primary);
+                                }
+                            }
+                        }
+                    }

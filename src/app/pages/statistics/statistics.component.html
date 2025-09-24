@@ -1,0 +1,1489 @@
+<div class="statistics-new">
+  <!-- Hero Section -->
+  <section class="hero" id="overview">
+    <div class="hero-content">
+      <div class="hero-branding">
+        <mat-icon class="hero-icon">analytics</mat-icon>
+        <h1 class="hero-title">Team Stadium Statistics</h1>
+      </div>
+      <p class="hero-subtitle">
+        A Deep Dive into Team Stadium Character Usage and Strategy
+      </p>
+
+      <div class="dataset-info" *ngIf="globalStats">
+        <div class="sample-size">
+          <mat-icon>dataset</mat-icon>
+          <span>{{ (sampleSizeText$ | async) || "" }}</span>
+        </div>
+        <div class="last-updated">
+          <mat-icon>schedule</mat-icon>
+          <span
+            >Updated {{ formatDate(globalStats.metadata.generated_at) }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Navigation -->
+  <nav class="section-navigation">
+    <div class="nav-container">
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('overview')"
+        class="nav-button">
+        <mat-icon>home</mat-icon>
+        Home
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('statistics-overview')"
+        class="nav-button">
+        <mat-icon>dashboard</mat-icon>
+        Overview
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('support-cards')"
+        class="nav-button">
+        <mat-icon>style</mat-icon>
+        Support Cards
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('skills')"
+        class="nav-button">
+        <mat-icon>psychology</mat-icon>
+        Skills
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('distributions')"
+        class="nav-button">
+        <mat-icon>bar_chart</mat-icon>
+        Stats
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('distance-analysis')"
+        class="nav-button">
+        <mat-icon>straighten</mat-icon>
+        Distance
+      </button>
+      <button 
+        mat-stroked-button 
+        (click)="scrollToSection('characters')"
+        class="nav-button">
+        <mat-icon>people</mat-icon>
+        Characters
+      </button>
+    </div>
+  </nav>
+
+  <!-- Loading Indicator -->
+  <div class="loading" *ngIf="globalLoading">
+    <mat-spinner></mat-spinner>
+    <p>Loading statistics data...</p>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout" *ngIf="!globalLoading && globalStats">
+    <!-- Left Sidebar with Class Filter and Distance Selector -->
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <app-class-filter
+          #classFilter
+          [selectedClasses]="classFilters"
+          [classStats]="globalStats?.team_class_distribution || {}"
+          [selectedDistance]="selectedDistance | async"
+          [distances]="distances"
+          [compactMode]="isMobile || isSmallScreen"
+          [showDistanceSelector]="shouldShowDistanceSelector()"
+          (filtersChanged)="onClassFiltersChanged($event)"
+          (distanceChanged)="onDistanceChanged($event)"
+        >
+        </app-class-filter>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <!-- Statistics Overview Grid -->
+      <section class="overview-section" id="statistics-overview">
+        <div class="section-header">
+          <h2>
+            <mat-icon>dashboard</mat-icon>
+            Overview
+          </h2>
+        </div>
+
+        <div class="charts-grid">
+          <!-- Team Class Distribution -->
+          <div class="chart-card" id="team-class-distribution">
+            <div class="chart-description">
+              <h3>Team Class Distribution</h3>
+              <p>
+                Shows how trainers distribute across different Team Stadium classes.
+                Higher classes indicate stronger teams with better support cards
+                and Team Stadium results.
+              </p>
+            </div>
+            <app-statistics-chart
+              [data]="(teamClassChartData$ | async) || []"
+              [config]="
+                getTeamClassDoughnutConfigWithTotal(totalTrainers$ | async)
+              "
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Stat Averages by Class - Make it wider -->
+          <div class="chart-card wide" id="stat-averages-by-class">
+            <div class="chart-description">
+              <h3>Average Stats by Team Stadium Class</h3>
+              <p>
+                Compare average stat distributions across Team Stadium classes. Shows
+                how stat requirements increase with higher class levels.
+              </p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statAveragesByClassData$ | async) || []"
+              [config]="getBarWithLegendConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+
+        <!-- Popular Umas - Full width on next row -->
+        <div class="charts-grid">
+          <div class="chart-card full-width">
+            <div class="chart-description">
+              <h3>Most Popular Uma Musume</h3>
+              <p>
+                Most used Umamusume in Team Stadium for selected classes,
+                showing actual usage counts.
+              </p>
+            </div>
+            <app-statistics-chart
+              [data]="(topUmasWithImages$ | async) || []"
+              [config]="getVerticalImageBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support Card Analysis Section -->
+      <section class="support-card-section" id="support-cards">
+        <div class="section-header">
+          <h2>
+            <mat-icon>style</mat-icon>
+            Support Card Analysis
+          </h2>
+        </div>
+
+        <div class="charts-grid">
+          <!-- Support Card Type Distribution - Make it bigger -->
+          <div class="chart-card side-by-side" id="support-card-types">
+            <div class="chart-description">
+              <h3>Support Card Type Distribution</h3>
+              <p>
+                Distribution of support card types in Team Stadium decks, showing
+                which types are used most often.
+              </p>
+            </div>
+            <app-statistics-chart
+              [data]="(supportCardTypeDistribution$ | async) || []"
+              [config]="
+                getDoughnutConfig((supportCardTypeDistribution$ | async) || [])
+              "
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Most Used Deck Compositions -->
+          <div class="chart-card wide">
+            <div class="chart-description">
+              <h3>Most Used Deck Compositions</h3>
+              <p>
+                Most frequent support card deck compositions, showing common
+                card type combinations.
+              </p>
+            </div>
+            <app-statistics-chart
+              [data]="(supportCardCombinationsData$ | async) || []"
+              [config]="getStatSymbolBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+
+        <!-- Top Support Cards with Images -->
+        <div class="charts-grid">
+          <div class="chart-card full-width">
+            <div class="chart-description">
+              <h3>Most Popular Support Cards</h3>
+              <p>Top support cards across all selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [data]="(topSupportCardsWithImages$ | async) || []"
+              [config]="getImageListConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Analysis Section -->
+      <section class="skills-section" id="skills">
+        <div class="section-header">
+          <h2>
+            <mat-icon>star</mat-icon>
+            Skills Analysis
+          </h2>
+        </div>
+
+        <div class="charts-grid">
+          <!-- Most Used Skills -->
+          <div class="chart-card full-width" id="top-skills">
+            <div class="chart-description">
+              <h3>Most Used Skills</h3>
+              <p>
+                Top skills used in Team Stadium across all selected classes.
+              </p>
+            </div>
+            <app-statistics-chart
+              [data]="(topSkillsWithImages$ | async) || []"
+              [config]="getImageListConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+      </section>
+
+      <!-- Statistical Distributions -->
+      <section class="distributions-section" id="distributions">
+        <div class="section-header">
+          <h2>
+            <mat-icon>equalizer</mat-icon>
+            Statistical Distributions
+          </h2>
+        </div>
+
+        <div class="chart-description global-stats-description">
+          <div class="stats-header-content">
+            <h3>Stat Distributions Analysis</h3>
+            <p>
+              Distribution of all stats across Team Stadium runs. Shows the range,
+              frequency, and patterns of stat values achieved in Team Stadium. Each
+              chart displays the histogram of stat values, helping identify
+              optimal targets and common ranges.
+            </p>
+          </div>
+        </div>
+
+        <div class="charts-grid stats-grid">
+          <!-- Speed Distribution -->
+          <div class="chart-card stats-pair" id="speed-distribution">
+            <div class="chart-description">
+              <h3>
+                <img
+                  [src]="getStatIconUrl('speed')"
+                  alt="Speed"
+                  class="stat-icon"
+                  onerror="this.style.display='none'"
+                />
+                Speed Stat Distribution
+              </h3>
+              <p>Distribution of speed stats across selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statDistributionData$ | async)?.['speed'] || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Stamina Distribution -->
+          <div class="chart-card stats-pair" id="stamina-distribution">
+            <div class="chart-description">
+              <h3>
+                <img
+                  [src]="getStatIconUrl('stamina')"
+                  alt="Stamina"
+                  class="stat-icon"
+                  onerror="this.style.display='none'"
+                />
+                Stamina Stat Distribution
+              </h3>
+              <p>Distribution of stamina stats across selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statDistributionData$ | async)?.['stamina'] || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Power Distribution -->
+          <div class="chart-card stats-pair" id="power-distribution">
+            <div class="chart-description">
+              <h3>
+                <img
+                  [src]="getStatIconUrl('power')"
+                  alt="Power"
+                  class="stat-icon"
+                  onerror="this.style.display='none'"
+                />
+                Power Stat Distribution
+              </h3>
+              <p>Distribution of power stats across selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statDistributionData$ | async)?.['power'] || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Guts Distribution -->
+          <div class="chart-card stats-pair" id="guts-distribution">
+            <div class="chart-description">
+              <h3>
+                <img
+                  [src]="getStatIconUrl('guts')"
+                  alt="Guts"
+                  class="stat-icon"
+                  onerror="this.style.display='none'"
+                />
+                Guts Stat Distribution
+              </h3>
+              <p>Distribution of guts stats across selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statDistributionData$ | async)?.['guts'] || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Wit Distribution -->
+          <div class="chart-card stats-pair" id="wit-distribution">
+            <div class="chart-description">
+              <h3>
+                <img
+                  [src]="getStatIconUrl('wit')"
+                  alt="Wit"
+                  class="stat-icon"
+                  onerror="this.style.display='none'"
+                />
+                Wit Stat Distribution
+              </h3>
+              <p>Distribution of wit stats across selected Team Stadium classes.</p>
+            </div>
+            <app-statistics-chart
+              [multiSeries]="(statDistributionData$ | async)?.['wiz'] || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+
+          <!-- Overall Comparison -->
+          <div class="chart-card stats-pair" id="overall-stat-comparison">
+            <div class="chart-description">
+              <h3>Average Stats Comparison</h3>
+              <p>Compare average values across all stat types.</p>
+            </div>
+            <app-statistics-chart
+              [data]="(overallStatComparison$ | async) || []"
+              [config]="getStandardBarConfig()"
+            >
+            </app-statistics-chart>
+          </div>
+        </div>
+      </section>
+
+      <!-- Distance Analysis Section -->
+      <section class="distance-section" id="distance-analysis">
+        <div class="section-header">
+          <h2>
+            <mat-icon>speed</mat-icon>
+            Distance Analysis
+          </h2>
+        </div>
+
+        <div class="chart-description">
+          <h3>Race Distance Performance</h3>
+          <p>
+            Analysis of Stadium Teams across different race distances. Shows
+            popular uma musume, stat distributions, and Team Stadium compositions for
+            each race distance.
+          </p>
+        </div>
+
+        <div class="charts-grid">
+          <!-- Distance Charts -->
+          <div class="distance-content" *ngIf="selectedDistance.value">
+            <!-- Loading state for distance data -->
+            <div *ngIf="distanceLoading" class="distance-loading">
+              <mat-spinner diameter="40"></mat-spinner>
+              <span>Loading <b>{{ selectedDistance.value }}</b> statistics...</span>
+            </div>
+
+            <!-- Distance charts when data is loaded -->
+            <div
+              *ngIf="!distanceLoading && distanceStats[selectedDistance.value!]"
+              class="charts-grid"
+            >
+              <!-- Distance Uma Musume with Images -->
+              <div class="chart-card full-width" id="distance-uma-musume">
+                <div class="chart-description">
+                  <h3>Top Uma Musume</h3>
+                  <p>
+                    Most used Uma Musume in <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceUmasWithImages$ | async) || []"
+                  [config]="getVerticalImageBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <!-- Distance Support Cards with Images -->
+              <div class="chart-card full-width" id="distance-support-cards">
+                <div class="chart-description">
+                  <h3>Top Support Cards</h3>
+                  <p>
+                    Most used support cards in
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceSupportCardsWithImages$ | async) || []"
+                  [config]="getImageListConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <!-- Distance Skills with Images -->
+              <div class="chart-card full-width" id="distance-skills">
+                <div class="chart-description">
+                  <h3>Top Skills</h3>
+                  <p>Most used skills in <b>{{ selectedDistance.value }}</b> races.</p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceSkillsWithImages$ | async) || []"
+                  [config]="getImageListConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+            </div>
+
+            <!-- Stat Distribution for Distance -->
+            <div class="chart-description global-stats-description">
+              <h3>
+                {{ selectedDistance.value | titlecase }} Distance Stat
+                Distributions
+              </h3>
+              <p>
+                Distribution of all stats across
+                <b>{{ selectedDistance.value }}</b> Stadium Teams. Shows the range,
+                frequency, and patterns of stat values achieved in Team Stadium.
+                Each chart displays the histogram of stat values, helping
+                identify optimal targets and common ranges.
+              </p>
+            </div>
+
+            <div class="charts-grid stats-grid">
+              <!-- Speed and Power Distribution -->
+              <div class="chart-card stats-pair" id="distance-speed-distribution">
+                <div class="chart-description">
+                  <h3>
+                    <img
+                      [src]="getStatIconUrl('speed')"
+                      alt="Speed"
+                      class="stat-icon"
+                      onerror="this.style.display='none'"
+                    />
+                    Speed Stat Distribution
+                  </h3>
+                  <p>
+                    Distribution of speed stats for
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatHistogramSpeed$ | async) || []"
+                  [config]="getStandardBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <!-- Stamina and Wisdom Distribution -->
+              <div class="chart-card stats-pair" id="distance-stamina-distribution">
+                <div class="chart-description">
+                  <h3>
+                    <img
+                      [src]="getStatIconUrl('stamina')"
+                      alt="Stamina"
+                      class="stat-icon"
+                      onerror="this.style.display='none'"
+                    />
+                    Stamina Stat Distribution
+                  </h3>
+                  <p>
+                    Distribution of stamina stats for
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatHistogramStamina$ | async) || []"
+                  [config]="getStandardBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <div class="chart-card stats-pair" id="distance-power-distribution">
+                <div class="chart-description">
+                  <h3>
+                    <img
+                      [src]="getStatIconUrl('power')"
+                      alt="Power"
+                      class="stat-icon"
+                      onerror="this.style.display='none'"
+                    />
+                    Power Stat Distribution
+                  </h3>
+                  <p>
+                    Distribution of power stats for
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatHistogramPower$ | async) || []"
+                  [config]="getStandardBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <!-- Guts and Average Stats Comparison -->
+              <div class="chart-card stats-pair" id="distance-guts-distribution">
+                <div class="chart-description">
+                  <h3>
+                    <img
+                      [src]="getStatIconUrl('guts')"
+                      alt="Guts"
+                      class="stat-icon"
+                      onerror="this.style.display='none'"
+                    />
+                    Guts Stat Distribution
+                  </h3>
+                  <p>
+                    Distribution of guts stats for
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatHistogramGuts$ | async) || []"
+                  [config]="getStandardBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <div class="chart-card stats-pair" id="distance-wit-distribution">
+                <div class="chart-description">
+                  <h3>
+                    <img
+                      [src]="getStatIconUrl('wit')"
+                      alt="Wisdom"
+                      class="stat-icon"
+                      onerror="this.style.display='none'"
+                    />
+                    Wisdom Stat Distribution
+                  </h3>
+                  <p>
+                    Distribution of wisdom stats for
+                    <b>{{ selectedDistance.value }}</b> races.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatHistogramWiz$ | async) || []"
+                  [config]="getStandardBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+
+              <div class="chart-card stats-pair" id="distance-stat-comparison">
+                <div class="chart-description">
+                  <h3>Average Stats Comparison</h3>
+                  <p>
+                    Compare average values across all stat types for
+                    <b>{{ selectedDistance.value }}</b>.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceStatDistributionData$ | async) || []"
+                  [config]="getBarWithLegendConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+            </div>
+
+            <!-- Distance Support Card Analysis -->
+            <div class="charts-grid">
+              <div class="chart-card side-by-side" id="distance-card-type-distribution">
+                <div class="chart-description">
+                  <h3>Support Card Type Distribution</h3>
+                  <p>
+                    Distribution of support card types in Team Stadium decks for
+                    <b>{{ selectedDistance.value }}</b> races. Shows which card types
+                    are most commonly used.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceCardTypeDistribution$ | async) || []"
+                  [config]="
+                    getDoughnutConfig(
+                      (distanceCardTypeDistribution$ | async) || []
+                    )
+                  "
+                >
+                </app-statistics-chart>
+              </div>
+
+              <div class="chart-card wide" id="distance-deck-compositions">
+                <div class="chart-description">
+                  <h3>Most Used Deck Compositions</h3>
+                  <p>
+                    Most frequent support card deck compositions for
+                    <b>{{ selectedDistance.value }}</b> races showing common card type
+                    combinations.
+                  </p>
+                </div>
+                <app-statistics-chart
+                  [data]="(distanceSupportCardCombinationsData$ | async) || []"
+                  [config]="getStatSymbolBarConfig()"
+                >
+                </app-statistics-chart>
+              </div>
+            </div>
+
+            <!-- No data state -->
+            <div
+              *ngIf="
+                !distanceLoading && !distanceStats[selectedDistance.value!]
+              "
+              class="no-distance-data"
+            >
+              <mat-icon>info</mat-icon>
+              <h4>No data available</h4>
+              <p>
+                No statistics data found for
+                <b>{{ selectedDistance.value }}</b> distance.
+              </p>
+            </div>
+          </div>
+
+          <!-- No Distance Selected -->
+          <div class="no-distance-selected" *ngIf="!selectedDistance.value">
+            <mat-icon>track_changes</mat-icon>
+            <h3>Select a Distance</h3>
+            <p>Choose a race distance above to view detailed analytics</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Character Analysis Section -->
+      <section class="character-section" id="characters">
+        <!-- Character Selector - Redesigned to match other pages -->
+        <div class="character-selector" *ngIf="!selectedCharacterDetail">
+          <!-- Search Header -->
+          <div class="search-header">
+            <div class="header-content">
+              <h2>
+                <mat-icon>face</mat-icon>
+                Character Analysis
+              </h2>
+              <p class="search-subtitle">
+                Search and select a Uma musume to view detailed Team Stadium
+                statistics and performance metrics
+              </p>
+            </div>
+
+            <!-- Results Count - now on the same line -->
+            <div class="results-count" *ngIf="globalStats">
+              {{ (filteredCharacters$ | async)?.length || 0 }} Umas found
+            </div>
+          </div>
+
+          <!-- Search Input -->
+          <div class="search-input-container">
+            <div class="search-input-wrapper">
+              <mat-icon class="search-icon">search</mat-icon>
+              <input
+                class="search-input"
+                [formControl]="characterSearchControl"
+                placeholder="Search Umas by name or ID..."
+                autocomplete="off"
+              />
+              <button
+                *ngIf="characterSearchControl.value"
+                class="clear-button"
+                (click)="characterSearchControl.setValue('')"
+                type="button"
+                aria-label="Clear search"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Character Results -->
+          <div class="character-results">
+            <!-- Loading State -->
+            <div
+              class="results-state loading"
+              *ngIf="
+                (filteredCharacters$ | async)?.length === 0 && !globalStats
+              "
+            >
+              <mat-spinner diameter="40"></mat-spinner>
+              <span>Loading Umas...</span>
+            </div>
+
+            <!-- Empty State -->
+            <div
+              class="results-state empty"
+              *ngIf="(filteredCharacters$ | async)?.length === 0 && globalStats"
+            >
+              <mat-icon>search_off</mat-icon>
+              <h4>No matches found</h4>
+              <p>Try adjusting your search terms or browse all Umas</p>
+              <button
+                class="reset-button"
+                (click)="characterSearchControl.setValue('')"
+              >
+                <mat-icon>refresh</mat-icon>
+                Show all Umas
+              </button>
+            </div>
+
+            <!-- Character Cards -->
+            <div
+              class="character-cards"
+              *ngIf="(filteredCharacters$ | async)?.length! > 0"
+            >
+              <div
+                *ngFor="
+                  let character of filteredCharacters$ | async;
+                  trackBy: trackByCharacter
+                "
+                class="character-card"
+                (click)="selectCharacter(character.id)"
+                tabindex="0"
+                role="button"
+                [attr.aria-label]="'Analyze ' + character.name"
+                (keydown.enter)="selectCharacter(character.id)"
+                (keydown.space)="selectCharacter(character.id)"
+              >
+                <div class="card-avatar">
+                  <img
+                    *ngIf="hasCharacterImage(character.id)"
+                    [src]="getCharacterImageUrl(character.id)"
+                    [alt]="character.name"
+                    loading="lazy"
+                    (error)="handleImageError($event)"
+                    class="avatar-image"
+                  />
+                  <div
+                    *ngIf="!hasCharacterImage(character.id)"
+                    class="avatar-placeholder"
+                  >
+                    <mat-icon>person</mat-icon>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="character-info">
+                    <h4 class="character-name">{{ character.name }}</h4>
+                    <span class="character-id">ID: {{ character.id }}</span>
+                  </div>
+
+                  <div class="card-actions">
+                    <mat-icon class="analysis-icon">analytics</mat-icon>
+                    <span class="action-text">Analyze</span>
+                  </div>
+                </div>
+
+                <div class="card-hover-indicator"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Character Details -->
+        <div
+          class="character-details"
+          *ngIf="selectedCharacterDetail && hasCharacterStats()"
+        >
+          <!-- Character Details Header -->
+          <div class="character-details-header" id="character-details">
+            <button
+              mat-icon-button
+              class="back-button"
+              (click)="backToCharacterSelection()"
+              aria-label="Back to character selection"
+            >
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <div class="character-header-info">
+              <div class="character-header-avatar">
+                <img
+                  *ngIf="hasCharacterImage(selectedCharacterDetail)"
+                  [src]="getCharacterImageUrl(selectedCharacterDetail)"
+                  [alt]="getSelectedCharacterName()"
+                  (error)="handleImageError($event)"
+                />
+                <div
+                  *ngIf="!hasCharacterImage(selectedCharacterDetail)"
+                  class="avatar-placeholder"
+                >
+                  <mat-icon>person</mat-icon>
+                </div>
+              </div>
+
+              <div class="character-header-text">
+                <h2>
+                  <b>{{ getSelectedCharacterName() }}</b>
+                </h2>
+                <p>Character ID: {{ selectedCharacterDetail }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Character Jump Navigation -->
+          <div class="character-jump-nav">
+            <button 
+              mat-stroked-button 
+              (click)="scrollToSection('character-details')"
+              class="jump-button">
+              <mat-icon>info</mat-icon>
+              Overview
+            </button>
+            <button 
+              mat-stroked-button 
+              (click)="scrollToSection('character-stats')"
+              class="jump-button">
+              <mat-icon>bar_chart</mat-icon>
+              Statistics
+            </button>
+            <button 
+              mat-stroked-button 
+              (click)="scrollToSection('character-distance')"
+              class="jump-button">
+              <mat-icon>straighten</mat-icon>
+              Distance
+            </button>
+          </div>
+
+          <!-- Character Overview Charts - Keep at top -->
+          <div class="charts-grid">
+            <!-- Distance Preference -->
+            <div class="chart-card" id="character-distance-preference">
+              <div class="chart-description">
+                <h3>Distance Preference</h3>
+                <p>
+                  Usage distribution across different Team Stadium race
+                  distances for
+                  <b>{{ getSelectedCharacterName() }}</b>
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="(characterDistanceData$ | async) || []"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Team Class Distribution -->
+            <div class="chart-card" id="character-class-distribution">
+              <div class="chart-description">
+                <h3>Team Stadium Class Distribution</h3>
+                <p>
+                  Which Team Stadium classes use
+                  <b>{{ getSelectedCharacterName() }}</b> most frequently
+                </p>
+              </div>
+              <app-statistics-chart
+                [multiSeries]="getCharacterClassStackedData()"
+                [config]="getBarWithLegendConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+          </div>
+
+          <!-- Overall Character Statistics (across all distances) -->
+          <div class="section-header" id="character-stats">
+            <h2>
+              <mat-icon>analytics</mat-icon>
+              Overall Statistics for <b>{{ getSelectedCharacterName() }}</b>
+            </h2>
+          </div>
+
+          <!-- Character Stat Distributions -->
+          <div class="chart-description global-stats-description">
+            <div class="stats-header-content">
+              <h3>Stat Distributions Analysis</h3>
+              <p>
+                Distribution of all stats across Team Stadium for
+                <b>{{ getSelectedCharacterName() }}</b
+                >. Shows the range, frequency, and patterns of stat values
+                achieved in Team Stadium. Each chart displays the histogram of stat
+                values, helping identify optimal targets and common ranges for
+                this character.
+              </p>
+            </div>
+          </div>
+
+          <div class="charts-grid stats-grid">
+            <!-- Speed Distribution -->
+            <div class="chart-card stats-pair" id="character-speed-distribution">
+              <div class="chart-description">
+                <h3>
+                  <img
+                    [src]="getStatIconUrl('speed')"
+                    alt="Speed"
+                    class="stat-icon"
+                    onerror="this.style.display='none'"
+                  />
+                  Speed Stat Distribution
+                </h3>
+                <p>
+                  Distribution of speed stats for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatHistogramData('speed')"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Stamina Distribution -->
+            <div class="chart-card stats-pair" id="character-stamina-distribution">
+              <div class="chart-description">
+                <h3>
+                  <img
+                    [src]="getStatIconUrl('stamina')"
+                    alt="Stamina"
+                    class="stat-icon"
+                    onerror="this.style.display='none'"
+                  />
+                  Stamina Stat Distribution
+                </h3>
+                <p>
+                  Distribution of stamina stats for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatHistogramData('stamina')"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Power Distribution -->
+            <div class="chart-card stats-pair" id="character-power-distribution">
+              <div class="chart-description">
+                <h3>
+                  <img
+                    [src]="getStatIconUrl('power')"
+                    alt="Power"
+                    class="stat-icon"
+                    onerror="this.style.display='none'"
+                  />
+                  Power Stat Distribution
+                </h3>
+                <p>
+                  Distribution of power stats for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatHistogramData('power')"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Guts Distribution -->
+            <div class="chart-card stats-pair" id="character-guts-distribution">
+              <div class="chart-description">
+                <h3>
+                  <img
+                    [src]="getStatIconUrl('guts')"
+                    alt="Guts"
+                    class="stat-icon"
+                    onerror="this.style.display='none'"
+                  />
+                  Guts Stat Distribution
+                </h3>
+                <p>
+                  Distribution of guts stats for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatHistogramData('guts')"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Wit Distribution -->
+            <div class="chart-card stats-pair" id="character-wit-distribution">
+              <div class="chart-description">
+                <h3>
+                  <img
+                    [src]="getStatIconUrl('wit')"
+                    alt="Wisdom"
+                    class="stat-icon"
+                    onerror="this.style.display='none'"
+                  />
+                  Wisdom Stat Distribution
+                </h3>
+                <p>
+                  Distribution of wisdom stats for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatHistogramData('wiz')"
+                [config]="getStandardBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+
+            <!-- Average Stats Comparison -->
+            <div class="chart-card stats-pair" id="character-overall-stat-comparison">
+              <div class="chart-description">
+                <h3>Average Stats Comparison</h3>
+                <p>
+                  Compare average values across all stat types for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterStatComparisonData()"
+                [config]="getBarWithLegendConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+          </div>
+
+          <!-- Character Support Card Analysis -->
+          <div class="charts-grid">
+            <div class="chart-card side-by-side" id="character-card-type-distribution">
+              <div class="chart-description">
+                <h3>Support Card Type Distribution</h3>
+                <p>
+                  Distribution of support card types in Team Stadium decks for
+                  <b>{{ getSelectedCharacterName() }}</b
+                  >. Shows which card types are most commonly used.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="(characterOverallCardTypeDistribution$ | async) || []"
+                [config]="
+                  getDoughnutConfig(
+                    (characterOverallCardTypeDistribution$ | async) || []
+                  )
+                "
+              >
+              </app-statistics-chart>
+            </div>
+
+            <div class="chart-card wide" id="character-deck-compositions">
+              <div class="chart-description">
+                <h3>Most Used Deck Compositions</h3>
+                <p>
+                  Most frequent support card deck compositions for
+                  <b>{{ getSelectedCharacterName() }}</b> showing common card
+                  type combinations across all distances.
+                </p>
+              </div>
+              <app-statistics-chart
+                [data]="getCharacterSupportCardCombinations()"
+                [config]="getStatSymbolBarConfig()"
+              >
+              </app-statistics-chart>
+            </div>
+          </div>
+
+          <!-- Distance-Specific Character Analysis -->
+          <div class="character-distance-section" id="character-distance">
+            <div class="section-header">
+              <h2>
+                <mat-icon>speed</mat-icon>
+                Distance-Specific Analysis for
+                <b>{{ getSelectedCharacterName() }}</b>
+              </h2>
+            </div>
+
+            <div class="chart-description">
+              <h3>Race Distance Performance</h3>
+              <p>
+                Detailed analysis of <b>{{ getSelectedCharacterName() }}</b
+                >'s performance across different Team Stadium race distances. Shows stat
+                distributions, support card usage, and Team Stadium compositions
+                optimized for each distance type.
+              </p>
+            </div>
+
+            <!-- Distance-Specific Charts -->
+            <div class="distance-content" *ngIf="selectedCharacterDistance">
+              <!-- TOP ROW: Team Class Distribution + Average Stats by Team Class -->
+              <div class="charts-grid">
+                <!-- Team Class Distribution -->
+                <div class="chart-card" id="character-distance-class-distribution">
+                  <div class="chart-description">
+                    <h3>Team Stadium Class Distribution</h3>
+                    <p>
+                      Shows how trainers distribute across different team
+                      classes when using
+                      <b>{{ getSelectedCharacterName() }}</b> for
+                      <b>{{ selectedCharacterDistance }}</b> races. Higher classes
+                      indicate stronger teams with better support cards and
+                      stadium results.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceClassData$ | async) || []"
+                    [config]="
+                      getDoughnutConfig(
+                        (characterDistanceClassData$ | async) || []
+                      )
+                    "
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <!-- Average Stats by Team Class -->
+                <div class="chart-card wide" id="character-distance-stats-by-class">
+                  <div class="chart-description">
+                    <h3>Average Stats by Team Stadium Class</h3>
+                    <p>
+                      Compare average stat distributions across Team Stadium classes for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races. Shows how stat
+                      requirements increase with higher class levels.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [multiSeries]="
+                      (characterDistanceStatsByClassData$ | async) || []
+                    "
+                    [config]="getBarWithLegendConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+              </div>
+
+              <!-- Character distance charts when data is loaded -->
+              <div class="charts-grid">
+                <!-- Character Support Cards with Images -->
+                <div class="chart-card full-width" id="character-distance-support-cards">
+                  <div class="chart-description">
+                    <h3>Top Support Cards</h3>
+                    <p>
+                      Most used support cards when Team Stadium
+                      <b>{{ getSelectedCharacterName() }}</b> for
+                      <b>{{ selectedCharacterDistance }}</b> races with actual usage
+                      counts.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceTopSupportCards$ | async) || []"
+                    [config]="getImageListConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <!-- Character Skills with Images -->
+                <div class="chart-card full-width" id="character-distance-skills">
+                  <div class="chart-description">
+                    <h3>Top Skills</h3>
+                    <p>
+                      Most frequently acquired skills for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races with icons and usage
+                      counts.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceSkillsWithImages$ | async) || []"
+                    [config]="getImageListConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+              </div>
+
+              <!-- Character Distance Stat Distribution -->
+              <div class="chart-description global-stats-description">
+                <h3>
+                  <b>{{ getSelectedCharacterName() }}</b> -
+                  {{ selectedCharacterDistance | titlecase }} Distance Stat
+                  Distributions
+                </h3>
+                <p>
+                  Distribution of all stats for
+                  <b>{{ getSelectedCharacterName() }}</b> across
+                  <b>{{ selectedCharacterDistance }}</b> Team Stadium races. Shows the
+                  range, frequency, and patterns of stat values achieved in
+                  Team Stadium for this specific character and distance combination.
+                  Each chart displays the histogram of stat values, helping
+                  identify optimal targets and common ranges.
+                </p>
+              </div>
+
+              <div class="charts-grid stats-grid">
+                <!-- Speed and Power Distribution -->
+                <div class="chart-card stats-pair" id="character-distance-speed-distribution">
+                  <div class="chart-description">
+                    <h3>
+                      <img
+                        [src]="getStatIconUrl('speed')"
+                        alt="Speed"
+                        class="stat-icon"
+                        onerror="this.style.display='none'"
+                      />
+                      Speed Stat Distribution
+                    </h3>
+                    <p>
+                      Distribution of speed stats for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="
+                      (characterDistanceStatHistogramSpeed$ | async) || []
+                    "
+                    [config]="getStandardBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <div class="chart-card stats-pair" id="character-distance-power-distribution">
+                  <div class="chart-description">
+                    <h3>
+                      <img
+                        [src]="getStatIconUrl('power')"
+                        alt="Power"
+                        class="stat-icon"
+                        onerror="this.style.display='none'"
+                      />
+                      Power Stat Distribution
+                    </h3>
+                    <p>
+                      Distribution of power stats for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="
+                      (characterDistanceStatHistogramPower$ | async) || []
+                    "
+                    [config]="getStandardBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <!-- Stamina and Wisdom Distribution -->
+                <div class="chart-card stats-pair" id="character-distance-stamina-distribution">
+                  <div class="chart-description">
+                    <h3>
+                      <img
+                        [src]="getStatIconUrl('stamina')"
+                        alt="Stamina"
+                        class="stat-icon"
+                        onerror="this.style.display='none'"
+                      />
+                      Stamina Stat Distribution
+                    </h3>
+                    <p>
+                      Distribution of stamina stats for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="
+                      (characterDistanceStatHistogramStamina$ | async) || []
+                    "
+                    [config]="getStandardBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <!-- Guts and Average Stats Comparison -->
+                <div class="chart-card stats-pair" id="character-distance-guts-distribution">
+                  <div class="chart-description">
+                    <h3>
+                      <img
+                        [src]="getStatIconUrl('guts')"
+                        alt="Guts"
+                        class="stat-icon"
+                        onerror="this.style.display='none'"
+                      />
+                      Guts Stat Distribution
+                    </h3>
+                    <p>
+                      Distribution of guts stats for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceStatHistogramGuts$ | async) || []"
+                    [config]="getStandardBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <div class="chart-card stats-pair" id="character-distance-wit-distribution">
+                  <div class="chart-description">
+                    <h3>
+                      <img
+                        [src]="getStatIconUrl('wit')"
+                        alt="Wisdom"
+                        class="stat-icon"
+                        onerror="this.style.display='none'"
+                      />
+                      Wisdom Stat Distribution
+                    </h3>
+                    <p>
+                      Distribution of wisdom stats for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceStatHistogramWiz$ | async) || []"
+                    [config]="getStandardBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <div class="chart-card stats-pair" id="character-distance-stat-comparison">
+                  <div class="chart-description">
+                    <h3>Average Stats Comparison</h3>
+                    <p>
+                      Compare average values across all stat types for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="
+                      (characterDistanceStatDistributionData$ | async) || []
+                    "
+                    [config]="getBarWithLegendConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+              </div>
+
+              <!-- Character Distance Support Card Analysis -->
+              <div class="charts-grid">
+                <div class="chart-card side-by-side" id="character-distance-card-type-distribution">
+                  <div class="chart-description">
+                    <h3>Support Card Type Distribution</h3>
+                    <p>
+                      Distribution of support card types in Team Stadium decks for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races. Shows which card
+                      types are most commonly used.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="
+                      (characterDistanceCardTypeDistribution$ | async) || []
+                    "
+                    [config]="
+                      getDoughnutConfig(
+                        (characterDistanceCardTypeDistribution$ | async) || []
+                      )
+                    "
+                  >
+                  </app-statistics-chart>
+                </div>
+
+                <div class="chart-card wide" id="character-distance-deck-compositions">
+                  <div class="chart-description">
+                    <h3>Most Used Deck Compositions</h3>
+                    <p>
+                      Most frequent support card deck compositions for
+                      <b>{{ getSelectedCharacterName() }}</b> in
+                      <b>{{ selectedCharacterDistance }}</b> races showing optimal card
+                      type combinations.
+                    </p>
+                  </div>
+                  <app-statistics-chart
+                    [data]="(characterDistanceDeckCompositions$ | async) || []"
+                    [config]="getStatSymbolBarConfig()"
+                  >
+                  </app-statistics-chart>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Distance Selected -->
+            <div class="no-distance-selected" *ngIf="!selectedDistance.value">
+              <mat-icon>track_changes</mat-icon>
+              <h3>Select a Distance</h3>
+              <p>
+                Choose a race distance above to view detailed
+                <b>{{ getSelectedCharacterName() }}</b> analytics
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>Statistics based on community Team Stadium data</p>
+      <p class="disclaimer">Data is anonymized and aggregated for analysis</p>
+    </div>
+  </footer>
+
+  <!-- Floating Action Button for Mobile Filters (only visible when isBottomSheetMode is true) -->
+  <div class="filter-fab-wrapper" *ngIf="isBottomSheetMode">
+    <button
+      mat-fab
+      extended
+      class="filter-fab"
+      (click)="openMobileFilters()"
+      [attr.aria-label]="'Open filters'"
+      color="primary"
+    >
+      <mat-icon>settings</mat-icon>
+      Settings
+    </button>
+  </div>
+</div>

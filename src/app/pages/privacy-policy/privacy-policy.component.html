@@ -1,0 +1,463 @@
+<div class="privacy-policy-container">
+  <mat-card class="privacy-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>privacy_tip</mat-icon>
+        Privacy Policy
+      </mat-card-title>
+      <mat-card-subtitle>
+        Last updated: {{lastUpdated | date:'longDate'}}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Quick Navigation -->
+      <nav class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+          <li><a (click)="scrollToSection('overview')">Overview</a></li>
+          <li><a (click)="scrollToSection('information-collection')">Information We Collect</a></li>
+          <li><a (click)="scrollToSection('use-of-information')">How We Use Information</a></li>
+          <li><a (click)="scrollToSection('data-sharing')">Data Sharing</a></li>
+          <li><a (click)="scrollToSection('cookies')">Cookies & Tracking</a></li>
+          <li><a (click)="scrollToSection('advertising')">Advertising</a></li>
+          <li><a (click)="scrollToSection('your-rights')">Your Rights (GDPR)</a></li>
+          <li><a (click)="scrollToSection('data-retention')">Data Retention</a></li>
+          <li><a (click)="scrollToSection('security')">Security</a></li>
+          <li><a (click)="scrollToSection('children')">Children's Privacy</a></li>
+          <li><a (click)="scrollToSection('international')">International Users</a></li>
+          <li><a (click)="scrollToSection('changes')">Policy Changes</a></li>
+          <li><a (click)="scrollToSection('contact')">Contact Us</a></li>
+        </ul>
+      </nav>
+
+      <!-- Overview -->
+      <section id="overview" class="policy-section">
+        <h2><mat-icon>info</mat-icon> Overview</h2>
+        <p>
+          This Privacy Policy describes how Honsemoe ("we," "our," or "us") collects, uses, and protects 
+          your information when you visit and use our Umamusume support card tierlist website (the "Service"). 
+          We are committed to protecting your privacy and complying with applicable data protection laws, 
+          including the EU General Data Protection Regulation (GDPR).
+        </p>
+        <p>
+          By using our Service, you agree to the collection and use of information in accordance with this policy.
+        </p>
+      </section>
+
+      <!-- Information We Collect -->
+      <section id="information-collection" class="policy-section">
+        <h2><mat-icon>data_usage</mat-icon> Information We Collect</h2>
+        
+        <h3>Information You Provide Directly</h3>
+        <ul>
+          <li><strong>Inheritance Records:</strong> Trainer IDs, character data, breeding statistics, and factor information you submit to our inheritance database</li>
+          <li><strong>Support Card Data:</strong> Information about support cards you interact with or rate</li>
+          <li><strong>User Preferences:</strong> Settings, filters, and customization choices</li>
+          <li><strong>Communications:</strong> Messages sent through contact forms or feedback systems</li>
+        </ul>
+
+        <h3>Information Collected Automatically (Minimal)</h3>
+        <ul>
+          <li><strong>Basic Technical Data:</strong> IP address (for security), browser type, basic device information</li>
+          <li><strong>Essential Usage Data:</strong> Pages visited (for functionality), basic navigation patterns</li>
+          <li><strong>Security Data:</strong> Access logs for security monitoring and abuse prevention</li>
+        </ul>
+
+        <h3>What We Don't Collect</h3>
+        <ul>
+          <li>We don't use tracking pixels or advanced analytics</li>
+          <li>We don't collect detailed behavioral data</li>
+          <li>We don't use marketing cookies or advertising trackers</li>
+          <li>We don't collect location data beyond general region (from IP)</li>
+        </ul>
+
+        <h3>Cookies and Similar Technologies</h3>
+        <p>
+          We use cookies, local storage, and similar technologies to enhance your experience and collect analytical data. 
+          See our <a (click)="scrollToSection('cookies')">Cookies & Tracking section</a> for detailed information.
+        </p>
+      </section>
+
+      <!-- How We Use Information -->
+      <section id="use-of-information" class="policy-section">
+        <h2><mat-icon>settings</mat-icon> How We Use Information</h2>
+        
+        <h3>Service Provision (Legal Basis: Legitimate Interest)</h3>
+        <ul>
+          <li>Display and organize support card tier lists and inheritance data</li>
+          <li>Provide search, filter, and recommendation functionality</li>
+          <li>Calculate optimal meta deck compositions and rankings</li>
+          <li>Maintain and improve website performance and user experience</li>
+        </ul>
+
+        <h3>Analytics and Improvement (Legal Basis: Legitimate Interest)</h3>
+        <ul>
+          <li>Analyze usage patterns to improve our Service</li>
+          <li>Monitor website performance and identify technical issues</li>
+          <li>Understand user preferences and popular content</li>
+          <li>Develop new features and enhancements</li>
+        </ul>
+
+        <h3>Communication (Legal Basis: Consent or Legitimate Interest)</h3>
+        <ul>
+          <li>Respond to your inquiries and provide support</li>
+          <li>Send important updates about the Service (with consent for non-essential communications)</li>
+        </ul>
+
+        <h3>Legal Compliance (Legal Basis: Legal Obligation)</h3>
+        <ul>
+          <li>Comply with applicable laws and regulations</li>
+          <li>Respond to legal requests and prevent fraud</li>
+          <li>Protect the rights and safety of our users and the public</li>
+        </ul>
+      </section>
+
+      <!-- Data Sharing -->
+      <section id="data-sharing" class="policy-section">
+        <h2><mat-icon>share</mat-icon> Data Sharing and Disclosure</h2>
+        
+        <p><strong>We do not sell, rent, or share your personal information with third parties for commercial purposes.</strong></p>
+
+        <h3>No Data Sharing Policy</h3>
+        <p>
+          We are committed to protecting your privacy. We do not share your personal data with external parties 
+          except in the very limited circumstances described below.
+        </p>
+
+        <h3>Technical Service Providers Only</h3>
+        <p>We may work with essential technical service providers who help us operate the website:</p>
+        <ul>
+          <li><strong>Hosting Services:</strong> Website hosting and content delivery (no personal data shared)</li>
+          <li><strong>Security Services:</strong> DDoS protection and security monitoring (minimal technical data only)</li>
+        </ul>
+
+        <h3>Public Information You Choose to Share</h3>
+        <ul>
+          <li><strong>Inheritance Database:</strong> Only the Trainer IDs and game statistics you voluntarily submit are made public (no personal information)</li>
+          <li><strong>Community Contributions:</strong> Any ratings or comments you choose to make public</li>
+        </ul>
+
+        <h3>Legal Requirements Only</h3>
+        <p>We may only disclose information when legally required by law enforcement or court orders to protect public safety.</p>
+      </section>
+
+      <!-- Cookies & Tracking -->
+      <section id="cookies" class="policy-section">
+        <h2><mat-icon>cookie</mat-icon> Cookies & Tracking Technologies</h2>
+        
+        <h3>Types of Cookies We Use</h3>
+        
+        <h4>Essential Cookies (Strictly Necessary)</h4>
+        <p>These cookies are necessary for the website to function and cannot be disabled:</p>
+        <ul>
+          <li>Session management and user preferences</li>
+          <li>Security and fraud prevention</li>
+          <li>Load balancing and performance optimization</li>
+        </ul>
+
+        <h4>Analytics Cookies (Currently Not Used)</h4>
+        <p>We do not currently use analytics cookies, but this section describes what would apply if implemented:</p>
+        <ul>
+          <li><strong>Website Analytics:</strong> Basic usage statistics (if implemented in the future)</li>
+          <li><strong>Performance Monitoring:</strong> Error tracking and performance metrics</li>
+        </ul>
+
+        <h4>Advertising Cookies (Consent Required)</h4>
+        <p>Used to deliver relevant advertisements (when implemented):</p>
+        <ul>
+          <li><strong>Google Ads:</strong> Personalized advertising and conversion tracking</li>
+          <li><strong>Retargeting:</strong> Show relevant ads on other websites</li>
+        </ul>
+
+        <h3>Managing Cookies</h3>
+        <p>
+          You can control cookies through your browser settings. However, disabling certain cookies may 
+          affect website functionality. Most browsers allow you to:
+        </p>
+        <ul>
+          <li>View and delete cookies</li>
+          <li>Block cookies from specific sites</li>
+          <li>Block third-party cookies</li>
+          <li>Delete cookies when closing the browser</li>
+        </ul>
+      </section>
+
+      <!-- Advertising -->
+      <section id="advertising" class="policy-section">
+        <h2><mat-icon>ads_click</mat-icon> Advertising</h2>
+        
+        <h3>Current Advertising</h3>
+        <p>
+          We currently do not display advertisements. This section describes our practices 
+          when advertising is implemented in the future.
+        </p>
+
+        <h3>Future Google Ads Implementation</h3>
+        <p>When we implement Google Ads, the following will apply:</p>
+        
+        <h4>Ad Personalization</h4>
+        <ul>
+          <li>Ads may be personalized based on your interests and website activity</li>
+          <li>We may use Google's advertising cookies and tracking technologies</li>
+          <li>You can opt out of personalized ads through Google's Ad Settings</li>
+        </ul>
+
+        <h4>Data Sharing with Google</h4>
+        <ul>
+          <li>Anonymous usage data may be shared with Google for advertising purposes</li>
+          <li>Google may use this data to improve their advertising services</li>
+          <li>No personally identifiable information will be shared without consent</li>
+        </ul>
+
+        <h3>Third-Party Advertising</h3>
+        <p>
+          Third-party ad networks may display ads on our site and use cookies to collect information. 
+          These companies have their own privacy policies that govern their data practices.
+        </p>
+
+        <h3>Opting Out of Advertising</h3>
+        <ul>
+          <li><strong>Google Ads:</strong> <a href="https://adssettings.google.com" target="_blank">Google Ad Settings</a></li>
+          <li><strong>Industry Opt-out:</strong> <a href="http://www.aboutads.info/choices/" target="_blank">Digital Advertising Alliance</a></li>
+          <li><strong>Browser Settings:</strong> Enable "Do Not Track" or use ad-blocking extensions</li>
+        </ul>
+      </section>
+
+      <!-- GDPR Rights -->
+      <section id="your-rights" class="policy-section">
+        <h2><mat-icon>account_balance</mat-icon> Your Rights Under GDPR</h2>
+        
+        <p>If you are located in the European Union, you have the following rights regarding your personal data:</p>
+
+        <h3>Right of Access</h3>
+        <p>You have the right to request copies of your personal data and information about how we process it.</p>
+
+        <h3>Right to Rectification</h3>
+        <p>You have the right to request correction of inaccurate or incomplete personal data.</p>
+
+        <h3>Right to Erasure ("Right to be Forgotten")</h3>
+        <p>You have the right to request deletion of your personal data in certain circumstances:</p>
+        <ul>
+          <li>The data is no longer necessary for the original purpose</li>
+          <li>You withdraw consent and there's no other legal basis for processing</li>
+          <li>The data has been unlawfully processed</li>
+          <li>Deletion is required for compliance with legal obligations</li>
+        </ul>
+
+        <h3>Right to Restrict Processing</h3>
+        <p>You have the right to request limitation of processing in certain situations.</p>
+
+        <h3>Right to Data Portability</h3>
+        <p>You have the right to receive your personal data in a structured, machine-readable format.</p>
+
+        <h3>Right to Object</h3>
+        <p>You have the right to object to processing based on legitimate interests or for direct marketing purposes.</p>
+
+        <h3>Right to Withdraw Consent</h3>
+        <p>Where processing is based on consent, you can withdraw consent at any time.</p>
+
+        <h3>Right to Lodge a Complaint</h3>
+        <p>
+          You have the right to lodge a complaint with a supervisory authority if you believe 
+          your data protection rights have been violated.
+        </p>
+
+        <h3>Exercising Your Rights</h3>
+        <p>
+          To exercise any of these rights, please contact us using the information in the 
+          <a (click)="scrollToSection('contact')">Contact Us section</a>. We will respond within 30 days.
+        </p>
+      </section>
+
+      <!-- Data Retention -->
+      <section id="data-retention" class="policy-section">
+        <h2><mat-icon>schedule</mat-icon> Data Retention</h2>
+        
+        <h3>Retention Periods</h3>
+        <ul>
+          <li><strong>Inheritance Records:</strong> Retained indefinitely for community benefit (anonymized)</li>
+          <li><strong>Analytics Data:</strong> Retained for 26 months (Google Analytics default)</li>
+          <li><strong>User Preferences:</strong> Retained until you clear browser data or request deletion</li>
+          <li><strong>Communications:</strong> Retained for 3 years or as required by law</li>
+          <li><strong>Technical Logs:</strong> Retained for 12 months for security and debugging purposes</li>
+        </ul>
+
+        <h3>Criteria for Retention</h3>
+        <p>We determine retention periods based on:</p>
+        <ul>
+          <li>The purpose for which the data was collected</li>
+          <li>Legal and regulatory requirements</li>
+          <li>Legitimate business interests</li>
+          <li>User expectations and community benefit</li>
+        </ul>
+
+        <h3>Secure Deletion</h3>
+        <p>
+          When data is no longer needed, we securely delete or anonymize it using industry-standard methods.
+        </p>
+      </section>
+
+      <!-- Security -->
+      <section id="security" class="policy-section">
+        <h2><mat-icon>security</mat-icon> Data Security</h2>
+        
+        <h3>Technical Safeguards</h3>
+        <ul>
+          <li><strong>Encryption:</strong> Data transmission protected by SSL/TLS encryption</li>
+          <li><strong>Access Controls:</strong> Limited access to personal data on a need-to-know basis</li>
+          <li><strong>Regular Updates:</strong> Security patches and updates applied promptly</li>
+          <li><strong>Monitoring:</strong> Continuous monitoring for security threats and vulnerabilities</li>
+        </ul>
+
+        <h3>Organizational Measures</h3>
+        <ul>
+          <li>Staff training on data protection and security practices</li>
+          <li>Regular security assessments and audits</li>
+          <li>Incident response procedures for data breaches</li>
+          <li>Privacy by design principles in system development</li>
+        </ul>
+
+        <h3>Data Breach Notification</h3>
+        <p>
+          In the event of a data breach that poses a risk to your rights and freedoms, we will:
+        </p>
+        <ul>
+          <li>Notify relevant supervisory authorities within 72 hours</li>
+          <li>Inform affected users without undue delay</li>
+          <li>Provide clear information about the breach and mitigation steps</li>
+        </ul>
+      </section>
+
+      <!-- Children's Privacy -->
+      <section id="children" class="policy-section">
+        <h2><mat-icon>child_care</mat-icon> Children's Privacy</h2>
+        
+        <p>
+          Our Service is not intended for children under 13 years of age (or 16 in the EU). 
+          We do not knowingly collect personal information from children under these ages.
+        </p>
+
+        <p>
+          If you are a parent or guardian and believe your child has provided us with personal information, 
+          please contact us. We will take steps to remove such information from our systems.
+        </p>
+
+        <p>
+          If we become aware that we have collected personal information from a child under the applicable age 
+          without verification of parental consent, we will take steps to remove that information.
+        </p>
+      </section>
+
+      <!-- International Users -->
+      <section id="international" class="policy-section">
+        <h2><mat-icon>public</mat-icon> International Data Transfers</h2>
+        
+        <h3>Data Processing Locations</h3>
+        <p>
+          Your information may be processed and stored in countries other than your own, 
+          including the United States and other jurisdictions where our service providers operate.
+        </p>
+
+        <h3>Safeguards for EU Users</h3>
+        <p>
+          For users in the European Union, we ensure adequate protection for international transfers through:
+        </p>
+        <ul>
+          <li>Standard Contractual Clauses (SCCs) approved by the European Commission</li>
+          <li>Adequacy decisions for certain countries</li>
+          <li>Certification schemes and codes of conduct</li>
+          <li>Specific safeguards for each transfer</li>
+        </ul>
+
+        <h3>Your Consent</h3>
+        <p>
+          By using our Service, you consent to the transfer of your information to these countries 
+          for the purposes described in this Privacy Policy.
+        </p>
+      </section>
+
+      <!-- Policy Changes -->
+      <section id="changes" class="policy-section">
+        <h2><mat-icon>update</mat-icon> Changes to This Privacy Policy</h2>
+        
+        <p>
+          We may update this Privacy Policy from time to time to reflect changes in our practices, 
+          legal requirements, or service offerings.
+        </p>
+
+        <h3>Notification of Changes</h3>
+        <ul>
+          <li>Significant changes will be announced prominently on our website</li>
+          <li>The "Last Updated" date at the top of this policy will be revised</li>
+          <li>For material changes affecting GDPR rights, we may seek your explicit consent</li>
+        </ul>
+
+        <h3>Your Continued Use</h3>
+        <p>
+          Your continued use of the Service after the posting of changes constitutes acceptance 
+          of those changes, unless explicit consent is required.
+        </p>
+
+        <h3>Previous Versions</h3>
+        <p>
+          We maintain records of previous versions of this policy. You may request access to 
+          previous versions by contacting us.
+        </p>
+      </section>
+
+      <!-- Contact Information -->
+      <section id="contact" class="policy-section">
+        <h2><mat-icon>contact_mail</mat-icon> Contact Us</h2>
+        
+        <h3>Data Protection Officer</h3>
+        <p>
+          For questions about this Privacy Policy, to exercise your rights, or to report privacy concerns:
+        </p>
+        
+        <div class="contact-info">
+          <p><strong>Email:</strong> privacy&#64;honsemoe.com</p>
+          <p><strong>Subject Line:</strong> Please include "Privacy Policy" or "GDPR Request" in your subject line</p>
+          <p><strong>Response Time:</strong> We aim to respond within 30 days for GDPR requests and 5 business days for general inquiries</p>
+        </div>
+
+        <h3>EU Representative</h3>
+        <p>
+          If you are located in the European Union and our designated representative is different 
+          from the contact above, that information will be provided here when applicable.
+        </p>
+
+        <h3>Supervisory Authority</h3>
+        <p>
+          EU users have the right to lodge a complaint with their local data protection authority. 
+          You can find contact information for EU data protection authorities at: 
+          <a href="https://edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank">
+            https://edpb.europa.eu/about-edpb/about-edpb/members_en
+          </a>
+        </p>
+      </section>
+
+      <!-- Legal Compliance Statement -->
+      <div class="compliance-footer">
+        <h3>Legal Compliance</h3>
+        <p>
+          This Privacy Policy is designed to comply with:
+        </p>
+        <ul>
+          <li>EU General Data Protection Regulation (GDPR)</li>
+          <li>California Consumer Privacy Act (CCPA)</li>
+          <li>Other applicable data protection laws</li>
+        </ul>
+        <p>
+          <em>This policy was last reviewed and updated on {{lastUpdated | date:'longDate'}} to ensure 
+          continued compliance with applicable privacy laws and regulations.</em>
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" (click)="scrollToSection('overview')" mat-fab color="primary">
+    <mat-icon>keyboard_arrow_up</mat-icon>
+  </button>
+</div>

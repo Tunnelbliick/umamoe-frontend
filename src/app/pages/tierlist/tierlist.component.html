@@ -1,0 +1,141 @@
+<div class="tierlist-container">
+  <div class="header">
+    <div class="header-content">
+      <h1>Support Card Tierlist</h1>
+      <div class="header-actions">
+    </div>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+    <p>Calculating tierlist...</p>
+  </div>
+
+  <div class="main-content" *ngIf="!loading">
+    <mat-sidenav-container class="sidenav-container">
+ 
+      <!-- Main tierlist content -->
+      <mat-sidenav-content class="main-tierlist">
+        <!-- Power chart -->
+        <app-tierlist-scatter-chart
+          [cards]="getCurrentTypeCards()"
+          [selectedType]="typeTierlists[selectedTabIndex].type || -1"
+          (cardHover)="onCardHoverDesktop($event.card, $event.event)"
+          (cardLeave)="onCardLeaveDesktop()"
+          (cardClick)="onChartCardClick($event)">
+        </app-tierlist-scatter-chart>
+
+        <mat-tab-group 
+          [(selectedIndex)]="selectedTabIndex" 
+          class="tierlist-tabs"
+          animationDuration="300ms">
+          
+          <mat-tab 
+            *ngFor="let typeData of typeTierlists; let i = index" 
+            [label]="typeData.typeName">
+            
+            <div class="tab-content">
+              <div class="loading-container" *ngIf="typeData.loading">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>Loading {{ typeData.typeName }} cards...</p>
+              </div>
+
+              <div class="error-container" *ngIf="typeData.error">
+                <mat-icon color="warn">error</mat-icon>
+                <p>{{ typeData.error }}</p>
+              </div>
+
+              <div class="tierlist" *ngIf="!typeData.loading && !typeData.error">
+                <div 
+                  class="tier-row" 
+                  *ngFor="let tier of typeData.tiers"
+                  [attr.data-tier]="tier.tier">
+                  
+                  <div class="tier-label" [style.background-color]="getTierColor(tier.tier)">
+                    <span class="tier-name">{{ tier.tier }}</span>
+                    <span class="tier-count">({{ tier.cards.length }})</span>
+                    <span class="tier-percentile">{{ getTierThreshold(tier.tier) }}</span>
+                  </div>
+
+                  <div class="tier-cards">
+                    <div 
+                      class="card-item"
+                      *ngFor="let card of tier.cards; trackBy: trackByCardId"
+                      (click)="onCardClickMobile(card, $event)"
+                      (mouseenter)="onCardHoverDesktop(card, $event)"
+                      (mouseleave)="onCardLeaveDesktop()"
+                      [title]="card.name + ' - Score: ' + card.scores[4].toFixed(0)">
+                      
+                      <div class="card-image-container">
+                        <img 
+                          [src]="getCardImageUrl(card)" 
+                          [alt]="card.name"
+                          class="card-image">
+                        
+                        <!-- Power spike indicator -->
+                        
+                        <div class="card-overlay">
+                          <div class="card-name">{{ card.name }}</div>
+                          <div class="card-score" [style.color]="getScoreColor(card)">
+                            {{ card.scores[4].toFixed(0) }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-info">
+                        <div class="card-rarity">LB4</div>
+                      </div>
+
+                      <!-- Power progression for selected card -->
+                    </div>
+
+                    <div class="empty-tier" *ngIf="tier.cards.length === 0">
+                      <span>No cards in this tier</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="no-cards" *ngIf="typeData.tiers.length === 0">
+                  <mat-icon>info</mat-icon>
+                  <p>No LB4 {{ typeData.typeName }} cards found</p>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+
+  <div class="tierlist-info" *ngIf="!loading">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>Tierlist Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>This tierlist shows only LB4 (Limit Break 4) support cards using percentile-based ranking.</p>
+        <p>Scores are calculated based on the URA scenario optimal meta calculations.</p>
+        
+        <div class="tier-legend">
+          <h4>Percentile-Based Rankings:</h4>
+          <div class="legend-items">
+            <div class="legend-item" *ngFor="let tier of ['S+', 'S', 'A', 'B', 'C', 'D']">
+              <div class="legend-color" [style.background-color]="getTierColor(tier)"></div>
+              <span>{{ tier }}-Tier</span>
+              <span class="tier-threshold">({{ getTierThreshold(tier) }} percentile)</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Card Hover Menu -->
+  <app-card-hover-menu
+    [card]="hoveredCard"
+    [isVisible]="hoverMenuVisible"
+    [position]="hoverMenuPosition"
+    (close)="hideHoverMenu()">
+  </app-card-hover-menu>
+</div>

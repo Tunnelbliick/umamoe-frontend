@@ -1,0 +1,119 @@
+<div class="home">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-branding">
+        <div class="hero-logo-img-wrapper">
+          <img
+            src="assets/logo.png"
+            alt="Site Logo"
+            class="hero-logo-img"
+            (error)="onLogoError($event)"
+            width="150"
+            height="150"
+          />
+        </div>
+        <h1 class="hero-title">uma.moe</h1>
+      </div>
+      <p class="hero-subtitle">Umamusume resource hub for the global version</p>
+
+      <div class="quick-links">
+        <a routerLink="/inheritance" class="quick-link inheritance">
+          <mat-icon>family_restroom</mat-icon>
+          <div class="link-content">
+            <span class="link-title"
+              >Inheritance
+              <!--<span class="updated-badge">UPDATED</span>--></span
+            >
+            <span class="link-desc">Browse the Inheritance Database</span>
+          </div>
+        </a>
+
+        <a routerLink="/support-cards" class="quick-link support-cards">
+          <mat-icon>style</mat-icon>
+          <div class="link-content">
+            <span class="link-title"
+              >Support Cards<!--<span class="updated-badge">UPDATED</span>--></span
+            >
+            <span class="link-desc">Search the Support Card Database</span>
+          </div>
+        </a>
+
+        <a routerLink="/tierlist" class="quick-link tierlists">
+          <mat-icon>leaderboard</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Tierlists</span>
+            <span class="link-desc">Support Card Tierlist</span>
+          </div>
+        </a>
+
+        <a routerLink="/timeline" class="quick-link timeline">
+          <mat-icon>schedule</mat-icon>
+          <div class="link-content">
+            <span class="link-title">Timeline</span>
+            <span class="link-desc">Estimated Release Schedule</span>
+          </div>
+        </a>
+
+        <a routerLink="/tools" class="quick-link tools new-feature">
+          <mat-icon>build</mat-icon>
+          <div class="link-content ">
+            <span class="link-title">Tools & Analytics  <span class="new-badge">new</span></span>
+            <span class="link-desc">Advanced tools and statistics</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Grid -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <mat-icon>group</mat-icon>
+        <div class="stat-value">{{ dailyUsers | number }}</div>
+        <div class="stat-label">Daily Users</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>person</mat-icon>
+        <div class="stat-value">{{ totalAccounts | number }}</div>
+        <div class="stat-label">Accounts Tracked</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>groups</mat-icon>
+        <div class="stat-value">{{ totalCircles | number }}</div>
+        <div class="stat-label">Circles Tracked</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>face</mat-icon>
+        <div class="stat-value">{{ totalCharacters | number }}</div>
+        <div class="stat-label">Umas Tracked</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://x.com/Tunnelblick4" target="_blank">
+        <mat-icon>tag</mat-icon>
+        Twitter
+      </a>
+      <a href="https://discord.uma.moe" target="_blank">
+        <mat-icon>chat</mat-icon>
+        Discord
+      </a>
+      <a href="https://reddit.com/r/UmaMusume" target="_blank">
+        <mat-icon>forum</mat-icon>
+        Reddit
+      </a>
+      <a routerLink="/privacy-policy">
+        <mat-icon>privacy_tip</mat-icon>
+        Privacy Policy
+      </a>
+    </div>
+    <p class="footer-text">
+      Not affiliated with Cygames. Built for the Umamusume community.
+    </p>
+  </footer>
+</div>

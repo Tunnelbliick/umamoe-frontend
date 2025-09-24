@@ -1,0 +1,1972 @@
+[
+  {
+    "year": 2021,
+    "image": "2021_30004.png",
+    "start_date": "2021-03-02T03:00:00.000Z",
+    "end_date": "2021-03-09T02:59:00.000Z",
+    "pickup_characters": [
+      "TM Opera O (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30004.png",
+    "start_date_string": "2 Mar 2021, 4:00",
+    "end_date_string": "9 Mar 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30006.png",
+    "start_date": "2021-03-09T03:00:00.000Z",
+    "end_date": "2021-03-18T02:59:00.000Z",
+    "pickup_characters": [
+      "Mihono Bourbon (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30006.png",
+    "start_date_string": "9 Mar 2021, 4:00",
+    "end_date_string": "18 Mar 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30008.png",
+    "start_date": "2021-03-18T03:00:00.000Z",
+    "end_date": "2021-03-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Biwa Hayahide (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30008.png",
+    "start_date_string": "18 Mar 2021, 4:00",
+    "end_date_string": "30 Mar 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30010.png",
+    "start_date": "2021-03-30T03:00:00.000Z",
+    "end_date": "2021-04-15T02:59:00.000Z",
+    "pickup_characters": [
+      "Tokai Teio (Anime Collab)[New,0.5% rate]",
+      "Mejiro McQueen (Anime Collab)[New,0.5% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30010.png",
+    "start_date_string": "30 Mar 2021, 5:00",
+    "end_date_string": "15 Apr 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30012.png",
+    "start_date": "2021-04-15T03:00:00.000Z",
+    "end_date": "2021-04-26T02:59:00.000Z",
+    "pickup_characters": [
+      "Curren Chan (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30012.png",
+    "start_date_string": "15 Apr 2021, 5:00",
+    "end_date_string": "26 Apr 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30014.png",
+    "start_date": "2021-04-26T03:00:00.000Z",
+    "end_date": "2021-05-06T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Taishin (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30014.png",
+    "start_date_string": "26 Apr 2021, 5:00",
+    "end_date_string": "6 May 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30016.png",
+    "start_date": "2021-05-06T03:00:00.000Z",
+    "end_date": "2021-05-17T02:59:00.000Z",
+    "pickup_characters": [
+      "Smart Falcon (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30016.png",
+    "start_date_string": "6 May 2021, 5:00",
+    "end_date_string": "17 May 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30018.png",
+    "start_date": "2021-05-17T03:00:00.000Z",
+    "end_date": "2021-05-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Brian (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30018.png",
+    "start_date_string": "17 May 2021, 5:00",
+    "end_date_string": "28 May 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30020.png",
+    "start_date": "2021-05-28T03:00:00.000Z",
+    "end_date": "2021-06-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Mayano Top Gun (Wedding)[New,0.75% rate]",
+      "Air Groove (Wedding)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30020.png",
+    "start_date_string": "28 May 2021, 5:00",
+    "end_date_string": "10 Jun 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30022.png",
+    "start_date": "2021-06-10T03:00:00.000Z",
+    "end_date": "2021-06-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Seiun Sky (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30022.png",
+    "start_date_string": "10 Jun 2021, 5:00",
+    "end_date_string": "21 Jun 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30024.png",
+    "start_date": "2021-06-21T03:00:00.000Z",
+    "end_date": "2021-06-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Hishi Amazon (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30024.png",
+    "start_date_string": "21 Jun 2021, 5:00",
+    "end_date_string": "29 Jun 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30026.png",
+    "start_date": "2021-06-29T03:00:00.000Z",
+    "end_date": "2021-07-12T02:59:00.000Z",
+    "pickup_characters": [
+      "El Condor Pasa (Fantasy)[New,0.75% rate]",
+      "Grass Wonder (Fantasy)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30026.png",
+    "start_date_string": "29 Jun 2021, 5:00",
+    "end_date_string": "12 Jul 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30028.png",
+    "start_date": "2021-07-12T03:00:00.000Z",
+    "end_date": "2021-07-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Fuji Kiseki (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30028.png",
+    "start_date_string": "12 Jul 2021, 5:00",
+    "end_date_string": "20 Jul 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30030.png",
+    "start_date": "2021-07-20T03:00:00.000Z",
+    "end_date": "2021-07-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Gold City (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30030.png",
+    "start_date_string": "20 Jul 2021, 5:00",
+    "end_date_string": "29 Jul 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30032.png",
+    "start_date": "2021-07-29T03:00:00.000Z",
+    "end_date": "2021-08-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Special Week (Summer)[New,0.75% rate]",
+      "Maruzensky (Summer)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30032.png",
+    "start_date_string": "29 Jul 2021, 5:00",
+    "end_date_string": "11 Aug 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30034.png",
+    "start_date": "2021-08-11T03:00:00.000Z",
+    "end_date": "2021-08-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Meisho Doto (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30034.png",
+    "start_date_string": "11 Aug 2021, 5:00",
+    "end_date_string": "20 Aug 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30036.png",
+    "start_date": "2021-08-20T03:00:00.000Z",
+    "end_date": "2021-08-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Eishin Flash (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30036.png",
+    "start_date_string": "20 Aug 2021, 5:00",
+    "end_date_string": "30 Aug 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30038.png",
+    "start_date": "2021-08-30T03:00:00.000Z",
+    "end_date": "2021-09-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Matikanefukukitaru (Full Armor)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30038.png",
+    "start_date_string": "30 Aug 2021, 5:00",
+    "end_date_string": "10 Sept 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30040.png",
+    "start_date": "2021-09-10T03:00:00.000Z",
+    "end_date": "2021-09-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Hishi Akebono (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30040.png",
+    "start_date_string": "10 Sept 2021, 5:00",
+    "end_date_string": "20 Sept 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30042.png",
+    "start_date": "2021-09-20T03:00:00.000Z",
+    "end_date": "2021-09-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Agnes Digital (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30042.png",
+    "start_date_string": "20 Sept 2021, 5:00",
+    "end_date_string": "29 Sept 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30044.png",
+    "start_date": "2021-09-29T03:00:00.000Z",
+    "end_date": "2021-10-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Rice Shower (Halloween)[New,0.75% rate]",
+      "Super Creek (Halloween)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30044.png",
+    "start_date_string": "29 Sept 2021, 5:00",
+    "end_date_string": "11 Oct 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30046.png",
+    "start_date": "2021-10-11T03:00:00.000Z",
+    "end_date": "2021-10-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Kawakami Princess (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30046.png",
+    "start_date_string": "11 Oct 2021, 5:00",
+    "end_date_string": "20 Oct 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30048.png",
+    "start_date": "2021-10-20T03:00:00.000Z",
+    "end_date": "2021-10-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Manhattan Cafe (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30048.png",
+    "start_date_string": "20 Oct 2021, 5:00",
+    "end_date_string": "28 Oct 2021, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30050.png",
+    "start_date": "2021-10-28T03:00:00.000Z",
+    "end_date": "2021-11-08T02:59:00.000Z",
+    "pickup_characters": [
+      "Symboli Rudolf (Festival)[New,0.75% rate]",
+      "Gold City (Festival)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30050.png",
+    "start_date_string": "28 Oct 2021, 5:00",
+    "end_date_string": "8 Nov 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30052.png",
+    "start_date": "2021-11-08T03:00:00.000Z",
+    "end_date": "2021-11-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Tosen Jordan (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30052.png",
+    "start_date_string": "8 Nov 2021, 4:00",
+    "end_date_string": "19 Nov 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30054.png",
+    "start_date": "2021-11-19T03:00:00.000Z",
+    "end_date": "2021-11-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Dober (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30054.png",
+    "start_date_string": "19 Nov 2021, 4:00",
+    "end_date_string": "29 Nov 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30056.png",
+    "start_date": "2021-11-29T03:00:00.000Z",
+    "end_date": "2021-12-14T02:59:00.000Z",
+    "pickup_characters": [
+      "Oguri Cap (Christmas)[New,0.75% rate]",
+      "Biwa Hayahide (Christmas)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30056.png",
+    "start_date_string": "29 Nov 2021, 4:00",
+    "end_date_string": "14 Dec 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30058.png",
+    "start_date": "2021-12-14T03:00:00.000Z",
+    "end_date": "2021-12-22T02:59:00.000Z",
+    "pickup_characters": [
+      "Fine Motion (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30058.png",
+    "start_date_string": "14 Dec 2021, 4:00",
+    "end_date_string": "22 Dec 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30060.png",
+    "start_date": "2021-12-22T03:00:00.000Z",
+    "end_date": "2021-12-31T02:59:00.000Z",
+    "pickup_characters": [
+      "Tamamo Cross (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30060.png",
+    "start_date_string": "22 Dec 2021, 4:00",
+    "end_date_string": "31 Dec 2021, 3:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30062.png",
+    "start_date": "2021-12-31T03:00:00.000Z",
+    "end_date": "2022-01-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Haru Urara (New Year)[New,0.75% rate]",
+      "TM Opera O (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30062.png",
+    "start_date_string": "31 Dec 2021, 4:00",
+    "end_date_string": "11 Jan 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30064.png",
+    "start_date": "2022-01-11T03:00:00.000Z",
+    "end_date": "2022-01-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Special Week (Original)[Rerun,0.0639% rate]",
+      "Silence Suzuka (Original)[Rerun,0.0639% rate]",
+      "Tokai Teio (Original)[Rerun,0.0639% rate]",
+      "Maruzensky (Original)[Rerun,0.0639% rate]",
+      "Oguri Cap (Original)[Rerun,0.0639% rate]",
+      "Taiki Shuttle (Original)[Rerun,0.0639% rate]",
+      "Mejiro McQueen (Original)[Rerun,0.0639% rate]",
+      "TM Opera O (Original)[Rerun,0.0639% rate]",
+      "Symboli Rudolf (Original)[Rerun,0.0639% rate]",
+      "Rice Shower (Original)[Rerun,0.0639% rate]",
+      "Mihono Bourbon (Original)[Rerun,0.0639% rate]",
+      "Biwa Hayahide (Original)[Rerun,0.0639% rate]",
+      "Tokai Teio (Anime Collab)[Rerun,0.0639% rate]",
+      "Mejiro McQueen (Anime Collab)[Rerun,0.0639% rate]",
+      "Curren Chan (Original)[Rerun,0.0638% rate]",
+      "Narita Taishin (Original)[Rerun,0.0638% rate]",
+      "Smart Falcon (Original)[Rerun,0.0638% rate]",
+      "Narita Brian (Original)[Rerun,0.0638% rate]",
+      "Mayano Top Gun (Wedding)[Rerun,0.0638% rate]",
+      "Air Groove (Wedding)[Rerun,0.0638% rate]",
+      "Seiun Sky (Original)[Rerun,0.0638% rate]",
+      "Hishi Amazon (Original)[Rerun,0.0638% rate]",
+      "El Condor Pasa (Fantasy)[Rerun,0.0638% rate]",
+      "Grass Wonder (Fantasy)[Rerun,0.0638% rate]",
+      "Fuji Kiseki (Original)[Rerun,0.0638% rate]",
+      "Gold City (Original)[Rerun,0.0638% rate]",
+      "Special Week (Summer)[Rerun,0.0638% rate]",
+      "Maruzensky (Summer)[Rerun,0.0638% rate]",
+      "Meisho Doto (Original)[Rerun,0.0638% rate]",
+      "Eishin Flash (Original)[Rerun,0.0638% rate]",
+      "Matikanefukukitaru (Full Armor)[Rerun,0.0638% rate]",
+      "Hishi Akebono (Original)[Rerun,0.0638% rate]",
+      "Agnes Digital (Original)[Rerun,0.0638% rate]",
+      "Rice Shower (Halloween)[Rerun,0.0638% rate]",
+      "Super Creek (Halloween)[Rerun,0.0638% rate]",
+      "Kawakami Princess (Original)[Rerun,0.0638% rate]",
+      "Manhattan Cafe (Original)[Rerun,0.0638% rate]",
+      "Symboli Rudolf (Festival)[Rerun,0.0638% rate]",
+      "Gold City (Festival)[Rerun,0.0638% rate]",
+      "Tosen Jordan (Original)[Rerun,0.0638% rate]",
+      "Mejiro Dober (Original)[Rerun,0.0638% rate]",
+      "Oguri Cap (Christmas)[Rerun,0.0638% rate]",
+      "Biwa Hayahide (Christmas)[Rerun,0.0638% rate]",
+      "Fine Motion (Original)[Rerun,0.0638% rate]",
+      "Tamamo Cross (Original)[Rerun,0.0638% rate]",
+      "Haru Urara (New Year)[Rerun,0.0638% rate]",
+      "TM Opera O (New Year)[Rerun,0.0638% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30064.png",
+    "start_date_string": "11 Jan 2022, 4:00",
+    "end_date_string": "20 Jan 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30066.png",
+    "start_date": "2022-01-20T03:00:00.000Z",
+    "end_date": "2022-01-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Sakura Chiyono O (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30066.png",
+    "start_date_string": "20 Jan 2022, 4:00",
+    "end_date_string": "28 Jan 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30068.png",
+    "start_date": "2022-01-28T03:00:00.000Z",
+    "end_date": "2022-02-08T02:59:00.000Z",
+    "pickup_characters": [
+      "Mihono Bourbon (Valentine)[New,0.75% rate]",
+      "Eishin Flash (Valentine)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30068.png",
+    "start_date_string": "28 Jan 2022, 4:00",
+    "end_date_string": "8 Feb 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30070.png",
+    "start_date": "2022-02-08T03:00:00.000Z",
+    "end_date": "2022-02-16T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Ardan (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30070.png",
+    "start_date_string": "8 Feb 2022, 4:00",
+    "end_date_string": "16 Feb 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30072.png",
+    "start_date": "2022-02-16T03:00:00.000Z",
+    "end_date": "2022-02-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Admire Vega (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30072.png",
+    "start_date_string": "16 Feb 2022, 4:00",
+    "end_date_string": "24 Feb 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30074.png",
+    "start_date": "2022-02-24T03:00:00.000Z",
+    "end_date": "2022-03-07T02:59:00.000Z",
+    "pickup_characters": [
+      "Matikanetannhauser (Original)[New,2.25% rate]",
+      "Kitasan Black (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30074.png",
+    "start_date_string": "24 Feb 2022, 4:00",
+    "end_date_string": "7 Mar 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30076.png",
+    "start_date": "2022-03-07T03:00:00.000Z",
+    "end_date": "2022-03-18T02:59:00.000Z",
+    "pickup_characters": [
+      "Satono Diamond (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30076.png",
+    "start_date_string": "7 Mar 2022, 4:00",
+    "end_date_string": "18 Mar 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30078.png",
+    "start_date": "2022-03-18T03:00:00.000Z",
+    "end_date": "2022-03-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Bright (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30078.png",
+    "start_date_string": "18 Mar 2022, 4:00",
+    "end_date_string": "29 Mar 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30080.png",
+    "start_date": "2022-03-29T03:00:00.000Z",
+    "end_date": "2022-04-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Seiun Sky (Ballroom)[New,0.75% rate]",
+      "Fuji Kiseki (Ballroom)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30080.png",
+    "start_date_string": "29 Mar 2022, 5:00",
+    "end_date_string": "11 Apr 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30082.png",
+    "start_date": "2022-04-11T03:00:00.000Z",
+    "end_date": "2022-04-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Nishino Flower (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30082.png",
+    "start_date_string": "11 Apr 2022, 5:00",
+    "end_date_string": "19 Apr 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30084.png",
+    "start_date": "2022-04-19T03:00:00.000Z",
+    "end_date": "2022-04-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Yaeno Muteki (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30084.png",
+    "start_date_string": "19 Apr 2022, 5:00",
+    "end_date_string": "28 Apr 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30086.png",
+    "start_date": "2022-04-28T03:00:00.000Z",
+    "end_date": "2022-05-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Nice Nature (Cheerleader)[New,0.75% rate]",
+      "King Halo (Cheerleader)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30086.png",
+    "start_date_string": "28 Apr 2022, 5:00",
+    "end_date_string": "10 May 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30088.png",
+    "start_date": "2022-05-10T03:00:00.000Z",
+    "end_date": "2022-05-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Ines Fujin (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30088.png",
+    "start_date_string": "10 May 2022, 5:00",
+    "end_date_string": "20 May 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30090.png",
+    "start_date": "2022-05-20T03:00:00.000Z",
+    "end_date": "2022-05-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Palmer (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30090.png",
+    "start_date_string": "20 May 2022, 5:00",
+    "end_date_string": "30 May 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30092.png",
+    "start_date": "2022-05-30T03:00:00.000Z",
+    "end_date": "2022-06-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Curren Chan (Wedding)[New,0.75% rate]",
+      "Fine Motion (Wedding)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30092.png",
+    "start_date_string": "30 May 2022, 5:00",
+    "end_date_string": "10 Jun 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30094.png",
+    "start_date": "2022-06-10T03:00:00.000Z",
+    "end_date": "2022-06-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Inari One (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30094.png",
+    "start_date_string": "10 Jun 2022, 5:00",
+    "end_date_string": "20 Jun 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30096.png",
+    "start_date": "2022-06-20T03:00:00.000Z",
+    "end_date": "2022-06-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Sweep Tosho (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30096.png",
+    "start_date_string": "20 Jun 2022, 5:00",
+    "end_date_string": "30 Jun 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30098.png",
+    "start_date": "2022-06-30T03:00:00.000Z",
+    "end_date": "2022-07-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Taiki Shuttle (Camping)[New,0.75% rate]",
+      "Mejiro Dober (Camping)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30098.png",
+    "start_date_string": "30 Jun 2022, 5:00",
+    "end_date_string": "11 Jul 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30100.png",
+    "start_date": "2022-07-11T03:00:00.000Z",
+    "end_date": "2022-07-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Air Shakur (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30100.png",
+    "start_date_string": "11 Jul 2022, 5:00",
+    "end_date_string": "20 Jul 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30102.png",
+    "start_date": "2022-07-20T03:00:00.000Z",
+    "end_date": "2022-07-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Brian (Original)[Rerun,0.75% rate]",
+      "Seiun Sky (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30102.png",
+    "start_date_string": "20 Jul 2022, 5:00",
+    "end_date_string": "29 Jul 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30104.png",
+    "start_date": "2022-07-29T03:00:00.000Z",
+    "end_date": "2022-08-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro McQueen (Summer)[New,0.75% rate]",
+      "Gold Ship (Summer)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30104.png",
+    "start_date_string": "29 Jul 2022, 5:00",
+    "end_date_string": "10 Aug 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30106.png",
+    "start_date": "2022-08-10T03:00:00.000Z",
+    "end_date": "2022-08-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Bamboo Memory (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30106.png",
+    "start_date_string": "10 Aug 2022, 5:00",
+    "end_date_string": "19 Aug 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30108.png",
+    "start_date": "2022-08-19T03:00:00.000Z",
+    "end_date": "2022-08-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Copano Rickey (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30108.png",
+    "start_date_string": "19 Aug 2022, 5:00",
+    "end_date_string": "29 Aug 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30110.png",
+    "start_date": "2022-08-24T03:00:00.000Z",
+    "end_date": "2022-09-12T02:59:00.000Z",
+    "pickup_characters": [
+      "Smart Falcon (Grand Live)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30110.png",
+    "start_date_string": "24 Aug 2022, 5:00",
+    "end_date_string": "12 Sept 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30112.png",
+    "start_date": "2022-08-29T03:00:00.000Z",
+    "end_date": "2022-09-12T02:59:00.000Z",
+    "pickup_characters": [
+      "Winning Ticket (Steampunk)[New,0.75% rate]",
+      "Narita Taishin (Steampunk)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30112.png",
+    "start_date_string": "29 Aug 2022, 5:00",
+    "end_date_string": "12 Sept 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30114.png",
+    "start_date": "2022-09-12T03:00:00.000Z",
+    "end_date": "2022-09-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Yukino Bijin (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30114.png",
+    "start_date_string": "12 Sept 2022, 5:00",
+    "end_date_string": "20 Sept 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30116.png",
+    "start_date": "2022-09-20T03:00:00.000Z",
+    "end_date": "2022-09-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Seeking the Pearl (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30116.png",
+    "start_date_string": "20 Sept 2022, 5:00",
+    "end_date_string": "29 Sept 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30118.png",
+    "start_date": "2022-09-29T03:00:00.000Z",
+    "end_date": "2022-10-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Agnes Digital (Halloween)[New,0.75% rate]",
+      "Meisho Doto (Halloween)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30118.png",
+    "start_date_string": "29 Sept 2022, 5:00",
+    "end_date_string": "11 Oct 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30120.png",
+    "start_date": "2022-10-11T03:00:00.000Z",
+    "end_date": "2022-10-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Aston Machan (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30120.png",
+    "start_date_string": "11 Oct 2022, 5:00",
+    "end_date_string": "19 Oct 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30130.png",
+    "start_date": "2022-10-17T03:00:00.000Z",
+    "end_date": "2022-10-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Seeking the Pearl (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30130.png",
+    "start_date_string": "17 Oct 2022, 5:00",
+    "end_date_string": "24 Oct 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30122.png",
+    "start_date": "2022-10-19T03:00:00.000Z",
+    "end_date": "2022-10-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Yamanin Zephyr (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30122.png",
+    "start_date_string": "19 Oct 2022, 5:00",
+    "end_date_string": "28 Oct 2022, 4:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30124.png",
+    "start_date": "2022-10-28T03:00:00.000Z",
+    "end_date": "2022-11-09T02:59:00.000Z",
+    "pickup_characters": [
+      "Tamamo Cross (Festival)[New,0.75% rate]",
+      "Inari One (Festival)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30124.png",
+    "start_date_string": "28 Oct 2022, 5:00",
+    "end_date_string": "9 Nov 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30126.png",
+    "start_date": "2022-11-09T03:00:00.000Z",
+    "end_date": "2022-11-17T02:59:00.000Z",
+    "pickup_characters": [
+      "Nakayama Festa (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30126.png",
+    "start_date_string": "9 Nov 2022, 4:00",
+    "end_date_string": "17 Nov 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30128.png",
+    "start_date": "2022-11-17T03:00:00.000Z",
+    "end_date": "2022-11-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Wonder Acute (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30128.png",
+    "start_date_string": "17 Nov 2022, 4:00",
+    "end_date_string": "28 Nov 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30132.png",
+    "start_date": "2022-11-28T03:00:00.000Z",
+    "end_date": "2022-12-12T02:59:00.000Z",
+    "pickup_characters": [
+      "Vodka (Christmas)[New,0.75% rate]",
+      "Daiwa Scarlet (Christmas)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30132.png",
+    "start_date_string": "28 Nov 2022, 4:00",
+    "end_date_string": "12 Dec 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30134.png",
+    "start_date": "2022-12-12T03:00:00.000Z",
+    "end_date": "2022-12-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Zenno Rob Roy (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30134.png",
+    "start_date_string": "12 Dec 2022, 4:00",
+    "end_date_string": "20 Dec 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30136.png",
+    "start_date": "2022-12-20T03:00:00.000Z",
+    "end_date": "2022-12-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Brian (Blaze)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30136.png",
+    "start_date_string": "20 Dec 2022, 4:00",
+    "end_date_string": "29 Dec 2022, 3:59"
+  },
+  {
+    "year": 2022,
+    "image": "2022_30138.png",
+    "start_date": "2022-12-29T03:00:00.000Z",
+    "end_date": "2023-01-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Kitasan Black (New Year)[New,0.75% rate]",
+      "Satono Diamond (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2022_30138.png",
+    "start_date_string": "29 Dec 2022, 4:00",
+    "end_date_string": "10 Jan 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30140.png",
+    "start_date": "2023-01-10T03:00:00.000Z",
+    "end_date": "2023-01-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Hokko Tarumae (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30140.png",
+    "start_date_string": "10 Jan 2023, 4:00",
+    "end_date_string": "20 Jan 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30142.png",
+    "start_date": "2023-01-20T03:00:00.000Z",
+    "end_date": "2023-01-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Daitaku Helios (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30142.png",
+    "start_date_string": "20 Jan 2023, 4:00",
+    "end_date_string": "30 Jan 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30144.png",
+    "start_date": "2023-01-20T03:00:00.000Z",
+    "end_date": "2023-01-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Rice Shower (Halloween)[Rerun,0.75% rate]",
+      "Haru Urara (New Year)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30144.png",
+    "start_date_string": "20 Jan 2023, 4:00",
+    "end_date_string": "30 Jan 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30146.png",
+    "start_date": "2023-01-30T03:00:00.000Z",
+    "end_date": "2023-02-13T02:59:00.000Z",
+    "pickup_characters": [
+      "Ines Fujin (Valentine)[New,0.75% rate]",
+      "Mejiro Ryan (Valentine)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30146.png",
+    "start_date_string": "30 Jan 2023, 4:00",
+    "end_date_string": "13 Feb 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30148.png",
+    "start_date": "2023-02-13T03:00:00.000Z",
+    "end_date": "2023-02-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Shinko Windy (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30148.png",
+    "start_date_string": "13 Feb 2023, 4:00",
+    "end_date_string": "24 Feb 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30150.png",
+    "start_date": "2023-02-24T03:00:00.000Z",
+    "end_date": "2023-03-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Twin Turbo (Original)[New,10% rate]",
+      "Mr. C.B. (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30150.png",
+    "start_date_string": "24 Feb 2023, 4:00",
+    "end_date_string": "20 Mar 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30152.png",
+    "start_date": "2023-03-10T03:00:00.000Z",
+    "end_date": "2023-03-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Daiichi Ruby (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30152.png",
+    "start_date_string": "10 Mar 2023, 4:00",
+    "end_date_string": "20 Mar 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30154.png",
+    "start_date": "2023-03-20T03:00:00.000Z",
+    "end_date": "2023-03-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Symboli Kris S (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30154.png",
+    "start_date_string": "20 Mar 2023, 4:00",
+    "end_date_string": "29 Mar 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30156.png",
+    "start_date": "2023-03-29T03:00:00.000Z",
+    "end_date": "2023-04-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Ardan (Ballroom)[New,0.75% rate]",
+      "Sakura Chiyono O (Ballroom)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30156.png",
+    "start_date_string": "29 Mar 2023, 5:00",
+    "end_date_string": "10 Apr 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30158.png",
+    "start_date": "2023-04-10T03:00:00.000Z",
+    "end_date": "2023-04-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Sakura Laurel (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30158.png",
+    "start_date_string": "10 Apr 2023, 5:00",
+    "end_date_string": "19 Apr 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30160.png",
+    "start_date": "2023-04-19T03:00:00.000Z",
+    "end_date": "2023-04-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Neo Universe (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30160.png",
+    "start_date_string": "19 Apr 2023, 5:00",
+    "end_date_string": "28 Apr 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30162.png",
+    "start_date": "2023-04-28T03:00:00.000Z",
+    "end_date": "2023-05-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Matikanetannhauser (Sports Festival)[New,0.75% rate]",
+      "Sakura Bakushin O (Sports Festival)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30162.png",
+    "start_date_string": "28 Apr 2023, 5:00",
+    "end_date_string": "10 May 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30164.png",
+    "start_date": "2023-04-28T03:00:00.000Z",
+    "end_date": "2023-05-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Gold City (Original)[Rerun,0.75% rate]",
+      "Tosen Jordan (Original)[Rerun,0.75% rate]",
+      "Mejiro Palmer (Original)[Rerun,0.75% rate]",
+      "Daitaku Helios (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30164.png",
+    "start_date_string": "28 Apr 2023, 5:00",
+    "end_date_string": "10 May 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30166.png",
+    "start_date": "2023-05-10T03:00:00.000Z",
+    "end_date": "2023-05-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Hishi Miracle (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30166.png",
+    "start_date_string": "10 May 2023, 5:00",
+    "end_date_string": "19 May 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30168.png",
+    "start_date": "2023-05-19T03:00:00.000Z",
+    "end_date": "2023-05-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Tanino Gimlet (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30168.png",
+    "start_date_string": "19 May 2023, 5:00",
+    "end_date_string": "29 May 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30170.png",
+    "start_date": "2023-05-29T03:00:00.000Z",
+    "end_date": "2023-06-09T02:59:00.000Z",
+    "pickup_characters": [
+      "Nishino Flower (Wedding)[New,0.75% rate]",
+      "Hishi Amazon (Wedding)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30170.png",
+    "start_date_string": "29 May 2023, 5:00",
+    "end_date_string": "9 Jun 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30172.png",
+    "start_date": "2023-06-09T03:00:00.000Z",
+    "end_date": "2023-06-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Taiki Shuttle (Camping)[Rerun,0.75% rate]",
+      "Yamanin Zephyr (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30172.png",
+    "start_date_string": "9 Jun 2023, 5:00",
+    "end_date_string": "19 Jun 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30174.png",
+    "start_date": "2023-06-19T03:00:00.000Z",
+    "end_date": "2023-06-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Marvelous Sunday (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30174.png",
+    "start_date_string": "19 Jun 2023, 5:00",
+    "end_date_string": "29 Jun 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30176.png",
+    "start_date": "2023-06-29T03:00:00.000Z",
+    "end_date": "2023-07-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Bamboo Memory (Summer Trip)[New,0.75% rate]",
+      "Tosen Jordan (Summer Trip)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30176.png",
+    "start_date_string": "29 Jun 2023, 5:00",
+    "end_date_string": "10 Jul 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30178.png",
+    "start_date": "2023-07-10T03:00:00.000Z",
+    "end_date": "2023-07-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Katsuragi Ace (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30178.png",
+    "start_date_string": "10 Jul 2023, 5:00",
+    "end_date_string": "21 Jul 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30180.png",
+    "start_date": "2023-07-21T03:00:00.000Z",
+    "end_date": "2023-07-31T02:59:00.000Z",
+    "pickup_characters": [
+      "Sirius Symboli (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30180.png",
+    "start_date_string": "21 Jul 2023, 5:00",
+    "end_date_string": "31 Jul 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30182.png",
+    "start_date": "2023-07-31T03:00:00.000Z",
+    "end_date": "2023-08-14T02:59:00.000Z",
+    "pickup_characters": [
+      "Agnes Tachyon (Summer)[New,0.75% rate]",
+      "Silence Suzuka (Summer)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30182.png",
+    "start_date_string": "31 Jul 2023, 5:00",
+    "end_date_string": "14 Aug 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30184.png",
+    "start_date": "2023-08-14T03:00:00.000Z",
+    "end_date": "2023-08-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Copano Rickey (Original)[Rerun,0.75% rate]",
+      "Hokko Tarumae (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30184.png",
+    "start_date_string": "14 Aug 2023, 5:00",
+    "end_date_string": "24 Aug 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30186.png",
+    "start_date": "2023-08-24T03:00:00.000Z",
+    "end_date": "2023-09-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Top Road (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30186.png",
+    "start_date_string": "24 Aug 2023, 5:00",
+    "end_date_string": "11 Sept 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30188.png",
+    "start_date": "2023-08-31T03:00:00.000Z",
+    "end_date": "2023-09-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Gold Ship (Project L'Arc)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30188.png",
+    "start_date_string": "31 Aug 2023, 5:00",
+    "end_date_string": "11 Sept 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30190.png",
+    "start_date": "2023-09-11T03:00:00.000Z",
+    "end_date": "2023-09-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Satono Diamond (Project L'Arc)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30190.png",
+    "start_date_string": "11 Sept 2023, 5:00",
+    "end_date_string": "20 Sept 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30192.png",
+    "start_date": "2023-09-20T03:00:00.000Z",
+    "end_date": "2023-09-29T02:59:00.000Z",
+    "pickup_characters": [
+      "K.S.Miracle (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30192.png",
+    "start_date_string": "20 Sept 2023, 5:00",
+    "end_date_string": "29 Sept 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30194.png",
+    "start_date": "2023-09-29T03:00:00.000Z",
+    "end_date": "2023-10-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Air Shakur (Halloween)[New,0.75% rate]",
+      "Symboli Kris S (Halloween)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30194.png",
+    "start_date_string": "29 Sept 2023, 5:00",
+    "end_date_string": "10 Oct 2023, 4:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30198.png",
+    "start_date": "2023-10-19T03:00:00.000Z",
+    "end_date": "2023-10-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Ramonu (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30198.png",
+    "start_date_string": "19 Oct 2023, 5:00",
+    "end_date_string": "30 Oct 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30200.png",
+    "start_date": "2023-10-30T03:00:00.000Z",
+    "end_date": "2023-11-09T02:59:00.000Z",
+    "pickup_characters": [
+      "Kawakami Princess (Festival)[New,0.75% rate]",
+      "Tokai Teio (Festival)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30200.png",
+    "start_date_string": "30 Oct 2023, 4:00",
+    "end_date_string": "9 Nov 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30204.png",
+    "start_date": "2023-11-20T03:00:00.000Z",
+    "end_date": "2023-11-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Tap Dance City (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30204.png",
+    "start_date_string": "20 Nov 2023, 4:00",
+    "end_date_string": "30 Nov 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30206.png",
+    "start_date": "2023-11-30T03:00:00.000Z",
+    "end_date": "2023-12-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Palmer (Christmas)[New,0.75% rate]",
+      "Mejiro Bright (Christmas)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30206.png",
+    "start_date_string": "30 Nov 2023, 4:00",
+    "end_date_string": "11 Dec 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30208.png",
+    "start_date": "2023-12-11T03:00:00.000Z",
+    "end_date": "2023-12-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Satono Crown (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30208.png",
+    "start_date_string": "11 Dec 2023, 4:00",
+    "end_date_string": "20 Dec 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30210.png",
+    "start_date": "2023-12-20T03:00:00.000Z",
+    "end_date": "2023-12-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Cheval Grand (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30210.png",
+    "start_date_string": "20 Dec 2023, 4:00",
+    "end_date_string": "28 Dec 2023, 3:59"
+  },
+  {
+    "year": 2023,
+    "image": "2023_30212.png",
+    "start_date": "2023-12-28T03:00:00.000Z",
+    "end_date": "2024-01-09T02:59:00.000Z",
+    "pickup_characters": [
+      "Kitasan Black (Anime Collab)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2023_30212.png",
+    "start_date_string": "28 Dec 2023, 4:00",
+    "end_date_string": "9 Jan 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30214.png",
+    "start_date": "2024-01-09T03:00:00.000Z",
+    "end_date": "2024-01-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Nice Nature (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30214.png",
+    "start_date_string": "9 Jan 2024, 4:00",
+    "end_date_string": "19 Jan 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30216.png",
+    "start_date": "2024-01-19T03:00:00.000Z",
+    "end_date": "2024-01-31T02:59:00.000Z",
+    "pickup_characters": [
+      "Vivlos (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30216.png",
+    "start_date_string": "19 Jan 2024, 4:00",
+    "end_date_string": "31 Jan 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30218.png",
+    "start_date": "2024-01-31T03:00:00.000Z",
+    "end_date": "2024-02-14T02:59:00.000Z",
+    "pickup_characters": [
+      "Yukino Bijin (Valentine)[New,0.75% rate]",
+      "Manhattan Cafe (Valentine)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30218.png",
+    "start_date_string": "31 Jan 2024, 4:00",
+    "end_date_string": "14 Feb 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30220.png",
+    "start_date": "2024-02-14T03:00:00.000Z",
+    "end_date": "2024-02-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Biko Pegasus (Original)[New,2.25% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30220.png",
+    "start_date_string": "14 Feb 2024, 4:00",
+    "end_date_string": "24 Feb 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30222.png",
+    "start_date": "2024-02-24T03:00:00.000Z",
+    "end_date": "2024-03-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Ikuno Dictus (Original)[New,2.25% rate]",
+      "Duramente (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30222.png",
+    "start_date_string": "24 Feb 2024, 4:00",
+    "end_date_string": "21 Mar 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30224.png",
+    "start_date": "2024-03-12T03:00:00.000Z",
+    "end_date": "2024-03-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Transcend (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30224.png",
+    "start_date_string": "12 Mar 2024, 4:00",
+    "end_date_string": "21 Mar 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30226.png",
+    "start_date": "2024-03-21T03:00:00.000Z",
+    "end_date": "2024-03-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Rhein Kraft (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30226.png",
+    "start_date_string": "21 Mar 2024, 4:00",
+    "end_date_string": "29 Mar 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30228.png",
+    "start_date": "2024-03-29T03:00:00.000Z",
+    "end_date": "2024-04-09T02:59:00.000Z",
+    "pickup_characters": [
+      "Daiichi Ruby (Ballroom)[New,0.75% rate]",
+      "Daitaku Helios (Ballroom)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30228.png",
+    "start_date_string": "29 Mar 2024, 4:00",
+    "end_date_string": "9 Apr 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30232.png",
+    "start_date": "2024-04-09T03:00:00.000Z",
+    "end_date": "2024-04-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Winning Ticket (U.A.F.)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30232.png",
+    "start_date_string": "9 Apr 2024, 5:00",
+    "end_date_string": "19 Apr 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30234.png",
+    "start_date": "2024-04-19T03:00:00.000Z",
+    "end_date": "2024-04-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Sounds of Earth (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30234.png",
+    "start_date_string": "19 Apr 2024, 5:00",
+    "end_date_string": "30 Apr 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30236.png",
+    "start_date": "2024-04-30T03:00:00.000Z",
+    "end_date": "2024-05-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Super Creek (Warfare)[New,0.75% rate]",
+      "Yaeno Muteki (Warfare)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30236.png",
+    "start_date_string": "30 Apr 2024, 5:00",
+    "end_date_string": "10 May 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30238.png",
+    "start_date": "2024-04-30T03:00:00.000Z",
+    "end_date": "2024-05-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Hishi Amazon (Original)[Rerun,0.6% rate]",
+      "Sakura Chiyono O (Original)[Rerun,0.6% rate]",
+      "Hishi Amazon (Wedding)[Rerun,0.6% rate]",
+      "Katsuragi Ace (Original)[Rerun,0.6% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30238.png",
+    "start_date_string": "30 Apr 2024, 5:00",
+    "end_date_string": "10 May 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30242.png",
+    "start_date": "2024-05-10T03:00:00.000Z",
+    "end_date": "2024-05-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Agnes Tachyon (Alt Version)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30242.png",
+    "start_date_string": "10 May 2024, 5:00",
+    "end_date_string": "20 May 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30244.png",
+    "start_date": "2024-05-20T03:00:00.000Z",
+    "end_date": "2024-05-30T02:59:00.000Z",
+    "pickup_characters": [
+      "North Flight (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30244.png",
+    "start_date_string": "20 May 2024, 5:00",
+    "end_date_string": "30 May 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30246.png",
+    "start_date": "2024-05-30T03:00:00.000Z",
+    "end_date": "2024-06-13T02:59:00.000Z",
+    "pickup_characters": [
+      "King Halo (Wedding)[New,0.75% rate]",
+      "Sweep Tosho (Wedding)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30246.png",
+    "start_date_string": "30 May 2024, 5:00",
+    "end_date_string": "13 Jun 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30250.png",
+    "start_date": "2024-06-13T03:00:00.000Z",
+    "end_date": "2024-06-26T02:59:00.000Z",
+    "pickup_characters": [
+      "Jungle Pocket (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30250.png",
+    "start_date_string": "13 Jun 2024, 5:00",
+    "end_date_string": "26 Jun 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30252.png",
+    "start_date": "2024-06-26T03:00:00.000Z",
+    "end_date": "2024-07-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Dream Journey (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30252.png",
+    "start_date_string": "26 Jun 2024, 5:00",
+    "end_date_string": "19 Jul 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30256.png",
+    "start_date": "2024-07-09T03:00:00.000Z",
+    "end_date": "2024-07-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Rice Shower (Great Food Festival)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30256.png",
+    "start_date_string": "9 Jul 2024, 5:00",
+    "end_date_string": "19 Jul 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30258.png",
+    "start_date": "2024-07-19T03:00:00.000Z",
+    "end_date": "2024-07-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Calstone Light O (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30258.png",
+    "start_date_string": "19 Jul 2024, 5:00",
+    "end_date_string": "29 Jul 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30260.png",
+    "start_date": "2024-07-29T03:00:00.000Z",
+    "end_date": "2024-08-14T02:59:00.000Z",
+    "pickup_characters": [
+      "Eishin Flash (Summer Trip)[New,0.75% rate]",
+      "Hokko Tarumae (Summer Trip)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30260.png",
+    "start_date_string": "29 Jul 2024, 5:00",
+    "end_date_string": "14 Aug 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30264.png",
+    "start_date": "2024-08-14T03:00:00.000Z",
+    "end_date": "2024-08-24T02:59:00.000Z",
+    "pickup_characters": [],
+    "image_path": "assets/images/character/banner/2024_30264.png",
+    "start_date_string": "14 Aug 2024, 5:00",
+    "end_date_string": "24 Aug 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30268.png",
+    "start_date": "2024-08-24T03:00:00.000Z",
+    "end_date": "2024-09-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Gentildonna (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30268.png",
+    "start_date_string": "24 Aug 2024, 5:00",
+    "end_date_string": "10 Sept 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30270.png",
+    "start_date": "2024-08-30T03:00:00.000Z",
+    "end_date": "2024-09-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Neo Universe (Autumn)[New,0.75% rate]",
+      "Zenno Rob Roy (Autumn)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30270.png",
+    "start_date_string": "30 Aug 2024, 5:00",
+    "end_date_string": "10 Sept 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30274.png",
+    "start_date": "2024-09-10T03:00:00.000Z",
+    "end_date": "2024-09-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Cesario (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30274.png",
+    "start_date_string": "10 Sept 2024, 5:00",
+    "end_date_string": "30 Sept 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30276.png",
+    "start_date": "2024-09-20T03:00:00.000Z",
+    "end_date": "2024-09-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Durandal (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30276.png",
+    "start_date_string": "20 Sept 2024, 5:00",
+    "end_date_string": "30 Sept 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30278.png",
+    "start_date": "2024-09-30T03:00:00.000Z",
+    "end_date": "2024-10-11T02:59:00.000Z",
+    "pickup_characters": [
+      "Seeking the Pearl (Halloween)[New,0.75% rate]",
+      "Mayano Top Gun (Halloween)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30278.png",
+    "start_date_string": "30 Sept 2024, 5:00",
+    "end_date_string": "11 Oct 2024, 4:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30282.png",
+    "start_date": "2024-10-11T03:00:00.000Z",
+    "end_date": "2024-10-29T02:59:00.000Z",
+    "pickup_characters": [
+      "Bubble Gum Fellow (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30282.png",
+    "start_date_string": "11 Oct 2024, 5:00",
+    "end_date_string": "29 Oct 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30284.png",
+    "start_date": "2024-10-29T03:00:00.000Z",
+    "end_date": "2024-11-18T02:59:00.000Z",
+    "pickup_characters": [
+      "Biwa Hayahide (Mecha)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30284.png",
+    "start_date_string": "29 Oct 2024, 4:00",
+    "end_date_string": "18 Nov 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30288.png",
+    "start_date": "2024-11-08T03:00:00.000Z",
+    "end_date": "2024-11-18T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Taishin (Mecha)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30288.png",
+    "start_date_string": "8 Nov 2024, 4:00",
+    "end_date_string": "18 Nov 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30290.png",
+    "start_date": "2024-11-18T03:00:00.000Z",
+    "end_date": "2024-11-28T02:59:00.000Z",
+    "pickup_characters": [
+      "Air Messiah (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30290.png",
+    "start_date_string": "18 Nov 2024, 4:00",
+    "end_date_string": "28 Nov 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30292.png",
+    "start_date": "2024-11-28T03:00:00.000Z",
+    "end_date": "2024-12-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Narita Top Road (Christmas)[New,0.75% rate]",
+      "Admire Vega (Christmas)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30292.png",
+    "start_date_string": "28 Nov 2024, 4:00",
+    "end_date_string": "10 Dec 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30296.png",
+    "start_date": "2024-12-10T03:00:00.000Z",
+    "end_date": "2024-12-19T02:59:00.000Z",
+    "pickup_characters": [
+      "Win Variation (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30296.png",
+    "start_date_string": "10 Dec 2024, 4:00",
+    "end_date_string": "19 Dec 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30298.png",
+    "start_date": "2024-12-19T03:00:00.000Z",
+    "end_date": "2024-12-27T02:59:00.000Z",
+    "pickup_characters": [
+      "Grass Wonder (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30298.png",
+    "start_date_string": "19 Dec 2024, 4:00",
+    "end_date_string": "27 Dec 2024, 3:59"
+  },
+  {
+    "year": 2024,
+    "image": "2024_30300.png",
+    "start_date": "2024-12-27T03:00:00.000Z",
+    "end_date": "2025-01-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Katsuragi Ace (New Year)[New,0.75% rate]",
+      "Mr. C.B. (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2024_30300.png",
+    "start_date_string": "27 Dec 2024, 4:00",
+    "end_date_string": "10 Jan 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30304.png",
+    "start_date": "2025-01-10T03:00:00.000Z",
+    "end_date": "2025-01-20T02:59:00.000Z",
+    "pickup_characters": [
+      "Maruzensky (New Year)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30304.png",
+    "start_date_string": "10 Jan 2025, 4:00",
+    "end_date_string": "20 Jan 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30306.png",
+    "start_date": "2025-01-20T03:00:00.000Z",
+    "end_date": "2025-01-31T02:59:00.000Z",
+    "pickup_characters": [
+      "Furioso (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30306.png",
+    "start_date_string": "20 Jan 2025, 4:00",
+    "end_date_string": "31 Jan 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30308.png",
+    "start_date": "2025-01-31T03:00:00.000Z",
+    "end_date": "2025-02-14T02:59:00.000Z",
+    "pickup_characters": [
+      "Aston Machan (Valentine)[New,0.75% rate]",
+      "Yamanin Zephyr (Valentine)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30308.png",
+    "start_date_string": "31 Jan 2025, 4:00",
+    "end_date_string": "14 Feb 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30312.png",
+    "start_date": "2025-02-14T03:00:00.000Z",
+    "end_date": "2025-02-24T02:59:00.000Z",
+    "pickup_characters": [
+      "Tsurumaru Tsuyoshi (Original)[New,2.25% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30312.png",
+    "start_date_string": "14 Feb 2025, 4:00",
+    "end_date_string": "24 Feb 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30314.png",
+    "start_date": "2025-02-24T03:00:00.000Z",
+    "end_date": "2025-03-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Orfevre (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30314.png",
+    "start_date_string": "24 Feb 2025, 4:00",
+    "end_date_string": "21 Mar 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30318.png",
+    "start_date": "2025-03-11T03:00:00.000Z",
+    "end_date": "2025-03-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Gran Alegria (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30318.png",
+    "start_date_string": "11 Mar 2025, 4:00",
+    "end_date_string": "21 Mar 2025, 3:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30320.png",
+    "start_date": "2025-03-21T03:00:00.000Z",
+    "end_date": "2025-03-31T02:59:00.000Z",
+    "pickup_characters": [
+      "No Reason (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30320.png",
+    "start_date_string": "21 Mar 2025, 4:00",
+    "end_date_string": "31 Mar 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30322.png",
+    "start_date": "2025-03-31T03:00:00.000Z",
+    "end_date": "2025-04-10T02:59:00.000Z",
+    "pickup_characters": [
+      "Tap Dance City (Ballroom)[New,0.75% rate]",
+      "Tanino Gimlet (Ballroom)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30322.png",
+    "start_date_string": "31 Mar 2025, 5:00",
+    "end_date_string": "10 Apr 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30326.png",
+    "start_date": "2025-04-10T03:00:00.000Z",
+    "end_date": "2025-04-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Sirius Symboli (The Twinkle Legends)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30326.png",
+    "start_date_string": "10 Apr 2025, 5:00",
+    "end_date_string": "21 Apr 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30338.png",
+    "start_date": "2025-04-10T03:00:00.000Z",
+    "end_date": "2025-04-17T02:59:00.000Z",
+    "pickup_characters": [
+      "No Reason (Original)[Rerun,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30338.png",
+    "start_date_string": "10 Apr 2025, 5:00",
+    "end_date_string": "17 Apr 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30328.png",
+    "start_date": "2025-04-21T03:00:00.000Z",
+    "end_date": "2025-04-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Fenomeno (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30328.png",
+    "start_date_string": "21 Apr 2025, 5:00",
+    "end_date_string": "30 Apr 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30330.png",
+    "start_date": "2025-04-30T03:00:00.000Z",
+    "end_date": "2025-05-12T02:59:00.000Z",
+    "pickup_characters": [
+      "Copano Rickey (Parade)[New,0.75% rate]",
+      "Smart Falcon (Parade)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30330.png",
+    "start_date_string": "30 Apr 2025, 5:00",
+    "end_date_string": "12 May 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30332.png",
+    "start_date": "2025-04-30T03:00:00.000Z",
+    "end_date": "2025-05-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Oguri Cap (Original)[Rerun,0.1765% rate]",
+      "Mejiro McQueen (Original)[Rerun,0.1765% rate]",
+      "Biwa Hayahide (Original)[Rerun,0.1765% rate]",
+      "Mejiro McQueen (Anime Collab)[Rerun,0.1765% rate]",
+      "Curren Chan (Original)[Rerun,0.1765% rate]",
+      "Seiun Sky (Original)[Rerun,0.1765% rate]",
+      "Oguri Cap (Christmas)[Rerun,0.1765% rate]",
+      "Biwa Hayahide (Christmas)[Rerun,0.1765% rate]",
+      "Tamamo Cross (Original)[Rerun,0.1765% rate]",
+      "Seiun Sky (Ballroom)[Rerun,0.1765% rate]",
+      "Curren Chan (Wedding)[Rerun,0.1765% rate]",
+      "Mejiro McQueen (Summer)[Rerun,0.1765% rate]",
+      "Gold Ship (Summer)[Rerun,0.1764% rate]",
+      "Tamamo Cross (Festival)[Rerun,0.1764% rate]",
+      "Hishi Miracle (Original)[Rerun,0.1764% rate]",
+      "Gold Ship (Project L'Arc)[Rerun,0.1764% rate]",
+      "Biwa Hayahide (Mecha)[Rerun,0.1764% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30332.png",
+    "start_date_string": "30 Apr 2025, 5:00",
+    "end_date_string": "21 May 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30336.png",
+    "start_date": "2025-05-12T03:00:00.000Z",
+    "end_date": "2025-05-21T02:59:00.000Z",
+    "pickup_characters": [
+      "Verxina (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30336.png",
+    "start_date_string": "12 May 2025, 5:00",
+    "end_date_string": "21 May 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30340.png",
+    "start_date": "2025-05-21T03:00:00.000Z",
+    "end_date": "2025-05-30T02:59:00.000Z",
+    "pickup_characters": [
+      "Loves Only You (Original)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30340.png",
+    "start_date_string": "21 May 2025, 5:00",
+    "end_date_string": "30 May 2025, 4:59"
+  },
+  {
+    "year": 2025,
+    "image": "2025_30342.png",
+    "start_date": "2025-05-30T03:00:00.000Z",
+    "end_date": "2025-06-13T02:59:00.000Z",
+    "pickup_characters": [
+      "Mejiro Ramonu (Wedding)[New,0.75% rate]",
+      "Cesario (Wedding)[New,0.75% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2025_30342.png",
+    "start_date_string": "30 May 2025, 5:00",
+    "end_date_string": "13 Jun 2025, 4:59"
+  },
+  {
+    "year": 2021,
+    "image": "2021_30002.png",
+    "start_date": "2021-02-24T03:00:00.000Z",
+    "end_date": "2021-03-02T02:59:00.000Z",
+    "pickup_characters": [
+      "Special Week (Original)[New,0.3334% rate]",
+      "Silence Suzuka (Original)[New,0.3334% rate]",
+      "Tokai Teio (Original)[New,0.3334% rate]",
+      "Maruzensky (Original)[New,0.3333% rate]",
+      "Oguri Cap (Original)[New,0.3333% rate]",
+      "Taiki Shuttle (Original)[New,0.3333% rate]",
+      "Mejiro McQueen (Original)[New,0.3333% rate]",
+      "Symboli Rudolf (Original)[New,0.3333% rate]",
+      "Rice Shower (Original)[New,0.3333% rate]"
+    ],
+    "image_path": "assets/images/character/banner/2021_30002.png",
+    "start_date_string": "24 Feb 2021, 5:00",
+    "end_date_string": "2 Mar 2021, 3:59"
+  }
+]

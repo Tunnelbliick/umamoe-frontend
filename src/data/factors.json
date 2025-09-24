@@ -1,0 +1,1297 @@
+[
+  {
+    "id": "10",
+    "text": "Speed",
+    "type": 0
+  },
+  {
+    "id": "20",
+    "text": "Stamina",
+    "type": 0
+  },
+  {
+    "id": "30",
+    "text": "Power",
+    "type": 0
+  },
+  {
+    "id": "40",
+    "text": "Guts",
+    "type": 0
+  },
+  {
+    "id": "50",
+    "text": "Wit",
+    "type": 0
+  },
+  {
+    "id": "110",
+    "text": "Turf",
+    "type": 1
+  },
+  {
+    "id": "120",
+    "text": "Dirt",
+    "type": 1
+  },
+  {
+    "id": "210",
+    "text": "Front Runner",
+    "type": 1
+  },
+  {
+    "id": "220",
+    "text": "Pace Chaser",
+    "type": 1
+  },
+  {
+    "id": "230",
+    "text": "Late Surger",
+    "type": 1
+  },
+  {
+    "id": "240",
+    "text": "End Closer",
+    "type": 1
+  },
+  {
+    "id": "310",
+    "text": "Sprint",
+    "type": 1
+  },
+  {
+    "id": "320",
+    "text": "Mile",
+    "type": 1
+  },
+  {
+    "id": "330",
+    "text": "Medium",
+    "type": 1
+  },
+  {
+    "id": "340",
+    "text": "Long",
+    "type": 1
+  },
+  {
+    "id": "100010",
+    "text": "February S.",
+    "type": 2
+  },
+  {
+    "id": "100020",
+    "text": "Takamatsunomiya Kinen",
+    "type": 2
+  },
+  {
+    "id": "100030",
+    "text": "Osaka Hai",
+    "type": 2
+  },
+  {
+    "id": "100040",
+    "text": "Oka Sho",
+    "type": 2
+  },
+  {
+    "id": "100050",
+    "text": "Satsuki Sho",
+    "type": 2
+  },
+  {
+    "id": "100060",
+    "text": "Tenno Sho (Spring)",
+    "type": 2
+  },
+  {
+    "id": "100070",
+    "text": "NHK Mile C.",
+    "type": 2
+  },
+  {
+    "id": "100080",
+    "text": "Victoria Mile",
+    "type": 2
+  },
+  {
+    "id": "100090",
+    "text": "Japanese Oaks",
+    "type": 2
+  },
+  {
+    "id": "100100",
+    "text": "Japanese Derby",
+    "type": 2
+  },
+  {
+    "id": "100110",
+    "text": "Yasuda Kinen",
+    "type": 2
+  },
+  {
+    "id": "100120",
+    "text": "Takarazuka Kinen",
+    "type": 2
+  },
+  {
+    "id": "100130",
+    "text": "Sprinters S.",
+    "type": 2
+  },
+  {
+    "id": "100140",
+    "text": "Shuka Sho",
+    "type": 2
+  },
+  {
+    "id": "100150",
+    "text": "Kikuka Sho",
+    "type": 2
+  },
+  {
+    "id": "100160",
+    "text": "Tenno Sho (Autumn)",
+    "type": 2
+  },
+  {
+    "id": "100170",
+    "text": "Queen Elizabeth II Cup",
+    "type": 2
+  },
+  {
+    "id": "100180",
+    "text": "Mile Ch.",
+    "type": 2
+  },
+  {
+    "id": "100190",
+    "text": "Japan C.",
+    "type": 2
+  },
+  {
+    "id": "100200",
+    "text": "Champions C.",
+    "type": 2
+  },
+  {
+    "id": "100210",
+    "text": "Hanshin J.F.",
+    "type": 2
+  },
+  {
+    "id": "100220",
+    "text": "Asahi Hai F.S.",
+    "type": 2
+  },
+  {
+    "id": "100230",
+    "text": "Arima Kinen",
+    "type": 2
+  },
+  {
+    "id": "100240",
+    "text": "Hopeful S.",
+    "type": 2
+  },
+  {
+    "id": "100250",
+    "text": "Teio Sho",
+    "type": 2
+  },
+  {
+    "id": "100260",
+    "text": "J.D. Derby",
+    "type": 2
+  },
+  {
+    "id": "100270",
+    "text": "JBC L. Classic",
+    "type": 2
+  },
+  {
+    "id": "100280",
+    "text": "JBC Sprint",
+    "type": 2
+  },
+  {
+    "id": "100290",
+    "text": "JBC Classic",
+    "type": 2
+  },
+  {
+    "id": "100300",
+    "text": "Tokyo Daishoten",
+    "type": 2
+  },
+  {
+    "id": "200010",
+    "text": "Right-Handed ○",
+    "type": 3
+  },
+  {
+    "id": "200020",
+    "text": "Left-Handed ○",
+    "type": 3
+  },
+  {
+    "id": "200030",
+    "text": "Tokyo Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200040",
+    "text": "Nakayama Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200050",
+    "text": "Hanshin Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200060",
+    "text": "Kyoto Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200070",
+    "text": "Chukyo Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200080",
+    "text": "Sapporo Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200090",
+    "text": "Hakodate Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200100",
+    "text": "Fukushima Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200110",
+    "text": "Niigata Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200120",
+    "text": "Kokura Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200130",
+    "text": "Standard Distance ○",
+    "type": 3
+  },
+  {
+    "id": "200140",
+    "text": "Non-Standard Distance ○",
+    "type": 3
+  },
+  {
+    "id": "200150",
+    "text": "Firm Conditions ○",
+    "type": 3
+  },
+  {
+    "id": "200160",
+    "text": "Wet Conditions ○",
+    "type": 3
+  },
+  {
+    "id": "200170",
+    "text": "Spring Runner ○",
+    "type": 3
+  },
+  {
+    "id": "200180",
+    "text": "Summer Runner ○",
+    "type": 3
+  },
+  {
+    "id": "200190",
+    "text": "Fall Runner ○",
+    "type": 3
+  },
+  {
+    "id": "200200",
+    "text": "Winter Runner ○",
+    "type": 3
+  },
+  {
+    "id": "200210",
+    "text": "Sunny Days ○",
+    "type": 3
+  },
+  {
+    "id": "200220",
+    "text": "Cloudy Days ○",
+    "type": 3
+  },
+  {
+    "id": "200230",
+    "text": "Rainy Days ○",
+    "type": 3
+  },
+  {
+    "id": "200240",
+    "text": "Snowy Days ○",
+    "type": 3
+  },
+  {
+    "id": "200250",
+    "text": "Inner Post Proficiency ○",
+    "type": 3
+  },
+  {
+    "id": "200260",
+    "text": "Outer Post Proficiency ○",
+    "type": 3
+  },
+  {
+    "id": "200270",
+    "text": "Maverick ○",
+    "type": 3
+  },
+  {
+    "id": "200280",
+    "text": "Competitive Spirit ○",
+    "type": 3
+  },
+  {
+    "id": "200290",
+    "text": "Target in Sight ○",
+    "type": 3
+  },
+  {
+    "id": "200300",
+    "text": "Long Shot ○",
+    "type": 3
+  },
+  {
+    "id": "200330",
+    "text": "Corner Adept ○",
+    "type": 3
+  },
+  {
+    "id": "200340",
+    "text": "Corner Acceleration ○",
+    "type": 3
+  },
+  {
+    "id": "200350",
+    "text": "Corner Recovery ○",
+    "type": 3
+  },
+  {
+    "id": "200360",
+    "text": "Straightaway Adept",
+    "type": 3
+  },
+  {
+    "id": "200370",
+    "text": "Straightaway Acceleration",
+    "type": 3
+  },
+  {
+    "id": "200380",
+    "text": "Straightaway Recovery",
+    "type": 3
+  },
+  {
+    "id": "200430",
+    "text": "Focus",
+    "type": 3
+  },
+  {
+    "id": "200440",
+    "text": "Lay Low",
+    "type": 3
+  },
+  {
+    "id": "200450",
+    "text": "Prudent Positioning",
+    "type": 3
+  },
+  {
+    "id": "200460",
+    "text": "Ramp Up",
+    "type": 3
+  },
+  {
+    "id": "200470",
+    "text": "Pace Strategy",
+    "type": 3
+  },
+  {
+    "id": "200480",
+    "text": "Calm in a Crowd",
+    "type": 3
+  },
+  {
+    "id": "200490",
+    "text": "Nimble Navigator",
+    "type": 3
+  },
+  {
+    "id": "200500",
+    "text": "Go with the Flow",
+    "type": 3
+  },
+  {
+    "id": "200510",
+    "text": "Homestretch Haste",
+    "type": 3
+  },
+  {
+    "id": "200530",
+    "text": "Early Lead",
+    "type": 3
+  },
+  {
+    "id": "200540",
+    "text": "Fast-Paced",
+    "type": 3
+  },
+  {
+    "id": "200550",
+    "text": "Final Push",
+    "type": 3
+  },
+  {
+    "id": "200560",
+    "text": "Stamina to Spare",
+    "type": 3
+  },
+  {
+    "id": "200570",
+    "text": "Preferred Position",
+    "type": 3
+  },
+  {
+    "id": "200580",
+    "text": "Prepared to Pass",
+    "type": 3
+  },
+  {
+    "id": "200590",
+    "text": "Position Pilfer",
+    "type": 3
+  },
+  {
+    "id": "200600",
+    "text": "Slick Surge",
+    "type": 3
+  },
+  {
+    "id": "200610",
+    "text": "Outer Swell",
+    "type": 3
+  },
+  {
+    "id": "200620",
+    "text": "Standing By",
+    "type": 3
+  },
+  {
+    "id": "200630",
+    "text": "Masterful Gambit",
+    "type": 3
+  },
+  {
+    "id": "200640",
+    "text": "Straightaway Spurt",
+    "type": 3
+  },
+  {
+    "id": "200650",
+    "text": "Sprinting Gear",
+    "type": 3
+  },
+  {
+    "id": "200660",
+    "text": "Wait-and-See",
+    "type": 3
+  },
+  {
+    "id": "200670",
+    "text": "Gap Closer",
+    "type": 3
+  },
+  {
+    "id": "200680",
+    "text": "Productive Plan",
+    "type": 3
+  },
+  {
+    "id": "200690",
+    "text": "Watchful Eye",
+    "type": 3
+  },
+  {
+    "id": "200700",
+    "text": "Updrafters",
+    "type": 3
+  },
+  {
+    "id": "200710",
+    "text": "Rosy Outlook",
+    "type": 3
+  },
+  {
+    "id": "200720",
+    "text": "Up-Tempo",
+    "type": 3
+  },
+  {
+    "id": "200730",
+    "text": "Steadfast",
+    "type": 3
+  },
+  {
+    "id": "200740",
+    "text": "Deep Breaths",
+    "type": 3
+  },
+  {
+    "id": "200750",
+    "text": "Inside Scoop",
+    "type": 3
+  },
+  {
+    "id": "200760",
+    "text": "Extra Tank",
+    "type": 3
+  },
+  {
+    "id": "200770",
+    "text": "Trick (Front)",
+    "type": 3
+  },
+  {
+    "id": "200780",
+    "text": "Trick (Rear)",
+    "type": 3
+  },
+  {
+    "id": "200790",
+    "text": "Frenzied Front Runners",
+    "type": 3
+  },
+  {
+    "id": "200800",
+    "text": "Frenzied Pace Chasers",
+    "type": 3
+  },
+  {
+    "id": "200810",
+    "text": "Frenzied Late Surgers",
+    "type": 3
+  },
+  {
+    "id": "200820",
+    "text": "Frenzied End Closers",
+    "type": 3
+  },
+  {
+    "id": "200830",
+    "text": "Subdued Front Runners",
+    "type": 3
+  },
+  {
+    "id": "200840",
+    "text": "Flustered Front Runners",
+    "type": 3
+  },
+  {
+    "id": "200850",
+    "text": "Hesitant Front Runners",
+    "type": 3
+  },
+  {
+    "id": "200860",
+    "text": "Subdued Pace Chasers",
+    "type": 3
+  },
+  {
+    "id": "200870",
+    "text": "Flustered Pace Chasers",
+    "type": 3
+  },
+  {
+    "id": "200880",
+    "text": "Hesitant Pace Chasers",
+    "type": 3
+  },
+  {
+    "id": "200890",
+    "text": "Subdued Late Surgers",
+    "type": 3
+  },
+  {
+    "id": "200900",
+    "text": "Flustered Late Surgers",
+    "type": 3
+  },
+  {
+    "id": "200910",
+    "text": "Hesitant Late Surgers",
+    "type": 3
+  },
+  {
+    "id": "200920",
+    "text": "Subdued End Closers",
+    "type": 3
+  },
+  {
+    "id": "200930",
+    "text": "Flustered End Closers",
+    "type": 3
+  },
+  {
+    "id": "200940",
+    "text": "Hesitant End Closers",
+    "type": 3
+  },
+  {
+    "id": "200950",
+    "text": "Oi Racecourse ○",
+    "type": 3
+  },
+  {
+    "id": "200960",
+    "text": "Sprint Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "200970",
+    "text": "Sprint Corners ○",
+    "type": 3
+  },
+  {
+    "id": "200980",
+    "text": "Huge Lead",
+    "type": 3
+  },
+  {
+    "id": "200990",
+    "text": "Countermeasure",
+    "type": 3
+  },
+  {
+    "id": "201000",
+    "text": "Meticulous Measures",
+    "type": 3
+  },
+  {
+    "id": "201010",
+    "text": "Intimidate",
+    "type": 3
+  },
+  {
+    "id": "201020",
+    "text": "Stop Right There!",
+    "type": 3
+  },
+  {
+    "id": "201030",
+    "text": "Mile Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201040",
+    "text": "Mile Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201050",
+    "text": "Shifting Gears",
+    "type": 3
+  },
+  {
+    "id": "201060",
+    "text": "Acceleration",
+    "type": 3
+  },
+  {
+    "id": "201070",
+    "text": "Unyielding Spirit",
+    "type": 3
+  },
+  {
+    "id": "201080",
+    "text": "Speed Eater",
+    "type": 3
+  },
+  {
+    "id": "201090",
+    "text": "Opening Gambit",
+    "type": 3
+  },
+  {
+    "id": "201100",
+    "text": "Medium Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201110",
+    "text": "Medium Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201120",
+    "text": "Hawkeye",
+    "type": 3
+  },
+  {
+    "id": "201130",
+    "text": "Thunderbolt Step",
+    "type": 3
+  },
+  {
+    "id": "201140",
+    "text": "Soft Step",
+    "type": 3
+  },
+  {
+    "id": "201150",
+    "text": "Tether",
+    "type": 3
+  },
+  {
+    "id": "201160",
+    "text": "Murmur",
+    "type": 3
+  },
+  {
+    "id": "201170",
+    "text": "Long Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201180",
+    "text": "Long Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201190",
+    "text": "Keeping the Lead",
+    "type": 3
+  },
+  {
+    "id": "201200",
+    "text": "Passing Pro",
+    "type": 3
+  },
+  {
+    "id": "201210",
+    "text": "Pressure",
+    "type": 3
+  },
+  {
+    "id": "201220",
+    "text": "Stamina Eater",
+    "type": 3
+  },
+  {
+    "id": "201230",
+    "text": "Smoke Screen",
+    "type": 3
+  },
+  {
+    "id": "201240",
+    "text": "Front Runner Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201250",
+    "text": "Front Runner Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201260",
+    "text": "Dodging Danger",
+    "type": 3
+  },
+  {
+    "id": "201270",
+    "text": "Leader's Pride",
+    "type": 3
+  },
+  {
+    "id": "201280",
+    "text": "Moxie",
+    "type": 3
+  },
+  {
+    "id": "201290",
+    "text": "Second Wind",
+    "type": 3
+  },
+  {
+    "id": "201300",
+    "text": "Restart",
+    "type": 3
+  },
+  {
+    "id": "201310",
+    "text": "Pace Chaser Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201320",
+    "text": "Pace Chaser Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201330",
+    "text": "Shrewd Step",
+    "type": 3
+  },
+  {
+    "id": "201340",
+    "text": "Straight Descent",
+    "type": 3
+  },
+  {
+    "id": "201350",
+    "text": "Hydrate",
+    "type": 3
+  },
+  {
+    "id": "201360",
+    "text": "Tactical Tweak",
+    "type": 3
+  },
+  {
+    "id": "201370",
+    "text": "Disorient",
+    "type": 3
+  },
+  {
+    "id": "201380",
+    "text": "Late Surger Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201390",
+    "text": "Late Surger Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201400",
+    "text": "Fighter",
+    "type": 3
+  },
+  {
+    "id": "201410",
+    "text": "1,500,000 CC",
+    "type": 3
+  },
+  {
+    "id": "201420",
+    "text": "A Small Breather",
+    "type": 3
+  },
+  {
+    "id": "201430",
+    "text": "Studious",
+    "type": 3
+  },
+  {
+    "id": "201440",
+    "text": "Sharp Gaze",
+    "type": 3
+  },
+  {
+    "id": "201450",
+    "text": "End Closer Straightaways ○",
+    "type": 3
+  },
+  {
+    "id": "201460",
+    "text": "End Closer Corners ○",
+    "type": 3
+  },
+  {
+    "id": "201470",
+    "text": "I Can See Right Through You",
+    "type": 3
+  },
+  {
+    "id": "201480",
+    "text": "After-School Stroll",
+    "type": 3
+  },
+  {
+    "id": "201490",
+    "text": "Levelheaded",
+    "type": 3
+  },
+  {
+    "id": "201500",
+    "text": "Strategist",
+    "type": 3
+  },
+  {
+    "id": "201510",
+    "text": "Intense Gaze",
+    "type": 3
+  },
+  {
+    "id": "201520",
+    "text": "Front Runner Savvy ○",
+    "type": 3
+  },
+  {
+    "id": "201530",
+    "text": "Pace Chaser Savvy ○",
+    "type": 3
+  },
+  {
+    "id": "201540",
+    "text": "Late Surger Savvy ○",
+    "type": 3
+  },
+  {
+    "id": "201550",
+    "text": "End Closer Savvy ○",
+    "type": 3
+  },
+  {
+    "id": "201560",
+    "text": "Lucky Seven",
+    "type": 3
+  },
+  {
+    "id": "201570",
+    "text": "Triple 7s",
+    "type": 3
+  },
+  {
+    "id": "201580",
+    "text": "Highlander",
+    "type": 3
+  },
+  {
+    "id": "201590",
+    "text": "Uma Stan",
+    "type": 3
+  },
+  {
+    "id": "201600",
+    "text": "Groundwork",
+    "type": 3
+  },
+  {
+    "id": "201610",
+    "text": "Tail Held High",
+    "type": 3
+  },
+  {
+    "id": "201620",
+    "text": "Shake It Out",
+    "type": 3
+  },
+  {
+    "id": "201630",
+    "text": "Sympathy",
+    "type": 3
+  },
+  {
+    "id": "201640",
+    "text": "Lone Wolf",
+    "type": 3
+  },
+  {
+    "id": "201650",
+    "text": "Slipstream",
+    "type": 3
+  },
+  {
+    "id": "201660",
+    "text": "Playtime's Over!",
+    "type": 3
+  },
+  {
+    "id": "201670",
+    "text": "Top Pick",
+    "type": 3
+  },
+  {
+    "id": "210010",
+    "text": "Ignited Spirit SPD",
+    "type": 3
+  },
+  {
+    "id": "210020",
+    "text": "Ignited Spirit STA",
+    "type": 3
+  },
+  {
+    "id": "210030",
+    "text": "Ignited Spirit PWR",
+    "type": 3
+  },
+  {
+    "id": "210040",
+    "text": "Ignited Spirit GUTS",
+    "type": 3
+  },
+  {
+    "id": "210050",
+    "text": "Ignited Spirit WIT",
+    "type": 3
+  },
+  {
+    "id": "300010",
+    "text": "URA Finale",
+    "type": 4
+  },
+  {
+    "id": "300020",
+    "text": "Unity Cup",
+    "type": 4
+  },
+  {
+    "id": "1001010",
+    "text": "Shooting Star",
+    "type": 5
+  },
+  {
+    "id": "1001020",
+    "text": "Dazzl'n ♪ Diver",
+    "type": 5
+  },
+  {
+    "id": "1002010",
+    "text": "The View from the Lead Is Mine!",
+    "type": 5
+  },
+  {
+    "id": "1003010",
+    "text": "Sky-High Teio Step",
+    "type": 5
+  },
+  {
+    "id": "1003020",
+    "text": "Certain Victory",
+    "type": 5
+  },
+  {
+    "id": "1004010",
+    "text": "Red Shift/LP1211-M",
+    "type": 5
+  },
+  {
+    "id": "1004020",
+    "text": "A Kiss for Courage",
+    "type": 5
+  },
+  {
+    "id": "1005010",
+    "text": "Lights of Vaudeville",
+    "type": 5
+  },
+  {
+    "id": "1006010",
+    "text": "Triumphant Pulse",
+    "type": 5
+  },
+  {
+    "id": "1007010",
+    "text": "Anchors Aweigh!",
+    "type": 5
+  },
+  {
+    "id": "1008010",
+    "text": "Cut and Drive!",
+    "type": 5
+  },
+  {
+    "id": "1009010",
+    "text": "Resplendent Red Ace",
+    "type": 5
+  },
+  {
+    "id": "1010010",
+    "text": "Shooting for Victory!",
+    "type": 5
+  },
+  {
+    "id": "1011010",
+    "text": "Where There's a Will, There's a Way",
+    "type": 5
+  },
+  {
+    "id": "1011020",
+    "text": "Superior Heal",
+    "type": 5
+  },
+  {
+    "id": "1012010",
+    "text": "You and Me! One-on-One!",
+    "type": 5
+  },
+  {
+    "id": "1013010",
+    "text": "The Duty of Dignity Calls",
+    "type": 5
+  },
+  {
+    "id": "1013020",
+    "text": "Legacy of the Strong",
+    "type": 5
+  },
+  {
+    "id": "1014010",
+    "text": "Victoria por plancha ☆",
+    "type": 5
+  },
+  {
+    "id": "1014020",
+    "text": "Condor's Fury",
+    "type": 5
+  },
+  {
+    "id": "1015010",
+    "text": "This Dance Is for Vittoria!",
+    "type": 5
+  },
+  {
+    "id": "1016010",
+    "text": "Shadow Break",
+    "type": 5
+  },
+  {
+    "id": "1017010",
+    "text": "Behold Thine Emperor's Divine Might",
+    "type": 5
+  },
+  {
+    "id": "1018010",
+    "text": "Blazing Pride",
+    "type": 5
+  },
+  {
+    "id": "1018020",
+    "text": "Eternal Moments",
+    "type": 5
+  },
+  {
+    "id": "1020010",
+    "text": "Angling and Scheming",
+    "type": 5
+  },
+  {
+    "id": "1023010",
+    "text": "∴win Q.E.D.",
+    "type": 5
+  },
+  {
+    "id": "1024010",
+    "text": "Flashy☆Landing",
+    "type": 5
+  },
+  {
+    "id": "1024020",
+    "text": "Flowery☆Maneuver",
+    "type": 5
+  },
+  {
+    "id": "1026010",
+    "text": "G00 1st. F∞;",
+    "type": 5
+  },
+  {
+    "id": "1027010",
+    "text": "Let's Pump Some Iron!",
+    "type": 5
+  },
+  {
+    "id": "1030010",
+    "text": "Blue Rose Closer",
+    "type": 5
+  },
+  {
+    "id": "1032010",
+    "text": "U=ma2",
+    "type": 5
+  },
+  {
+    "id": "1035010",
+    "text": "Our Ticket to Win!",
+    "type": 5
+  },
+  {
+    "id": "1037010",
+    "text": "Schwarzes Schwert",
+    "type": 5
+  },
+  {
+    "id": "1038010",
+    "text": "#LookatCurren",
+    "type": 5
+  },
+  {
+    "id": "1040010",
+    "text": "KEEP IT REAL.",
+    "type": 5
+  },
+  {
+    "id": "1041010",
+    "text": "Genius x Bakushin = Victory",
+    "type": 5
+  },
+  {
+    "id": "1045010",
+    "text": "Pure Heart",
+    "type": 5
+  },
+  {
+    "id": "1046010",
+    "text": "SPARKLY☆STARDOM",
+    "type": 5
+  },
+  {
+    "id": "1050010",
+    "text": "Nemesis",
+    "type": 5
+  },
+  {
+    "id": "1052010",
+    "text": "Super-Duper Climax",
+    "type": 5
+  },
+  {
+    "id": "1056010",
+    "text": "I See Victory in My Future!",
+    "type": 5
+  },
+  {
+    "id": "1056020",
+    "text": "Bountiful Harvest",
+    "type": 5
+  },
+  {
+    "id": "1058010",
+    "text": "I Never Goof Up!",
+    "type": 5
+  },
+  {
+    "id": "1060010",
+    "text": "Just a Little Farther!",
+    "type": 5
+  },
+  {
+    "id": "1061010",
+    "text": "Prideful King",
+    "type": 5
+  }
+]

@@ -1,0 +1,216 @@
+.distance-selector-card {
+  position: sticky;
+  top: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  width: 280px;
+  flex-shrink: 0;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  // Compact mode for smaller screens
+  &.compact {
+    padding: 0.75rem;
+    width: 240px;
+
+    .distance-pills {
+      gap: 0.25rem;
+    }
+
+    .distance-pill {
+      min-height: 32px;
+      padding: 0.375rem 0.5rem;
+      font-size: 0.75rem;
+
+      .pill-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+      }
+
+      .pill-label.hidden {
+        display: none;
+      }
+
+      &:not(.active) .pill-label.hidden + .pill-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none; // Hide on mobile, use mobile selectors instead
+  }
+}
+
+.distance-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #64b5f6;
+    filter: drop-shadow(0 1px 2px rgba(100, 181, 246, 0.3));
+  }
+}
+
+.distance-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.distance-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  min-height: 36px;
+
+  &:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    transform: translateX(1px);
+    border-color: rgba(255, 255, 255, 0.15);
+
+    .pill-icon {
+      color: rgba(255, 255, 255, 0.9);
+      transform: scale(1.05);
+    }
+  }
+
+  .pill-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+  }
+
+  .pill-label {
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, var(--distance-primary, #64b5f6) 0%, var(--distance-secondary, #2196f3) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.15),
+      0 1px 3px var(--distance-shadow, rgba(100, 181, 246, 0.4));
+
+    .pill-icon {
+      color: white;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+
+    .pill-label {
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  // Distance-specific styling
+  &[data-distance="sprint"] {
+    --distance-primary: #ff9800;
+    --distance-secondary: #f57c00;
+    --distance-shadow: rgba(255, 152, 0, 0.3);
+  }
+
+  &[data-distance="mile"] {
+    --distance-primary: #4caf50;
+    --distance-secondary: #388e3c;
+    --distance-shadow: rgba(76, 175, 80, 0.3);
+  }
+
+  &[data-distance="medium"] {
+    --distance-primary: #2196f3;
+    --distance-secondary: #1976d2;
+    --distance-shadow: rgba(33, 150, 243, 0.3);
+  }
+
+  &[data-distance="long"] {
+    --distance-primary: #9c27b0;
+    --distance-secondary: #7b1fa2;
+    --distance-shadow: rgba(156, 39, 176, 0.3);
+  }
+
+  &[data-distance="dirt"] {
+    --distance-primary: #795548;
+    --distance-secondary: #5d4037;
+    --distance-shadow: rgba(121, 85, 72, 0.3);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+  .distance-selector-card {
+    &:not(.compact) {
+      width: 240px;
+      padding: 0.875rem;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .distance-selector-card {
+    width: 200px;
+    padding: 0.75rem;
+
+    .distance-pill {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.75rem;
+      min-height: 32px;
+
+      .pill-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+      }
+    }
+
+    &.compact {
+      width: 180px;
+
+      .distance-pill {
+        padding: 0.3rem 0.5rem;
+        min-height: 28px;
+      }
+    }
+  }
+}

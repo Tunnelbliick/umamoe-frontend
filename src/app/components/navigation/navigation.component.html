@@ -1,0 +1,78 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/" class="brand-link">
+        <img
+          src="assets/logo.png"
+          alt="Site Logo"
+          class="brand-logo-img"
+          (error)="onLogoError($event)"
+          width="32"
+          height="32"
+        />
+        <span class="brand-text">uma.moe</span>
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="/inheritance" routerLinkActive="active" class="nav-link">
+        <mat-icon>family_restroom</mat-icon>
+        <span
+          >Inheritance
+          <!--<span class="updated-badge">UPDATED</span>--></span
+        >
+      </a>
+
+      <a routerLink="/support-cards" routerLinkActive="active" class="nav-link">
+        <mat-icon>style</mat-icon>
+        <span
+          >Support Cards
+          <!--<span class="updated-badge">UPDATED</span>--></span
+        >
+      </a>
+
+      <a routerLink="/tierlist" routerLinkActive="active" class="nav-link">
+        <mat-icon>leaderboard</mat-icon>
+        <span>Tierlist</span>
+      </a>
+
+      <a routerLink="/tools" routerLinkActive="active" class="nav-link new-feature">
+        <mat-icon>build</mat-icon>
+        <span>Tools</span>
+      </a>
+
+      <a routerLink="/timeline" routerLinkActive="active" class="nav-link">
+        <mat-icon>schedule</mat-icon>
+        <span>Timeline</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Tierlist Menu -->
+  <mat-menu #tierlistMenu="matMenu" class="nav-dropdown-menu">
+    <button mat-menu-item routerLink="/tierlist/ura">
+      <mat-icon>emoji_events</mat-icon>
+      <span>URA Scenario</span>
+    </button>
+    <button mat-menu-item routerLink="/tierlist/aoharu" disabled>
+      <mat-icon>school</mat-icon>
+      <span>Aoharu (WIP)</span>
+    </button>
+    <button mat-menu-item routerLink="/tierlist/climax" disabled>
+      <mat-icon>local_fire_department</mat-icon>
+      <span>Climax (WIP)</span>
+    </button>
+  </mat-menu>
+
+  <!-- Simulator Menu -->
+  <mat-menu #simulatorMenu="matMenu" class="nav-dropdown-menu">
+    <button mat-menu-item routerLink="/simulator/stamina" disabled>
+      <mat-icon>battery_charging_full</mat-icon>
+      <span>Stamina Calculator (WIP)</span>
+    </button>
+    <button mat-menu-item routerLink="/simulator/race" disabled>
+      <mat-icon>sports_score</mat-icon>
+      <span>Race Simulator (WIP)</span>
+    </button>
+  </mat-menu>
+</nav>

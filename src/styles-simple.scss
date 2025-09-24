@@ -1,0 +1,89 @@
+// Angular Material theming imports
+@use '@angular/material' as mat;
+
+// Core CSS
+@include mat.core();
+
+// Define color palettes
+$primary-palette: mat.define-palette(mat.$blue-palette, 400);
+$accent-palette: mat.define-palette(mat.$green-palette, 400);
+$warn-palette: mat.define-palette(mat.$red-palette, 400);
+
+// Create dark theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  )
+));
+
+// Apply theme
+@include mat.all-component-themes($dark-theme);
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #1e1e1e;
+  --bg-quaternary: #2a2a2a;
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  
+  --accent-primary: #64b5f6;
+  --accent-secondary: #81c784;
+  
+  --border-primary: rgba(255, 255, 255, 0.12);
+  --border-secondary: rgba(255, 255, 255, 0.2);
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+// Angular Material overrides
+.mat-mdc-card {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: var(--bg-tertiary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-input-control {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-panel {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.mat-mdc-chip {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-paginator {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}

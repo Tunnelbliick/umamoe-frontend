@@ -1,0 +1,349 @@
+<div class="support-cards-database">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Support Cards Database</h1>
+      <p>
+        Browse community submitted support cards to borrow for your scenario
+        deck.
+      </p>
+
+      <div class="quick-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openSubmitDialog()"
+          class="action-btn"
+        >
+          <mat-icon>add</mat-icon>
+          Add Trainer ID
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Filters Component -->
+    <div class="search-section">
+      <app-support-card-filter (filtersChanged)="onFiltersChanged($event)">
+      </app-support-card-filter>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="results-header">
+        <div class="results-info">
+          <h2>Results</h2>
+          <p *ngIf="!loading">
+            {{ totalRecords || 0 }} records found
+            <span *ngIf="trainerIdFilter" class="trainer-filter-indicator">
+              for trainer {{ trainerIdFilter }}
+            </span>
+            <span *ngIf="hasActiveFilters() && !trainerIdFilter" class="filter-indicator">
+              (filtered)
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Searching support card records...</p>
+      </div>
+
+      <!-- Results Grid -->
+      <div
+        *ngIf="!loading && allRecords && allRecords.length"
+        class="results-grid"
+      >
+        <div *ngFor="let record of allRecords" class="record-card">
+          <div class="record-header">
+            <!-- Compact single-row layout -->
+            <div class="record-main-info">
+              <!-- Left side: Performance metrics section -->
+              <div class="performance-section">
+                <!-- Support card image first and most prominent with LB -->
+                <div class="support-card-meta-header">
+                  <img
+                    [src]="record.cardImageUrl"
+                    [alt]="'Support Card ' + record.support_card_id"
+                    class="card-image-header"
+                  />
+                  <!-- Limit break diamonds below image -->
+                  <div class="card-limit-break">
+                    <ng-container
+                      *ngFor="
+                        let icon of getLimitBreakIcons(record.limit_break_count)
+                      "
+                    >
+                      <span
+                        class="limit-break-icon"
+                        *ngIf="icon.filled == false"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                        >
+                          <path
+                            d="M480-64 224-480l256-416 256 416L480-64Zm0-139 170-277-170-278-169 278 169 277Zm0-277Z"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        class="limit-break-icon"
+                        *ngIf="icon.filled == true"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#2196F3"
+                        >
+                          <path d="M480-64 224-480l256-416 256 416L480-64Z" />
+                        </svg>
+                      </span>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="main-stats">
+                  <!-- Card name and tags on same line -->
+                  <div class="card-title-line">
+                    <span class="card-name-stat">{{ record.cardName }}</span>
+                    <div class="card-tags">
+                      <span class="type-tag">{{
+                        getTypeDisplayName(record.cardType)
+                      }}</span>
+                      <span class="rarity-tag">{{
+                        getRarityDisplayName(record.cardRarity)
+                      }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Verification badge below -->
+                  <div
+                    class="verification-badge verified"
+                    matTooltip="Verified record"
+                  >
+                    <mat-icon>verified</mat-icon>
+                    <span class="badge-date">{{
+                      record.last_updated | date : "MMM d, y 'at' h:mm a"
+                    }}</span>
+                  </div>
+
+                  <!-- Compact inheritance info inline below verification -->
+                  <div
+                    *ngIf="hasInheritanceData(record)"
+                    class="inheritance-inline"
+                  >
+                    <!-- Blue sparks -->
+                    <span
+                      class="spark-group"
+                      *ngIf="
+                        record.inheritance?.blue_sparks &&
+                        record.inheritance!.blue_sparks.length > 0
+                      "
+                    >
+                      <span
+                        *ngFor="
+                          let spark of resolveSparks(
+                            record.inheritance!.blue_sparks
+                          )
+                        "
+                        class="spark-badge blue"
+                      >
+                        {{ spark.level }}
+                        <mat-icon class="tiny-icon">star</mat-icon>
+                        {{ spark.name }}
+                      </span>
+                    </span>
+
+                    <!-- Pink sparks -->
+                    <span
+                      class="spark-group"
+                      *ngIf="
+                        record.inheritance?.pink_sparks &&
+                        record.inheritance!.pink_sparks.length > 0
+                      "
+                    >
+                      <span
+                        *ngFor="
+                          let spark of resolveSparks(
+                            record.inheritance!.pink_sparks
+                          )
+                        "
+                        class="spark-badge pink"
+                      >
+                        {{ spark.level }}
+                        <mat-icon class="tiny-icon">star</mat-icon>
+                        {{ spark.name }}
+                      </span>
+                    </span>
+
+                    <!-- Green sparks -->
+                    <span
+                      class="spark-group"
+                      *ngIf="
+                        record.inheritance?.green_sparks &&
+                        record.inheritance!.green_sparks.length > 0
+                      "
+                    >
+                      <span
+                        *ngFor="
+                          let spark of resolveSparks(
+                            record.inheritance!.green_sparks
+                          ).slice(0, 2)
+                        "
+                        class="spark-badge green"
+                      >
+                        {{ spark.level }}
+                        <mat-icon class="tiny-icon">star</mat-icon>
+                        {{ spark.name }}
+                      </span>
+                      <span
+                        *ngIf="record.inheritance!.green_sparks.length > 2"
+                        class="spark-badge green"
+                      >
+                        +{{ record.inheritance!.green_sparks.length - 2 }} more
+                      </span>
+                    </span>
+
+                    <!-- White sparks count -->
+                    <span
+                      class="spark-group"
+                      *ngIf="
+                        record.inheritance?.white_sparks &&
+                        record.inheritance!.white_sparks.length > 0
+                      "
+                    >
+                      <span class="spark-badge white">
+                        <mat-icon class="tiny-icon">circle</mat-icon>
+                        {{ record.inheritance!.white_sparks.length }} White
+                        Skills
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side: Trainer and actions -->
+              <div class="right-actions">
+                <!-- Trainer ID section -->
+                <div class="trainer-section">
+                  <div class="trainer-info">
+                    <div class="trainer-details">
+                      <span class="trainer-label">Trainer:</span>
+                      <span *ngIf="record.trainer_name" class="trainer-name">{{
+                        record.trainer_name
+                      }}</span>
+                    </div>
+                    <button
+                      mat-button
+                      class="user-id-copy-btn"
+                      (click)="copyUserId(record.account_id, $event)"
+                      [disabled]="!isValidAccountId(record.account_id)"
+                      [matTooltip]="
+                        isValidAccountId(record.account_id)
+                          ? 'Click to copy: ' + record.account_id
+                          : 'Trainer ID not available'
+                      "
+                    >
+                      <span class="user-id">{{
+                        (record.account_id | trainerIdFormat) || "N/A"
+                      }}</span>
+                      <mat-icon>content_copy</mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Report button -->
+                <button
+                  mat-raised-button
+                  class="unavailable-btn"
+                  (click)="
+                    reportUnavailable(
+                      record.account_id  || '',
+                      $event
+                    )
+                  "
+                  [disabled]="
+                    (!record.account_id) ||
+                    hasReportedTrainer(
+                      record.account_id ||''
+                    ) ||
+                    isReportingInProgress(
+                      record.account_id || ''
+                    )
+                  "
+                  [matTooltip]="
+                    hasReportedTrainer(
+                      record.account_id ||  ''
+                    )
+                      ? 'You have already reported this trainer'
+                      : isReportingInProgress(
+                          record.account_id ||  ''
+                        )
+                      ? 'Report in progress...'
+                      : 'Report this user as unavailable or friend list full'
+                  "
+                >
+                  <mat-icon>{{
+                    hasReportedTrainer(
+                      record.account_id ||  ""
+                    )
+                      ? "check"
+                      : isReportingInProgress(
+                          record.account_id ||  ""
+                        )
+                      ? "hourglass_empty"
+                      : "person_off"
+                  }}</mat-icon>
+                  <span class="btn-text">{{
+                    hasReportedTrainer(
+                      record.account_id || ""
+                    )
+                      ? "Reported"
+                      : isReportingInProgress(
+                          record.account_id ||  ""
+                        )
+                      ? "Reporting..."
+                      : "Report Unavailable"
+                  }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Results -->
+        <div
+          *ngIf="!loading && allRecords && allRecords.length === 0"
+          class="no-results"
+        >
+          <mat-icon>search_off</mat-icon>
+          <h3>No records found</h3>
+          <p>
+            Try adjusting your search criteria or submit your Trainer ID to help
+            the community.
+          </p>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="openSubmitDialog()"
+          >
+            Add Trainer ID
+          </button>
+        </div>
+
+        <!-- Loading more indicator -->
+        <div *ngIf="loadingMore" class="loading-container">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Loading more records...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

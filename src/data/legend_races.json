@@ -1,0 +1,1170 @@
+[
+  {
+    "race_name": "Tokyo Yushun (Japan Derby)  Legend Race",
+    "start_date": "5 May 2024, 5:00",
+    "end_date": "10 May 2024, 21:59",
+    "course": "2400m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Ines Fujin (Original)",
+        "image": "chara_stand_103101.png",
+        "phase_start": "5 May 2024, 5:00",
+        "phase_end": "7 May 2024, 21:59",
+        "stats": {
+          "Speed": 692,
+          "Stamina": 622,
+          "Power": 714,
+          "Guts": 653,
+          "Wisdom": 633
+        }
+      },
+      {
+        "name": "Admire Vega (Original)",
+        "image": "chara_stand_103301.png",
+        "phase_start": "7 May 2024, 22:00",
+        "phase_end": "10 May 2024, 21:59",
+        "stats": {
+          "Speed": 732,
+          "Stamina": 667,
+          "Power": 751,
+          "Guts": 585,
+          "Wisdom": 596
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tenno Sho (Spring) Legend Race",
+    "start_date": "4 Apr 2024, 5:00",
+    "end_date": "9 Apr 2024, 21:59",
+    "course": "3200m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Inari One (Original)",
+        "image": "chara_stand_103401.png",
+        "phase_start": "4 Apr 2024, 5:00",
+        "phase_end": "6 Apr 2024, 21:59",
+        "stats": {
+          "Speed": 711,
+          "Stamina": 579,
+          "Power": 684,
+          "Guts": 684,
+          "Wisdom": 627
+        }
+      },
+      {
+        "name": "TM Opera O (New Year)",
+        "image": "chara_stand_101502.png",
+        "phase_start": "6 Apr 2024, 22:00",
+        "phase_end": "9 Apr 2024, 21:59",
+        "stats": {
+          "Speed": 707,
+          "Stamina": 584,
+          "Power": 648,
+          "Guts": 659,
+          "Wisdom": 683
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Satsuki Sho Legend Race",
+    "start_date": "7 Mar 2024, 4:00",
+    "end_date": "12 Mar 2024, 20:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Mr. C.B. (Original)",
+        "image": "chara_stand_105701.png",
+        "phase_start": "7 Mar 2024, 4:00",
+        "phase_end": "9 Mar 2024, 20:59",
+        "stats": {
+          "Speed": 745,
+          "Stamina": 745,
+          "Power": 773,
+          "Guts": 549,
+          "Wisdom": 591
+        }
+      },
+      {
+        "name": "Seiun Sky (Ballroom)",
+        "image": "chara_stand_102002.png",
+        "phase_start": "9 Mar 2024, 21:00",
+        "phase_end": "12 Mar 2024, 20:59",
+        "stats": {
+          "Speed": 798,
+          "Stamina": 799,
+          "Power": 776,
+          "Guts": 634,
+          "Wisdom": 607
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Takamatsunomiya Kinen Legend Race",
+    "start_date": "8 Feb 2024, 4:00",
+    "end_date": "13 Feb 2024, 20:59",
+    "course": "1200m - Short - Turf",
+    "bosses": [
+      {
+        "name": "Seeking the Pearl (Original)",
+        "image": "chara_stand_104201.png",
+        "phase_start": "8 Feb 2024, 4:00",
+        "phase_end": "10 Feb 2024, 20:59",
+        "stats": {
+          "Speed": 699,
+          "Stamina": 631,
+          "Power": 662,
+          "Guts": 629,
+          "Wisdom": 528
+        }
+      },
+      {
+        "name": "King Halo (Cheerleader)",
+        "image": "chara_stand_106102.png",
+        "phase_start": "10 Feb 2024, 21:00",
+        "phase_end": "13 Feb 2024, 20:59",
+        "stats": {
+          "Speed": 801,
+          "Stamina": 510,
+          "Power": 798,
+          "Guts": 546,
+          "Wisdom": 677
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Asahi Hai Futurity Stakes Legend Race",
+    "start_date": "4 Jan 2024, 4:00",
+    "end_date": "9 Jan 2024, 20:59",
+    "course": "1600m - Mile - Turf",
+    "bosses": [
+      {
+        "name": "Sakura Chiyono O (Original)",
+        "image": "chara_stand_106901.png",
+        "phase_start": "4 Jan 2024, 4:00",
+        "phase_end": "6 Jan 2024, 20:59",
+        "stats": {
+          "Speed": 644,
+          "Stamina": 623,
+          "Power": 591,
+          "Guts": 668,
+          "Wisdom": 655
+        }
+      },
+      {
+        "name": "Mihono Bourbon (Valentine)",
+        "image": "chara_stand_102602.png",
+        "phase_start": "6 Jan 2024, 21:00",
+        "phase_end": "9 Jan 2024, 20:59",
+        "stats": {
+          "Speed": 760,
+          "Stamina": 711,
+          "Power": 701,
+          "Guts": 562,
+          "Wisdom": 641
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Arima Kinen Legend Race",
+    "start_date": "7 Dec 2023, 4:00",
+    "end_date": "12 Dec 2023, 20:59",
+    "course": "2500m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Oguri Cap (Christmas)",
+        "image": "chara_stand_100602.png",
+        "phase_start": "7 Dec 2023, 4:00",
+        "phase_end": "9 Dec 2023, 20:59",
+        "stats": {
+          "Speed": 657,
+          "Stamina": 557,
+          "Power": 698,
+          "Guts": 639,
+          "Wisdom": 637
+        }
+      },
+      {
+        "name": "Manhattan Cafe (Original)",
+        "image": "chara_stand_102501.png",
+        "phase_start": "9 Dec 2023, 21:00",
+        "phase_end": "12 Dec 2023, 20:59",
+        "stats": {
+          "Speed": 699,
+          "Stamina": 756,
+          "Power": 708,
+          "Guts": 490,
+          "Wisdom": 599
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tenno Sho (Autumn) Legend Race",
+    "start_date": "6 Nov 2023, 4:00",
+    "end_date": "11 Nov 2023, 20:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Tamamo Cross (Festival)",
+        "image": "chara_stand_102102.png",
+        "phase_start": "6 Nov 2023, 4:00",
+        "phase_end": "8 Nov 2023, 20:59",
+        "stats": {
+          "Speed": 697,
+          "Stamina": 678,
+          "Power": 710,
+          "Guts": 629,
+          "Wisdom": 537
+        }
+      },
+      {
+        "name": "Tosen Jordan (Original)",
+        "image": "chara_stand_104801.png",
+        "phase_start": "8 Nov 2023, 21:00",
+        "phase_end": "11 Nov 2023, 20:59",
+        "stats": {
+          "Speed": 760,
+          "Stamina": 711,
+          "Power": 701,
+          "Guts": 562,
+          "Wisdom": 641
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Kikka Sho Legend Race",
+    "start_date": "5 Oct 2023, 5:00",
+    "end_date": "10 Oct 2023, 21:59",
+    "course": "3000m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Kitasan Black (Original)",
+        "image": "chara_stand_106801.png",
+        "phase_start": "5 Oct 2023, 5:00",
+        "phase_end": "7 Oct 2023, 21:59",
+        "stats": {
+          "Speed": 702,
+          "Stamina": 699,
+          "Power": 601,
+          "Guts": 741,
+          "Wisdom": 695
+        }
+      },
+      {
+        "name": "Satono Diamond (Original)",
+        "image": "chara_stand_106701.png",
+        "phase_start": "7 Oct 2023, 22:00",
+        "phase_end": "10 Oct 2023, 21:59",
+        "stats": {
+          "Speed": 639,
+          "Stamina": 601,
+          "Power": 669,
+          "Guts": 636,
+          "Wisdom": 679
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Sprinters Stakes Legend Race",
+    "start_date": "6 Sept 2023, 5:00",
+    "end_date": "11 Sept 2023, 21:59",
+    "course": "1200m - Short - Turf",
+    "bosses": [
+      {
+        "name": "Bamboo Memory (Original)",
+        "image": "chara_stand_105301.png",
+        "phase_start": "6 Sept 2023, 5:00",
+        "phase_end": "8 Sept 2023, 21:59",
+        "stats": {
+          "Speed": 739,
+          "Stamina": 535,
+          "Power": 760,
+          "Guts": 616,
+          "Wisdom": 554
+        }
+      },
+      {
+        "name": "Taiki Shuttle (Camping)",
+        "image": "chara_stand_101002.png",
+        "phase_start": "8 Sept 2023, 22:00",
+        "phase_end": "11 Sept 2023, 21:59",
+        "stats": {
+          "Speed": 638,
+          "Stamina": 598,
+          "Power": 731,
+          "Guts": 667,
+          "Wisdom": 517
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Teio Sho Legend Race",
+    "start_date": "9 Aug 2023, 5:00",
+    "end_date": "14 Aug 2023, 21:59",
+    "course": "2000m - Medium - Dirt",
+    "bosses": [
+      {
+        "name": "Smart Falcon (Original)",
+        "image": "chara_stand_104601.png",
+        "phase_start": "9 Aug 2023, 5:00",
+        "phase_end": "11 Aug 2023, 21:59",
+        "stats": {
+          "Speed": 832,
+          "Stamina": 520,
+          "Power": 682,
+          "Guts": 803,
+          "Wisdom": 708
+        }
+      },
+      {
+        "name": "Copano Rickey (Original)",
+        "image": "chara_stand_109801.png",
+        "phase_start": "11 Aug 2023, 22:00",
+        "phase_end": "14 Aug 2023, 21:59",
+        "stats": {
+          "Speed": 556,
+          "Stamina": 751,
+          "Power": 609,
+          "Guts": 667,
+          "Wisdom": 651
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Takarazuka Kinen Legend Race",
+    "start_date": "6 Jul 2023, 5:00",
+    "end_date": "11 Jul 2023, 21:59",
+    "course": "2200m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Mayano Top Gun (Wedding)",
+        "image": "chara_stand_102402.png",
+        "phase_start": "6 Jul 2023, 5:00",
+        "phase_end": "8 Jul 2023, 21:59",
+        "stats": {
+          "Speed": 824,
+          "Stamina": 587,
+          "Power": 715,
+          "Guts": 669,
+          "Wisdom": 471
+        }
+      },
+      {
+        "name": "Sweep Tosho (Original)",
+        "image": "chara_stand_104401.png",
+        "phase_start": "8 Jul 2023, 22:00",
+        "phase_end": "11 Jul 2023, 21:59",
+        "stats": {
+          "Speed": 910,
+          "Stamina": 650,
+          "Power": 654,
+          "Guts": 587,
+          "Wisdom": 534
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Yasuda Kinen Legend Race",
+    "start_date": "5 Jun 2023, 5:00",
+    "end_date": "10 Jun 2023, 21:59",
+    "course": "1600m - Mile - Turf",
+    "bosses": [
+      {
+        "name": "Yamanin Zephyr (Original)",
+        "image": "chara_stand_107801.png",
+        "phase_start": "5 Jun 2023, 5:00",
+        "phase_end": "7 Jun 2023, 21:59",
+        "stats": {
+          "Speed": 832,
+          "Stamina": 470,
+          "Power": 630,
+          "Guts": 770,
+          "Wisdom": 703
+        }
+      },
+      {
+        "name": "Agnes Digital (Halloween)",
+        "image": "chara_stand_101902.png",
+        "phase_start": "7 Jun 2023, 22:00",
+        "phase_end": "10 Jun 2023, 21:59",
+        "stats": {
+          "Speed": 636,
+          "Stamina": 661,
+          "Power": 650,
+          "Guts": 619,
+          "Wisdom": 708
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Osaka Hai Legend Race",
+    "start_date": "22 Apr 2023, 5:00",
+    "end_date": "27 Apr 2023, 21:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Yaeno Muteki (Original)",
+        "image": "chara_stand_107201.png",
+        "phase_start": "22 Apr 2023, 5:00",
+        "phase_end": "24 Apr 2023, 21:59",
+        "stats": {
+          "Speed": 680,
+          "Stamina": 714,
+          "Power": 616,
+          "Guts": 708,
+          "Wisdom": 655
+        }
+      },
+      {
+        "name": "Tokai Teio (Anime Collab)",
+        "image": "chara_stand_100302.png",
+        "phase_start": "24 Apr 2023, 22:00",
+        "phase_end": "27 Apr 2023, 21:59",
+        "stats": {
+          "Speed": 691,
+          "Stamina": 680,
+          "Power": 653,
+          "Guts": 605,
+          "Wisdom": 653
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Arima Kinen Legend Race",
+    "start_date": "25 Dec 2022, 4:00",
+    "end_date": "30 Dec 2022, 20:59",
+    "course": "2500m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Mejiro Palmer (Original)",
+        "image": "chara_stand_106401.png",
+        "phase_start": "25 Dec 2022, 4:00",
+        "phase_end": "27 Dec 2022, 20:59",
+        "stats": {
+          "Speed": 870,
+          "Stamina": 741,
+          "Power": 714,
+          "Guts": 616,
+          "Wisdom": 619
+        }
+      },
+      {
+        "name": "Daiwa Scarlet (Original)",
+        "image": "chara_stand_100901.png",
+        "phase_start": "27 Dec 2022, 21:00",
+        "phase_end": "30 Dec 2022, 20:59",
+        "stats": {
+          "Speed": 780,
+          "Stamina": 696,
+          "Power": 763,
+          "Guts": 597,
+          "Wisdom": 609
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Shuuka Sho Legend Race",
+    "start_date": "22 Oct 2022, 5:00",
+    "end_date": "27 Oct 2022, 21:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Fine Motion (Original)",
+        "image": "chara_stand_102201.png",
+        "phase_start": "22 Oct 2022, 5:00",
+        "phase_end": "24 Oct 2022, 21:59",
+        "stats": {
+          "Speed": 713,
+          "Stamina": 493,
+          "Power": 690,
+          "Guts": 699,
+          "Wisdom": 661
+        }
+      },
+      {
+        "name": "Kawakami Princess (Original)",
+        "image": "chara_stand_103901.png",
+        "phase_start": "24 Oct 2022, 22:00",
+        "phase_end": "27 Oct 2022, 21:59",
+        "stats": {
+          "Speed": 725,
+          "Stamina": 513,
+          "Power": 708,
+          "Guts": 699,
+          "Wisdom": 647
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Sprinters Stakes Legend Race",
+    "start_date": "23 Sept 2022, 5:00",
+    "end_date": "28 Sept 2022, 21:59",
+    "course": "1200m - Short - Turf",
+    "bosses": [
+      {
+        "name": "Nishino Flower (Original)",
+        "image": "chara_stand_105101.png",
+        "phase_start": "23 Sept 2022, 5:00",
+        "phase_end": "25 Sept 2022, 21:59",
+        "stats": {
+          "Speed": 689,
+          "Stamina": 496,
+          "Power": 666,
+          "Guts": 675,
+          "Wisdom": 638
+        }
+      },
+      {
+        "name": "Hishi Akebono (Original)",
+        "image": "chara_stand_102801.png",
+        "phase_start": "25 Sept 2022, 22:00",
+        "phase_end": "28 Sept 2022, 21:59",
+        "stats": {
+          "Speed": 663,
+          "Stamina": 469,
+          "Power": 745,
+          "Guts": 639,
+          "Wisdom": 673
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Takarazuka Kinen Legend Race",
+    "start_date": "24 Jun 2022, 5:00",
+    "end_date": "29 Jun 2022, 21:59",
+    "course": "2200m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Tamamo Cross (Original)",
+        "image": "chara_stand_102101.png",
+        "phase_start": "24 Jun 2022, 5:00",
+        "phase_end": "26 Jun 2022, 21:59",
+        "stats": {
+          "Speed": 710,
+          "Stamina": 690,
+          "Power": 723,
+          "Guts": 641,
+          "Wisdom": 547
+        }
+      },
+      {
+        "name": "Meisho Doto (Original)",
+        "image": "chara_stand_105801.png",
+        "phase_start": "26 Jun 2022, 22:00",
+        "phase_end": "29 Jun 2022, 21:59",
+        "stats": {
+          "Speed": 736,
+          "Stamina": 776,
+          "Power": 703,
+          "Guts": 641,
+          "Wisdom": 602
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tenno Sho (Spring) Legend Race",
+    "start_date": "10 May 2022, 5:00",
+    "end_date": "18 May 2022, 21:59",
+    "course": "3200m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Mejiro McQueen (Anime Collab)",
+        "image": "chara_stand_101302.png",
+        "phase_start": "10 May 2022, 5:00",
+        "phase_end": "12 May 2022, 21:59",
+        "stats": {
+          "Speed": 686,
+          "Stamina": 715,
+          "Power": 593,
+          "Guts": 484,
+          "Wisdom": 601
+        }
+      },
+      {
+        "name": "Rice Shower (Original)",
+        "image": "chara_stand_103001.png",
+        "phase_start": "12 May 2022, 22:00",
+        "phase_end": "15 May 2022, 21:59",
+        "stats": {
+          "Speed": 676,
+          "Stamina": 692,
+          "Power": 601,
+          "Guts": 538,
+          "Wisdom": 645
+        }
+      },
+      {
+        "name": "Mejiro Bright (Original)",
+        "image": "chara_stand_107401.png",
+        "phase_start": "15 May 2022, 22:00",
+        "phase_end": "18 May 2022, 21:59",
+        "stats": {
+          "Speed": 578,
+          "Stamina": 655,
+          "Power": 571,
+          "Guts": 487,
+          "Wisdom": 624
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Satsuki Sho Legend Race",
+    "start_date": "7 Mar 2022, 4:00",
+    "end_date": "15 Mar 2022, 20:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Agnes Tachyon (Original)",
+        "image": "chara_stand_103201.png",
+        "phase_start": "7 Mar 2022, 4:00",
+        "phase_end": "9 Mar 2022, 20:59",
+        "stats": {
+          "Speed": 840,
+          "Stamina": 578,
+          "Power": 720,
+          "Guts": 518,
+          "Wisdom": 610
+        }
+      },
+      {
+        "name": "Narita Taishin (Original)",
+        "image": "chara_stand_105001.png",
+        "phase_start": "9 Mar 2022, 21:00",
+        "phase_end": "12 Mar 2022, 20:59",
+        "stats": {
+          "Speed": 728,
+          "Stamina": 717,
+          "Power": 658,
+          "Guts": 666,
+          "Wisdom": 602
+        }
+      },
+      {
+        "name": "Narita Brian (Original)",
+        "image": "chara_stand_101601.png",
+        "phase_start": "12 Mar 2022, 21:00",
+        "phase_end": "15 Mar 2022, 20:59",
+        "stats": {
+          "Speed": 702,
+          "Stamina": 729,
+          "Power": 672,
+          "Guts": 613,
+          "Wisdom": 605
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Hanshin Juvenile Fillies Legend Race",
+    "start_date": "8 Feb 2022, 4:00",
+    "end_date": "16 Feb 2022, 20:59",
+    "course": "1600m - Mile - Turf",
+    "bosses": [
+      {
+        "name": "Hishi Amazon (Original)",
+        "image": "chara_stand_101201.png",
+        "phase_start": "8 Feb 2022, 4:00",
+        "phase_end": "10 Feb 2022, 20:59",
+        "stats": {
+          "Speed": 554,
+          "Stamina": 726,
+          "Power": 694,
+          "Guts": 691,
+          "Wisdom": 578
+        }
+      },
+      {
+        "name": "Mejiro Dober (Original)",
+        "image": "chara_stand_105901.png",
+        "phase_start": "10 Feb 2022, 21:00",
+        "phase_end": "13 Feb 2022, 20:59",
+        "stats": {
+          "Speed": 618,
+          "Stamina": 740,
+          "Power": 602,
+          "Guts": 724,
+          "Wisdom": 551
+        }
+      },
+      {
+        "name": "Gold City (Original)",
+        "image": "chara_stand_104001.png",
+        "phase_start": "13 Feb 2022, 21:00",
+        "phase_end": "16 Feb 2022, 20:59",
+        "stats": {
+          "Speed": 594,
+          "Stamina": 732,
+          "Power": 567,
+          "Guts": 707,
+          "Wisdom": 610
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Arima Kinen Legend Race",
+    "start_date": "22 Dec 2021, 4:00",
+    "end_date": "30 Dec 2021, 20:59",
+    "course": "2500m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Nice Nature (Original)",
+        "image": "chara_stand_106001.png",
+        "phase_start": "22 Dec 2021, 4:00",
+        "phase_end": "24 Dec 2021, 20:59",
+        "stats": {
+          "Speed": 728,
+          "Stamina": 624,
+          "Power": 594,
+          "Guts": 602,
+          "Wisdom": 661
+        }
+      },
+      {
+        "name": "Grass Wonder (Original)",
+        "image": "chara_stand_101101.png",
+        "phase_start": "24 Dec 2021, 21:00",
+        "phase_end": "27 Dec 2021, 20:59",
+        "stats": {
+          "Speed": 680,
+          "Stamina": 575,
+          "Power": 632,
+          "Guts": 672,
+          "Wisdom": 691
+        }
+      },
+      {
+        "name": "Oguri Cap (Original)",
+        "image": "chara_stand_100601.png",
+        "phase_start": "27 Dec 2021, 21:00",
+        "phase_end": "30 Dec 2021, 20:59",
+        "stats": {
+          "Speed": 613,
+          "Stamina": 648,
+          "Power": 597,
+          "Guts": 713,
+          "Wisdom": 721
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tenno Sho (Autumn) Legend Race",
+    "start_date": "12 Nov 2021, 4:00",
+    "end_date": "20 Nov 2021, 20:59",
+    "course": "2000m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Air Groove (Original)",
+        "image": "chara_stand_101801.png",
+        "phase_start": "12 Nov 2021, 4:00",
+        "phase_end": "14 Nov 2021, 20:59",
+        "stats": {
+          "Speed": 664,
+          "Stamina": 594,
+          "Power": 678,
+          "Guts": 697,
+          "Wisdom": 739
+        }
+      },
+      {
+        "name": "Eishin Flash (Original)",
+        "image": "chara_stand_103701.png",
+        "phase_start": "14 Nov 2021, 21:00",
+        "phase_end": "17 Nov 2021, 20:59",
+        "stats": {
+          "Speed": 706,
+          "Stamina": 619,
+          "Power": 703,
+          "Guts": 596,
+          "Wisdom": 683
+        }
+      },
+      {
+        "name": "Agnes Digital (Original)",
+        "image": "chara_stand_101901.png",
+        "phase_start": "17 Nov 2021, 21:00",
+        "phase_end": "20 Nov 2021, 20:59",
+        "stats": {
+          "Speed": 748,
+          "Stamina": 549,
+          "Power": 650,
+          "Guts": 619,
+          "Wisdom": 708
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Kikka Sho Legend Race",
+    "start_date": "15 Oct 2021, 5:00",
+    "end_date": "23 Oct 2021, 21:59",
+    "course": "3000m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Matikanefukukitaru (Original)",
+        "image": "chara_stand_105601.png",
+        "phase_start": "15 Oct 2021, 5:00",
+        "phase_end": "17 Oct 2021, 21:59",
+        "stats": {
+          "Speed": 596,
+          "Stamina": 794,
+          "Power": 616,
+          "Guts": 496,
+          "Wisdom": 430
+        }
+      },
+      {
+        "name": "Seiun Sky (Original)",
+        "image": "chara_stand_102001.png",
+        "phase_start": "17 Oct 2021, 22:00",
+        "phase_end": "20 Oct 2021, 21:59",
+        "stats": {
+          "Speed": 605,
+          "Stamina": 759,
+          "Power": 575,
+          "Guts": 365,
+          "Wisdom": 532
+        }
+      },
+      {
+        "name": "Biwa Hayahide (Original)",
+        "image": "chara_stand_102301.png",
+        "phase_start": "20 Oct 2021, 22:00",
+        "phase_end": "23 Oct 2021, 21:59",
+        "stats": {
+          "Speed": 608,
+          "Stamina": 760,
+          "Power": 582,
+          "Guts": 442,
+          "Wisdom": 440
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Asahi Hai Futurity Stakes Legend Race",
+    "start_date": "14 Sept 2021, 5:00",
+    "end_date": "22 Sept 2021, 21:59",
+    "course": "1600m - Mile - Turf",
+    "bosses": [
+      {
+        "name": "Maruzensky (Original)",
+        "image": "chara_stand_100401.png",
+        "phase_start": "14 Sept 2021, 5:00",
+        "phase_end": "16 Sept 2021, 21:59",
+        "stats": {
+          "Speed": 754,
+          "Stamina": 530,
+          "Power": 718,
+          "Guts": 512,
+          "Wisdom": 650
+        }
+      },
+      {
+        "name": "Fuji Kiseki (Original)",
+        "image": "chara_stand_100501.png",
+        "phase_start": "16 Sept 2021, 22:00",
+        "phase_end": "19 Sept 2021, 21:59",
+        "stats": {
+          "Speed": 781,
+          "Stamina": 538,
+          "Power": 728,
+          "Guts": 582,
+          "Wisdom": 672
+        }
+      },
+      {
+        "name": "Mihono Bourbon (Original)",
+        "image": "chara_stand_102601.png",
+        "phase_start": "19 Sept 2021, 22:00",
+        "phase_end": "22 Sept 2021, 21:59",
+        "stats": {
+          "Speed": 751,
+          "Stamina": 556,
+          "Power": 713,
+          "Guts": 532,
+          "Wisdom": 713
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Takarazuka Kinen Legend Race",
+    "start_date": "15 Aug 2021, 5:00",
+    "end_date": "23 Aug 2021, 21:59",
+    "course": "2200m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Mejiro Ryan (Original)",
+        "image": "chara_stand_102701.png",
+        "phase_start": "15 Aug 2021, 5:00",
+        "phase_end": "17 Aug 2021, 21:59",
+        "stats": {
+          "Speed": 662,
+          "Stamina": 672,
+          "Power": 640,
+          "Guts": 621,
+          "Wisdom": 640
+        }
+      },
+      {
+        "name": "Silence Suzuka (Original)",
+        "image": "chara_stand_100201.png",
+        "phase_start": "17 Aug 2021, 22:00",
+        "phase_end": "20 Aug 2021, 21:59",
+        "stats": {
+          "Speed": 655,
+          "Stamina": 543,
+          "Power": 699,
+          "Guts": 629,
+          "Wisdom": 692
+        }
+      },
+      {
+        "name": "Gold Ship (Original)",
+        "image": "chara_stand_100701.png",
+        "phase_start": "20 Aug 2021, 22:00",
+        "phase_end": "23 Aug 2021, 21:59",
+        "stats": {
+          "Speed": 632,
+          "Stamina": 664,
+          "Power": 624,
+          "Guts": 638,
+          "Wisdom": 656
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tenno Sho (Spring) Legend Race",
+    "start_date": "17 Jun 2021, 5:00",
+    "end_date": "28 Jun 2021, 21:59",
+    "course": "3200m - Long - Turf",
+    "bosses": [
+      {
+        "name": "Mayano Top Gun (Original)",
+        "image": "chara_stand_102401.png",
+        "phase_start": "17 Jun 2021, 5:00",
+        "phase_end": "19 Jun 2021, 21:59",
+        "stats": {
+          "Speed": 555,
+          "Stamina": 769,
+          "Power": 617,
+          "Guts": 569,
+          "Wisdom": 462
+        }
+      },
+      {
+        "name": "Mejiro McQueen (Original)",
+        "image": "chara_stand_101301.png",
+        "phase_start": "19 Jun 2021, 22:00",
+        "phase_end": "22 Jun 2021, 21:59",
+        "stats": {
+          "Speed": 601,
+          "Stamina": 727,
+          "Power": 518,
+          "Guts": 522,
+          "Wisdom": 476
+        }
+      },
+      {
+        "name": "TM Opera O (Original)",
+        "image": "chara_stand_101501.png",
+        "phase_start": "22 Jun 2021, 22:00",
+        "phase_end": "25 Jun 2021, 21:59",
+        "stats": {
+          "Speed": 621,
+          "Stamina": 763,
+          "Power": 578,
+          "Guts": 529,
+          "Wisdom": 454
+        }
+      },
+      {
+        "name": "Super Creek (Original)",
+        "image": "chara_stand_104501.png",
+        "phase_start": "25 Jun 2021, 22:00",
+        "phase_end": "28 Jun 2021, 21:59",
+        "stats": {
+          "Speed": 530,
+          "Stamina": 608,
+          "Power": 501,
+          "Guts": 580,
+          "Wisdom": 515
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Tokyo Yushun (Japan Derby) Legend Race",
+    "start_date": "19 May 2021, 5:00",
+    "end_date": "27 May 2021, 21:59",
+    "course": "2400m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "Winning Ticket (Original)",
+        "image": "chara_stand_103501.png",
+        "phase_start": "19 May 2021, 5:00",
+        "phase_end": "21 May 2021, 21:59",
+        "stats": {
+          "Speed": 651,
+          "Stamina": 633,
+          "Power": 807,
+          "Guts": 666,
+          "Wisdom": 732
+        }
+      },
+      {
+        "name": "Vodka (Original)",
+        "image": "chara_stand_100801.png",
+        "phase_start": "21 May 2021, 22:00",
+        "phase_end": "24 May 2021, 21:59",
+        "stats": {
+          "Speed": 673,
+          "Stamina": 577,
+          "Power": 853,
+          "Guts": 502,
+          "Wisdom": 713
+        }
+      },
+      {
+        "name": "Tokai Teio (Original)",
+        "image": "chara_stand_100301.png",
+        "phase_start": "24 May 2021, 22:00",
+        "phase_end": "27 May 2021, 21:59",
+        "stats": {
+          "Speed": 738,
+          "Stamina": 606,
+          "Power": 726,
+          "Guts": 582,
+          "Wisdom": 726
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Sprinters Stakes Legend Race",
+    "start_date": "15 Apr 2021, 5:00",
+    "end_date": "26 Apr 2021, 21:59",
+    "course": "1200m - Short - Turf",
+    "bosses": [
+      {
+        "name": "King Halo (Original)",
+        "image": "chara_stand_106101.png",
+        "phase_start": "15 Apr 2021, 5:00",
+        "phase_end": "17 Apr 2021, 21:59",
+        "stats": {
+          "Speed": 847,
+          "Stamina": 386,
+          "Power": 955,
+          "Guts": 463,
+          "Wisdom": 728
+        }
+      },
+      {
+        "name": "Taiki Shuttle (Original)",
+        "image": "chara_stand_101001.png",
+        "phase_start": "17 Apr 2021, 22:00",
+        "phase_end": "20 Apr 2021, 21:59",
+        "stats": {
+          "Speed": 849,
+          "Stamina": 419,
+          "Power": 826,
+          "Guts": 430,
+          "Wisdom": 691
+        }
+      },
+      {
+        "name": "Sakura Bakushin O (Original)",
+        "image": "chara_stand_104101.png",
+        "phase_start": "20 Apr 2021, 22:00",
+        "phase_end": "23 Apr 2021, 21:59",
+        "stats": {
+          "Speed": 753,
+          "Stamina": 415,
+          "Power": 744,
+          "Guts": 451,
+          "Wisdom": 697
+        }
+      },
+      {
+        "name": "Curren Chan (Original)",
+        "image": "chara_stand_103801.png",
+        "phase_start": "23 Apr 2021, 22:00",
+        "phase_end": "26 Apr 2021, 21:59",
+        "stats": {
+          "Speed": 772,
+          "Stamina": 367,
+          "Power": 699,
+          "Guts": 551,
+          "Wisdom": 634
+        }
+      }
+    ]
+  },
+  {
+    "race_name": "Japan Cup Legend Race",
+    "start_date": "16 Mar 2021, 4:00",
+    "end_date": "24 Mar 2021, 20:59",
+    "course": "2400m - Medium - Turf",
+    "bosses": [
+      {
+        "name": "El Condor Pasa (Original)",
+        "image": "chara_stand_101401.png",
+        "phase_start": "16 Mar 2021, 4:00",
+        "phase_end": "18 Mar 2021, 20:59",
+        "stats": {
+          "Speed": 641,
+          "Stamina": 610,
+          "Power": 604,
+          "Guts": 647,
+          "Wisdom": 622
+        }
+      },
+      {
+        "name": "Special Week (Original)",
+        "image": "chara_stand_100101.png",
+        "phase_start": "18 Mar 2021, 21:00",
+        "phase_end": "21 Mar 2021, 20:59",
+        "stats": {
+          "Speed": 643,
+          "Stamina": 670,
+          "Power": 620,
+          "Guts": 544,
+          "Wisdom": 591
+        }
+      },
+      {
+        "name": "Symboli Rudolf (Original)",
+        "image": "chara_stand_101701.png",
+        "phase_start": "21 Mar 2021, 21:00",
+        "phase_end": "24 Mar 2021, 20:59",
+        "stats": {
+          "Speed": 638,
+          "Stamina": 617,
+          "Power": 608,
+          "Guts": 557,
+          "Wisdom": 660
+        }
+      }
+    ]
+  }
+]

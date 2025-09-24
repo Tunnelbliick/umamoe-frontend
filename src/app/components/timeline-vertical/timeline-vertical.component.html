@@ -1,0 +1,251 @@
+<div class="timeline-vertical">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-info">
+      <h2><mat-icon class="page-icon">timeline</mat-icon>Timeline</h2>
+      <p class="subtitle">
+        Global content release timeline starting June 26, 2025
+      </p>
+      <p class="event-count">
+        Showing {{ getFilteredEventCount() }} of {{ getTotalEventCount() }} events
+      </p>
+    </div>
+
+    <!-- Search Field -->
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search events...</mat-label>
+      <input
+        matInput
+        [(ngModel)]="eventFilters.searchQuery"
+        (input)="onSearchChange()"
+        placeholder="e.g., Tokai Teio, SSR Oguri Cap"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Search Navigation -->
+    <div class="search-navigation" *ngIf="eventFilters.searchQuery.trim()">
+      <button
+        mat-icon-button
+        (click)="navigateToPreviousResult()"
+        [disabled]="!hasSearchResults()"
+        matTooltip="Previous result"
+      >
+        <mat-icon>keyboard_arrow_up</mat-icon>
+      </button>
+      <span class="search-results-count" *ngIf="hasSearchResults()">
+        {{ currentSearchIndex + 1 }} / {{ searchResults.length }}
+      </span>
+      <span class="no-results" *ngIf="!hasSearchResults()">
+        No results
+      </span>
+      <button
+        mat-icon-button
+        (click)="navigateToNextResult()"
+        [disabled]="!hasSearchResults()"
+        matTooltip="Next result"
+      >
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Controls -->
+  <div class="filter-controls">
+    <div class="filter-toggles">
+      <mat-checkbox
+        [checked]="eventFilters.showCharacters"
+        (change)="toggleCharacterBanners()"
+        class="character-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>person</mat-icon>
+          <span>Characters</span>
+        </div>
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showSupports"
+        (change)="toggleSupportBanners()"
+        class="support-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>style</mat-icon>
+          <span>Support Cards</span>
+        </div>
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showStoryEvents"
+        (change)="toggleStoryEvents()"
+        class="story-events-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>auto_stories</mat-icon>
+          <span>Story Events</span>
+        </div>
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showChampionsMeetings"
+        (change)="toggleChampionsMeetings()"
+        class="champions-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>emoji_events</mat-icon>
+          <span>Champions Meeting</span>
+        </div>
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showLegendRaces"
+        (change)="toggleLegendRaces()"
+        class="legend-races-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>sports_score</mat-icon>
+          <span>Legend Races</span>
+        </div>
+      </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showPaidBanners"
+        (change)="togglePaidBanners()"
+        class="paid-banners-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>paid</mat-icon>
+          <span>Paid Banners</span>
+        </div>
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <!-- Main Content: Timeline + Events -->
+  <div class="timeline-content">
+    <!-- Timeline Track (Left Side) -->
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="timeline-markers">
+        <div 
+          *ngFor="let item of timelineItems; let i = index; trackBy: trackByItem"
+          class="timeline-marker"
+          [class]="getMarkerClass(item)"
+          [attr.data-timeline-index]="i"
+        >
+          <div class="marker-dot" *ngIf="item.type === 'event' || item.type === 'grouped-events' || item.type === 'today'">
+            <mat-icon *ngIf="item.type === 'today'" class="today-icon">today</mat-icon>
+            <mat-icon *ngIf="item.type === 'event' && item.eventData" [class]="getEventTypeClass(item.eventData.type)">
+              {{ getEventTypeIcon(item.eventData.type) }}
+            </mat-icon>
+            <mat-icon *ngIf="item.type === 'grouped-events'" class="group-icon">group_work</mat-icon>
+          </div>
+          <div class="marker-label" *ngIf="item.type === 'month' || item.type === 'year'">
+            {{ item.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Section (Right Side) -->
+    <div class="events-section">
+      <div 
+        *ngFor="let item of timelineItems; let i = index; trackBy: trackByItem"
+        class="timeline-item"
+        [class]="getItemClass(item)"
+        [attr.data-timeline-index]="i"
+      >
+        <!-- Year Marker -->
+        <div *ngIf="item.type === 'year'" class="year-marker">
+          <h3>{{ item.label }}</h3>
+        </div>
+
+        <!-- Month Marker -->
+        <div *ngIf="item.type === 'month'" class="month-marker">
+          <h4>{{ item.label }}</h4>
+        </div>
+
+        <!-- Today Marker -->
+        <div *ngIf="item.type === 'today'" class="today-marker">
+          <div class="today-label">
+            <mat-icon class="today-icon">today</mat-icon>
+            <span>Today</span>
+          </div>
+        </div>
+
+        <!-- Single Event -->
+        <div *ngIf="item.type === 'event' && item.eventData" class="event-card">
+          <mat-card [class]="getEventTypeClass(item.eventData.type)">
+            <mat-card-header>
+              <div mat-card-avatar class="event-icon">
+                <mat-icon>{{ getEventTypeIcon(item.eventData.type) }}</mat-icon>
+              </div>
+              <mat-card-title>{{ item.eventData.title }}</mat-card-title>
+              <mat-card-subtitle>
+                {{ getEventDate(item.eventData) | date:'MMM d, y' }}
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content *ngIf="item.eventData.imagePath">
+              <div class="event-image">
+                <img 
+                  [src]="item.eventData.imagePath" 
+                  [alt]="item.eventData.title"
+                  (error)="handleImageError($event, item.eventData.title)"
+                  loading="lazy"
+                />
+              </div>
+            </mat-card-content>
+            <mat-card-content *ngIf="item.eventData.description">
+              <p>{{ item.eventData.description }}</p>
+            </mat-card-content>
+            <mat-card-actions *ngIf="item.eventData.relatedCharacters?.length || item.eventData.relatedSupportCards?.length">
+              <div class="related-items">
+                <mat-chip-set *ngIf="item.eventData.relatedCharacters?.length">
+                  <mat-chip *ngFor="let character of item.eventData.relatedCharacters">
+                    {{ character }}
+                  </mat-chip>
+                </mat-chip-set>
+                <mat-chip-set *ngIf="item.eventData.relatedSupportCards?.length">
+                  <mat-chip *ngFor="let card of item.eventData.relatedSupportCards">
+                    {{ card }}
+                  </mat-chip>
+                </mat-chip-set>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <!-- Grouped Events -->
+        <div *ngIf="item.type === 'grouped-events' && item.groupedEvents" class="grouped-events">
+          <div class="group-header">
+            <h5>{{ item.groupedEvents.length }} events on {{ item.date | date:'MMM d, y' }}</h5>
+          </div>
+          <div class="events-grid">
+            <mat-card 
+              *ngFor="let event of item.groupedEvents" 
+              class="mini-event-card"
+              [class]="getEventTypeClass(event.type)"
+            >
+              <mat-card-header>
+                <div mat-card-avatar class="event-icon">
+                  <mat-icon>{{ getEventTypeIcon(event.type) }}</mat-icon>
+                </div>
+                <mat-card-title>{{ event.title }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content *ngIf="event.imagePath">
+                <div class="mini-event-image">
+                  <img 
+                    [src]="event.imagePath" 
+                    [alt]="event.title"
+                    (error)="handleImageError($event, event.title)"
+                    loading="lazy"
+                  />
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

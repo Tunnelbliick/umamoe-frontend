@@ -1,0 +1,701 @@
+<div class="timeline-page">
+  <!-- Mobile Timeline -->
+  <app-mobile-timeline *ngIf="isMobile"></app-mobile-timeline>
+
+  <!-- Desktop Timeline -->
+  <div *ngIf="!isMobile" class="desktop-timeline">
+    <!-- Regular Header (shown when NOT in compact mode) -->
+    <div class="page-header" *ngIf="!isCompactMode">
+      <div class="header-content">
+        <div class="header-info">
+          <h1><mat-icon class="page-icon">timeline</mat-icon>Timeline</h1>
+          <p>
+            Approximate Global content release timeline starting June 26, 2025
+          </p>
+          <p class="event-count">
+            Showing {{ getFilteredEventCount() }} of
+            {{ getTotalEventCount() }} events
+          </p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+          <!-- Search Field -->
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search by character or support card...</mat-label>
+            <input
+              matInput
+              [(ngModel)]="eventFilters.searchQuery"
+              (input)="onSearchChange()"
+              placeholder="e.g., Tokai Teio, SSR Oguri Cap"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <!-- Search Navigation -->
+          <div
+            class="search-navigation"
+            *ngIf="eventFilters.searchQuery.trim()"
+          >
+            <button
+              mat-icon-button
+              (click)="jumpToPreviousResult()"
+              [disabled]="!hasSearchResults()"
+              matTooltip="Previous result"
+            >
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <span class="search-results-count" *ngIf="hasSearchResults()">
+              {{ getCurrentSearchPosition() }}
+            </span>
+            <span class="no-results" *ngIf="!hasSearchResults()">
+              No results
+            </span>
+            <button
+              mat-icon-button
+              (click)="jumpToNextResult()"
+              [disabled]="!hasSearchResults()"
+              matTooltip="Next result"
+            >
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+
+          <!-- Filter Checkboxes -->
+          <div class="filter-section">
+            <div class="filter-toggles">
+              <mat-checkbox
+                [checked]="eventFilters.showCharacters"
+                (change)="toggleCharacterFilter()"
+                class="character-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>person</mat-icon>
+                  <span>Characters</span>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox
+                [checked]="eventFilters.showSupports"
+                (change)="toggleSupportFilter()"
+                class="support-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>style</mat-icon>
+                  <span>Support Cards</span>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox
+                [checked]="eventFilters.showStoryEvents"
+                (change)="toggleStoryEventsFilter()"
+                class="story-events-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>auto_stories</mat-icon>
+                  <span>Story Events</span>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox
+                [checked]="eventFilters.showChampionsMeetings"
+                (change)="toggleChampionsMeetingsFilter()"
+                class="champions-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>emoji_events</mat-icon>
+                  <span>Champions Meeting</span>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox
+                [checked]="eventFilters.showLegendRaces"
+                (change)="toggleLegendRacesFilter()"
+                class="legend-races-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>sports_motorsports</mat-icon>
+                  <span>Legend Races</span>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox
+                [checked]="eventFilters.showPaidBanners"
+                (change)="togglePaidBannersFilter()"
+                class="paid-toggle"
+              >
+                <div class="checkbox-content">
+                  <mat-icon>payments</mat-icon>
+                  <span>Paid Banners</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compact Header (shown when in compact mode) -->
+    <div class="compact-header" *ngIf="isCompactMode">
+      <div class="compact-header-content">
+        <h1 class="hero-title">
+          <mat-icon class="page-icon">timeline</mat-icon>Timeline
+        </h1>
+        <p class="event-count">
+          Approximate Global content release timeline starting June 26, 2025
+        </p>
+        <p class="event-count">
+          Showing {{ getFilteredEventCount() }} of
+          {{ getTotalEventCount() }} events
+        </p>
+      </div>
+    </div>
+
+    <!-- Floating Filter Card (shown when in compact mode) -->
+    <mat-card class="floating-filter-card" *ngIf="isCompactMode">
+      <mat-card-header> </mat-card-header>
+      <mat-card-content>
+        <!-- Search Field -->
+        <mat-form-field appearance="outline" class="compact-search-field">
+          <mat-label>Search...</mat-label>
+          <input
+            matInput
+            [(ngModel)]="eventFilters.searchQuery"
+            (input)="onSearchChange()"
+            placeholder="Character or support card"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Search Navigation (compact) -->
+        <div
+          class="compact-search-navigation"
+          *ngIf="eventFilters.searchQuery.trim()"
+        >
+          <button
+            mat-icon-button
+            (click)="jumpToPreviousResult()"
+            [disabled]="!hasSearchResults()"
+            matTooltip="Previous result"
+            size="small"
+          >
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <span class="search-results-text" *ngIf="hasSearchResults()">
+            {{ getCurrentSearchPosition() }}
+          </span>
+          <span class="no-results-text" *ngIf="!hasSearchResults()">
+            No results
+          </span>
+          <button
+            mat-icon-button
+            (click)="jumpToNextResult()"
+            [disabled]="!hasSearchResults()"
+            matTooltip="Next result"
+            size="small"
+          >
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+
+        <!-- Compact Filter Checkboxes -->
+        <div class="compact-filter-section">
+          <div class="compact-filter-toggles">
+            <mat-checkbox
+              [checked]="eventFilters.showCharacters"
+              (change)="toggleCharacterFilter()"
+              class="compact-character-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>person</mat-icon>
+                <span>Character Banner</span>
+              </div>
+            </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showSupports"
+              (change)="toggleSupportFilter()"
+              class="compact-support-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>style</mat-icon>
+                <span>Support Banner</span>
+              </div>
+            </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showStoryEvents"
+              (change)="toggleStoryEventsFilter()"
+              class="compact-story-events-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>auto_stories</mat-icon>
+                <span>Story Events</span>
+              </div>
+            </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showChampionsMeetings"
+              (change)="toggleChampionsMeetingsFilter()"
+              class="compact-champions-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>emoji_events</mat-icon>
+                <span>Champions Meeting</span>
+              </div>
+            </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showLegendRaces"
+              (change)="toggleLegendRacesFilter()"
+              class="compact-legend-races-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>sports_motorsports</mat-icon>
+                <span>Legend Races</span>
+              </div>
+            </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showPaidBanners"
+              (change)="togglePaidBannersFilter()"
+              class="compact-paid-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>payments</mat-icon>
+                <span>Paid Banners</span>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Timeline Container -->
+    <div class="timeline-wrapper" [class.compact-timeline]="isCompactMode">
+      <div
+        #timelineContainer
+        class="timeline-container"
+        (mousedown)="onMouseDown($event)"
+        [style.cursor]="isDragging ? 'grabbing' : 'grab'"
+      >
+        <div class="timeline-track" [style.width.px]="totalWidth">
+          <!-- Main timeline line (centered vertically) -->
+          <div
+            class="timeline-line"
+            [style.width.px]="totalWidth"
+            [style.left.px]="350"
+          ></div>
+
+          <!-- Timeline items (virtualized) -->
+          <div
+            *ngFor="
+              let item of visibleTimelineItems;
+              trackBy: trackTimelineItem
+            "
+            class="timeline-item"
+            (click)="onTimelineItemClick(item)"
+            [class]="
+              'timeline-' + item.type + (item.side ? ' side-' + item.side : '')
+            "
+            [style.left.px]="item.position"
+            [style.z-index]="
+              item.isGrouped && item.groupedEvents
+                ? 50 - (item.groupIndex || 0)
+                : 51
+            "
+          >
+            <!-- Connection line from center to item -->
+            <div
+              class="connection-line"
+              [class]="'line-' + (item.side || 'center')"
+            ></div>
+
+            <!-- Marker dot on the center line -->
+            <div class="center-marker">
+              <div class="marker-dot" [class]="'marker-' + item.type"></div>
+            </div>
+
+            <!-- Item content (positioned above or below center line) -->
+            <div
+              class="item-content grouped-content"
+              [class]="'content-' + (item.side || 'center')"
+            >
+              <a
+                *ngIf="item.eventData?.gametoraURL"
+                [href]="item.eventData?.gametoraURL"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <!-- Event cards (only for events, not milestones) -->
+                <mat-card
+                  *ngIf="item.type === 'event'"
+                  class="event-card"
+                  [class.grouped-event]="item.isGrouped"
+                  [class]="'event-type-' + (item.eventData?.type || 'event')"
+                  [style.--group-index]="item.groupIndex || 0"
+                  [style.--group-offset.px]="
+                    item.isGrouped && item.groupIndex !== undefined
+                      ? item.groupIndex * 290
+                      : 0
+                  "
+                  [style.transform]="
+                    item.isGrouped && item.groupIndex !== undefined
+                      ? 'translateX(' + item.groupIndex * 290 + 'px)'
+                      : 'none'
+                  "
+                >
+                  <div
+                    class="event-image"
+                    *ngIf="item.eventData && item.eventData.imagePath"
+                  >
+                    <ng-container *ngIf="item.eventData.type === 'legend_race'">
+                      <div class="legend-race-images">
+                        <img
+                          *ngFor="
+                            let img of item.eventData.relatedCharacters;
+                            let i = index
+                          "
+                          [src]="img"
+                          [alt]="img || 'Event'"
+                          [style.z-index]="
+                            (item.eventData.relatedCharacters?.length || 0) - i
+                          "
+                          [style.left.px]="
+                            (270 /
+                              (item.eventData.relatedCharacters?.length || 0)) *
+                              i -
+                            40
+                          "
+                          (error)="onImageError($event)"
+                          class="legend-race-image"
+                        />
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="item.eventData.type !== 'legend_race'">
+                      <img
+                        [src]="item.eventData.imagePath"
+                        [alt]="item.eventData.title || 'Event'"
+                        (error)="onImageError($event)"
+                      />
+                    </ng-container>
+                  </div>
+                  <div
+                    class="event-image-placeholder"
+                    *ngIf="!item.eventData || !item.eventData.imagePath"
+                  >
+                    <mat-icon
+                      [class]="
+                        'placeholder-icon-' + (item.eventData?.type || 'event')
+                      "
+                    >
+                      {{
+                        item.eventData?.type === "character_banner"
+                          ? "person"
+                          : item.eventData?.type === "support_card_banner"
+                          ? "style"
+                          : item.eventData?.type === "paid_banner"
+                          ? "payments"
+                          : item.eventData?.type === "story_event"
+                          ? "auto_stories"
+                          : item.eventData?.type === "champions_meeting"
+                          ? "emoji_events"
+                          : item.eventData?.type === "legend_race"
+                          ? "sports_motorsports"
+                          : "campaign"
+                      }}
+                    </mat-icon>
+                  </div>
+                  <div class="event-content">
+                    <div class="event-header">
+                      <mat-icon
+                        [class]="
+                          'event-icon-' + (item.eventData?.type || 'event')
+                        "
+                      >
+                        {{
+                          item.eventData?.type === "character_banner"
+                            ? "person"
+                            : item.eventData?.type === "support_card_banner"
+                            ? "style"
+                            : item.eventData?.type === "paid_banner"
+                            ? "payments"
+                            : item.eventData?.type === "story_event"
+                            ? "auto_stories"
+                            : item.eventData?.type === "champions_meeting"
+                            ? "emoji_events"
+                            : item.eventData?.type === "legend_race"
+                            ? "sports_motorsports"
+                            : "campaign"
+                        }}
+                      </mat-icon>
+                      <div class="event-type">
+                        {{ eventTypeToLabel(item.eventData?.type) }}
+                      </div>
+                    </div>
+                    <div class="event-title">
+                      {{ item.eventData?.title || item.label }}
+                    </div>
+
+                    <div
+                      [innerHTML]="item.eventData?.description"
+                      class="event-description"
+                      *ngIf="
+                        item.eventData?.description &&
+                        (item.eventData?.type == 'champions_meeting' ||
+                          item.eventData?.type == 'legend_race')
+                      "
+                    ></div>
+                    <!--<div class="event-description">
+                    {{ item.eventData?.description }}
+                  </div>-->
+                    <div class="event-date">
+                      {{ formatDate(item) }}
+                    </div>
+
+                    <!-- Character/Support Card info -->
+                    <div
+                      *ngIf="
+                        item.eventData &&
+                        item.eventData.relatedCharacters &&
+                        item.eventData.relatedCharacters.length > 0 &&
+                        item.eventData.type !== 'legend_race'
+                      "
+                      class="event-tags"
+                    >
+                      <mat-chip
+                        *ngFor="let char of item.eventData.relatedCharacters"
+                        class="character-chip"
+                      >
+                        {{ char }}
+                      </mat-chip>
+                    </div>
+
+                    <!-- Support Card info -->
+                    <div
+                      *ngIf="
+                        item.eventData &&
+                        item.eventData.relatedSupportCards &&
+                        item.eventData.relatedSupportCards.length > 0
+                      "
+                      class="event-tags"
+                    >
+                      <mat-chip
+                        *ngFor="
+                          let support of item.eventData.relatedSupportCards
+                        "
+                        class="support-chip"
+                      >
+                        {{ support }}
+                      </mat-chip>
+                    </div>
+                  </div>
+                </mat-card>
+              </a>
+
+              <mat-card
+                *ngIf="
+                  item.type === 'event' &&
+                  item.eventData?.gametoraURL === undefined
+                "
+                class="event-card"
+                [class.grouped-event]="item.isGrouped"
+                [class]="'event-type-' + (item.eventData?.type || 'event')"
+                [style.--group-index]="item.groupIndex || 0"
+                [style.--group-offset.px]="
+                  item.isGrouped && item.groupIndex !== undefined
+                    ? item.groupIndex * 290
+                    : 0
+                "
+                [style.transform]="
+                  item.isGrouped && item.groupIndex !== undefined
+                    ? 'translateX(' + item.groupIndex * 290 + 'px)'
+                    : 'none'
+                "
+              >
+                <div
+                  class="event-image"
+                  *ngIf="item.eventData && item.eventData.imagePath"
+                >
+                  <ng-container *ngIf="item.eventData.type === 'legend_race'">
+                    <div class="legend-race-images">
+                      <img
+                        *ngFor="
+                          let img of item.eventData.relatedCharacters;
+                          let i = index
+                        "
+                        [src]="img"
+                        [alt]="img || 'Event'"
+                        [style.z-index]="
+                          (item.eventData.relatedCharacters?.length || 0) - i
+                        "
+                        [style.left.px]="
+                          (270 /
+                            (item.eventData.relatedCharacters?.length || 0)) *
+                            i -
+                          40
+                        "
+                        (error)="onImageError($event)"
+                        class="legend-race-image"
+                      />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="item.eventData.type !== 'legend_race'">
+                    <img
+                      [src]="item.eventData.imagePath"
+                      [alt]="item.eventData.title || 'Event'"
+                      (error)="onImageError($event)"
+                    />
+                  </ng-container>
+                </div>
+                <div
+                  class="event-image-placeholder"
+                  *ngIf="!item.eventData || !item.eventData.imagePath"
+                >
+                  <mat-icon
+                    [class]="
+                      'placeholder-icon-' + (item.eventData?.type || 'event')
+                    "
+                  >
+                    {{
+                      item.eventData?.type === "character_banner"
+                        ? "person"
+                        : item.eventData?.type === "support_card_banner"
+                        ? "style"
+                        : item.eventData?.type === "paid_banner"
+                        ? "payments"
+                        : item.eventData?.type === "story_event"
+                        ? "auto_stories"
+                        : item.eventData?.type === "champions_meeting"
+                        ? "emoji_events"
+                        : item.eventData?.type === "legend_race"
+                        ? "sports_motorsports"
+                        : "campaign"
+                    }}
+                  </mat-icon>
+                </div>
+                <div class="event-content">
+                  <div class="event-header">
+                    <mat-icon
+                      [class]="
+                        'event-icon-' + (item.eventData?.type || 'event')
+                      "
+                    >
+                      {{
+                        item.eventData?.type === "character_banner"
+                          ? "person"
+                          : item.eventData?.type === "support_card_banner"
+                          ? "style"
+                          : item.eventData?.type === "paid_banner"
+                          ? "payments"
+                          : item.eventData?.type === "story_event"
+                          ? "auto_stories"
+                          : item.eventData?.type === "champions_meeting"
+                          ? "emoji_events"
+                          : item.eventData?.type === "legend_race"
+                          ? "sports_motorsports"
+                          : "campaign"
+                      }}
+                    </mat-icon>
+                    <div class="event-type">
+                      {{ eventTypeToLabel(item.eventData?.type) }}
+                    </div>
+                  </div>
+                  <div class="event-title">
+                    {{ item.eventData?.title || item.label }}
+                  </div>
+
+                  <div
+                    [innerHTML]="item.eventData?.description"
+                    class="event-description"
+                    *ngIf="
+                      item.eventData?.description &&
+                      (item.eventData?.type == 'champions_meeting' ||
+                        item.eventData?.type == 'legend_race')
+                    "
+                  ></div>
+                  <!--<div class="event-description">
+                    {{ item.eventData?.description }}
+                  </div>-->
+                  <div class="event-date">
+                    {{ formatDate(item) }}
+                  </div>
+
+                  <!-- Character/Support Card info -->
+                  <div
+                    *ngIf="
+                      item.eventData &&
+                      item.eventData.relatedCharacters &&
+                      item.eventData.relatedCharacters.length > 0 &&
+                      item.eventData.type !== 'legend_race'
+                    "
+                    class="event-tags"
+                  >
+                    <mat-chip
+                      *ngFor="let char of item.eventData.relatedCharacters"
+                      class="character-chip"
+                    >
+                      {{ char }}
+                    </mat-chip>
+                  </div>
+
+                  <!-- Support Card info -->
+                  <div
+                    *ngIf="
+                      item.eventData &&
+                      item.eventData.relatedSupportCards &&
+                      item.eventData.relatedSupportCards.length > 0
+                    "
+                    class="event-tags"
+                  >
+                    <mat-chip
+                      *ngFor="let support of item.eventData.relatedSupportCards"
+                      class="support-chip"
+                    >
+                      {{ support }}
+                    </mat-chip>
+                  </div>
+                </div>
+              </mat-card>
+
+              <!-- Milestone label (for rocket marker) -->
+              <div *ngIf="item.type === 'milestone'" class="milestone-label">
+                <small>{{ formatDate(item) }}</small>
+              </div>
+
+              <!-- Today label (for today marker) -->
+              <div *ngIf="item.type === 'today'" class="today-label">
+                <small>{{ item.label }}</small>
+                <small>{{ formatDate(item) }}</small>
+              </div>
+
+              <!-- Anniversary label (for present marker) -->
+              <div
+                *ngIf="item.type === 'anniversary'"
+                class="anniversary-label"
+              >
+                <span>{{ item.label }}</span>
+                <small>{{ formatDate(item  ) }}</small>
+              </div>
+
+              <!-- Regular timeline labels for months/years -->
+              <div
+                *ngIf="
+                  item.type !== 'event' &&
+                  item.type !== 'milestone' &&
+                  item.type !== 'anniversary' &&
+                  item.type !== 'today'
+                "
+                class="timeline-label"
+              >
+                <span>{{ item.label }}</span>
+                <small>{{ formatDate(item) }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End desktop-timeline -->
