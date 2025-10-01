@@ -115,6 +115,7 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
   @ViewChild('chartCanvas', { static: true }) chartCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() cards: PrecomputedCardData[] = [];
   @Input() selectedType: number = -1;
+  @Input() selectedLB: number = 4; // Selected LB level
   @Output() cardHover = new EventEmitter<{ card: PrecomputedCardData, event: MouseEvent }>();
   @Output() cardLeave = new EventEmitter<void>();
   @Output() cardClick = new EventEmitter<{ card: PrecomputedCardData, event: MouseEvent }>();
@@ -155,7 +156,7 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['cards'] && this.chart) {
+    if ((changes['cards'] || changes['selectedLB']) && this.chart) {
       this.updateChart();
     }
   }
@@ -294,7 +295,7 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
 
     // Process all cards and group them by position
     this.cards.forEach(card => {
-      const score = card.scores[4]; // Use LB4 score
+      const score = card.scores[this.selectedLB]; // Use selected LB score
       
       // Find if there's already a position within overlap threshold
       let foundPosition = false;
@@ -319,20 +320,20 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       // Sort cards by tier priority (S+ highest), then by score
       positionCards.sort((a, b) => {
         const tierOrder = { 'S+': 6, 'S': 5, 'A': 4, 'B': 3, 'C': 2, 'D': 1 };
-        const aTierValue = tierOrder[a.tiers[4] as keyof typeof tierOrder] || 0;
-        const bTierValue = tierOrder[b.tiers[4] as keyof typeof tierOrder] || 0;
+        const aTierValue = tierOrder[a.tiers[this.selectedLB] as keyof typeof tierOrder] || 0;
+        const bTierValue = tierOrder[b.tiers[this.selectedLB] as keyof typeof tierOrder] || 0;
         
         // First sort by tier (highest tier first)
         if (bTierValue !== aTierValue) {
           return bTierValue - aTierValue;
         }
         // Then by score within the same tier (highest score first)
-        return b.scores[4] - a.scores[4];
+        return b.scores[this.selectedLB] - a.scores[this.selectedLB];
       });
       
       // Stack cards vertically from bottom up with mobile-optimized spacing
       positionCards.forEach((card, index) => {
-        const tier = card.tiers[4]; // Use LB4 tier
+        const tier = card.tiers[this.selectedLB]; // Use selected LB tier
         
         if (!tierDatasets[tier]) {
           tierDatasets[tier] = [];
@@ -346,7 +347,7 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
         const stackY = baseY + (index * stackHeight);
         
         tierDatasets[tier].push({
-          x: card.scores[4], // Use exact LB4 score for precise positioning
+          x: card.scores[this.selectedLB], // Use selected LB score for precise positioning
           y: stackY, // Use actual Y coordinates for animation
           cardId: card.id.toString(),
           cardName: card.name,

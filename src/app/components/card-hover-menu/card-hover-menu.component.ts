@@ -147,6 +147,13 @@ export class CardHoverMenuComponent implements OnChanges {
       this.chart.destroy();
     }
 
+    // Calculate dynamic padding based on score magnitudes
+    const maxScore = Math.max(...this.card.scores);
+    const minScore = Math.min(...this.card.scores.filter(s => s > 0));
+    const scoreDigits = maxScore.toString().length;
+    // Reduced padding for tighter layout
+    const dynamicBottomPadding = Math.max(20, Math.min(28, scoreDigits * 3 + 12));
+
     // Register tier chip plugin with improved logic
     const tierChipPlugin = {
       id: 'tierChips',
@@ -218,16 +225,24 @@ export class CardHoverMenuComponent implements OnChanges {
 
           ctx.restore();
 
-          // Draw score below the point
+          // Draw score below the point with smart text fitting
           ctx.save();
           ctx.fillStyle = color;
-          ctx.font = '12px system-ui, -apple-system, sans-serif';
+          
+          // Adjust font size based on score length to prevent overlap
+          const scoreText = score.toString();
+          let fontSize = 12;
+          if (scoreText.length > 4) {
+            fontSize = Math.max(9, 12 - (scoreText.length - 4));
+          }
+          
+          ctx.font = `${fontSize}px system-ui, -apple-system, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
 
           // Position the score label below the point
           const scoreLabelY = point.y + 15;
-          ctx.fillText(score.toString(), chipX, scoreLabelY);
+          ctx.fillText(scoreText, chipX, scoreLabelY);
 
           ctx.restore();
         });
@@ -269,10 +284,10 @@ export class CardHoverMenuComponent implements OnChanges {
         maintainAspectRatio: false,
         layout: {
           padding: {
-            top: 40, // Space for tier chips
-            right: 20,
-            left: 20,
-            bottom: 15 // Increased to accommodate score labels
+            top: 28, // Reduced to minimize blank space
+            right: 18, // Increased to prevent cutoff
+            left: 18, // Increased to prevent cutoff
+            bottom: dynamicBottomPadding // Dynamic padding based on score size
           },
         },
         plugins: {
@@ -289,6 +304,8 @@ export class CardHoverMenuComponent implements OnChanges {
           },
           y: {
             display: false,
+            min: minScore * 0.95, // Start slightly below minimum for better visual
+            max: maxScore * 1.05, // End slightly above maximum for better visual
           }
         },
         animation: {

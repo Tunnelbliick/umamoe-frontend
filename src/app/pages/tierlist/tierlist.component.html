@@ -3,6 +3,65 @@
     <div class="header-content">
       <h1>Support Card Tierlist</h1>
       <div class="header-actions">
+        <mat-form-field appearance="outline" class="lb-selector">
+          <mat-label>Limit Break Level</mat-label>
+          <mat-select [(value)]="selectedLB" (selectionChange)="onLBChange($event.value)">
+            <mat-select-trigger>
+              <div class="lb-option">
+                <ng-container *ngFor="let i of [0,1,2,3]">
+                  <svg
+                    *ngIf="i < selectedLB"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#2196F3"
+                    class="lb-diamond filled"
+                  >
+                    <path d="M480-64 224-480l256-416 256 416L480-64Z" />
+                  </svg>
+                  <svg
+                    *ngIf="i >= selectedLB"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    class="lb-diamond empty"
+                  >
+                    <path d="M480-64 224-480l256-416 256 416L480-64Zm0-139 170-277-170-278-169 278 169 277Zm0-277Z" />
+                  </svg>
+                </ng-container>
+              </div>
+            </mat-select-trigger>
+            <mat-option *ngFor="let lb of availableLBLevels" [value]="lb.value">
+              <div class="lb-option">
+                <ng-container *ngFor="let i of [0,1,2,3]">
+                  <svg
+                    *ngIf="i < lb.value"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#2196F3"
+                    class="lb-diamond filled"
+                  >
+                    <path d="M480-64 224-480l256-416 256 416L480-64Z" />
+                  </svg>
+                  <svg
+                    *ngIf="i >= lb.value"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    class="lb-diamond empty"
+                  >
+                    <path d="M480-64 224-480l256-416 256 416L480-64Zm0-139 170-277-170-278-169 278 169 277Zm0-277Z" />
+                  </svg>
+                </ng-container>
+              </div>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
     </div>
     </div>
   </div>
@@ -21,6 +80,7 @@
         <app-tierlist-scatter-chart
           [cards]="getCurrentTypeCards()"
           [selectedType]="typeTierlists[selectedTabIndex].type || -1"
+          [selectedLB]="selectedLB"
           (cardHover)="onCardHoverDesktop($event.card, $event.event)"
           (cardLeave)="onCardLeaveDesktop()"
           (cardClick)="onChartCardClick($event)">
@@ -62,10 +122,11 @@
                     <div 
                       class="card-item"
                       *ngFor="let card of tier.cards; trackBy: trackByCardId"
+                      [@cardFade]
                       (click)="onCardClickMobile(card, $event)"
                       (mouseenter)="onCardHoverDesktop(card, $event)"
                       (mouseleave)="onCardLeaveDesktop()"
-                      [title]="card.name + ' - Score: ' + card.scores[4].toFixed(0)">
+                      [title]="card.name + ' - Score: ' + card.scores[selectedLB].toFixed(0)">
                       
                       <div class="card-image-container">
                         <img 
@@ -78,13 +139,13 @@
                         <div class="card-overlay">
                           <div class="card-name">{{ card.name }}</div>
                           <div class="card-score" [style.color]="getScoreColor(card)">
-                            {{ card.scores[4].toFixed(0) }}
+                            {{ card.scores[selectedLB].toFixed(0) }}
                           </div>
                         </div>
                       </div>
 
                       <div class="card-info">
-                        <div class="card-rarity">LB4</div>
+                        <div class="card-rarity">LB{{ selectedLB }}</div>
                       </div>
 
                       <!-- Power progression for selected card -->
@@ -98,7 +159,7 @@
 
                 <div class="no-cards" *ngIf="typeData.tiers.length === 0">
                   <mat-icon>info</mat-icon>
-                  <p>No LB4 {{ typeData.typeName }} cards found</p>
+                  <p>No LB{{ selectedLB }} {{ typeData.typeName }} cards found</p>
                 </div>
               </div>
             </div>
@@ -114,7 +175,7 @@
         <mat-card-title>Tierlist Information</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>This tierlist shows only LB4 (Limit Break 4) support cards using percentile-based ranking.</p>
+        <p>This tierlist shows support cards at the selected Limit Break level using percentile-based ranking.</p>
         <p>Scores are calculated based on the URA scenario optimal meta calculations.</p>
         
         <div class="tier-legend">

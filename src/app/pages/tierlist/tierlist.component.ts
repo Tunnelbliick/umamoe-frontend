@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { TierlistOptimizedService } from '../../services/tierlist-optimized.service';
 import { TIER_NAMES, TIER_PERCENTILES, TYPE_NAMES, UpcomingCard } from '../../models/tierlist-calculation.model';
@@ -15,6 +17,7 @@ import { PrecomputedCardData } from '../../models/precomputed-tierlist.model';
 import { TierlistScatterChartComponent } from '../../components/tierlist-scatter-chart/tierlist-scatter-chart.component';
 import { CardHoverMenuComponent as CardHoverMenuSimpleComponent } from '../../components/card-hover-menu/card-hover-menu.component';
 import { CardDetailsDialogComponent } from '../../components/card-details-dialog/card-details-dialog.component';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 interface TierGroup {
   tier: string;
@@ -44,20 +47,43 @@ interface TypeTierlist {
     MatIconModule,
     MatSidenavModule,
     MatDialogModule,
+    MatSelectModule,
+    MatFormFieldModule,
     TierlistScatterChartComponent,
     CardHoverMenuSimpleComponent
   ],
   templateUrl: './tierlist.component.html',
-  styleUrls: ['./tierlist.component.scss']
+  styleUrls: ['./tierlist.component.scss'],
+  animations: [
+    trigger('cardFade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.95)' }),
+        animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('150ms ease-in', style({ opacity: 0, transform: 'scale(0.95)' }))
+      ])
+    ])
+  ]
 })
 export class TierlistComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   
   typeTierlists: TypeTierlist[] = [];
   selectedTabIndex = 0;
+  selectedLB = 4; // Default to LB4
   loading = true;
   upcomingCards: UpcomingCard[] = [];
   selectedCardForProgression: PrecomputedCardData | null = null;
+  
+  // Available LB levels
+  availableLBLevels = [
+    { value: 0, label: 'LB0' },
+    { value: 1, label: 'LB1' },
+    { value: 2, label: 'LB2' },
+    { value: 3, label: 'LB3' },
+    { value: 4, label: 'LB4' }
+  ];
   
   // Hover menu state
   hoveredCard: PrecomputedCardData | null = null;
@@ -108,7 +134,7 @@ export class TierlistComponent implements OnInit, OnDestroy {
   private calculateAllTierlists(): void {
     // Calculate tierlist for each type in parallel using precomputed data
     const calculations = this.typeTierlists.map(typeData => 
-      this.tierlistService.getCardsByType(typeData.type, 4) // LB4 only
+      this.tierlistService.getCardsByType(typeData.type, this.selectedLB)
     );
 
     forkJoin(calculations)
@@ -150,8 +176,8 @@ export class TierlistComponent implements OnInit, OnDestroy {
       });
     });
 
-    // Sort cards by LB4 score descending
-    const sortedCards = [...cards].sort((a, b) => b.scores[4] - a.scores[4]);
+    // Sort cards by selected LB score descending
+    const sortedCards = [...cards].sort((a, b) => b.scores[this.selectedLB] - a.scores[this.selectedLB]);
     const totalCards = sortedCards.length;
 
     // Assign cards to tiers based on percentile
@@ -166,6 +192,17 @@ export class TierlistComponent implements OnInit, OnDestroy {
 
     // Only return tiers that have cards
     return tiers.filter(tier => tier.cards.length > 0);
+  }
+
+  onLBChange(newLB: number): void {
+    // Mark all types as loading
+    this.typeTierlists.forEach(tierlist => tierlist.loading = true);
+    
+    // Update selected LB
+    this.selectedLB = newLB;
+    
+    // Recalculate tierlists with new LB level
+    this.calculateAllTierlists();
   }
 
   private getTierForPercentile(percentile: number): string {

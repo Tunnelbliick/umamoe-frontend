@@ -53,3 +53,4 @@ Thumbs.db
 /statistics
 
 .github/copilot-instructions.md
+src/assets/data/precomputed-tierlist.json
