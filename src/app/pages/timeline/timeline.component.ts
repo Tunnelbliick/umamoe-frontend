@@ -41,6 +41,12 @@ interface EventFilters {
     searchQuery: string;
 }
 
+const CONFIRMED_GLOBAL_ANNIVERSARIES = new Map<number, Date>([
+    // 1 => First half-anniversary (6 months after launch)
+    // Oct 26, 2025 at 22:00 UTC = Oct 26, 2025 at 23:00 CET (11:00 PM) in Europe after DST ends
+    [1, new Date(Date.UTC(2025, 9, 26, 22, 0, 0))]
+]);
+
 @Component({
     selector: 'app-timeline',
     standalone: true,
@@ -87,9 +93,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Timeline dimensions
     totalDays = 0;
-    pixelsPerDay = 110;
+    pixelsPerDay = 150;
     totalWidth = 0;
-    initialOffset = 250;
+    initialOffset = 350;
 
     // Event filtering
     eventFilters: EventFilters = {
@@ -518,15 +524,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         // Group events by date (same day)
-        const eventsByDate = new Map<string, TimelineEvent[]>();
+        const eventsByDate = new Map<string, { date: Date, events: TimelineEvent[] }>();
         filteredEvents.forEach(event => {
             const eventDate = event.globalReleaseDate || event.jpReleaseDate;
-            const dateKey = eventDate.toDateString();
+            // Use date string as key for grouping, but preserve the actual Date object
+            const dateKey = `${eventDate.getUTCFullYear()}-${eventDate.getUTCMonth()}-${eventDate.getUTCDate()}`;
 
             if (!eventsByDate.has(dateKey)) {
-                eventsByDate.set(dateKey, []);
+                eventsByDate.set(dateKey, { date: eventDate, events: [] });
             }
-            eventsByDate.get(dateKey)!.push(event);
+            eventsByDate.get(dateKey)!.events.push(event);
         });
 
         // Generate timeline items for grouped events
@@ -534,10 +541,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Sort events by date first to ensure consistent alternation
         const sortedEventDates = Array.from(eventsByDate.entries())
-            .sort(([dateA], [dateB]) => new Date(dateA).getTime() - new Date(dateB).getTime());
+            .sort(([, a], [, b]) => a.date.getTime() - b.date.getTime());
 
-        sortedEventDates.forEach(([dateKey, events]) => {
-            const eventDate = new Date(dateKey);
+        sortedEventDates.forEach(([dateKey, { date: eventDate, events }]) => {
             const daysSinceStart = Math.ceil((eventDate.getTime() - this.globalReleaseDate.getTime()) / (1000 * 60 * 60 * 24));
             const basePosition = daysSinceStart * this.pixelsPerDay;
 
@@ -547,7 +553,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             if (events.length === 1) {
                 // Single event - display normally
                 this.allTimelineItems.push({
-                    date: new Date(eventDate),
+                    date: eventDate,  // Use the original date with time preserved
                     label: events[0].title,
                     type: 'event',
                     position: basePosition + this.initialOffset,
@@ -559,7 +565,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Multiple events on same date - display side by side
                 events.forEach((event, groupIndex) => {
                     this.allTimelineItems.push({
-                        date: new Date(eventDate),
+                        date: eventDate,  // Use the original date with time preserved
                         label: event.title,
                         type: 'event',
                         position: basePosition + this.initialOffset,
@@ -596,22 +602,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             currentDate.setMonth(currentDate.getMonth() + 1);
             currentDate.setDate(1);
         }
-
-        this.allTimelineItems.forEach(event => {
-            if (event.date) {
-                // Ensure the date is set to 22:00 UTC
-                event.date = new Date(Date.UTC(
-                    event.date.getUTCFullYear(),
-                    event.date.getUTCMonth(),
-                    event.date.getUTCDate() + 1,
-                    22, 0, 0, 0
-                ));
-
-                const daysSinceStart = Math.ceil((event.date.getTime() - this.globalReleaseDate.getTime()) / (1000 * 60 * 60 * 24));
-                const basePosition = daysSinceStart * this.pixelsPerDay;
-                event.position = basePosition + this.initialOffset;
-            }
-        });
 
         // Add today marker if it's within our timeline range
         const today = new Date();
@@ -868,9 +858,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private generateAnniversaryMarkers(endDate: Date): void {
-        // Use day-only dates to avoid time zone and time-of-day issues
-        const jpLaunchDate = new Date(2021, 1, 24); // February 24, 2021 (month is 0-indexed)
-        const globalReleaseDate = new Date(2025, 5, 26, 22); // June 26, 2025
+        // Use UTC dates to avoid timezone issues
+        const jpLaunchDate = new Date(Date.UTC(2021, 1, 24)); // February 24, 2021 (month is 0-indexed)
+        const globalReleaseDate = new Date(Date.UTC(2025, 5, 26, 22, 0, 0)); // June 26, 2025 22:00 UTC
 
         // Generate half-year and full-year anniversaries based on JP timeline
         let anniversaryCount = 0;
@@ -881,31 +871,38 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             // Calculate the JP anniversary date by adding 6-month intervals
             // Use precise year/month arithmetic to avoid setMonth() issues
             const monthsToAdd = anniversaryCount * 6;
-            const jpAnniversaryYear = jpLaunchDate.getFullYear() + Math.floor(monthsToAdd / 12);
-            const jpAnniversaryMonth = jpLaunchDate.getMonth() + (monthsToAdd % 12);
+            const jpAnniversaryYear = jpLaunchDate.getUTCFullYear() + Math.floor(monthsToAdd / 12);
+            const jpAnniversaryMonth = jpLaunchDate.getUTCMonth() + (monthsToAdd % 12);
 
             // Handle month overflow
             const finalYear = jpAnniversaryYear + Math.floor(jpAnniversaryMonth / 12);
             const finalMonth = jpAnniversaryMonth % 12;
 
-            const jpAnniversaryDate = new Date(finalYear, finalMonth, jpLaunchDate.getDate());
+            const jpAnniversaryDate = new Date(Date.UTC(finalYear, finalMonth, jpLaunchDate.getUTCDate()));
 
-            // Calculate days since JP launch using day-only precision
-            const daysSinceJpLaunch = Math.round((jpAnniversaryDate.getTime() - jpLaunchDate.getTime()) / (1000 * 60 * 60 * 24));
+            let globalAnniversaryDate: Date;
+            const confirmedAnniversaryDate = CONFIRMED_GLOBAL_ANNIVERSARIES.get(anniversaryCount);
 
-            // Apply 1.6x speed adjustment
-            const adjustedDays = Math.round(daysSinceJpLaunch / 1.45);
+            if (confirmedAnniversaryDate) {
+                // Use confirmed date when available (already in UTC)
+                globalAnniversaryDate = new Date(confirmedAnniversaryDate);
+            } else {
+                // Calculate days since JP launch using UTC precision
+                const daysSinceJpLaunch = Math.round((jpAnniversaryDate.getTime() - jpLaunchDate.getTime()) / (1000 * 60 * 60 * 24));
 
-            // Calculate global anniversary date
-            const globalAnniversaryDate = new Date(globalReleaseDate);
-            globalAnniversaryDate.setDate(globalAnniversaryDate.getDate() + adjustedDays);
+                // Apply acceleration to estimate the global schedule
+                const adjustedDays = Math.round(daysSinceJpLaunch / 1.45);
+
+                // Calculate global anniversary date using UTC
+                globalAnniversaryDate = new Date(globalReleaseDate.getTime() + (adjustedDays * 24 * 60 * 60 * 1000));
+            }
 
             // Stop if the anniversary is beyond our timeline end date
             if (globalAnniversaryDate > endDate) {
                 break;
             }
 
-            // Calculate position using consistent day-only precision
+            // Calculate position using consistent UTC precision
             var daysSinceStart = Math.round((globalAnniversaryDate.getTime() - this.globalReleaseDate.getTime()) / (1000 * 60 * 60 * 24));
 
             if (anniversaryCount == 2 || anniversaryCount == 5 || anniversaryCount == 8) {
@@ -919,12 +916,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? `${anniversaryCount / 2} Year Anniversary`
                 : `${Math.floor(anniversaryCount / 2)}.5 Year Anniversary`;
 
-            /*this.allTimelineItems.push({
+            this.allTimelineItems.push({
                 date: new Date(globalAnniversaryDate),
                 label: anniversaryLabel,
                 type: 'anniversary',
                 position: position + this.initialOffset
-            });*/
+            });
         }
     }
 
@@ -1235,21 +1232,21 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // Format date to ensure consistent display
+    // Format date to ensure consistent display in user's local timezone
     formatDate(item: TimelineItem): string {
         if (!item.date) return '';
 
-        // Define reusable date formatting options
+        // Define reusable date formatting options (displays in user's local timezone)
         const dateOptions: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: 'short',
-            day: 'numeric', // Changed from '2-digit' to 'numeric' for cleaner display
+            day: 'numeric'
         };
 
         // Compact format for date ranges (no year if same year)
         const compactDateOptions: Intl.DateTimeFormatOptions = {
             month: 'short',
-            day: 'numeric',
+            day: 'numeric'
         };
 
         const formatSingleDate = (date: Date): string => {

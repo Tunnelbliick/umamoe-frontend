@@ -241,42 +241,28 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
     }
 
     private generateAnniversaryMarkers(endDate: Date): void {
-        const jpLaunchDate = new Date(Date.UTC(2021, 1, 24)); // February 24, 2021 UTC
-        const globalReleaseDate = new Date(Date.UTC(2025, 5, 26, 22)); // June 26, 2025, 22:00 UTC
-        let anniversaryCount = 0;
+        // Confirmed Global Anniversaries (matching desktop timeline)
+        const CONFIRMED_GLOBAL_ANNIVERSARIES = [
+            { date: new Date(Date.UTC(2025, 9, 26, 22, 0, 0)), label: '0.5 Year Anniversary' }, // Oct 26, 2025 - Half Anniversary
+            // Future anniversaries can be added here as they're announced
+        ];
 
-        while (true) {
-            anniversaryCount++;
-            const monthsToAdd = anniversaryCount * 6;
-            const jpAnniversaryYear = jpLaunchDate.getUTCFullYear() + Math.floor(monthsToAdd / 12);
-            const jpAnniversaryMonth = jpLaunchDate.getUTCMonth() + (monthsToAdd % 12);
+        CONFIRMED_GLOBAL_ANNIVERSARIES.forEach(anniversary => {
+            if (anniversary.date <= endDate && anniversary.date >= this.globalReleaseDate) {
+                const daysSinceStart = this.calculateDaysSinceStartUTC(anniversary.date);
+                this.timelineItems.push({
+                    date: new Date(anniversary.date),
+                    label: anniversary.label,
+                    type: 'anniversary',
+                    daysSinceStart,
+                    daysFromToday: this.calculateDaysFromTodayUTC(anniversary.date)
+                });
+            }
+        });
 
-            const finalYear = jpAnniversaryYear + Math.floor(jpAnniversaryMonth / 12);
-            const finalMonth = jpAnniversaryMonth % 12;
-
-            const jpAnniversaryDate = new Date(Date.UTC(finalYear, finalMonth, jpLaunchDate.getUTCDate()));
-            const daysSinceJpLaunch = Math.round((jpAnniversaryDate.getTime() - jpLaunchDate.getTime()) / (1000 * 60 * 60 * 24));
-            const adjustedDays = Math.round(daysSinceJpLaunch / 1.6);
-
-            const globalAnniversaryDate = new Date(globalReleaseDate);
-            globalAnniversaryDate.setUTCDate(globalAnniversaryDate.getUTCDate() + adjustedDays);
-
-            if (globalAnniversaryDate > endDate) break;
-
-            const daysSinceStart = this.calculateDaysSinceStartUTC(globalAnniversaryDate);
-            const isFullYear = anniversaryCount % 2 === 0;
-            const anniversaryLabel = isFullYear
-                ? `${anniversaryCount / 2} Year Anniversary`
-                : `${Math.floor(anniversaryCount / 2)}.5 Year Anniversary`;
-
-            this.timelineItems.push({
-                date: new Date(globalAnniversaryDate),
-                label: anniversaryLabel,
-                type: 'anniversary',
-                daysSinceStart,
-                daysFromToday: this.calculateDaysFromTodayUTC(globalAnniversaryDate)
-            });
-        }
+        // If we want to extrapolate future anniversaries after the last confirmed one
+        // We can use a pattern, but for now we'll only show confirmed anniversaries
+        // to match the desktop timeline behavior
     }
 
     private generateYearMarkers(endDate: Date): void {

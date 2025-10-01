@@ -18,70 +18,89 @@ import {
 // ============================================
 
 // Character Banner confirmed dates (banner image -> global release date)
+// All times are 22:00 UTC to display as midnight in GMT+2
 const CONFIRMED_CHARACTER_BANNER_DATES = new Map<string, Date>([
-  ['2021_30004.png', new Date(Date.UTC(2025, 5, 27))], // TM Opera O - launch day (June 27, 2025)
-  ['2021_30006.png', new Date(Date.UTC(2025, 6, 2))], // Mihono Bourbon (July 2, 2025)
-  ['2021_30008.png', new Date(Date.UTC(2025, 6, 10))], // Biwa Hayahide (July 10, 2025)
-  ['2021_30010.png', new Date(Date.UTC(2025, 6, 16))], // Tokai Teio (July 16, 2025)
-  ['2021_30012.png', new Date(Date.UTC(2025, 6, 27))], // Banner (July 27, 2025)
-  ['2021_30014.png', new Date(Date.UTC(2025, 7, 3))], // Banner (August 3, 2025)
-  ['2021_30016.png', new Date(Date.UTC(2025, 7, 11))], // Banner (August 11, 2025)
-  ['2021_30018.png', new Date(Date.UTC(2025, 7, 20))], // Banner (August 20, 2025)
-  ['2021_30020.png', new Date(Date.UTC(2025, 7, 28))], // Banner (August 28, 2025)
-  ['2021_30022.png', new Date(Date.UTC(2025, 8, 7))], // Banner (September 7, 2025)
-  ['2021_30024.png', new Date(Date.UTC(2025, 8, 17))], // Banner (September 17, 2025)
-  ['2021_30026.png', new Date(Date.UTC(2025, 8, 21))], // Banner (September 21, 2025)
+  ['2021_30004.png', new Date(Date.UTC(2025, 5, 27, 22, 0, 0))], // June 27, 2025 22:00 UTC
+  ['2021_30006.png', new Date(Date.UTC(2025, 6, 2, 22, 0, 0))], // July 2, 2025 22:00 UTC
+  ['2021_30008.png', new Date(Date.UTC(2025, 6, 10, 22, 0, 0))], // July 10, 2025 22:00 UTC
+  ['2021_30010.png', new Date(Date.UTC(2025, 6, 16, 22, 0, 0))], // July 16, 2025 22:00 UTC
+  ['2021_30012.png', new Date(Date.UTC(2025, 6, 27, 22, 0, 0))], // July 27, 2025 22:00 UTC
+  ['2021_30014.png', new Date(Date.UTC(2025, 7, 3, 22, 0, 0))], // August 3, 2025 22:00 UTC
+  ['2021_30016.png', new Date(Date.UTC(2025, 7, 11, 22, 0, 0))], // August 11, 2025 22:00 UTC
+  ['2021_30018.png', new Date(Date.UTC(2025, 7, 20, 22, 0, 0))], // August 20, 2025 22:00 UTC
+  ['2021_30020.png', new Date(Date.UTC(2025, 7, 28, 22, 0, 0))], // August 28, 2025 22:00 UTC
+  ['2021_30022.png', new Date(Date.UTC(2025, 8, 7, 22, 0, 0))], // September 7, 2025 22:00 UTC
+  ['2021_30024.png', new Date(Date.UTC(2025, 8, 17, 22, 0, 0))], // September 17, 2025 22:00 UTC
+  ['2021_30026.png', new Date(Date.UTC(2025, 8, 21, 22, 0, 0))], // September 21, 2025 22:00 UTC
+  ['2021_30028.png', new Date(Date.UTC(2025, 9, 2, 22, 0, 0))], // October 2, 2025 22:00 UTC
+  ['2021_30030.png', new Date(Date.UTC(2025, 9, 7, 22, 0, 0))], // October 7, 2025 22:00 UTC
+  ['2021_30032.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))], // October 14, 2025 22:00 UTC
+  ['2021_30034.png', new Date(Date.UTC(2025, 9, 21, 22, 0, 0))], // October 21, 2025 22:00 UTC
+  ['2021_30036.png', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // October 30, 2025 22:00 UTC
   // Add more confirmed character banner dates here as they're announced
 ]);
 
 // Support Banner confirmed dates (banner image -> global release date)
+// All times are 22:00 UTC to display as midnight in GMT+2
 const CONFIRMED_SUPPORT_BANNER_DATES = new Map<string, Date>([
-  ['2021_30005.png', new Date(Date.UTC(2025, 5, 27))], // TM Opera O support - launch day
-  ['2021_30007.png', new Date(Date.UTC(2025, 6, 2))], // Mihono Bourbon support
-  ['2021_30009.png', new Date(Date.UTC(2025, 6, 10))], // Biwa Hayahide support
-  ['2021_30011.png', new Date(Date.UTC(2025, 6, 16))], // Tokai Teio support
-  ['2021_30013.png', new Date(Date.UTC(2025, 6, 27))], // Support
-  ['2021_30015.png', new Date(Date.UTC(2025, 7, 3))], // Support
-  ['2021_30017.png', new Date(Date.UTC(2025, 7, 11))], // Support
-  ['2021_30019.png', new Date(Date.UTC(2025, 7, 20))], // Support
-  ['2021_30021.png', new Date(Date.UTC(2025, 7, 28))], // Support
-  ['2021_30023.png', new Date(Date.UTC(2025, 8, 7))], // Support
-  ['2021_30025.png', new Date(Date.UTC(2025, 8, 17))], // Support
-  ['2021_30027.png', new Date(Date.UTC(2025, 8, 21))], // Support
+  ['2021_30005.png', new Date(Date.UTC(2025, 5, 27, 22, 0, 0))], // June 27, 2025 22:00 UTC
+  ['2021_30007.png', new Date(Date.UTC(2025, 6, 2, 22, 0, 0))], // July 2, 2025 22:00 UTC
+  ['2021_30009.png', new Date(Date.UTC(2025, 6, 10, 22, 0, 0))], // July 10, 2025 22:00 UTC
+  ['2021_30011.png', new Date(Date.UTC(2025, 6, 16, 22, 0, 0))], // July 16, 2025 22:00 UTC
+  ['2021_30013.png', new Date(Date.UTC(2025, 6, 27, 22, 0, 0))], // July 27, 2025 22:00 UTC
+  ['2021_30015.png', new Date(Date.UTC(2025, 7, 3, 22, 0, 0))], // August 3, 2025 22:00 UTC
+  ['2021_30017.png', new Date(Date.UTC(2025, 7, 11, 22, 0, 0))], // August 11, 2025 22:00 UTC
+  ['2021_30019.png', new Date(Date.UTC(2025, 7, 20, 22, 0, 0))], // August 20, 2025 22:00 UTC
+  ['2021_30021.png', new Date(Date.UTC(2025, 7, 28, 22, 0, 0))], // August 28, 2025 22:00 UTC
+  ['2021_30023.png', new Date(Date.UTC(2025, 8, 7, 22, 0, 0))], // September 7, 2025 22:00 UTC
+  ['2021_30025.png', new Date(Date.UTC(2025, 8, 17, 22, 0, 0))], // September 17, 2025 22:00 UTC
+  ['2021_30027.png', new Date(Date.UTC(2025, 8, 21, 22, 0, 0))], // September 21, 2025 22:00 UTC
+  ['2021_30029.png', new Date(Date.UTC(2025, 9, 2, 22, 0, 0))], // October 2, 2025 22:00 UTC
+  ['2021_30031.png', new Date(Date.UTC(2025, 9, 7, 22, 0, 0))], // October 7, 2025 22:00 UTC
+  ['2021_30033.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))], // October 14, 2025 22:00 UTC
+  ['2021_30035.png', new Date(Date.UTC(2025, 9, 21, 22, 0, 0))], // October 21, 2025 22:00 UTC
+  ['2021_30037.png', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // October 30, 2025 22:00 UTC
   // Add more confirmed support banner dates here as they're announced
 ]);
 
 // Story Event confirmed dates (banner image -> global release date)
 const CONFIRMED_STORY_EVENT_DATES = new Map<string, Date>([
-  ['03_chase_your_dreams_banner.png', new Date(Date.UTC(2025, 5, 27))],
-  ['03_brand_new_friend_banner.png', new Date(Date.UTC(2025, 6, 16))],
-  ['05_blooming_maidens_june_pride_banner.png', new Date(Date.UTC(2025, 7, 28))],
-  ['06_fantasy_world_uma_nest_banner.png', new Date(Date.UTC(2025, 8, 21))],
+  ['03_chase_your_dreams_banner.png', new Date(Date.UTC(2025, 5, 27, 22, 0, 0))],
+  ['03_brand_new_friend_banner.png', new Date(Date.UTC(2025, 6, 16, 22, 0, 0))],
+  ['05_blooming_maidens_june_pride_banner.png', new Date(Date.UTC(2025, 7, 28, 22, 0, 0))],
+  ['06_fantasy_world_uma_nest_banner.png', new Date(Date.UTC(2025, 8, 21, 22, 0, 0))],
+  ['07_uma_musume_summer_story_banner.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))],
 ]);
 
 // Paid Banner confirmed dates (banner image -> global release date)
 const CONFIRMED_PAID_BANNER_DATES = new Map<string, Date>([
-  // ['50003.png', new Date(Date.UTC(2025, 9, 18))], // TM Opera O paid banner (October 18, 2025)
-  //  ['50004.png', new Date(Date.UTC(2025, 9, 18))], // Mihono Bourbon paid banner
-
-  // Add confirmed paid banner dates here as they're announced
+  ['50003.png', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))],
+  ['50004.png', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))],
+  /*['50007.png', new Date(Date.UTC(2026, 2, 5, 22, 0, 0))],
+  ['50008.png', new Date(Date.UTC(2026, 2, 5, 22, 0, 0))],
+  ['50009.png', new Date(Date.UTC(2026, 6, 8, 22, 0, 0))],
+  ['50010.png', new Date(Date.UTC(2026, 6, 8, 22, 0, 0))],*/
+  // generate 50029.png - 50048.png on the
 ]);
 
 // Champions Meeting confirmed dates (index -> global release date)
 // Use format: champions_meeting_0, champions_meeting_1, etc.
 const CONFIRMED_CHAMPIONS_MEETING_DATES = new Map<string, Date>([
-  ['champions_meeting_0', new Date(Date.UTC(2025, 7, 17))], // First Champions Meeting (August 17, 2025)
-  ['champions_meeting_1', new Date(Date.UTC(2025, 8, 7))], // Second Champions Meeting
+  ['champions_meeting_0', new Date(Date.UTC(2025, 7, 17, 22, 0, 0))], // First Champions Meeting (August 17, 2025)
+  ['champions_meeting_1', new Date(Date.UTC(2025, 8, 7, 22, 0, 0))], // Second Champions Meeting
+  ['champions_meeting_2', new Date(Date.UTC(2025, 9, 16, 22, 0, 0))], // Third Champions Meeting (September 16, 2025)
+  ['champions_meeting_3', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // Fourth Champions Meeting (September 30, 2025)
   // Add more confirmed champions meeting dates here as they're announced
 ]);
 
 // Legend Race confirmed dates (index -> global release date)
 // Use format: legend_race_0, legend_race_1, etc.
 const CONFIRMED_LEGEND_RACE_DATES = new Map<string, Date>([
-  ['legend_race_0', new Date(Date.UTC(2025, 6, 6))], // First Legend Race (July 6, 2025)
-  ['legend_race_1', new Date(Date.UTC(2025, 6, 27))], // Second Legend Race (July 27, 2025)
-  ['legend_race_2', new Date(Date.UTC(2025, 7, 21))], // Third Legend Race (August 21, 2025)
-  ['legend_race_3', new Date(Date.UTC(2025, 8, 11))], // Fourth Legend Race (September 11, 2025)
+  ['legend_race_0', new Date(Date.UTC(2025, 6, 6, 22, 0, 0))], // First Legend Race (July 6, 2025)
+  ['legend_race_1', new Date(Date.UTC(2025, 6, 27, 22, 0, 0))], // Second Legend Race (July 27, 2025)
+  ['legend_race_2', new Date(Date.UTC(2025, 7, 21, 22, 0, 0))], // Third Legend Race (August 21, 2025)
+  ['legend_race_3', new Date(Date.UTC(2025, 8, 11, 22, 0, 0))], // Fourth Legend Race (September 11, 2025)
+  ['legend_race_4', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))], // Fifth Legend Race (October 26, 2025)
   // Add more confirmed legend race dates here as they're announced
 ]);
 
@@ -93,10 +112,10 @@ const JP_LAUNCH_DATE = new Date(Date.UTC(2021, 1, 24)); // JP launch date - Febr
 const GLOBAL_LAUNCH_DATE = new Date(Date.UTC(2025, 5, 26)); // Global launch date - June 26, 2025 UTC
 
 // Fallback acceleration rate if we don't have enough confirmed dates
-const FALLBACK_ACCELERATION_RATE = 1.57;
+const FALLBACK_ACCELERATION_RATE = 1.6;
 
 // Tweak factor to adjust acceleration rate (1.0 = no change, 0.8 = slower, 1.2 = faster)
-const ACCELERATION_TWEAK_FACTOR = 0.85;
+const ACCELERATION_TWEAK_FACTOR = 1.0;
 
 // Helper function to parse date strings as UTC
 function parseAsUTC(dateString: string): Date {
@@ -170,21 +189,21 @@ export class TimelineService {
 
     // Sort by global date
     const sorted = [...confirmedDates].sort((a, b) => a.global.getTime() - b.global.getTime());
-    
+
     // Get the most recent confirmed date
     const mostRecent = sorted[sorted.length - 1];
-    
+
     // Find dates from the last 30 days before the most recent
     const thirtyDaysAgo = new Date(mostRecent.global);
     thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 30);
-    
-    const lastMonthDates = sorted.filter(d => 
+
+    const lastMonthDates = sorted.filter(d =>
       d.global >= thirtyDaysAgo && d.global <= mostRecent.global
     );
-    
+
     // If we don't have enough dates in the last month, use the last 3-4 confirmed dates
     const datesToUse = lastMonthDates.length >= 2 ? lastMonthDates : sorted.slice(-4);
-    
+
     if (datesToUse.length < 2) {
       return FALLBACK_ACCELERATION_RATE;
     }
@@ -192,26 +211,26 @@ export class TimelineService {
     // Calculate the average acceleration rate from these recent dates
     let totalJpDays = 0;
     let totalGlobalDays = 0;
-    
+
     for (let i = 1; i < datesToUse.length; i++) {
       const jpDiff = getDaysDifferenceUTC(datesToUse[i - 1].jp, datesToUse[i].jp);
       const globalDiff = getDaysDifferenceUTC(datesToUse[i - 1].global, datesToUse[i].global);
-      
+
       if (globalDiff > 0) { // Avoid division by zero
         totalJpDays += jpDiff;
         totalGlobalDays += globalDiff;
       }
     }
-    
+
     if (totalGlobalDays === 0) {
       return FALLBACK_ACCELERATION_RATE;
     }
-    
+
     const rate = totalJpDays / totalGlobalDays;
-    
+
     // Apply tweak factor to slow down or speed up the acceleration
     const adjustedRate = rate * ACCELERATION_TWEAK_FACTOR;
-    
+
     // Clamp to reasonable values (between 1.2x and 2.0x acceleration)
     return Math.min(Math.max(adjustedRate, 1.2), 2.0);
   }
@@ -220,6 +239,7 @@ export class TimelineService {
    * Calculate global release date using confirmed dates for extrapolation
    * Uses only the last month of confirmed dates for more accurate predictions
    * All calculations are done in UTC
+   * Returns dates normalized to 22:00 UTC (midnight in GMT+2)
    */
   private calculateGlobalDate(jpDate: Date, confirmedDates: Array<{ jp: Date, global: Date }>): Date {
     // Sort confirmed dates by JP date
@@ -246,6 +266,8 @@ export class TimelineService {
       }
     }
 
+    let calculatedDate: Date;
+
     // Case 1: We have confirmed dates on both sides - interpolate
     if (before && after) {
       const jpRange = after.jp.getTime() - before.jp.getTime();
@@ -255,39 +277,59 @@ export class TimelineService {
       const ratio = globalRange / jpRange;
       const globalProgress = jpProgress * ratio;
 
-      return new Date(before.global.getTime() + globalProgress);
+      calculatedDate = new Date(before.global.getTime() + globalProgress);
     }
-
     // Case 2: We only have dates before - extrapolate forward using recent rate
-    if (before) {
+    else if (before) {
       const jpDaysAfter = getDaysDifferenceUTC(before.jp, jpDate);
       const globalDaysAfter = jpDaysAfter / recentRate;
 
-      return addDaysUTC(before.global, globalDaysAfter);
+      calculatedDate = addDaysUTC(before.global, globalDaysAfter);
     }
-
     // Case 3: We only have dates after - extrapolate backward using recent rate
-    if (after) {
+    else if (after) {
       const jpDaysBefore = getDaysDifferenceUTC(jpDate, after.jp);
       const globalDaysBefore = jpDaysBefore / recentRate;
 
-      return addDaysUTC(after.global, -globalDaysBefore);
+      calculatedDate = addDaysUTC(after.global, -globalDaysBefore);
+    }
+    // Fallback to simple calculation
+    else {
+      calculatedDate = this.calculateGlobalDateWithFallback(jpDate);
     }
 
-    // Fallback to simple calculation
-    return this.calculateGlobalDateWithFallback(jpDate);
+    // Normalize to 22:00 UTC (midnight in GMT+2) to match confirmed banner times
+    const normalized = new Date(Date.UTC(
+      calculatedDate.getUTCFullYear(),
+      calculatedDate.getUTCMonth(),
+      calculatedDate.getUTCDate(),
+      22, 0, 0, 0
+    ));
+
+    return normalized;
   }
 
   /**
    * Fallback calculation using fixed acceleration rate
    * All calculations are done in UTC
+   * Returns dates normalized to 22:00 UTC (midnight in GMT+2)
    */
   private calculateGlobalDateWithFallback(jpDate: Date): Date {
     const daysSinceJpLaunch = getDaysDifferenceUTC(JP_LAUNCH_DATE, jpDate);
     const adjustedRate = FALLBACK_ACCELERATION_RATE * ACCELERATION_TWEAK_FACTOR;
     const adjustedDays = Math.floor(daysSinceJpLaunch / adjustedRate);
 
-    return addDaysUTC(GLOBAL_LAUNCH_DATE, adjustedDays);
+    const calculatedDate = addDaysUTC(GLOBAL_LAUNCH_DATE, adjustedDays);
+
+    // Normalize to 22:00 UTC (midnight in GMT+2) to match confirmed banner times
+    const normalized = new Date(Date.UTC(
+      calculatedDate.getUTCFullYear(),
+      calculatedDate.getUTCMonth(),
+      calculatedDate.getUTCDate(),
+      22, 0, 0, 0
+    ));
+
+    return normalized;
   }
 
   /**
@@ -353,9 +395,9 @@ export class TimelineService {
       });
     }
 
-    // For non-banner events (story, champions, legend), also include character banner dates
+    // For non-banner events (story, champions, legend, paid), also include character banner dates
     // This gives us more data points for accurate extrapolation
-    if (type === 'story' || type === 'champions' || type === 'legend') {
+    if (type === 'story' || type === 'champions' || type === 'legend' || type === 'paid') {
       const characterBanners = getAllCharacterBanners();
       if (characterBanners) {
         characterBanners.forEach(banner => {
@@ -370,6 +412,24 @@ export class TimelineService {
             if (!isNaN(jpDate.getTime())) {
               confirmedDates.push({ jp: jpDate, global: globalDate });
             }
+          }
+        });
+      }
+    }
+
+    // Paid banners usually accompany character/support releases, so reuse confirmed support banner dates as anchors
+    if (type === 'paid') {
+      const supportBanners = getAllSupportBanners();
+      if (supportBanners) {
+        supportBanners.forEach(banner => {
+          const globalDate = CONFIRMED_SUPPORT_BANNER_DATES.get(banner.image);
+          if (!globalDate) {
+            return;
+          }
+
+          const jpDate = parseAsUTC(banner.start_date);
+          if (!isNaN(jpDate.getTime())) {
+            confirmedDates.push({ jp: jpDate, global: globalDate });
           }
         });
       }
