@@ -88,7 +88,7 @@ const CONFIRMED_PAID_BANNER_DATES = new Map<string, Date>([
 const CONFIRMED_CHAMPIONS_MEETING_DATES = new Map<string, Date>([
   ['champions_meeting_0', new Date(Date.UTC(2025, 7, 17, 22, 0, 0))], // First Champions Meeting (August 17, 2025)
   ['champions_meeting_1', new Date(Date.UTC(2025, 8, 7, 22, 0, 0))], // Second Champions Meeting
-  ['champions_meeting_2', new Date(Date.UTC(2025, 9, 16, 22, 0, 0))], // Third Champions Meeting (September 16, 2025)
+  ['champions_meeting_2', new Date(Date.UTC(2025, 9, 7, 22, 0, 0))], // Third Champions Meeting (September 16, 2025)
   ['champions_meeting_3', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // Fourth Champions Meeting (September 30, 2025)
   // Add more confirmed champions meeting dates here as they're announced
 ]);
