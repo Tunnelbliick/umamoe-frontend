@@ -50,7 +50,9 @@ Thumbs.db
 /src/environments/environment.prod.ts
 
 # Statistics and data files
-/statistics
+src/assets/statistics
+statistics/
 
 .github/copilot-instructions.md
 src/assets/data/precomputed-tierlist.json
+statistics/2025-09-14/characters/100101.json

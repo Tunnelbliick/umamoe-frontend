@@ -55,6 +55,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('classFilter') classFilter!: ClassFilterComponent;
   private destroy$ = new Subject<void>();
 
+  // Dataset management
+  availableDatasets$ = new BehaviorSubject<any[]>([]);
+  selectedDataset$ = new BehaviorSubject<any>(null);
+
   // Loading states
   globalLoading = true;
   distanceLoading = false;
@@ -516,6 +520,20 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Set default distance selection to "short"
     this.selectedDistance.next('sprint');
 
+    // Subscribe to available datasets
+    this.statisticsService.getAvailableDatasets()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(datasets => {
+        this.availableDatasets$.next(datasets);
+      });
+
+    // Subscribe to selected dataset changes
+    this.statisticsService.getSelectedDataset()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(dataset => {
+        this.selectedDataset$.next(dataset);
+      });
+
     // Wait for a dataset to be available before loading statistics
     this.statisticsService.getSelectedDataset()
       .pipe(
@@ -850,6 +868,30 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       // Load distance data on-demand for better performance
       this.loadSingleDistanceStats(distance);
+    }
+  }
+
+  // Dataset selection method
+  onDatasetChange(datasetId: string): void {
+    const datasets = this.availableDatasets$.value;
+    const selectedDataset = datasets.find(d => d.id === datasetId);
+    
+    if (selectedDataset) {
+      // Update the service's selected dataset
+      this.statisticsService.selectDataset(selectedDataset);
+      
+      // Clear all cached data
+      this.globalStats = null;
+      this.distanceStats = {};
+      this.characterStats = {};
+      this.invalidateCache('all');
+      
+      // Reset character selection
+      this.selectedCharacterDetail = null;
+      this.selectedCharacterDistance = null;
+      
+      // Reload all statistics with the new dataset
+      this.loadGlobalStats();
     }
   }
 

@@ -37,6 +37,10 @@ const CONFIRMED_CHARACTER_BANNER_DATES = new Map<string, Date>([
   ['2021_30032.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))], // October 14, 2025 22:00 UTC
   ['2021_30034.png', new Date(Date.UTC(2025, 9, 21, 22, 0, 0))], // October 21, 2025 22:00 UTC
   ['2021_30036.png', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // October 30, 2025 22:00 UTC
+  ['2021_30038.png', new Date(Date.UTC(2025, 10, 6, 22, 0, 0))], // November 7, 2025 22:00 UTC
+  ['2021_30040.png', new Date(Date.UTC(2025, 10, 11, 22, 0, 0))], // November 14, 2025 22:00 UTC
+  ['2021_30042.png', new Date(Date.UTC(2025, 10, 19, 22, 0, 0))], // November 21, 2025 22:00 UTC
+  ['2021_30044.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))], // November 28, 2025 22:00 UTC
   // Add more confirmed character banner dates here as they're announced
 ]);
 
@@ -60,6 +64,10 @@ const CONFIRMED_SUPPORT_BANNER_DATES = new Map<string, Date>([
   ['2021_30033.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))], // October 14, 2025 22:00 UTC
   ['2021_30035.png', new Date(Date.UTC(2025, 9, 21, 22, 0, 0))], // October 21, 2025 22:00 UTC
   ['2021_30037.png', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // October 30, 2025 22:00 UTC
+  ['2021_30039.png', new Date(Date.UTC(2025, 10, 6, 22, 0, 0))], // November 7, 2025 22:00 UTC
+  ['2021_30041.png', new Date(Date.UTC(2025, 10, 11, 22, 0, 0))], // November 14, 2025 22:00 UTC
+  ['2021_30043.png', new Date(Date.UTC(2025, 10, 19, 22, 0, 0))], // November 21, 2025 22:00 UTC
+  ['2021_30045.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))], // November 28, 2025 22:00 UTC
   // Add more confirmed support banner dates here as they're announced
 ]);
 
@@ -70,12 +78,13 @@ const CONFIRMED_STORY_EVENT_DATES = new Map<string, Date>([
   ['05_blooming_maidens_june_pride_banner.png', new Date(Date.UTC(2025, 7, 28, 22, 0, 0))],
   ['06_fantasy_world_uma_nest_banner.png', new Date(Date.UTC(2025, 8, 21, 22, 0, 0))],
   ['07_uma_musume_summer_story_banner.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))],
+  ['09_make_up_in_halloween_banner.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))],
 ]);
 
 // Paid Banner confirmed dates (banner image -> global release date)
 const CONFIRMED_PAID_BANNER_DATES = new Map<string, Date>([
-  ['50003.png', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))],
-  ['50004.png', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))],
+  ['50003.png', new Date(Date.UTC(2025, 10, 3, 22, 0, 0))],
+  ['50004.png', new Date(Date.UTC(2025, 10, 3, 22, 0, 0))],
   /*['50007.png', new Date(Date.UTC(2026, 2, 5, 22, 0, 0))],
   ['50008.png', new Date(Date.UTC(2026, 2, 5, 22, 0, 0))],
   ['50009.png', new Date(Date.UTC(2026, 6, 8, 22, 0, 0))],
@@ -90,6 +99,8 @@ const CONFIRMED_CHAMPIONS_MEETING_DATES = new Map<string, Date>([
   ['champions_meeting_1', new Date(Date.UTC(2025, 8, 7, 22, 0, 0))], // Second Champions Meeting
   ['champions_meeting_2', new Date(Date.UTC(2025, 9, 7, 22, 0, 0))], // Third Champions Meeting (September 16, 2025)
   ['champions_meeting_3', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // Fourth Champions Meeting (September 30, 2025)
+  ['champions_meeting_4', new Date(Date.UTC(2025, 10, 16, 22, 0, 0))], // Fifth Champions Meeting (October 21, 2025)
+
   // Add more confirmed champions meeting dates here as they're announced
 ]);
 
@@ -101,6 +112,7 @@ const CONFIRMED_LEGEND_RACE_DATES = new Map<string, Date>([
   ['legend_race_2', new Date(Date.UTC(2025, 7, 21, 22, 0, 0))], // Third Legend Race (August 21, 2025)
   ['legend_race_3', new Date(Date.UTC(2025, 8, 11, 22, 0, 0))], // Fourth Legend Race (September 11, 2025)
   ['legend_race_4', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))], // Fifth Legend Race (October 26, 2025)
+  ['legend_race_5', new Date(Date.UTC(2025, 10, 13, 22, 0, 0))], // Sixth Legend Race (November 21, 2025)
   // Add more confirmed legend race dates here as they're announced
 ]);
 
@@ -114,8 +126,10 @@ const GLOBAL_LAUNCH_DATE = new Date(Date.UTC(2025, 5, 26)); // Global launch dat
 // Fallback acceleration rate if we don't have enough confirmed dates
 const FALLBACK_ACCELERATION_RATE = 1.6;
 
-// Tweak factor to adjust acceleration rate (1.0 = no change, 0.8 = slower, 1.2 = faster)
-const ACCELERATION_TWEAK_FACTOR = 1.0;
+// Banner-specific tweak factors (index -> tweak factor)
+// Index 0 = first unconfirmed banner after the last confirmed date
+// 1.0 = no change, 0.8 = slower, 1.2 = faster
+const BANNER_TWEAK_FACTORS = new Map<number, number>([]);
 
 // Helper function to parse date strings as UTC
 function parseAsUTC(dateString: string): Date {
@@ -155,6 +169,25 @@ function getDaysDifferenceUTC(date1: Date, date2: Date): number {
   return Math.floor((date2.getTime() - date1.getTime()) / msPerDay);
 }
 
+// Helper function to check if a date falls during DST (Daylight Saving Time) in Europe
+// DST in Europe: Last Sunday of March (02:00 UTC) to Last Sunday of October (03:00 UTC)
+function isDST(date: Date): boolean {
+  const year = date.getUTCFullYear();
+
+  // Find last Sunday of March
+  const marchLastDay = new Date(Date.UTC(year, 2, 31, 1, 0, 0)); // March 31st at 01:00 UTC
+  const marchLastSunday = new Date(marchLastDay);
+  marchLastSunday.setUTCDate(31 - (marchLastDay.getUTCDay()));
+
+  // Find last Sunday of October  
+  const octoberLastDay = new Date(Date.UTC(year, 9, 31, 1, 0, 0)); // October 31st at 01:00 UTC
+  const octoberLastSunday = new Date(octoberLastDay);
+  octoberLastSunday.setUTCDate(31 - (octoberLastDay.getUTCDay()));
+
+  // Check if date is between these two dates
+  return date >= marchLastSunday && date < octoberLastSunday;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -182,7 +215,7 @@ export class TimelineService {
    * Calculate acceleration rate based on the last month of confirmed dates
    * This gives us the most recent and accurate acceleration pattern
    */
-  private calculateRecentAccelerationRate(confirmedDates: Array<{ jp: Date, global: Date }>): number {
+  private calculateRecentAccelerationRate(confirmedDates: Array<{ jp: Date, global: Date }>, tweakFactor: number = 1.0): number {
     if (confirmedDates.length < 2) {
       return FALLBACK_ACCELERATION_RATE;
     }
@@ -228,8 +261,8 @@ export class TimelineService {
 
     const rate = totalJpDays / totalGlobalDays;
 
-    // Apply tweak factor to slow down or speed up the acceleration
-    const adjustedRate = rate * ACCELERATION_TWEAK_FACTOR;
+    // Apply tweak factor (1.0 = no change)
+    const adjustedRate = rate * tweakFactor;
 
     // Clamp to reasonable values (between 1.2x and 2.0x acceleration)
     return Math.min(Math.max(adjustedRate, 1.2), 2.0);
@@ -240,8 +273,12 @@ export class TimelineService {
    * Uses only the last month of confirmed dates for more accurate predictions
    * All calculations are done in UTC
    * Returns dates normalized to 22:00 UTC (midnight in GMT+2)
+   * 
+   * @param jpDate - The JP release date to calculate global date for
+   * @param confirmedDates - Array of confirmed JP->Global date mappings
+   * @param bannerIndex - Optional index representing position after last confirmed banner (0 = first unconfirmed, 1 = second, etc.)
    */
-  private calculateGlobalDate(jpDate: Date, confirmedDates: Array<{ jp: Date, global: Date }>): Date {
+  private calculateGlobalDate(jpDate: Date, confirmedDates: Array<{ jp: Date, global: Date }>, bannerIndex?: number): Date {
     // Sort confirmed dates by JP date
     const sortedDates = confirmedDates.sort((a, b) => a.jp.getTime() - b.jp.getTime());
 
@@ -249,9 +286,6 @@ export class TimelineService {
       // No confirmed dates, use fallback acceleration rate
       return this.calculateGlobalDateWithFallback(jpDate);
     }
-
-    // Calculate the recent acceleration rate based on last month's data
-    const recentRate = this.calculateRecentAccelerationRate(sortedDates);
 
     // Find the two closest confirmed dates (before and after jpDate)
     let before: { jp: Date, global: Date } | null = null;
@@ -265,6 +299,14 @@ export class TimelineService {
         break;
       }
     }
+
+    // Determine tweak factor based on banner index
+    const tweakFactor = (bannerIndex !== undefined && BANNER_TWEAK_FACTORS.has(bannerIndex))
+      ? BANNER_TWEAK_FACTORS.get(bannerIndex)!
+      : 1.0;
+
+    // Calculate the recent acceleration rate with the appropriate tweak factor
+    const recentRate = this.calculateRecentAccelerationRate(sortedDates, tweakFactor);
 
     let calculatedDate: Date;
 
@@ -316,8 +358,7 @@ export class TimelineService {
    */
   private calculateGlobalDateWithFallback(jpDate: Date): Date {
     const daysSinceJpLaunch = getDaysDifferenceUTC(JP_LAUNCH_DATE, jpDate);
-    const adjustedRate = FALLBACK_ACCELERATION_RATE * ACCELERATION_TWEAK_FACTOR;
-    const adjustedDays = Math.floor(daysSinceJpLaunch / adjustedRate);
+    const adjustedDays = Math.floor(daysSinceJpLaunch / FALLBACK_ACCELERATION_RATE);
 
     const calculatedDate = addDaysUTC(GLOBAL_LAUNCH_DATE, adjustedDays);
 
@@ -513,6 +554,15 @@ export class TimelineService {
       .filter(banner => banner.processedStartDate) // Filter out invalid dates
       .sort((a, b) => a.processedStartDate!.getTime() - b.processedStartDate!.getTime());
 
+    // Find the index of the last confirmed banner to calculate unconfirmed indices
+    let lastConfirmedIndex = -1;
+    for (let i = processedBanners.length - 1; i >= 0; i--) {
+      if (CONFIRMED_CHARACTER_BANNER_DATES.has(processedBanners[i].image)) {
+        lastConfirmedIndex = i;
+        break;
+      }
+    }
+
     processedBanners.forEach((banner, index) => {
       // Extract character names from pickup_characters
       const characters = banner.pickup_characters.map(char => {
@@ -523,11 +573,19 @@ export class TimelineService {
 
       // Check if this banner has a confirmed date
       const confirmedGlobalDate = CONFIRMED_CHARACTER_BANNER_DATES.get(banner.image);
-      const globalDate = confirmedGlobalDate || this.calculateGlobalDate(banner.processedStartDate!, confirmedDates);
+
+      // Calculate banner index for unconfirmed banners (0 = first after last confirmed, 1 = second, etc.)
+      const bannerIndex = !confirmedGlobalDate && lastConfirmedIndex >= 0
+        ? index - lastConfirmedIndex - 1
+        : undefined;
+
+      const globalDate = confirmedGlobalDate || this.calculateGlobalDate(banner.processedStartDate!, confirmedDates, bannerIndex);
       const isConfirmed = !!confirmedGlobalDate;
 
       const bannerid = banner.image.split('_').pop()?.replace('.png', '') || '';
       const duration = this.calculateBannerDuration(banner.processedStartDate!, banner.processedEndDate!);
+
+      const adjustment = isDST(globalDate) ? 0 : 1; // Adjust for DST
 
       const event: TimelineEvent = {
         id: `banner-${banner.image.replace('.png', '')}`,
@@ -536,7 +594,7 @@ export class TimelineService {
         description: `Character banner featuring: ${characters.join(', ')}`,
         jpReleaseDate: banner.processedStartDate!,
         globalReleaseDate: globalDate,
-        estimatedEndDate: this.calculateEndDate(globalDate, duration),
+        estimatedEndDate: this.calculateEndDate(globalDate, duration + adjustment),
         isConfirmed: isConfirmed,
         bannerDuration: duration,
         tags: ['character-banner'],
@@ -563,6 +621,15 @@ export class TimelineService {
       .filter(banner => banner.processedStartDate) // Filter out invalid dates
       .sort((a, b) => a.processedStartDate!.getTime() - b.processedStartDate!.getTime());
 
+    // Find the index of the last confirmed banner to calculate unconfirmed indices
+    let lastConfirmedIndex = -1;
+    for (let i = processedBanners.length - 1; i >= 0; i--) {
+      if (CONFIRMED_SUPPORT_BANNER_DATES.has(processedBanners[i].image)) {
+        lastConfirmedIndex = i;
+        break;
+      }
+    }
+
     processedBanners.forEach((banner, index) => {
       // Extract support card names from pickup_characters
       const supportCards = banner.pickup_characters.map(char => {
@@ -572,11 +639,19 @@ export class TimelineService {
       });
 
       const confirmedGlobalDate = CONFIRMED_SUPPORT_BANNER_DATES.get(banner.image);
-      const globalDate = confirmedGlobalDate || this.calculateGlobalDate(banner.processedStartDate!, confirmedDates);
+
+      // Calculate banner index for unconfirmed banners (0 = first after last confirmed, 1 = second, etc.)
+      const bannerIndex = !confirmedGlobalDate && lastConfirmedIndex >= 0
+        ? index - lastConfirmedIndex - 1
+        : undefined;
+
+      const globalDate = confirmedGlobalDate || this.calculateGlobalDate(banner.processedStartDate!, confirmedDates, bannerIndex);
       const isConfirmed = !!confirmedGlobalDate;
 
       const bannerid = banner.image.split('_').pop()?.replace('.png', '') || '';
-      const duration = this.calculateBannerDuration(banner.processedStartDate!, banner.processedEndDate!) - 1;
+      const duration = this.calculateBannerDuration(banner.processedStartDate!, banner.processedEndDate!);
+
+      const adjustment = isDST(globalDate) ? -1 : 0; // Adjust for DST
 
       const event: TimelineEvent = {
         id: `support-banner-${banner.image.replace('.png', '')}`,
@@ -585,7 +660,7 @@ export class TimelineService {
         description: `Support card banner featuring: ${supportCards.join(', ')}`,
         jpReleaseDate: banner.processedStartDate!,
         globalReleaseDate: globalDate,
-        estimatedEndDate: this.calculateEndDate(globalDate, duration),
+        estimatedEndDate: this.calculateEndDate(globalDate, duration + adjustment),
         isConfirmed: isConfirmed,
         bannerDuration: duration,
         tags: ['support-banner'],
@@ -662,13 +737,18 @@ export class TimelineService {
 
       const duration = this.calculateBannerDuration(event.processedStartDate!, event.processedEndDate!);
 
+      // Champions Meetings have a 3-day signup period, but DST affects the calculation
+      // During summer time (DST active): use +2 days
+      // During winter time (DST inactive): use +4 days
+      const signupPeriodAdjustment = isDST(globalDate) ? 2 : 4;
+
       const timelineEvent: TimelineEvent = {
         id: `champions-meeting-${index}`,
         type: EventType.CHAMPIONS_MEETING,
         title: `Champions Meeting: ${championsEvent.name}`,
         description: `${championsEvent.track}<br>${championsEvent.distance || ''}</br>${championsEvent.conditions || ''}`,
         jpReleaseDate: event.processedStartDate!,
-        estimatedEndDate: this.calculateEndDate(globalDate, duration),
+        estimatedEndDate: this.calculateEndDate(globalDate, duration + signupPeriodAdjustment),
         globalReleaseDate: globalDate,
         isConfirmed: isConfirmed,
         bannerDuration: duration,
@@ -718,6 +798,8 @@ export class TimelineService {
 
       const duration = this.calculateBannerDuration(event.processedStartDate!, event.processedEndDate!);
 
+      const adjustment = isDST(globalDate) ? 0 : 1; // Adjust for DST
+
       const timelineEvent: TimelineEvent = {
         id: `legend-race-${index}`,
         type: EventType.LEGEND_RACE,
@@ -725,7 +807,7 @@ export class TimelineService {
         description: legendEvent.course,
         jpReleaseDate: event.processedStartDate!,
         globalReleaseDate: globalDate,
-        estimatedEndDate: this.calculateEndDate(globalDate, duration),
+        estimatedEndDate: this.calculateEndDate(globalDate, duration + adjustment),
         isConfirmed: isConfirmed,
         bannerDuration: duration,
         tags: ['event', 'legend-race'],
@@ -919,8 +1001,10 @@ export class TimelineService {
   }
 
   calculateEndDate(globalDate: Date, durationInDays: number): Date {
-    const endDate = new Date(globalDate);
-    endDate.setDate(endDate.getDate() + durationInDays);
+    // Create new date from UTC timestamp to avoid timezone issues
+    const endDate = new Date(globalDate.getTime());
+    // Add days using UTC date methods to ensure proper calculation
+    endDate.setUTCDate(endDate.getUTCDate() + durationInDays);
     endDate.setUTCHours(22, 0, 0, 0); // Set to 22:00 UTC (10 PM UTC)
     return endDate;
   }

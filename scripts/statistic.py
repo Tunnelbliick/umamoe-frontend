@@ -930,6 +930,12 @@ class UmamusumeStatistics:
     
     def compile_statistics(self) -> None:
         """Compile all statistics and save to versioned organized files"""
+        print(f"\n{'='*60}")
+        print(f"Starting Statistics Compilation")
+        print(f"Dataset Version: {self.dataset_version}")
+        print(f"Dataset Name: {self.dataset_name}")
+        print(f"{'='*60}\n")
+        
         # Load data
         df = self.load_data()
         
@@ -938,7 +944,7 @@ class UmamusumeStatistics:
         global_stats = self.calculate_global_statistics(df)
         with open(f'statistics/{self.dataset_version}/global/global.json', 'w', encoding='utf-8') as f:
             json.dump(global_stats, f, ensure_ascii=False, indent=2)
-        print(f"  Saved to statistics/{self.dataset_version}/global/global.json")
+        print(f"  ✓ Saved to statistics/{self.dataset_version}/global/global.json")
         
         # Calculate and save distance statistics (creates separate files)
         self.calculate_distance_statistics(df)
@@ -958,18 +964,33 @@ class UmamusumeStatistics:
             'name': self.dataset_name
         }
         
-        with open(f'statistics/{self.dataset_version}/index.json', 'w', encoding='utf-8') as f:
+        index_path = f'statistics/{self.dataset_version}/index.json'
+        with open(index_path, 'w', encoding='utf-8') as f:
             json.dump(dataset_index, f, ensure_ascii=False, indent=2)
+        print(f"\n✓ Created dataset index: {index_path}")
         
-        # Update or create master datasets index
+        # Update or create master datasets.json index
         self.update_master_index(dataset_index)
         
-        print("\nAll statistics compiled successfully!")
-        print(f"Files saved in ./statistics/{self.dataset_version}/ directory")
-        print(f"Dataset version: {self.dataset_version}")
+        print(f"\n{'='*60}")
+        print(f"✓ All statistics compiled successfully!")
+        print(f"{'='*60}")
+        print(f"\nDataset Information:")
+        print(f"  Version: {self.dataset_version}")
+        print(f"  Location: ./statistics/{self.dataset_version}/")
+        print(f"  Total Entries: {len(df):,}")
+        print(f"  Total Trainers: {df['trainer_id'].nunique():,}")
+        print(f"  Total Characters: {df['card_id'].nunique()}")
+        print(f"\nFiles Structure:")
+        print(f"  statistics/datasets.json (master index)")
+        print(f"  statistics/{self.dataset_version}/index.json")
+        print(f"  statistics/{self.dataset_version}/global/global.json")
+        print(f"  statistics/{self.dataset_version}/distance/*.json")
+        print(f"  statistics/{self.dataset_version}/characters/*.json")
+        print(f"\n💡 Frontend will automatically load the newest dataset")
 
     def update_master_index(self, dataset_index: Dict[str, Any]) -> None:
-        """Update the master index of all available datasets"""
+        """Update the master datasets.json index file with all available datasets"""
         master_index_path = 'statistics/datasets.json'
         
         # Load existing master index or create new one
@@ -985,10 +1006,10 @@ class UmamusumeStatistics:
         # Remove existing entry for this version if it exists
         master_index['datasets'] = [
             ds for ds in master_index['datasets'] 
-            if ds.get('version') != self.dataset_version
+            if ds.get('id') != self.dataset_version
         ]
         
-        # Add new dataset entry
+        # Create new dataset entry matching the frontend schema
         dataset_entry = {
             'id': self.dataset_version,
             'version': self.dataset_version,
@@ -998,20 +1019,60 @@ class UmamusumeStatistics:
             'index': dataset_index
         }
         
+        # Add new dataset entry
         master_index['datasets'].append(dataset_entry)
+        
+        # Update last_updated timestamp
         master_index['last_updated'] = datetime.now().isoformat()
         
-        # Sort datasets by date (newest first)
-        master_index['datasets'].sort(key=lambda x: x['date'], reverse=True)
+        # Sort datasets by date (newest first) for automatic newest-first display
+        master_index['datasets'].sort(
+            key=lambda x: datetime.fromisoformat(x['date'].replace('Z', '+00:00')),
+            reverse=True
+        )
         
-        # Save updated master index
+        # Save updated master index with proper formatting
         with open(master_index_path, 'w', encoding='utf-8') as f:
             json.dump(master_index, f, ensure_ascii=False, indent=2)
         
-        print(f"  Updated master datasets index with {len(master_index['datasets'])} datasets")
+        print(f"\n✓ Updated master datasets.json index")
+        print(f"  Total datasets: {len(master_index['datasets'])}")
+        print(f"  Latest dataset: {master_index['datasets'][0]['id']}")
+        print(f"  Location: {master_index_path}")
 
 
 def main():
+    """
+    Generate statistics for Umamusume Team Stadium data.
+    
+    This script creates a versioned dataset with the following structure:
+    
+    statistics/
+    ├── datasets.json                    # Master index of all available datasets
+    ├── {version}/                       # e.g., 2025-10-31/
+    │   ├── index.json                   # Dataset-specific metadata
+    │   ├── global/
+    │   │   └── global.json              # Global statistics
+    │   ├── distance/
+    │   │   ├── sprint.json
+    │   │   ├── mile.json
+    │   │   ├── medium.json
+    │   │   ├── long.json
+    │   │   └── dirt.json
+    │   └── characters/
+    │       ├── 100101.json
+    │       ├── 100201.json
+    │       └── ...
+    
+    The datasets.json file contains:
+    - List of all available datasets sorted by date (newest first)
+    - Each dataset entry includes id, version, name, date, basePath, and full index
+    - Frontend automatically selects the newest dataset by default
+    
+    Usage:
+    - Run without arguments to generate dataset with today's date
+    - Or provide a custom version string in the constructor
+    """
     # Configure your database connection
     CONNECTION_STRING = "postgresql://honsemoe:awx3cdl0@127.0.0.1:5432/honsemoe_db"
     
@@ -1019,6 +1080,7 @@ def main():
     GAME_DB_PATH = "C:/Users/lars1/AppData/LocalLow/Cygames/Umamusume/master/master.mdb"
     
     # Initialize and run statistics compilation
+    # Version will default to today's date (YYYY-MM-DD) if not specified
     stats_compiler = UmamusumeStatistics(CONNECTION_STRING, game_db_path=GAME_DB_PATH)
     stats_compiler.compile_statistics()
 

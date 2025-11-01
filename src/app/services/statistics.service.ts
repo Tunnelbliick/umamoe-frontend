@@ -42,26 +42,27 @@ export class StatisticsService {
   }
 
   private loadAvailableDatasets(): void {
-    // Load the master index which contains available datasets
-    this.http.get<StatisticsIndex>('assets/statistics/index.json')
+    // Load the master datasets.json which contains all available datasets
+    this.http.get<{ datasets: StatisticsDataset[], last_updated: string }>('assets/statistics/datasets.json')
       .pipe(
-        map(index => {
-          const dataset: StatisticsDataset = {
-            id: index.version || 'current',
-            name: index.name || 'Current Statistics',
-            date: index.generated_at,
-            basePath: `assets/statistics/${index.version || 'current'}`,
-            index: index
-          };
-          return [dataset];
+        map(response => {
+          // Sort datasets by date (newest first)
+          const sortedDatasets = response.datasets.sort((a, b) => {
+            const dateA = new Date(a.date || a.index.generated_at);
+            const dateB = new Date(b.date || b.index.generated_at);
+            return dateB.getTime() - dateA.getTime();
+          });
+          
+          return sortedDatasets;
         }),
         catchError(error => {
-          console.error('Failed to load statistics index:', error);
-          return [];
+          console.error('Failed to load statistics datasets:', error);
+          return of([]);
         })
       )
       .subscribe(datasets => {
         this.availableDatasets$.next(datasets);
+        // Select the newest dataset (first in sorted array)
         if (datasets.length > 0) {
           this.selectedDataset$.next(datasets[0]);
         }

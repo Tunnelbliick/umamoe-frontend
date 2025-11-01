@@ -11,6 +11,22 @@
       </p>
 
       <div class="dataset-info" *ngIf="globalStats">
+        <!-- Dataset Selector -->
+        <div class="dataset-selector">
+          <mat-form-field appearance="outline" class="dataset-select-field">
+            <mat-label>Statistics Version</mat-label>
+            <mat-select 
+              [value]="(selectedDataset$ | async)?.id"
+              (selectionChange)="onDatasetChange($event.value)">
+              <mat-option 
+                *ngFor="let dataset of (availableDatasets$ | async)" 
+                [value]="dataset.id">
+                {{ dataset.name || dataset.id }} ({{ formatDate(dataset.date || dataset.index.generated_at) }})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
         <div class="sample-size">
           <mat-icon>dataset</mat-icon>
           <span>{{ (sampleSizeText$ | async) || "" }}</span>
