@@ -320,6 +320,9 @@
             <div
               class="item-content grouped-content"
               [class]="'content-' + (item.side || 'center')"
+              [style.transform]="'scale(' + cardScale + ') translate(0%, ' + getTransformOffset(item.side) + '%)'" 
+              [style.bottom]="item.side === 'top' ? cardVerticalOffsetTop + '%' : 'auto'"
+              [style.top]="item.side === 'bottom' ? cardVerticalOffsetBottom + '%' : 'auto'"
             >
               <a
                 *ngIf="item.eventData?.gametoraURL"

@@ -132,6 +132,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     private momentumAnimation?: number;
     private isDecelerating = false;
 
+    // Dynamic scaling properties
+    cardScale = 1;
+    cardVerticalOffsetBottom = 60;  // For items below the timeline
+    cardVerticalOffsetTop = 60;     // For items above the timeline
+    cardTransformOffset = 25;
+    private resizeObserver?: ResizeObserver;
+
     constructor(private timelineService: TimelineService, private ngZone: NgZone, private cdr: ChangeDetectorRef, private meta: Meta, private title: Title) {
         this.title.setTitle('Timeline | honse.moe');
         this.meta.addTags([
@@ -152,6 +159,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     onResize(event: any): void {
         this.checkMobileBreakpoint();
         this.checkCompactMode();
+        this.calculateDynamicScale();
         if (!this.isMobile) {
             // Recalculate viewport for desktop timeline
             this.updateVisibleItems();
@@ -379,8 +387,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        // Set up virtual scroll listener
         this.setupScrollListener();
+        this.setupResizeObserver();
+        this.calculateDynamicScale();
 
         // Detect if we're in Chrome
         const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
@@ -444,6 +453,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.momentumAnimation) {
             cancelAnimationFrame(this.momentumAnimation);
+        }
+
+        // Clean up resize observer
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
         }
 
         // Reset body styles
@@ -1255,14 +1269,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const formatDateRange = (startDate: Date, endDate: Date, isUnconfirmed = false): string => {
             const prefix = isUnconfirmed ? '~' : '';
-            
+
             // If same year, use compact format for start date
             if (startDate.getFullYear() === endDate.getFullYear()) {
                 const startStr = startDate.toLocaleDateString('en-US', compactDateOptions);
                 const endStr = endDate.toLocaleDateString('en-US', dateOptions);
                 return `${prefix}${startStr} – ${endStr}`; // Using en dash (–) instead of "to"
             }
-            
+
             // Different years, show full dates
             return `${prefix}${formatSingleDate(startDate)} – ${formatSingleDate(endDate)}`;
         };
@@ -1276,11 +1290,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Event items with potential date ranges
         if (item.eventData) {
             const isUnconfirmed = !item.eventData.isConfirmed;
-            
+
             if (item.eventData.estimatedEndDate) {
                 return formatDateRange(item.date, item.eventData.estimatedEndDate, isUnconfirmed);
             }
-            
+
             // Single date event
             const prefix = isUnconfirmed ? '~' : '';
             return `${prefix}${formatSingleDate(item.date)}`;
@@ -1295,13 +1309,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const now = new Date();
         const diffTime = date.getTime() - now.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         if (diffDays === 0) return 'Today';
         if (diffDays === 1) return 'Tomorrow';
         if (diffDays === -1) return 'Yesterday';
         if (diffDays > 0 && diffDays <= 7) return `In ${diffDays} days`;
         if (diffDays < 0 && diffDays >= -7) return `${Math.abs(diffDays)} days ago`;
-        
+
         return '';
     }
 
@@ -1309,13 +1323,68 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     formatDuration(startDate: Date, endDate: Date): string {
         const diffTime = endDate.getTime() - startDate.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         if (diffDays <= 0) return '';
         if (diffDays === 1) return '(1 day)';
         if (diffDays <= 7) return `(${diffDays} days)`;
         if (diffDays <= 14) return `(${Math.round(diffDays / 7)} week${diffDays > 7 ? 's' : ''})`;
         if (diffDays <= 30) return `(${Math.round(diffDays / 7)} weeks)`;
-        
+
         return `(${Math.round(diffDays / 30)} month${diffDays > 30 ? 's' : ''})`;
+    }
+
+    // Dynamic scaling based on viewport height
+    private setupResizeObserver(): void {
+        if (!this.timelineContainer || typeof ResizeObserver === 'undefined') {
+            return;
+        }
+
+        this.resizeObserver = new ResizeObserver(() => {
+            this.ngZone.run(() => {
+                this.calculateDynamicScale();
+                this.cdr.detectChanges();
+            });
+        });
+
+        this.resizeObserver.observe(this.timelineContainer.nativeElement);
+    }
+
+    private calculateDynamicScale(): void {
+        if (!this.timelineContainer || this.isMobile) {
+            this.cardScale = 1;
+            this.cardVerticalOffsetBottom = 60;
+            this.cardVerticalOffsetTop = 60;
+            return;
+        }
+
+        const viewportHeight = window.innerHeight;
+
+        const minHeight = 400;
+        const maxHeight = 900;
+        const minScale = 0.35;
+        const maxScale = 1.0;
+
+        const normalizedHeight = Math.max(0, Math.min(1, (viewportHeight - minHeight) / (maxHeight - minHeight)));
+        this.cardScale = minScale + (normalizedHeight * (maxScale - minScale));
+
+        const baseOffsetBottom = 60;
+        this.cardVerticalOffsetBottom = baseOffsetBottom * this.cardScale;
+
+        const baseOffsetTop = 60;
+        this.cardVerticalOffsetTop = baseOffsetTop / this.cardScale;
+
+        this.cardTransformOffset = 25 * this.cardScale;
+
+        if (!environment.production) {
+            console.log(`Viewport height: ${viewportHeight}px, Scale: ${this.cardScale.toFixed(2)}, Bottom offset: ${this.cardVerticalOffsetBottom.toFixed(1)}%, Top offset: ${this.cardVerticalOffsetTop.toFixed(1)}%`);
+        }
+    }
+
+    getTransformOffset(side?: 'top' | 'bottom'): number {
+        if (side === 'top') {
+            return -25 * this.cardScale + ((1 / this.cardScale) - 1) * 100;
+        } else {
+            return 28 * this.cardScale + ((1 / this.cardScale) - 1) / 100;
+        }
     }
 }

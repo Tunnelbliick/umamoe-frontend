@@ -412,7 +412,7 @@
 
           .today-label {
             text-align: center;
-            margin-top: 0.5rem;
+            margin-top: 1.5rem;
             min-width: 100px;
 
             span {
@@ -502,11 +502,13 @@
           }
 
           &.side-top .item-content {
-            bottom: 60%;
+            // Position is now set dynamically in Angular
+            transform-origin: top center;
           }
 
           &.side-bottom .item-content {
-            top: 60%;
+            // Position is now set dynamically in Angular  
+            transform-origin: top center;
           }
 
           .connection-line {
@@ -1375,6 +1377,7 @@
       }
     }
   }
+
 
   // Compact mode styles
   .compact-header {
