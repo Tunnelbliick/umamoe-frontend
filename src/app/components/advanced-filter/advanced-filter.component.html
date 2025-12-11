@@ -1,1 +1,567 @@
-<p>advanced-filter works!</p>
+<div class="filter-header" (click)="toggleExpanded()">
+  <button mat-icon-button class="expand-button">
+    <mat-icon class="expand-icon" [class.expanded]="isExpanded">
+      expand_more
+    </mat-icon>
+  </button>
+  <h2>Filters</h2>
+</div>
+
+<div class="filter-content" [class.expanded]="isExpanded">
+  <div class="filter-inner">
+    <!-- Single Row Layout: Everything Horizontal -->
+    <div class="main-layout">
+      <!-- Legacy Tree -->
+      <div class="filter-section-wrapper">
+        <h4 class="section-header">Legacy Tree</h4>
+        <div class="tree-section">
+          <div class="character-box target-box" (click)="selectNode(treeData)">
+            <div class="character-circle" [class.empty]="!treeData.characterId">
+              <img *ngIf="treeData.characterId" [src]="getCharacterImagePath(treeData.image)" [alt]="treeData.name">
+              <mat-icon *ngIf="!treeData.characterId">add</mat-icon>
+            </div>
+            <div class="character-label">Main Character</div>
+            <button mat-icon-button class="clear-node-btn" *ngIf="treeData.characterId" (click)="clearNode(treeData, $event)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div class="connector-line"></div>
+
+          <div class="character-box parent-box" 
+               (click)="selectNode(treeData.children![0])">
+            <div class="character-circle" [class.empty]="!treeData.children![0].characterId">
+              <img *ngIf="treeData.children![0].characterId" [src]="getCharacterImagePath(treeData.children![0].image)" [alt]="treeData.children![0].name">
+              <mat-icon *ngIf="!treeData.children![0].characterId">add</mat-icon>
+            </div>
+            <div class="character-label">Main Parent</div>
+            <button mat-icon-button class="clear-node-btn" *ngIf="treeData.children![0].characterId" (click)="clearNode(treeData.children![0], $event)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div class="connector-line"></div>
+
+          <div class="grandparents-group">
+            <div class="grandparents-row">
+              <div class="character-box grandparent-box" 
+                   *ngFor="let grandparent of treeData.children![0].children; let i = index"
+                   (click)="selectNode(grandparent)">
+                <div class="character-circle" [class.empty]="!grandparent.characterId">
+                  <img *ngIf="grandparent.characterId" [src]="getCharacterImagePath(grandparent.image)" [alt]="grandparent.name">
+                  <mat-icon *ngIf="!grandparent.characterId">add</mat-icon>
+                </div>
+                <button mat-icon-button class="clear-node-btn" *ngIf="grandparent.characterId" (click)="clearNode(grandparent, $event)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="character-label group-label">Grand Parents</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="support-lb-group">
+      <!-- Support Card Filter -->
+      <div class="filter-section-wrapper">
+        <h4 class="section-header">Support Card</h4>
+        <div class="filter-item">
+          <div class="selector-compact" *ngIf="!selectedSupportCard" (click)="selectSupportCard()">
+            <mat-icon>search</mat-icon>
+            <span>Select</span>
+          </div>
+          
+          <div class="selected-support-card" *ngIf="selectedSupportCard">
+            <img [src]="selectedSupportCard.imageUrl" class="card-thumb">
+            <div class="card-info">
+              <span class="card-name">{{selectedSupportCard.name}}</span>
+              <div class="card-badges">
+                <span class="badge type-badge">{{getSupportCardTypeDisplay(selectedSupportCard.type)}}</span>
+                <span class="badge rarity-badge">{{getSupportCardRarityDisplay(selectedSupportCard.rarity)}}</span>
+              </div>
+            </div>
+            <button mat-icon-button class="remove-card-btn" (click)="removeSupportCard()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LB Selector -->
+      <div class="filter-section-wrapper">
+        <h4 class="section-header">Min LB</h4>
+        <div class="filter-item lb-filter-item">
+          <div class="lb-diamonds-compact">
+            <div class="diamond-icon pos-1" (click)="toggleLimitBreak(1)" [class.active]="1 <= selectedLimitBreak" [matTooltip]="'LB1+'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-64 224-480l256-416 256 416L480-64Z" /></svg>
+            </div>
+            <div class="diamond-icon pos-2" (click)="toggleLimitBreak(2)" [class.active]="2 <= selectedLimitBreak" [matTooltip]="'LB2+'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-64 224-480l256-416 256 416L480-64Z" /></svg>
+            </div>
+            <div class="diamond-icon pos-3" (click)="toggleLimitBreak(3)" [class.active]="3 <= selectedLimitBreak" [matTooltip]="'LB3+'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-64 224-480l256-416 256 416L480-64Z" /></svg>
+            </div>
+            <div class="diamond-icon pos-4" (click)="toggleLimitBreak(4)" [class.active]="4 <= selectedLimitBreak" [matTooltip]="'MLB'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-64 224-480l256-416 256 416L480-64Z" /></svg>
+            </div>
+          </div>
+          <mat-slider
+            min="0"
+            max="4"
+            step="1"
+            class="limit-break-slider-compact"
+            [displayWith]="formatLabel">
+            <input matSliderThumb [(ngModel)]="selectedLimitBreak" (valueChange)="onFilterChange()">
+          </mat-slider>
+          <div class="slider-labels-compact">
+            <span class="lbl-0" [class.active]="selectedLimitBreak === 0">LB0</span>
+            <span class="lbl-1" [class.active]="selectedLimitBreak === 1">LB1</span>
+            <span class="lbl-2" [class.active]="selectedLimitBreak === 2">LB2</span>
+            <span class="lbl-3" [class.active]="selectedLimitBreak === 3">LB3</span>
+            <span class="lbl-4" [class.active]="selectedLimitBreak === 4">MLB</span>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      <!-- Search Users -->
+      <div class="filter-section-wrapper search-wrapper">
+        <h4 class="section-header">Search Users</h4>
+        <div class="filter-item search-item">
+          <div class="search-inputs-row">
+            <!-- User ID Search -->
+            <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+              <mat-label>Trainer ID</mat-label>
+              <input 
+                matInput
+                [(ngModel)]="searchUserId"
+                (input)="onSearchChange()"
+                placeholder="123 456 789">
+              <mat-icon matSuffix class="input-icon" *ngIf="!searchUserId">badge</mat-icon>
+              <button 
+                *ngIf="searchUserId" 
+                matSuffix 
+                mat-icon-button 
+                (click)="clearSearchUserId()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <!-- Username Search -->
+            <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+              <mat-label>Username</mat-label>
+              <input 
+                matInput
+                [(ngModel)]="searchUsername"
+                (input)="onSearchChange()"
+                placeholder="Trainer Name">
+              <mat-icon matSuffix class="input-icon" *ngIf="!searchUsername">person</mat-icon>
+              <button 
+                *ngIf="searchUsername" 
+                matSuffix 
+                mat-icon-button 
+                (click)="clearSearchUsername()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property Filters Section (Full Width Below - Compact) -->
+    <div class="property-filters-compact">
+      <div class="filters-header-compact">
+        <h4>Property Filters</h4>
+      </div>
+
+      <div class="filters-grid-content">
+        <!-- Group 1: Inheritance Stats -->
+        <div class="filter-group">
+          <h5 class="group-title">Inheritance Factors</h5>
+          
+          <!-- Blue Factors -->
+          <div class="factor-section">
+            <div class="section-label">Blue Factors (Stats)</div>
+            <div class="factor-list">
+              <div class="factor-row-item blue-factor" *ngFor="let filter of blueFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select" subscriptSizing="dynamic">
+                    <mat-select [(ngModel)]="filter.factorId" (selectionChange)="onFilterChange()">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of blueFactors" [value]="f.id">{{f.text}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(blueFactorFilters, i)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="9" step="1" showTickMarks>
+                    <input matSliderStartThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                    <input matSliderEndThumb [(ngModel)]="filter.max" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3,4,5,6,7,8,9]" [class.active]="val >= filter.min && val <= filter.max">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(blueFactorFilters, 0)">
+                <mat-icon>add</mat-icon> Add Blue Factor
+              </button>
+            </div>
+          </div>
+
+          <!-- Pink Factors -->
+          <div class="factor-section">
+            <div class="section-label">Pink Factors (Aptitude)</div>
+            <div class="factor-list">
+              <div class="factor-row-item pink-factor" *ngFor="let filter of pinkFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select" subscriptSizing="dynamic">
+                    <mat-select [(ngModel)]="filter.factorId" (selectionChange)="onFilterChange()">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of pinkFactors" [value]="f.id">{{f.text}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(pinkFactorFilters, i)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="9" step="1" showTickMarks>
+                    <input matSliderStartThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                    <input matSliderEndThumb [(ngModel)]="filter.max" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3,4,5,6,7,8,9]" [class.active]="val >= filter.min && val <= filter.max">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(pinkFactorFilters, 0)">
+                <mat-icon>add</mat-icon> Add Pink Factor
+              </button>
+            </div>
+          </div>
+
+          <!-- Green Factors -->
+          <div class="factor-section">
+            <div class="section-label">Green Factors (Unique)</div>
+            <div class="factor-list">
+              <div class="factor-row-item green-factor" *ngFor="let filter of greenFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoGreen" 
+                           [ngModel]="getFactorText(filter.factorId, 'green')"
+                           (ngModelChange)="filterFactors($event, 'green', i)"
+                           placeholder="Search Green Factor">
+                    <mat-autocomplete #autoGreen="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of filteredGreenFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(greenFactorFilters, i, 'green')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="9" step="1" showTickMarks>
+                    <input matSliderStartThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                    <input matSliderEndThumb [(ngModel)]="filter.max" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3,4,5,6,7,8,9]" [class.active]="val >= filter.min && val <= filter.max">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(greenFactorFilters, 0, 'green')">
+                <mat-icon>add</mat-icon> Add Green Factor
+              </button>
+            </div>
+          </div>
+
+          <!-- White Factors -->
+          <div class="factor-section">
+            <div class="section-label">White Factors (Skills/Races)</div>
+            <div class="factor-list">
+              <div class="factor-row-item" *ngFor="let filter of whiteFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select full-width" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoWhite" 
+                           [ngModel]="getFactorText(filter.factorId, 'white')"
+                           (ngModelChange)="filterFactors($event, 'white', i)"
+                           placeholder="Search White Factor">
+                    <mat-autocomplete #autoWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of filteredWhiteFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(whiteFactorFilters, i, 'white')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="9" step="1" showTickMarks>
+                    <input matSliderStartThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                    <input matSliderEndThumb [(ngModel)]="filter.max" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3,4,5,6,7,8,9]" [class.active]="val >= filter.min && val <= filter.max">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(whiteFactorFilters, 0, 'white')">
+                <mat-icon>add</mat-icon> Add White Factor
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 2: Main Parent Specifics -->
+        <div class="filter-group">
+          <h5 class="group-title">Main Parent Factors</h5>
+          
+          <!-- Main Blue Factors -->
+          <div class="factor-section">
+            <div class="section-label">Blue Factors (Stats)</div>
+            <div class="factor-list">
+              <div class="factor-row-item blue-factor" *ngFor="let filter of mainBlueFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select" subscriptSizing="dynamic">
+                    <mat-select [(ngModel)]="filter.factorId" (selectionChange)="onFilterChange()">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of blueFactors" [value]="f.id">{{f.text}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(mainBlueFactorFilters, i)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="3" step="1" showTickMarks>
+                    <input matSliderThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3]" [class.active]="val >= filter.min">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="mainBlueFactorFilters.length === 0" mat-button class="add-btn" (click)="addFactorFilter(mainBlueFactorFilters, 0)">
+                <mat-icon>add</mat-icon> Add Blue Factor (Stats)
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Pink Factors -->
+          <div class="factor-section">
+            <div class="section-label">Pink Factors (Aptitude)</div>
+            <div class="factor-list">
+              <div class="factor-row-item pink-factor" *ngFor="let filter of mainPinkFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select" subscriptSizing="dynamic">
+                    <mat-select [(ngModel)]="filter.factorId" (selectionChange)="onFilterChange()">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of pinkFactors" [value]="f.id">{{f.text}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(mainPinkFactorFilters, i)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="3" step="1" showTickMarks>
+                    <input matSliderThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3]" [class.active]="val >= filter.min">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="mainPinkFactorFilters.length === 0" mat-button class="add-btn" (click)="addFactorFilter(mainPinkFactorFilters, 0)">
+                <mat-icon>add</mat-icon> Add Pink Factor (Aptitude)
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Green Factors -->
+          <div class="factor-section">
+            <div class="section-label">Green Factors (Unique)</div>
+            <div class="factor-list">
+              <div class="factor-row-item green-factor" *ngFor="let filter of mainGreenFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select full-width" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoMainGreen" 
+                           [ngModel]="getFactorText(filter.factorId, 'green')"
+                           (ngModelChange)="filterFactors($event, 'mainGreen', i)"
+                           placeholder="Search Green Factor (Unique)">
+                    <mat-autocomplete #autoMainGreen="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of filteredMainGreenFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(mainGreenFactorFilters, i, 'mainGreen')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="3" step="1" showTickMarks>
+                    <input matSliderThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3]" [class.active]="val >= filter.min">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="mainGreenFactorFilters.length === 0" mat-button class="add-btn" (click)="addFactorFilter(mainGreenFactorFilters, 0, 'mainGreen')">
+                <mat-icon>add</mat-icon> Add Green Factor (Unique)
+              </button>
+            </div>
+          </div>
+
+          <!-- Main White Factors -->
+          <div class="factor-section">
+            <div class="section-label">White Factors (Skills/Races)</div>
+            <div class="factor-list">
+              <div class="factor-row-item" *ngFor="let filter of mainWhiteFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select full-width" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoMainWhite" 
+                           [ngModel]="getFactorText(filter.factorId, 'white')"
+                           (ngModelChange)="filterFactors($event, 'mainWhite', i)"
+                           placeholder="Search White Factor (Skills/Races)">
+                    <mat-autocomplete #autoMainWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option [value]="0">Any</mat-option>
+                      <mat-option *ngFor="let f of filteredMainWhiteFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(mainWhiteFactorFilters, i, 'mainWhite')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div class="row-bottom">
+                  <mat-slider min="1" max="3" step="1" showTickMarks>
+                    <input matSliderThumb [(ngModel)]="filter.min" (valueChange)="onFilterChange()">
+                  </mat-slider>
+                  <div class="slider-labels-row">
+                    <span *ngFor="let val of [1,2,3]" [class.active]="val >= filter.min">{{val}}★</span>
+                  </div>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(mainWhiteFactorFilters, 0, 'mainWhite')">
+                <mat-icon>add</mat-icon> Add White Factor (Skills/Races)
+              </button>
+            </div>
+          </div>
+
+          <div class="input-grid single-column">
+            <div class="input-wrapper">
+              <div class="input-label">Min White Count</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_main_white_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="increment('min_main_white_count')">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrement('min_main_white_count')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group 3: General Criteria -->
+        <div class="filter-group">
+          <h5 class="group-title">General Criteria</h5>
+          <div class="input-grid">
+            <div class="input-wrapper">
+              <div class="input-label">Min Win Count</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_win_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="increment('min_win_count')">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrement('min_win_count')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label">Min White Factor Count</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_white_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="increment('min_white_count')">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrement('min_white_count')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label">Parent Rank</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="rank-select-field">
+                <mat-select [(ngModel)]="filterState.parent_rank" (selectionChange)="onFilterChange()" panelClass="rank-select-panel">
+                  <mat-select-trigger>
+                    <div class="selected-rank-display" *ngIf="filterState.parent_rank">
+                      <img [src]="getRankIconPath(filterState.parent_rank)" class="rank-icon" (error)="onRankIconError($event, filterState.parent_rank)">
+                    </div>
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let rank of rankOptions" [value]="rank">
+                    <div class="rank-option-content">
+                      <img [src]="getRankIconPath(rank)" class="rank-icon" (error)="onRankIconError($event, rank)">
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label">Max Followers</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.max_follower_num" (change)="onFilterChange()" min="0" max="1000" placeholder="999">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="increment('max_follower_num')">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrement('max_follower_num')">keyboard_arrow_down</mat-icon>
+                </div>
+                <mat-hint>Max 1000</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Active Filters Chips Section -->
+<div class="active-filters-section" *ngIf="activeFilterChips.length > 0">
+  <div class="active-filters-container">
+    <span class="active-filters-label">Active Filters:</span>
+    <div class="active-filters-chips">
+      <div *ngFor="let chip of activeFilterChips" 
+           class="filter-chip" 
+           [ngClass]="getChipColorClass(chip.type)"
+           (click)="removeActiveFilter(chip)">
+        <span class="chip-label">
+          <ng-container *ngIf="chip.name || chip.value; else legacyLabel">
+            <span class="chip-name" *ngIf="chip.name">{{chip.name}}<span class="separator">:</span></span>
+            <span class="chip-value" *ngIf="chip.value">
+              {{chip.value}}<mat-icon *ngIf="chip.showStar" class="star-icon">star</mat-icon>
+            </span>
+          </ng-container>
+          <ng-template #legacyLabel>{{chip.label}}</ng-template>
+        </span>
+        <mat-icon class="chip-remove">close</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

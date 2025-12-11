@@ -1,9 +1,14 @@
 <nav class="navbar">
+  <div class="christmas-lights" *ngIf="isChristmas$ | async">
+    <ul class="lightrope">
+      <li *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]"></li>
+    </ul>
+  </div>
   <div class="nav-container">
     <div class="nav-brand">
       <a routerLink="/" class="brand-link">
         <img
-          src="assets/logo.png"
+          [src]="(isChristmas$ | async) ? 'assets/crimmas.png' : 'assets/logo.png'"
           alt="Site Logo"
           class="brand-logo-img"
           (error)="onLogoError($event)"
@@ -15,18 +20,18 @@
     </div>
 
     <div class="nav-links">
-      <a routerLink="/inheritance" routerLinkActive="active" class="nav-link">
-        <mat-icon>family_restroom</mat-icon>
+      <a routerLink="/database" routerLinkActive="active" class="nav-link">
+        <mat-icon>dataset</mat-icon>
         <span
-          >Inheritance
+          >Database
           <!--<span class="updated-badge">UPDATED</span>--></span
         >
       </a>
 
-      <a routerLink="/support-cards" routerLinkActive="active" class="nav-link">
-        <mat-icon>style</mat-icon>
+      <a routerLink="/circles" routerLinkActive="active" class="nav-link">
+        <mat-icon>groups</mat-icon>
         <span
-          >Support Cards
+          >Clubs
           <!--<span class="updated-badge">UPDATED</span>--></span
         >
       </a>
@@ -45,6 +50,10 @@
         <mat-icon>schedule</mat-icon>
         <span>Timeline</span>
       </a>
+
+      <button mat-icon-button (click)="toggleTheme()" class="theme-toggle" [matTooltip]="(isChristmas$ | async) ? 'Disable Christmas Theme' : 'Enable Christmas Theme'">
+        <mat-icon [class.active-snowflake]="isChristmas$ | async">ac_unit</mat-icon>
+      </button>
     </div>
   </div>
 

@@ -1,0 +1,94 @@
+<div class="circles-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Club Leaderboard</h1>
+      <p>Find and compare Umamusume clubs.</p>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="filters-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search Clubs</mat-label>
+        <input matInput (input)="onSearch($event)" placeholder="Search by Club Name, Leader Name/ID, or Member Name/ID" [value]="searchTerm">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="loading-container" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+      <p>Loading clubs...</p>
+    </div>
+
+    <div class="results-grid" *ngIf="!loading">
+      <div class="circle-card" *ngFor="let circle of circles"
+           [class.rank-1]="circle.monthly_rank === 1"
+           [class.rank-2]="circle.monthly_rank === 2"
+           [class.rank-3]="circle.monthly_rank === 3">
+        <div class="card-header">
+          <div class="rank-section">
+            <div class="rank-main">
+              <span class="rank-number">#{{circle.monthly_rank}}</span>
+              
+              <div class="rank-diff" 
+                   [class.positive]="(circle.yesterday_rank - circle.monthly_rank) > 0"
+                   [class.negative]="(circle.yesterday_rank - circle.monthly_rank) < 0"
+                   *ngIf="circle.yesterday_rank && circle.yesterday_rank !== circle.monthly_rank">
+                <mat-icon>{{ (circle.yesterday_rank - circle.monthly_rank) > 0 ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+                <span>{{ Math.abs(circle.yesterday_rank - circle.monthly_rank) }}</span>
+              </div>
+            </div>
+
+            <div class="yesterday-rank" *ngIf="circle.yesterday_rank">
+              <small>Yesterday: #{{circle.yesterday_rank}}</small>
+            </div>
+          </div>
+
+          <div class="circle-info">
+            <a [routerLink]="['/circles', circle.circle_id]" class="circle-name">{{circle.name}}</a>
+            <div class="circle-meta">
+              <span class="meta-item">
+                <span class="label">Leader:</span> {{circle.leader_name || circle.leader_viewer_id}}
+              </span>
+              <span class="meta-item">
+                <span class="label">Members:</span> {{circle.member_count}}/30
+              </span>
+              <span class="meta-item join-style" [ngClass]="{'open': circle.join_style === 1, 'approval': circle.join_style === 2, 'closed': circle.join_style === 3}">
+                {{ circle.join_style === 1 ? 'Open' : (circle.join_style === 2 ? 'Approval' : 'Closed') }}
+              </span>
+            </div>
+          </div>
+
+          <div class="fans-section">
+            <span class="fans-count">{{circle.monthly_point | number}} Fans</span>
+            
+            <div class="daily-gain" *ngIf="circle.yesterday_points">
+              <span class="label">Daily:</span>
+              <span class="value" [class.positive]="(circle.monthly_point - circle.yesterday_points) > 0">
+                +{{ (circle.monthly_point - circle.yesterday_points) | number }}
+              </span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a mat-icon-button [routerLink]="['/circles', circle.circle_id]">
+              <mat-icon>chevron_right</mat-icon>
+            </a>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="circle.comment">
+          <p class="comment" [innerHTML]="circle.comment | discordLink"></p>
+        </div>
+      </div>
+    </div>
+
+    <mat-paginator [length]="totalCircles"
+                   [pageSize]="filters.pageSize"
+                   [pageSizeOptions]="[20, 50, 100]"
+                   [pageIndex]="filters.page"
+                   (page)="onPageChange($event)"
+                   aria-label="Select page of clubs">
+    </mat-paginator>
+  </div>
+</div>

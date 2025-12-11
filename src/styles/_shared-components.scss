@@ -1,0 +1,213 @@
+// Shared Component Styles
+// Component patterns used across multiple pages
+
+// ===== RECORD CARD PATTERNS =====
+.record-card-base {
+  @include card-base(1.5rem, 12px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.record-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.record-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.record-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// ===== FILTER CARD PATTERNS =====
+.filter-card-floating {
+  position: fixed;
+  top: 80px;
+  right: 2rem;
+  width: var(--filter-card-width, 280px);
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  @include glass(0.08, 15px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  z-index: 100;
+  @include custom-scrollbar(6px);
+  
+  @include mobile {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin-bottom: 1rem;
+  }
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.filter-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// ===== ENHANCED STATE COMPONENTS =====
+.loading-state-enhanced {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  
+  .loading-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+    animation: spin 1s linear infinite;
+  }
+  
+  .loading-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+.error-state-enhanced {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  
+  .error-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    color: #ef5350;
+  }
+  
+  .error-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ef5350;
+    margin-bottom: 0.5rem;
+  }
+  
+  .error-message {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+  }
+}
+
+.no-results-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  
+  .no-results-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+  
+  .no-results-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+  }
+  
+  .no-results-message {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+}
+
+// ===== MATERIAL COMPONENT DARK THEME OVERRIDES =====
+.mat-select-dark {
+  ::ng-deep {
+    .mat-mdc-select-value {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .mat-mdc-select-arrow {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+.mat-form-field-dark {
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    
+    .mat-mdc-form-field-input-control {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .mat-mdc-form-field-underline {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .mat-mdc-form-field-ripple {
+      background-color: var(--accent-primary);
+    }
+  }
+}
+
+.mat-chip-custom {
+  ::ng-deep {
+    .mat-mdc-chip {
+      background: rgba(100, 181, 246, 0.15);
+      color: #64b5f6;
+      font-size: 0.75rem;
+      font-weight: 500;
+      
+      &:hover {
+        background: rgba(100, 181, 246, 0.25);
+      }
+    }
+  }
+}

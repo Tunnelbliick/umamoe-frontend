@@ -28,16 +28,21 @@ import { SupportCardService } from '../../services/support-card.service';
         MatSelectModule
     ],
     template: `
-    <div class="support-card-select-dialog">
-      <div mat-dialog-title class="dialog-title">
-        <mat-icon>style</mat-icon>
-        Select Support Card
+    <div class="modern-dialog-container">
+      <div class="dialog-header">
+        <div class="header-icon-wrapper">
+          <mat-icon class="header-icon">style</mat-icon>
+        </div>
+        <div class="header-text">
+          <h2>Select Support Card</h2>
+          <p>Choose a support card to filter by</p>
+        </div>
       </div>
 
       <mat-dialog-content class="dialog-content">
         <div class="search-section">
           <!-- Search Input -->
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="fill" class="full-width">
             <mat-label>Search support cards...</mat-label>
             <input 
               matInput 
@@ -45,11 +50,12 @@ import { SupportCardService } from '../../services/support-card.service';
               (input)="filterCards()"
               placeholder="Search by card name or character"
             >
+            <mat-icon matSuffix class="input-icon">search</mat-icon>
           </mat-form-field>
 
           <!-- Quick Filters -->
           <div class="quick-filters">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
               <mat-label>Card Type</mat-label>
               <mat-select [formControl]="typeControl" (selectionChange)="filterCards()">
                 <mat-option value="">All Types</mat-option>
@@ -59,7 +65,7 @@ import { SupportCardService } from '../../services/support-card.service';
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
               <mat-label>Rarity</mat-label>
               <mat-select [formControl]="rarityControl" (selectionChange)="filterCards()">
                 <mat-option value="">All Rarities</mat-option>
@@ -93,9 +99,9 @@ import { SupportCardService } from '../../services/support-card.service';
         </div>
       </mat-dialog-content>
 
-      <mat-dialog-actions class="dialog-actions">
-        <button mat-button (click)="cancel()">Cancel</button>
-      </mat-dialog-actions>
+      <div class="dialog-actions">
+        <button mat-stroked-button class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
     </div>
   `,
     styleUrls: ['./support-card-select-dialog.component.scss'],

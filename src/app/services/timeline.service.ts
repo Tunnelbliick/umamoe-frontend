@@ -41,6 +41,11 @@ const CONFIRMED_CHARACTER_BANNER_DATES = new Map<string, Date>([
   ['2021_30040.png', new Date(Date.UTC(2025, 10, 11, 22, 0, 0))], // November 14, 2025 22:00 UTC
   ['2021_30042.png', new Date(Date.UTC(2025, 10, 19, 22, 0, 0))], // November 21, 2025 22:00 UTC
   ['2021_30044.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))], // November 28, 2025 22:00 UTC
+  ['2021_30046.png', new Date(Date.UTC(2025, 11, 1, 22, 0, 0))], // December 5, 2025 22:00 UTC
+  ['2021_30048.png', new Date(Date.UTC(2025, 11, 8, 22, 0, 0))], // December 12, 2025 22:00 UTC
+  ['2021_30050.png', new Date(Date.UTC(2025, 11, 14, 22, 0, 0))], // December 19, 2025 22:00 UTC
+  ['2021_30052.png', new Date(Date.UTC(2025, 11, 18, 22, 0, 0))], // December 26, 2025 22:00 UTC
+  ['2021_30054.png', new Date(Date.UTC(2025, 11, 28, 22, 0, 0))], // January 2, 2026 22:00 UTC
   // Add more confirmed character banner dates here as they're announced
 ]);
 
@@ -68,6 +73,11 @@ const CONFIRMED_SUPPORT_BANNER_DATES = new Map<string, Date>([
   ['2021_30041.png', new Date(Date.UTC(2025, 10, 11, 22, 0, 0))], // November 14, 2025 22:00 UTC
   ['2021_30043.png', new Date(Date.UTC(2025, 10, 19, 22, 0, 0))], // November 21, 2025 22:00 UTC
   ['2021_30045.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))], // November 28, 2025 22:00 UTC
+  ['2021_30047.png', new Date(Date.UTC(2025, 11, 1, 22, 0, 0))], // December 5, 2025 22:00 UTC
+  ['2021_30049.png', new Date(Date.UTC(2025, 11, 8, 22, 0, 0))], // December 12, 2025 22:00 UTC
+  ['2021_30051.png', new Date(Date.UTC(2025, 11, 14, 22, 0, 0))], // December 19, 2025 22:00 UTC
+  ['2021_30053.png', new Date(Date.UTC(2025, 11, 18, 22, 0, 0))], // December 26, 2025 22:00 UTC
+  ['2021_30055.png', new Date(Date.UTC(2025, 11, 28, 22, 0, 0))], // January 2, 2026 22:00 UTC
   // Add more confirmed support banner dates here as they're announced
 ]);
 
@@ -79,6 +89,7 @@ const CONFIRMED_STORY_EVENT_DATES = new Map<string, Date>([
   ['06_fantasy_world_uma_nest_banner.png', new Date(Date.UTC(2025, 8, 21, 22, 0, 0))],
   ['07_uma_musume_summer_story_banner.png', new Date(Date.UTC(2025, 9, 14, 22, 0, 0))],
   ['09_make_up_in_halloween_banner.png', new Date(Date.UTC(2025, 10, 24, 22, 0, 0))],
+  ['10_the_sounds_of_autumn_banner.png', new Date(Date.UTC(2025, 11, 14, 22, 0, 0))],
 ]);
 
 // Paid Banner confirmed dates (banner image -> global release date)
@@ -100,6 +111,8 @@ const CONFIRMED_CHAMPIONS_MEETING_DATES = new Map<string, Date>([
   ['champions_meeting_2', new Date(Date.UTC(2025, 9, 7, 22, 0, 0))], // Third Champions Meeting (September 16, 2025)
   ['champions_meeting_3', new Date(Date.UTC(2025, 9, 30, 22, 0, 0))], // Fourth Champions Meeting (September 30, 2025)
   ['champions_meeting_4', new Date(Date.UTC(2025, 10, 16, 22, 0, 0))], // Fifth Champions Meeting (October 21, 2025)
+  ['champions_meeting_5', new Date(Date.UTC(2025, 11, 8, 22, 0, 0))], // Sixth Champions Meeting (November 4, 2025)
+  ['champions_meeting_6', new Date(Date.UTC(2025, 11, 28, 22, 0, 0))], // Seventh Champions Meeting (December 2, 2025)
 
   // Add more confirmed champions meeting dates here as they're announced
 ]);
@@ -113,6 +126,8 @@ const CONFIRMED_LEGEND_RACE_DATES = new Map<string, Date>([
   ['legend_race_3', new Date(Date.UTC(2025, 8, 11, 22, 0, 0))], // Fourth Legend Race (September 11, 2025)
   ['legend_race_4', new Date(Date.UTC(2025, 9, 26, 22, 0, 0))], // Fifth Legend Race (October 26, 2025)
   ['legend_race_5', new Date(Date.UTC(2025, 10, 13, 22, 0, 0))], // Sixth Legend Race (November 21, 2025)
+  ['legend_race_6', new Date(Date.UTC(2025, 11, 4, 22, 0, 0))], // Seventh
+  ['legend_race_7', new Date(Date.UTC(2025, 11, 22, 22, 0, 0))], //
   // Add more confirmed legend race dates here as they're announced
 ]);
 

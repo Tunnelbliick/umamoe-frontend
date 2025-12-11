@@ -18,8 +18,14 @@ $dark-theme: mat.define-dark-theme((color: (primary: $primary-palette,
 // Apply theme
 @include mat.all-component-themes($dark-theme);
 
+// Import mixins (must come before utilities and shared components)
+@import 'styles/mixins';
+
 // Import utilities
 @import 'styles/utilities';
+
+// Import shared components
+@import 'styles/shared-components';
 
 // Global styles
 * {
@@ -27,26 +33,54 @@ $dark-theme: mat.define-dark-theme((color: (primary: $primary-palette,
 }
 
 :root {
+  // Background colors
   --bg-primary: #0a0a0a;
   --bg-secondary: #121212;
   --bg-tertiary: #1e1e1e;
   --bg-quaternary: #2a2a2a;
 
+  // Text colors
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.5);
 
+  // Accent colors
   --accent-primary: #64b5f6;
   --accent-secondary: #81c784;
+  --accent-warning: #ffb74d;
 
+  // Border colors
   --border-primary: rgba(255, 255, 255, 0.12);
   --border-secondary: rgba(255, 255, 255, 0.2);
 
+  // Shadows
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
 
+  // Border radius
+  --border-radius-sm: 6px;
   --border-radius: 8px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  // Layout dimensions
+  --header-height: 60px;
+  --navbar-height: 60px;
+  --page-padding: 2rem;
+  --page-padding-mobile: 1rem;
+  --card-padding: 1.5rem;
+  --card-padding-mobile: 1rem;
+  --filter-card-width: 280px;
+
+  // Transitions
   --transition: all 0.3s ease;
+  --transition-fast: all 0.15s ease;
+
+  // Gradients
+  --gradient-primary: linear-gradient(45deg, #64b5f6, #81c784, #ffb74d);
+  --gradient-logo: linear-gradient(45deg, #64b5f6, #81c784);
 }
 
 html,
@@ -417,7 +451,7 @@ app-root {
 .domain-migration-dialog .mat-mdc-dialog-container {
   background: var(--bg-secondary) !important;
   border-radius: 16px !important;
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
   border: 1px solid rgba(33, 150, 243, 0.2);
@@ -432,4 +466,185 @@ app-root {
 .domain-migration-dialog .cdk-overlay-backdrop {
   background: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(4px);
+}
+
+// Christmas Theme Overrides
+body.christmas-theme {
+  --accent-primary: #ef5350; // Red
+  --accent-secondary: #66bb6a; // Green
+  --accent-warning: #ffd700; // Gold
+
+  // Optional: Add a festive background tint
+  background: linear-gradient(to bottom, #0f172a, #0a0a0a);
+
+  // Make links and buttons festive
+  a {
+    color: var(--accent-primary);
+
+    &:hover {
+      color: var(--accent-secondary);
+    }
+  }
+
+  .mat-mdc-button.mat-primary,
+  .mat-mdc-raised-button.mat-primary,
+  .mat-mdc-flat-button.mat-primary {
+    --mdc-filled-button-container-color: #ef5350;
+    --mdc-text-button-label-text-color: #ef5350;
+    --mdc-protected-button-label-text-color: #ef5350;
+  }
+
+  .mat-mdc-button.mat-accent,
+  .mat-mdc-raised-button.mat-accent,
+  .mat-mdc-flat-button.mat-accent {
+    --mdc-filled-button-container-color: #66bb6a;
+    --mdc-text-button-label-text-color: #66bb6a;
+    --mdc-protected-button-label-text-color: #66bb6a;
+  }
+}
+
+
+// Enhanced Christmas Theme Overrides
+body.christmas-theme {
+
+  // Fix for Add Trainer ID button and other primary buttons
+  .mat-mdc-raised-button.mat-primary,
+  .mat-mdc-flat-button.mat-primary {
+    --mdc-filled-button-container-color: #ef5350 !important;
+    --mdc-protected-button-container-color: #ef5350 !important;
+    --mdc-filled-button-label-text-color: white !important;
+    --mdc-protected-button-label-text-color: white !important;
+  }
+
+  // Home Page Quick Links
+  .quick-link {
+    position: relative;
+    overflow: visible !important;
+    border-color: rgba(239, 83, 80, 0.4) !important;
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.2), rgba(102, 187, 106, 0.15)) !important;
+
+    &:hover {
+      border-color: rgba(102, 187, 106, 0.5) !important; // Green tint hover
+      box-shadow: 0 8px 32px rgba(239, 83, 80, 0.2) !important;
+    }
+
+    // Frosted/Icy top effect
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+  }
+
+  // Hero Title Gradient Override
+  .hero-title {
+    background: linear-gradient(45deg, #ef5350, #66bb6a, #ffd700) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  // Navbar Text Gradient Override
+  .brand-text {
+    background: linear-gradient(45deg, #ef5350, #66bb6a, #ffd700) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  // Colorize and Resize the Christmas Logo
+  .hero-logo-img,
+  .brand-logo-img {
+    background: linear-gradient(45deg, #ef5350, #66bb6a, #ffd700);
+    -webkit-mask-image: url('/assets/crimmas.png');
+    mask-image: url('/assets/crimmas.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    // Hide the original white image so only the gradient background shows through the mask
+    object-position: -99999px;
+  }
+
+  .brand-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-logo-img-wrapper {
+    width: 180px;
+    height: 180px;
+
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .hero-logo-img {
+    width: 180px;
+    height: 180px;
+
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+
+// Christmas Update Popup Dialog
+.christmas-popup-dialog {
+  // Ensure the dialog can overflow for the lights
+  overflow: visible !important;
+
+  .mat-mdc-dialog-container {
+    // Reset default dialog styles so our component can handle it
+    --mdc-dialog-container-color: transparent;
+    --mdc-dialog-container-elevation: 0;
+    overflow: visible !important;
+
+    .mat-mdc-dialog-surface {
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      display: block !important; // Ensure it doesn't collapse
+    }
+  }
+}
+
+// Modern Dialog Panel (removes default styles for custom styling)
+.modern-dialog-panel,
+.trainer-submit-dialog-panel {
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+
+    .mat-mdc-dialog-surface {
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+  }
+}
+.transparent-dialog-panel {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: transparent;
+    --mdc-dialog-container-elevation-shadow: none;
+    box-shadow: none;
+    background: transparent;
+  }
 }

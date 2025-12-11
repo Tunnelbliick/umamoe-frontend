@@ -283,6 +283,7 @@ export class SupportCardsDatabaseComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(TrainerSubmitDialogComponent, {
       maxWidth: '500px',
       disableClose: false,
+      panelClass: 'trainer-submit-dialog-panel',
       data: config
     });
 

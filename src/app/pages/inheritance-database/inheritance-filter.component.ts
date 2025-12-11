@@ -606,6 +606,7 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
   openCharacterDialog() {
     const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
       maxWidth: '750px',
+      panelClass: 'modern-dialog-panel',
       data: {},
     });
 

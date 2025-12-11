@@ -1,8 +1,8 @@
 <div class="inheritance-database">
   <div class="page-header">
     <div class="header-content">
-      <h1>Inheritance Database</h1>
-      <p>Find optimal inheritance pairings and factors for Uma Musume.</p>
+      <h1>Database</h1>
+      <p>Find optimal inheritance pairings and support cards for Uma Musume.</p>
 
       <div class="quick-actions">
         <button
@@ -20,9 +20,9 @@
 
   <div class="content-container">
     <!-- Filters -->
-    <app-inheritance-filter
-      (filtersChanged)="onFiltersChanged($event)"
-    ></app-inheritance-filter>
+  <app-advanced-filter (filterChange)="onAdvancedFilterChange($event)">
+
+  </app-advanced-filter>
 
     <!-- Results Section -->
     <div class="results-section">
@@ -46,6 +46,7 @@
               [(value)]="currentSortBy"
               (selectionChange)="onSortChanged($event)"
             >
+              <mat-option value="affinity_score">Affinity</mat-option>
               <mat-option value="win_count">G1 Wins</mat-option>
               <mat-option value="white_count">White Count</mat-option>
               <mat-option value="score">Score</mat-option>
@@ -73,6 +74,13 @@
               <!-- Performance metrics section - emphasized -->
               <div class="performance-section">
                 <div class="main-stats">
+                  <span
+                    *ngIf="record.affinity_score !== undefined"
+                    class="affinity-stat"
+                  >
+                    <span class="stat-number">{{ record.affinity_score }}</span>
+                    <span class="stat-label">Affinity</span>
+                  </span>
                   <span
                     *ngIf="record.win_count !== undefined"
                     class="wins-stat"
@@ -166,49 +174,11 @@
                       $event
                     )
                   "
-                  [disabled]="
-                    (!record.account_id && !record.trainer_id) ||
-                    hasReportedTrainer(
-                      record.account_id || record.trainer_id || ''
-                    ) ||
-                    isReportingInProgress(
-                      record.account_id || record.trainer_id || ''
-                    )
-                  "
-                  [matTooltip]="
-                    hasReportedTrainer(
-                      record.account_id || record.trainer_id || ''
-                    )
-                      ? 'You have already reported this trainer'
-                      : isReportingInProgress(
-                          record.account_id || record.trainer_id || ''
-                        )
-                      ? 'Report in progress...'
-                      : 'Report this user as unavailable or friend list full'
-                  "
+                  [disabled]="(!record.account_id && !record.trainer_id)"
+                  matTooltip="Report this user as unavailable or friend list full"
                 >
-                  <mat-icon>{{
-                    hasReportedTrainer(
-                      record.account_id || record.trainer_id || ""
-                    )
-                      ? "check"
-                      : isReportingInProgress(
-                          record.account_id || record.trainer_id || ""
-                        )
-                      ? "hourglass_empty"
-                      : "person_off"
-                  }}</mat-icon>
-                  <span class="btn-text">{{
-                    hasReportedTrainer(
-                      record.account_id || record.trainer_id || ""
-                    )
-                      ? "Reported"
-                      : isReportingInProgress(
-                          record.account_id || record.trainer_id || ""
-                        )
-                      ? "Reporting..."
-                      : "Report Unavailable"
-                  }}</span>
+                  <mat-icon>person_off</mat-icon>
+                  <span class="btn-text">Report Outdated</span>
                 </button>
               </div>
             </div>
@@ -389,13 +359,13 @@
                   <div class="spark-list">
                     <span
                       *ngFor="
-                        let sparkInfo of resolveSparks(record.blue_sparks)
+                        let sparkInfo of record.blue_sparks | resolveSparks
                       "
                       class="spark-item blue-spark"
-                      [class.from-main-parent]="
-                        getLevelFromMainParent(sparkInfo, record)
-                      "
+                      [class.matched-filter]="isSparkMatched(sparkInfo, record)"
+                      [class.from-main-parent]="getLevelFromMainParent(sparkInfo, record)"
                     >
+                      <span class="search-text" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0; overflow:hidden;">{{ sparkInfo.level }} {{ sparkInfo.name }}</span>
                       <span class="spark-level">{{ sparkInfo.level }}</span>
                       <mat-icon class="spark-star">star</mat-icon>
                       <span class="spark-name">{{ sparkInfo.name }}</span>
@@ -423,13 +393,13 @@
                   <div class="spark-list">
                     <span
                       *ngFor="
-                        let sparkInfo of resolveSparks(record.pink_sparks)
+                        let sparkInfo of record.pink_sparks | resolveSparks
                       "
                       class="spark-item pink-spark"
-                      [class.from-main-parent]="
-                        getLevelFromMainParent(sparkInfo, record)
-                      "
+                      [class.matched-filter]="isSparkMatched(sparkInfo, record)"
+                      [class.from-main-parent]="getLevelFromMainParent(sparkInfo, record)"
                     >
+                      <span class="search-text" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0; overflow:hidden;">{{ sparkInfo.level }} {{ sparkInfo.name }}</span>
                       <span class="spark-level">{{ sparkInfo.level }}</span>
                       <mat-icon class="spark-star">star</mat-icon>
                       <span class="spark-name">{{ sparkInfo.name }}</span>
@@ -457,13 +427,13 @@
                   <div class="spark-list">
                     <span
                       *ngFor="
-                        let sparkInfo of resolveSparks(record.green_sparks)
+                        let sparkInfo of record.green_sparks | resolveSparks
                       "
                       class="spark-item green-spark"
-                      [class.from-main-parent]="
-                        getLevelFromMainParent(sparkInfo, record)
-                      "
+                      [class.matched-filter]="isSparkMatched(sparkInfo, record)"
+                      [class.from-main-parent]="getLevelFromMainParent(sparkInfo, record)"
                     >
+                      <span class="search-text" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0; overflow:hidden;">{{ sparkInfo.level }} {{ sparkInfo.name }}</span>
                       <span class="spark-level">{{ sparkInfo.level }}</span>
                       <mat-icon class="spark-star">star</mat-icon>
                       <span class="spark-name">{{ sparkInfo.name }}</span>
@@ -491,13 +461,13 @@
                   <div class="spark-list">
                     <span
                       *ngFor="
-                        let sparkInfo of resolveSparks(record.white_sparks)
+                        let sparkInfo of record.white_sparks | resolveSparks
                       "
                       class="spark-item white-spark"
-                      [class.from-main-parent]="
-                        getLevelFromMainParent(sparkInfo, record)
-                      "
+                      [class.matched-filter]="isSparkMatched(sparkInfo, record)"
+                      [class.from-main-parent]="getLevelFromMainParent(sparkInfo, record)"
                     >
+                      <span class="search-text" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0; overflow:hidden;">{{ sparkInfo.level }} {{ sparkInfo.name }}</span>
                       <span class="spark-level">{{ sparkInfo.level }}</span>
                       <mat-icon class="spark-star">star</mat-icon>
                       <span class="spark-name">{{ sparkInfo.name }}</span>

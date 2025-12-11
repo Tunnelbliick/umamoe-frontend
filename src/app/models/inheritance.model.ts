@@ -81,6 +81,7 @@ export interface InheritanceRecord {
   // V2 API additional fields
   win_count?: number;
   white_count?: number;
+  affinity_score?: number;
   follower_num?: number | null;
   last_updated?: string | null;
   
@@ -109,11 +110,13 @@ export interface SkillFactor {
 export interface InheritanceSearchFilters {
   // Trainer ID for direct trainer lookup
   trainerId?: string;
+  trainerName?: string;
   
   // Character search
   characterId?: string;
   umaName?: string;
   umaId?: number; // For v2 API main_parent_id filter
+  playerCharaId?: number; // For v2 API player_chara_id filter
 
   // Parent filters for v2 API
   parentLeftId?: number;
@@ -151,10 +154,31 @@ export interface InheritanceSearchFilters {
   greenSparkFactors?: number[]; // Array of green factor IDs
   whiteSparkFactors?: number[]; // Array of white factor IDs
 
+  // V2 API factor-based filters (AND logic groups)
+  blueSparkGroups?: number[][];
+  pinkSparkGroups?: number[][];
+  greenSparkGroups?: number[][];
+  whiteSparkGroups?: number[][];
+
+  // Main Parent Factors
+  mainParentBlueSparks?: number[];
+  mainParentPinkSparks?: number[];
+  mainParentGreenSparks?: number[];
+  mainParentWhiteSparks?: number[];
+  
+  minMainBlueFactors?: number;
+  minMainPinkFactors?: number;
+  minMainGreenFactors?: number;
+  minMainWhiteCount?: number;
+
   // V2 API minimum requirements
   minWinCount?: number;
   minWhiteCount?: number;
   maxFollowerNum?: number;
+
+  // Support Card Filters
+  supportCardId?: number;
+  minLimitBreak?: number;
 
   // Pagination
   page?: number;
@@ -180,7 +204,7 @@ export interface InheritanceSearchFilters {
   verified?: boolean;
   verificationStatus?: string;
   minRating?: number;
-  sortBy?: 'submitted_at' | 'upvotes' | 'downvotes' | 'trainer_id' | 'verified' | 'submittedAt' | 'createdAt' | 'rating' | 'votes' | 'views' | 'totalStats' | 'speed' | 'stamina' | 'power' | 'guts' | 'wisdom' | 'win_count' | 'white_count' | 'score';
+  sortBy?: 'submitted_at' | 'upvotes' | 'downvotes' | 'trainer_id' | 'verified' | 'submittedAt' | 'createdAt' | 'rating' | 'votes' | 'views' | 'totalStats' | 'speed' | 'stamina' | 'power' | 'guts' | 'wisdom' | 'win_count' | 'white_count' | 'score' | 'affinity_score';
   sortOrder?: 'asc' | 'desc';
 }
 

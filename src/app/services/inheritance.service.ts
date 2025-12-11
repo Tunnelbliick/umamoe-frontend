@@ -42,6 +42,7 @@ interface V3InheritanceRecord {
   white_sparks: number[];
   win_count: number;
   white_count: number;
+  affinity_score: number;
   main_blue_factors: number;
   main_pink_factors: number;
   main_green_factors: number;
@@ -100,6 +101,11 @@ export class InheritanceService {
       params = params.set('trainer_id', filters.trainerId);
     }
 
+    // Add trainer_name filter for username search
+    if (filters.trainerName) {
+      params = params.set('trainer_name', filters.trainerName);
+    }
+
     // Add character filter - support both character ID and character name
     if (filters.umaId) {
       params = params.set('main_parent_id', filters.umaId.toString());
@@ -109,6 +115,11 @@ export class InheritanceService {
       if (!isNaN(charId)) {
         params = params.set('main_parent_id', charId.toString());
       }
+    }
+
+    // Add player character filter
+    if (filters.playerCharaId) {
+      params = params.set('player_chara_id', filters.playerCharaId.toString());
     }
 
     // Add parent filters
@@ -169,36 +180,94 @@ export class InheritanceService {
 
     // Apply spark filters to params if any are selected
     if (blueSparkValues.length > 0) {
-      params = params.set('blue_sparks', blueSparkValues.join(','));
+      params = params.append('blue_sparks', blueSparkValues.join(','));
     }
     
     if (pinkSparkValues.length > 0) {
-      params = params.set('pink_sparks', pinkSparkValues.join(','));
+      params = params.append('pink_sparks', pinkSparkValues.join(','));
     }
     
     if (greenSparkValues.length > 0) {
-      params = params.set('green_sparks', greenSparkValues.join(','));
+      params = params.append('green_sparks', greenSparkValues.join(','));
     }
 
     // Also support the array-based filters for backward compatibility
     if (filters.blueSparkFactors && filters.blueSparkFactors.length > 0) {
       const blueFactors = filters.blueSparkFactors.join(',');
-      params = params.set('blue_sparks', blueFactors);
+      params = params.append('blue_sparks', blueFactors);
     }
 
     if (filters.pinkSparkFactors && filters.pinkSparkFactors.length > 0) {
       const pinkFactors = filters.pinkSparkFactors.join(',');
-      params = params.set('pink_sparks', pinkFactors);
+      params = params.append('pink_sparks', pinkFactors);
     }
 
     if (filters.greenSparkFactors && filters.greenSparkFactors.length > 0) {
       const greenFactors = filters.greenSparkFactors.join(',');
-      params = params.set('green_sparks', greenFactors);
+      params = params.append('green_sparks', greenFactors);
     }
 
     if (filters.whiteSparkFactors && filters.whiteSparkFactors.length > 0) {
       const whiteFactors = filters.whiteSparkFactors.join(',');
-      params = params.set('white_sparks', whiteFactors);
+      params = params.append('white_sparks', whiteFactors);
+    }
+
+    // Support for AND logic groups (multiple filters of same type)
+    if (filters.blueSparkGroups && filters.blueSparkGroups.length > 0) {
+      filters.blueSparkGroups.forEach(group => {
+        params = params.append('blue_sparks', group.join(','));
+      });
+    }
+
+    if (filters.pinkSparkGroups && filters.pinkSparkGroups.length > 0) {
+      filters.pinkSparkGroups.forEach(group => {
+        params = params.append('pink_sparks', group.join(','));
+      });
+    }
+
+    if (filters.greenSparkGroups && filters.greenSparkGroups.length > 0) {
+      filters.greenSparkGroups.forEach(group => {
+        params = params.append('green_sparks', group.join(','));
+      });
+    }
+
+    if (filters.whiteSparkGroups && filters.whiteSparkGroups.length > 0) {
+      filters.whiteSparkGroups.forEach(group => {
+        params = params.append('white_sparks', group.join(','));
+      });
+    }
+
+    // Main Parent Factors
+    if (filters.mainParentBlueSparks && filters.mainParentBlueSparks.length > 0) {
+      params = params.set('main_parent_blue_sparks', filters.mainParentBlueSparks.join(','));
+    }
+
+    if (filters.mainParentPinkSparks && filters.mainParentPinkSparks.length > 0) {
+      params = params.set('main_parent_pink_sparks', filters.mainParentPinkSparks.join(','));
+    }
+
+    if (filters.mainParentGreenSparks && filters.mainParentGreenSparks.length > 0) {
+      params = params.set('main_parent_green_sparks', filters.mainParentGreenSparks.join(','));
+    }
+
+    if (filters.mainParentWhiteSparks && filters.mainParentWhiteSparks.length > 0) {
+      params = params.set('main_parent_white_sparks', filters.mainParentWhiteSparks.join(','));
+    }
+
+    if (filters.minMainBlueFactors !== undefined) {
+      params = params.set('min_main_blue_factors', filters.minMainBlueFactors.toString());
+    }
+
+    if (filters.minMainPinkFactors !== undefined) {
+      params = params.set('min_main_pink_factors', filters.minMainPinkFactors.toString());
+    }
+
+    if (filters.minMainGreenFactors !== undefined) {
+      params = params.set('min_main_green_factors', filters.minMainGreenFactors.toString());
+    }
+
+    if (filters.minMainWhiteCount !== undefined) {
+      params = params.set('min_main_white_count', filters.minMainWhiteCount.toString());
     }
 
     // Add minimum filters
@@ -208,6 +277,15 @@ export class InheritanceService {
 
     if (filters.minWhiteCount !== undefined) {
       params = params.set('min_white_count', filters.minWhiteCount.toString());
+    }
+
+    // Support Card Filters
+    if (filters.supportCardId !== undefined) {
+      params = params.set('support_card_id', filters.supportCardId.toString());
+    }
+
+    if (filters.minLimitBreak !== undefined) {
+      params = params.set('min_limit_break', filters.minLimitBreak.toString());
     }
 
     // Add sorting parameters
@@ -264,6 +342,9 @@ export class InheritanceService {
   private mapV3BackendToFrontend(v3Record: V3UnifiedAccountRecord): InheritanceRecord {
     const inheritance = v3Record.inheritance!; // We filter for non-null inheritance above
     
+    // Debug log to check affinity_score
+    // console.log('Mapping record', v3Record.account_id, 'Affinity:', inheritance.affinity_score);
+
     return {
       id: inheritance.inheritance_id,
       account_id: v3Record.account_id,
@@ -280,6 +361,7 @@ export class InheritanceService {
       white_sparks: inheritance.white_sparks,
       win_count: inheritance.win_count,
       white_count: inheritance.white_count,
+      affinity_score: (inheritance as any)['affinity_score'],
       main_blue_factors: inheritance.main_blue_factors,
       main_pink_factors: inheritance.main_pink_factors,
       main_green_factors: inheritance.main_green_factors,
@@ -458,12 +540,14 @@ export class InheritanceService {
 
   // Map frontend sort options to backend sort fields
   private mapSortByToBackend(sortBy: string): string {
+    console.log('Mapping sortBy:', sortBy); 
     const sortMapping: { [key: string]: string } = {
       'win_count': 'win_count',
       'white_count': 'white_count', 
       'score': 'parent_rank', // Map score to parent_rank in backend
       'submitted_at': 'last_updated', // Map submitted_at to last_updated in V2 API
-      'follower_num': 'follower_num'
+      'follower_num': 'follower_num',
+      'affinity_score': 'affinity_score'
     };
     return sortMapping[sortBy] || 'win_count';
   }

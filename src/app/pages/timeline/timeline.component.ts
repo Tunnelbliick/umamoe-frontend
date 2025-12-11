@@ -119,6 +119,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Drag to scroll properties
     isDragging = false;
+    hasDragged = false;
     private startX = 0;
     private scrollStart = 0;
     private dragAnimationFrame?: number;
@@ -248,6 +249,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         event.preventDefault();
         this.isDragging = true;
+        this.hasDragged = false;
         this.isDecelerating = false;
 
         // Cancel any ongoing momentum
@@ -287,6 +289,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const container = this.timelineContainer.nativeElement;
         const currentTime = performance.now();
         const currentX = event.pageX;
+
+        // Check if we've moved enough to consider it a drag
+        if (!this.hasDragged && Math.abs(currentX - this.startX) > 5) {
+            this.hasDragged = true;
+        }
 
         // Calculate velocity for momentum
         const timeDelta = currentTime - this.lastTime;
@@ -1243,6 +1250,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     onTimelineItemClick(item: TimelineItem): void {
         if (!environment.production) {
             console.log('Item clicked:', item);
+        }
+    }
+
+    onLinkClick(event: MouseEvent): void {
+        if (this.hasDragged) {
+            event.preventDefault();
+            event.stopPropagation();
         }
     }
 

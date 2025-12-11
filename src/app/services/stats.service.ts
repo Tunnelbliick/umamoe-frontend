@@ -74,12 +74,17 @@ export class StatsService {
   }
 
   private getOrCreateVisitorId(): string {
-    let visitorId = localStorage.getItem('visitorId');
-    if (!visitorId) {
-      visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-      localStorage.setItem('visitorId', visitorId);
+    try {
+      let visitorId = localStorage.getItem('visitorId');
+      if (!visitorId) {
+        visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        localStorage.setItem('visitorId', visitorId);
+      }
+      return visitorId;
+    } catch (e) {
+      console.warn('Failed to access localStorage for visitorId:', e);
+      return 'visitor_fallback_' + Date.now();
     }
-    return visitorId;
   }
 
   private getTodayDateString(): string {
@@ -97,7 +102,11 @@ export class StatsService {
   }
 
   private setTrackingInfo(info: DailyTrackingInfo): void {
-    localStorage.setItem(this.TRACKING_KEY, JSON.stringify(info));
+    try {
+      localStorage.setItem(this.TRACKING_KEY, JSON.stringify(info));
+    } catch (e) {
+      console.warn('Failed to save tracking info:', e);
+    }
   }
 
   private checkAndTrackDailyVisit(): void {
@@ -132,13 +141,7 @@ export class StatsService {
       date: this.getTodayDateString()
     };
     
-    return this.http.post(`${this.apiUrl}/stats/daily-visit`, payload)
-      .pipe(
-        catchError(error => {
-          console.warn('Failed to track daily visit:', error);
-          return of({ success: false });
-        })
-      );
+    return this.http.post(`${this.apiUrl}/stats/daily-visit`, payload);
   }
 
   // Public method to manually check and track (useful for SPA route changes)

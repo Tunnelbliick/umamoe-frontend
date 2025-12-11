@@ -1,0 +1,415 @@
+.christmas-popup-container {
+  background: #1e1e1e; // Dark background
+  padding: 1rem;
+  color: #e0e0e0;
+  position: relative;
+  overflow: visible; // Allow lights to hang out
+  border-radius: 8px; // Ensure radius if dialog doesn't provide it
+  box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+  margin-top: 20px; // Push down slightly to make room for lights
+  max-height: 85vh; // Limit height
+  display: flex;
+  flex-direction: column;
+
+  // Subtle festive gradient border at the top
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ef5350, #66bb6a, #ffd700);
+    opacity: 0.8;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 10px; // Space for lights
+  flex-shrink: 0; // Don't shrink header
+
+  .header-logo {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(45deg, #ef5350, #66bb6a, #ffd700);
+    -webkit-mask-image: url('/assets/crimmas.png');
+    mask-image: url('/assets/crimmas.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    filter: drop-shadow(0 0 8px rgba(239, 83, 80, 0.4));
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, #ef5350, #ffd700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+}
+
+.popup-content {
+  margin-bottom: 1rem;
+  overflow-y: auto; // Enable scrolling for content
+  flex: 1; // Take remaining space
+  padding-right: 0.5rem; // Space for scrollbar
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .intro-text {
+    margin-bottom: 0.75rem;
+    color: #bdbdbd;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+
+.feature-list {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .feature-icon {
+      color: #66bb6a; // Christmas Green
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #f5f5f5;
+    }
+  }
+}
+
+.theme-notice {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(239, 83, 80, 0.1); // Subtle red tint
+  border-radius: 8px;
+  border: 1px solid rgba(239, 83, 80, 0.2);
+  align-items: flex-start;
+
+  .notice-icon {
+    color: #ef5350;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-top: 0;
+    overflow: visible; // Prevent clipping
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    line-height: 1.4;
+  }
+}
+
+.discord-notice {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(88, 101, 242, 0.1); // Discord Blurple tint
+  border-radius: 8px;
+  border: 1px solid rgba(88, 101, 242, 0.2);
+  align-items: flex-start;
+  margin-top: 1rem;
+
+  .notice-icon {
+    color: #5865F2; // Discord Blurple
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    margin-top: 0;
+    overflow: visible;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    line-height: 1.4;
+  }
+
+  a {
+    color: #5865F2;
+    text-decoration: none;
+    font-weight: 600;
+    
+    &:hover {
+      text-decoration: underline;
+      color: lighten(#5865F2, 10%);
+    }
+  }
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  button {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .btn-dont-show {
+    color: #bdbdbd;
+    border-color: rgba(255, 255, 255, 0.2);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .btn-close {
+    background: linear-gradient(45deg, #66bb6a, #43a047);
+    color: white;
+    border: none;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(102, 187, 106, 0.4);
+      filter: brightness(1.1);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+// Christmas Lights
+.christmas-lights {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  pointer-events: none;
+  z-index: 1001;
+  overflow-x: hidden;
+}
+
+.lightrope {
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+  position: absolute;
+  z-index: 1;
+  margin: -15px 0 0 0;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+  // Removed flex to prevent squishing on mobile
+  
+  li {
+    position: relative;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    list-style: none;
+    margin: 0 15px; // Fixed margin
+    padding: 0;
+    display: inline-block; // Allow horizontal flow
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00f7a5;
+    box-shadow: 0px 4.66667px 24px 3px #00f7a5;
+    animation-name: flash-1;
+    animation-duration: 2s;
+    
+    // Cyan
+    &:nth-child(2n+1) {
+      background: #00ffff;
+      box-shadow: 0px 4.66667px 24px 3px rgba(0, 255, 255, 0.5);
+      animation-name: flash-2;
+      animation-duration: 0.4s;
+    }
+    
+    // Pink
+    &:nth-child(4n+2) {
+      background: #f70094;
+      box-shadow: 0px 4.66667px 24px 3px #f70094;
+      animation-name: flash-3;
+      animation-duration: 1.1s;
+    }
+
+    // Red
+    &:nth-child(3n+1) {
+      background: #ff3333;
+      box-shadow: 0px 4.66667px 24px 3px rgba(255, 51, 51, 0.5);
+      animation-name: flash-red;
+      animation-duration: 1.4s;
+    }
+
+    // Gold
+    &:nth-child(5n+2) {
+      background: #ffd700;
+      box-shadow: 0px 4.66667px 24px 3px rgba(255, 215, 0, 0.5);
+      animation-name: flash-gold;
+      animation-duration: 1.8s;
+    }
+
+    // Purple
+    &:nth-child(7n+3) {
+      background: #9c27b0;
+      box-shadow: 0px 4.66667px 24px 3px rgba(156, 39, 176, 0.5);
+      animation-name: flash-purple;
+      animation-duration: 2.2s;
+    }
+    
+    &:nth-child(odd) {
+      animation-duration: 1.8s;
+    }
+    
+    &:nth-child(3n+1) {
+      animation-duration: 1.4s;
+    }
+
+    // Add more randomness
+    &:nth-child(5n+3) {
+      animation-duration: 2.3s;
+      animation-delay: 0.5s;
+    }
+    
+    &:nth-child(7n) {
+      animation-duration: 0.8s;
+      animation-delay: 0.2s;
+    }
+    
+    &:before {
+      content: '';
+      position: absolute;
+      background: #222;
+      width: 10px;
+      height: 9.33333px;
+      border-radius: 3px;
+      top: -4.66667px;
+      left: 1px;
+    }
+    
+    &:after {
+      content: '';
+      top: -14px;
+      left: 9px;
+      position: absolute;
+      width: 52px;
+      height: 18.66667px;
+      border-bottom: solid #222 2px;
+      border-radius: 50%;
+    }
+    
+    &:last-child:after {
+      content: none;
+    }
+    
+    &:first-child {
+      margin-left: -40px;
+    }
+  }
+}
+
+@keyframes flash-1 {
+  0%, 100% { background: #00f7a5; box-shadow: 0px 4.66667px 24px 3px #00f7a5; }
+  50% { background: rgba(0, 247, 165, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(0, 247, 165, 0.2); }
+}
+
+@keyframes flash-2 {
+  0%, 100% { background: #00ffff; box-shadow: 0px 4.66667px 24px 3px #00ffff; }
+  50% { background: rgba(0, 255, 255, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(0, 255, 255, 0.2); }
+}
+
+@keyframes flash-3 {
+  0%, 100% { background: #f70094; box-shadow: 0px 4.66667px 24px 3px #f70094; }
+  50% { background: rgba(247, 0, 148, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(247, 0, 148, 0.2); }
+}
+
+@keyframes flash-red {
+  0%, 100% { background: #ff3333; box-shadow: 0px 4.66667px 24px 3px #ff3333; }
+  50% { background: rgba(255, 51, 51, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(255, 51, 51, 0.2); }
+}
+
+@keyframes flash-gold {
+  0%, 100% { background: #ffd700; box-shadow: 0px 4.66667px 24px 3px #ffd700; }
+  50% { background: rgba(255, 215, 0, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(255, 215, 0, 0.2); }
+}
+
+@keyframes flash-purple {
+  0%, 100% { background: #9c27b0; box-shadow: 0px 4.66667px 24px 3px #9c27b0; }
+  50% { background: rgba(156, 39, 176, 0.4); box-shadow: 0px 4.66667px 24px 3px rgba(156, 39, 176, 0.2); }
+}
+
+@media (max-width: 600px) {
+  .popup-actions {
+    .btn-dont-show {
+      font-size: 0.75rem;
+      padding: 0 12px;
+    }
+  }
+}

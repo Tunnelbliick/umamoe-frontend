@@ -8,6 +8,7 @@ import { StatsService, StatsResponse } from '../../services/stats.service';
 import { DomainMigrationService } from '../../services/domain-migration.service';
 import { DomainMigrationPopupComponent } from '../../components/domain-migration-popup/domain-migration-popup.component';
 import { Meta, Title } from '@angular/platform-browser';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   stats: StatsResponse | null = null;
   loading = true;
+  isChristmas$ = this.themeService.isChristmas$;
 
   inheritanceRecords = 0;
   supportCardRecords = 0;
@@ -38,7 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private meta: Meta, 
     private title: Title,
     private dialog: MatDialog,
-    private domainMigrationService: DomainMigrationService
+    private domainMigrationService: DomainMigrationService,
+    private themeService: ThemeService
   ) {
     this.title.setTitle('honse.moe Umamusume Database & Tools');
     this.meta.addTags([

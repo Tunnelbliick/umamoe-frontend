@@ -1161,6 +1161,7 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
+        flex-direction: row;
 
         mat-checkbox {
           margin: 0;

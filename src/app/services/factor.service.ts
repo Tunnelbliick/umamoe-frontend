@@ -82,14 +82,14 @@ export class FactorService {
    * @returns Array of SparkInfo objects
    */
   resolveSparks(sparkIds: number[]): SparkInfo[] {
-    // Sort by level (extracted properly from the end of the spark ID)
-    sparkIds.sort((a, b) => {
+    // Create a copy before sorting to avoid mutating the original array
+    const sortedIds = [...sparkIds].sort((a, b) => {
       const levelA = this.extractLevel(a);
       const levelB = this.extractLevel(b);
       return levelB - levelA;
     });
 
-    return sparkIds.map(sparkId => this.resolveSpark(sparkId));
+    return sortedIds.map(sparkId => this.resolveSpark(sparkId));
   }
 
   /**

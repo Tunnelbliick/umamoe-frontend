@@ -7,11 +7,25 @@ export const routes: Routes = [
   },
   {
     path: 'inheritance',
-    loadComponent: () => import('./pages/inheritance-database/inheritance-database.component').then(m => m.InheritanceDatabaseComponent)
+    redirectTo: 'database',
+    pathMatch: 'full'
   },
   {
     path: 'support-cards',
-    loadComponent: () => import('./pages/support-cards-database/support-cards-database.component').then(m => m.SupportCardsDatabaseComponent)
+    redirectTo: 'database',
+    pathMatch: 'full'
+  },
+  {
+    path: 'database',
+    loadComponent: () => import('./pages/inheritance-database/inheritance-database.component').then(m => m.InheritanceDatabaseComponent)
+  },
+  {
+    path: 'circles',
+    loadComponent: () => import('./pages/circles/circles.component').then(m => m.CirclesComponent)
+  },
+  {
+    path: 'circles/:id',
+    loadComponent: () => import('./pages/circles/circle-details/circle-details.component').then(m => m.CircleDetailsComponent)
   },
   {
     path: 'timeline',

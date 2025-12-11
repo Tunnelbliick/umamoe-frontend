@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Meta, Title } from '@angular/platform-browser';
 
 import { InheritanceService } from '../../services/inheritance.service';
@@ -21,6 +21,7 @@ import { SupportCardService } from '../../services/support-card.service';
 import { InheritanceFilterComponent, InheritanceFilters } from './inheritance-filter.component';
 import { TrainerSubmitDialogComponent, TrainerSubmissionConfig } from '../../components/trainer-submit-dialog/trainer-submit-dialog.component';
 import { TrainerIdFormatPipe } from '../../pipes/trainer-id-format.pipe';
+import { ResolveSparksPipe } from '../../pipes/resolve-sparks.pipe';
 import {
   InheritanceRecord,
   InheritanceSearchFilters
@@ -28,6 +29,7 @@ import {
 import { SearchResult } from '../../models/common.model';
 import { SupportCardShort } from '../../models/support-card.model';
 import { environment } from '../../../environments/environment';
+import { AdvancedFilterComponent, UnifiedSearchParams } from '../../components/advanced-filter/advanced-filter.component';
 
 @Component({
   selector: 'app-inheritance-database',
@@ -45,13 +47,16 @@ import { environment } from '../../../environments/environment';
     MatFormFieldModule,
     MatSelectModule,
     InheritanceFilterComponent,
-    TrainerIdFormatPipe
+    TrainerIdFormatPipe,
+    ResolveSparksPipe,
+    AdvancedFilterComponent
   ],
   templateUrl: './inheritance-database.component.html',
   styleUrl: './inheritance-database.component.scss'
 })
-export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
+export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
+  private searchSubscription?: Subscription;
 
   environment = environment;
   isMobile = false;
@@ -60,6 +65,7 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
   loadingMore = false;
   allRecords: InheritanceRecord[] = [];
   currentFilters: InheritanceFilters | null = null;
+  currentAdvancedFilters: UnifiedSearchParams | null = null;
   hasMoreRecords = true;
 
   // Infinite scroll properties
@@ -69,10 +75,11 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
   totalRecords = 0; // Total records from the search result
 
   // Sorting properties
-  currentSortBy = 'win_count';
+  currentSortBy = 'affinity_score';
   currentSortOrder: 'asc' | 'desc' = 'desc';
 
   sortOptions = [
+    { value: 'affinity_score', label: 'Affinity' },
     { value: 'win_count', label: 'G1 Wins' },
     { value: 'white_count', label: 'White Count' },
     { value: 'score', label: 'Score' },
@@ -82,11 +89,14 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
   // Vote state tracking
   voteStates = new Map<string, VoteState>();
 
+  @ViewChild(AdvancedFilterComponent) advancedFilter!: AdvancedFilterComponent;
+
   // Trainer ID filter from URL parameters
   trainerIdFilter: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private inheritanceService: InheritanceService,
     private voteProtection: VoteProtectionService,
     private factorService: FactorService,
@@ -96,17 +106,17 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private title: Title
   ) {
-    this.title.setTitle('Inheritance Database | honse.moe');
+    this.title.setTitle('Database | honse.moe');
     this.meta.addTags([
-      { name: 'description', content: 'Browse and search the Umamusume inheritance database. Find optimal inheritance skills and combinations for your team.' },
-      { property: 'og:title', content: 'Inheritance Database | honse.moe' },
-      { property: 'og:description', content: 'Browse and search the Umamusume inheritance database. Find optimal inheritance skills and combinations for your team.' },
+      { name: 'description', content: 'Browse and search the Umamusume database. Find optimal inheritance skills and support cards for your team.' },
+      { property: 'og:title', content: 'Database | honse.moe' },
+      { property: 'og:description', content: 'Browse and search the Umamusume database. Find optimal inheritance skills and support cards for your team.' },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://honsemoe.com/inheritance-database' },
+      { property: 'og:url', content: 'https://honsemoe.com/database' },
       { property: 'og:image', content: 'https://honsemoe.com/assets/logo.png' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Inheritance Database | honse.moe' },
-      { name: 'twitter:description', content: 'Browse and search the Umamusume inheritance database. Find optimal inheritance skills and combinations for your team.' },
+      { name: 'twitter:title', content: 'Database | honse.moe' },
+      { name: 'twitter:description', content: 'Browse and search the Umamusume database. Find optimal inheritance skills and support cards for your team.' },
       { name: 'twitter:image', content: 'https://honsemoe.com/assets/logo.png' }
     ]);
   }
@@ -124,10 +134,10 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
         this.searchRecords();
         
         // Update page title and meta tags to reflect trainer filter
-        this.title.setTitle(`Inheritance Database - Trainer ${trainerId} | honse.moe`);
+        this.title.setTitle(`Database - Trainer ${trainerId} | honse.moe`);
         this.meta.updateTag({ 
           name: 'description', 
-          content: `Browse inheritance records for trainer ${trainerId} in the Umamusume database.` 
+          content: `Browse records for trainer ${trainerId} in the Umamusume database.` 
         });
       } else if (!trainerId && this.trainerIdFilter) {
         // Trainer ID parameter was removed, clear filter
@@ -138,18 +148,53 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
         this.searchRecords();
         
         // Reset title and meta tags
-        this.title.setTitle('Inheritance Database | honse.moe');
+        this.title.setTitle('Database | honse.moe');
         this.meta.updateTag({ 
           name: 'description', 
-          content: 'Browse and search the Umamusume inheritance database. Find optimal inheritance skills and combinations for your team.' 
+          content: 'Browse and search the Umamusume database. Find optimal inheritance skills and support cards for your team.' 
         });
       }
     });
 
     // Initial search (will include trainer_id if present in URL)
-    if (!this.trainerIdFilter) {
+    // Skip if filters param is present, as ngAfterViewInit will handle it
+    const hasFilters = this.route.snapshot.queryParams['filters'];
+    if (!this.trainerIdFilter && !hasFilters) {
       this.searchRecords();
     }
+  }
+
+  ngAfterViewInit() {
+    // Check for filters URL parameter
+    const filters = this.route.snapshot.queryParams['filters'];
+    if (filters) {
+      // Load state
+      // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError if the load triggers immediate changes
+      setTimeout(() => {
+        this.advancedFilter.loadSerializedState(filters);
+      });
+    }
+  }
+
+  onAdvancedFilterChange(params: UnifiedSearchParams) {
+    this.currentAdvancedFilters = params;
+    
+    // Update URL
+    const serialized = this.advancedFilter.getSerializedState();
+    // Only update URL if serialized string is not empty/default (optional optimization)
+    
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { filters: serialized },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+
+    // Reset pagination and search
+    this.currentPage = 0;
+    this.allRecords = [];
+    this.hasMoreRecords = true;
+    this.searchRecords();
   }
 
   ngOnDestroy() {
@@ -177,19 +222,66 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
   }
 
   searchRecords() {
-    if (this.loading || this.loadingMore) {
-      return; // Prevent multiple simultaneous requests
+    // If loading more (pagination), prevent duplicates
+    if (this.currentPage > 0 && (this.loading || this.loadingMore)) {
+      return;
     }
 
-    // Set appropriate loading state
+    // If new search (page 0), cancel previous
     if (this.currentPage === 0) {
+      if (this.searchSubscription) {
+        this.searchSubscription.unsubscribe();
+      }
       this.loading = true;
+      this.loadingMore = false;
     } else {
       this.loadingMore = true;
     }
 
-    // Convert filter component format to service format
-    const searchFilters: InheritanceSearchFilters = {
+    let searchFilters: InheritanceSearchFilters = {};
+
+    if (this.currentAdvancedFilters) {
+      const af = this.currentAdvancedFilters;
+      searchFilters = {
+        trainerId: af.trainer_id || this.trainerIdFilter || undefined,
+        trainerName: af.trainer_name,
+        umaId: af.main_parent_id,
+        playerCharaId: af.player_chara_id,
+        parentLeftId: af.parent_left_id,
+        parentRightId: af.parent_right_id,
+        
+        blueSparkGroups: af.blue_sparks,
+        pinkSparkGroups: af.pink_sparks,
+        greenSparkGroups: af.green_sparks,
+        whiteSparkGroups: af.white_sparks,
+
+        mainParentBlueSparks: af.main_parent_blue_sparks,
+        mainParentPinkSparks: af.main_parent_pink_sparks,
+        mainParentGreenSparks: af.main_parent_green_sparks,
+        mainParentWhiteSparks: af.main_parent_white_sparks,
+        
+        minMainBlueFactors: af.min_main_blue_factors,
+        minMainPinkFactors: af.min_main_pink_factors,
+        minMainGreenFactors: af.min_main_green_factors,
+        minMainWhiteCount: af.min_main_white_count,
+        
+        minWinCount: af.min_win_count,
+        minWhiteCount: af.min_white_count,
+        maxFollowerNum: af.max_follower_num,
+        minParentRank: af.parent_rank,
+        minParentRarity: af.parent_rarity,
+
+        supportCardId: af.support_card_id,
+        minLimitBreak: af.min_limit_break,
+        
+        page: this.currentPage,
+        pageSize: this.pageSize,
+        sortBy: this.mapSortByToBackend(this.currentSortBy),
+        sortOrder: 'desc'
+      };
+    } else {
+      // Convert filter component format to service format
+      searchFilters = {
       trainerId: this.trainerIdFilter || undefined, // Add trainer ID filter from URL
       umaId: this.currentFilters?.selectedCharacterId || undefined,
       page: this.currentPage,
@@ -309,8 +401,9 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
         searchFilters.whiteSparkFactors = whiteSparkFactors;
       }
     }
+    }
 
-    this.inheritanceService.searchInheritance(searchFilters, searchFilters.page, searchFilters.pageSize)
+    this.searchSubscription = this.inheritanceService.searchInheritance(searchFilters, searchFilters.page, searchFilters.pageSize)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result) => {
@@ -665,6 +758,7 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(TrainerSubmitDialogComponent, {
       maxWidth: '500px',
       disableClose: false,
+      panelClass: 'trainer-submit-dialog-panel',
       data: config
     });
 
@@ -762,11 +856,6 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
   reportUnavailable(trainerId: string, event: Event) {
     event.stopPropagation();
 
-    // Check if user can report this trainer
-    if (!this.voteProtection.canReport(trainerId)) {
-      return; // Protection service will show appropriate message
-    }
-
     // Show confirmation dialog
     const confirmed = confirm(`Report trainer ${trainerId} as unavailable or friend list full?`);
     if (!confirmed) {
@@ -774,21 +863,21 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
     }
 
     // Attempt to start the report process
-    if (!this.voteProtection.attemptReport(trainerId)) {
-      return; // Protection service will show appropriate message
-    }
+    // if (!this.voteProtection.attemptReport(trainerId)) {
+    //   return; // Protection service will show appropriate message
+    // }
 
     // Call backend API to report user
     this.inheritanceService.reportUserUnavailable(trainerId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.voteProtection.markReportCompleted(trainerId);
+          // this.voteProtection.markReportCompleted(trainerId);
           this.snackBar.open('Trainer reported as unavailable', 'Close', { duration: 2000 });
           this.searchRecords();
         },
         error: (error: any) => {
-          this.voteProtection.markReportFailed(trainerId);
+          // this.voteProtection.markReportFailed(trainerId);
           console.error('Failed to report trainer:', error);
           // For now, show success even if backend fails (graceful degradation)
           this.snackBar.open('Report submitted (service temporarily unavailable)', 'Close', { duration: 3000 });
@@ -816,8 +905,8 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
     this.isMobile = window.innerWidth < this.mobileBreakpoint;
   }
 
-  private mapSortByToBackend(sortBy: string): 'submitted_at' | 'upvotes' | 'downvotes' | 'trainer_id' | 'verified' | 'submittedAt' | 'createdAt' | 'rating' | 'votes' | 'views' | 'totalStats' | 'speed' | 'stamina' | 'power' | 'guts' | 'wisdom' | 'win_count' | 'white_count' | 'score' {
-    const sortMapping: { [key: string]: 'submitted_at' | 'upvotes' | 'downvotes' | 'trainer_id' | 'verified' | 'submittedAt' | 'createdAt' | 'rating' | 'votes' | 'views' | 'totalStats' | 'speed' | 'stamina' | 'power' | 'guts' | 'wisdom' | 'win_count' | 'white_count' | 'score' } = {
+  private mapSortByToBackend(sortBy: string): InheritanceSearchFilters['sortBy'] {
+    const sortMapping: { [key: string]: InheritanceSearchFilters['sortBy'] } = {
       'win_count': 'win_count',
       'white_count': 'white_count',
       'score': 'score',
@@ -825,7 +914,8 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
       'upvotes': 'upvotes',
       'downvotes': 'downvotes',
       'trainer_id': 'trainer_id',
-      'verified': 'verified'
+      'verified': 'verified',
+      'affinity_score': 'affinity_score'
     };
     return sortMapping[sortBy] || 'win_count';
   }
@@ -847,6 +937,53 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy {
 
 
     return undefined;
+  }
+
+  isSparkMatched(spark: SparkInfo, record: InheritanceRecord): boolean {
+    if (!this.currentAdvancedFilters) return false;
+
+    const filterId = parseInt(`${spark.factorId}${spark.level}`, 10);
+    const filters = this.currentAdvancedFilters;
+    const isFromMainParent = !!this.getLevelFromMainParent(spark, record);
+
+    const checkGroups = (groups: number[][] | undefined) => {
+      if (!groups) return false;
+      for (const group of groups) {
+        if (group.includes(filterId)) return true;
+      }
+      return false;
+    };
+
+    const checkArray = (arr: number[] | undefined) => {
+      if (!arr) return false;
+      return arr.includes(filterId);
+    };
+
+    // Check global filters (apply to any spark)
+    if (spark.type === 0) { // Blue
+       if (checkGroups(filters.blue_sparks)) return true;
+    } else if (spark.type === 1) { // Pink
+       if (checkGroups(filters.pink_sparks)) return true;
+    } else if (spark.type === 5) { // Green
+       if (checkGroups(filters.green_sparks)) return true;
+    } else { // White
+       if (checkGroups(filters.white_sparks)) return true;
+    }
+
+    // Check main parent filters (only if spark is from main parent)
+    if (isFromMainParent) {
+      if (spark.type === 0) { // Blue
+         if (checkArray(filters.main_parent_blue_sparks)) return true;
+      } else if (spark.type === 1) { // Pink
+         if (checkArray(filters.main_parent_pink_sparks)) return true;
+      } else if (spark.type === 5) { // Green
+         if (checkArray(filters.main_parent_green_sparks)) return true;
+      } else { // White
+         if (checkArray(filters.main_parent_white_sparks)) return true;
+      }
+    }
+
+    return false;
   }
 
   // Support card helper methods

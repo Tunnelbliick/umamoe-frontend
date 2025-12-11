@@ -1,0 +1,191 @@
+<div class="circle-details-page" *ngIf="!loading; else loadingTpl">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-top">
+        <button mat-icon-button routerLink="/circles" class="back-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="title-section">
+          <h1>{{circle?.name}}</h1>
+          <div class="badges">
+            <span class="badge rank-badge">Rank #{{circle?.monthly_rank}}</span>
+            <span class="badge members-badge">{{circle?.member_count}}/30 Members</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <div class="month-nav">
+          <button mat-icon-button (click)="changeMonth(-1)">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span class="current-month">{{currentYear}} / {{currentMonth | number:'2.0'}}</span>
+          <button mat-icon-button (click)="changeMonth(1)">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+        <button mat-stroked-button [matMenuTriggerFor]="exportMenu" class="export-btn">
+          <mat-icon>download</mat-icon> Export
+        </button>
+        <mat-menu #exportMenu="matMenu">
+          <button mat-menu-item (click)="exportStats('csv')">CSV</button>
+          <button mat-menu-item (click)="exportStats('json')">JSON</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Top Row: Info & Circle Chart -->
+    <div class="top-grid">
+      <div class="details-card info-card">
+        <div class="card-header">
+          <h2>Club Information</h2>
+        </div>
+        <div class="card-content">
+          <div class="info-row">
+            <span class="label">Leader Name</span>
+            <span class="value">{{circle?.leader_name || circle?.leader_viewer_id}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Monthly Fans</span>
+            <span class="value highlight">{{circle?.monthly_point | number}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Join Style</span>
+            <span class="value join-style" [ngClass]="{'open': circle?.join_style === 1, 'approval': circle?.join_style === 2, 'closed': circle?.join_style === 3}">
+              {{circle?.join_style === 1 ? 'Open' : (circle?.join_style === 2 ? 'Approval' : 'Closed')}}
+            </span>
+          </div>
+          <div class="info-row description">
+            <span class="label">Comment</span>
+            <p class="value" [innerHTML]="(circle?.comment || '') | discordLink"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-card chart-card">
+        <div class="card-header">
+          <h2>Club Progression</h2>
+        </div>
+        <div class="card-content chart-container">
+          <canvas #chartCanvas></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle Row: Member Progression Chart -->
+    <div class="details-card full-width-chart">
+      <div class="card-header">
+        <h2>Member Progression</h2>
+      </div>
+      <div class="card-content chart-wrapper">
+        <div class="chart-area">
+          <canvas #memberChartCanvas></canvas>
+        </div>
+        <div class="chart-legend custom-scrollbar">
+          <div class="legend-item" *ngFor="let item of chartLegendItems" 
+               (click)="toggleMemberVisibility(item.datasetIndex)"
+               (dblclick)="onLegendItemDblClick(item.datasetIndex)"
+               (mouseenter)="highlightMember(item.datasetIndex, true)"
+               (mouseleave)="highlightMember(item.datasetIndex, false)"
+               [class.hidden]="item.hidden">
+            <span class="color-indicator" [style.background-color]="item.color"></span>
+            <span class="name">{{item.name}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Row: Members List -->
+    <div class="members-section-header">
+      <h2>Members</h2>
+      <button mat-icon-button (click)="openSettingsDialog()" class="settings-btn" aria-label="Display Settings">
+        <mat-icon>tune</mat-icon>
+      </button>
+    </div>
+    <div class="members-grid">
+      <div class="member-card" *ngFor="let member of members; let i = index" 
+           [class.inactive]="!member.isActive"
+           [class.rank-1]="i === 0 && member.isActive"
+           [class.rank-2]="i === 1 && member.isActive"
+           [class.rank-3]="i === 2 && member.isActive">
+        <div class="member-header">
+          <div class="rank">#{{i + 1}}</div>
+          <div class="name">{{member.name}}</div>
+          <span class="role-badge" [ngClass]="member.role">{{member.role | titlecase}}</span>
+          <span class="status-badge inactive" *ngIf="!member.isActive">Left</span>
+        </div>
+        
+        <div class="member-stats">
+          <div class="stat-row" *ngIf="config.showTotalFans && config.selectedCalculation !== 'total_fans'">
+            <span class="label">Total Fans</span>
+            <span class="value">{{member.fan_count | number}}</span>
+          </div>
+          
+          <!-- Primary Metric (Always Visible) -->
+          <div class="stat-row highlight-stat">
+            <span class="label">{{getCalculationLabel()}}</span>
+            <span class="value gain" [class.positive]="config.selectedCalculation !== 'total_fans' && getMemberValue(member) > 0">
+              <ng-container *ngIf="config.selectedCalculation !== 'total_fans'">+</ng-container>{{getMemberValue(member) | number:'1.0-0'}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showProjectedMonthly && config.selectedCalculation !== 'projected_monthly'">
+            <span class="label">Projected Monthly</span>
+            <span class="value gain" [class.positive]="(member.projected_monthly || 0) > 0">
+              +{{(member.projected_monthly || 0) | number:'1.0-0'}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showMonthlyGain && config.selectedCalculation !== 'monthly_gain'">
+            <span class="label">Monthly Gain</span>
+            <span class="value gain" [class.positive]="(member.monthly_gain || 0) > 0">
+              +{{(member.monthly_gain || 0) | number}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showWeeklyGain && config.selectedCalculation !== 'weekly_gain'">
+            <span class="label">Weekly Gain</span>
+            <span class="value gain" [class.positive]="(member.weekly_gain || 0) > 0">
+              +{{(member.weekly_gain || 0) | number}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showSevenDayAvg && config.selectedCalculation !== 'avg_daily_gain'">
+            <span class="label">7 Day Avg</span>
+            <span class="value gain" [class.positive]="(member.seven_day_avg || 0) > 0">
+              +{{(member.seven_day_avg || 0) | number:'1.0-0'}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showDailyAvg && config.selectedCalculation !== 'daily_avg'">
+            <span class="label">Daily Avg</span>
+            <span class="value gain" [class.positive]="(member.daily_avg || 0) > 0">
+              +{{(member.daily_avg || 0) | number:'1.0-0'}}
+            </span>
+          </div>
+
+          <div class="stat-row" *ngIf="config.showDailyGain && config.selectedCalculation !== 'daily_gain'">
+            <span class="label">Daily Gain</span>
+            <span class="value gain" [class.positive]="(member.daily_gain || 0) > 0">
+              +{{(member.daily_gain || 0) | number}}
+            </span>
+          </div>
+
+          <div class="stat-row">
+            <span class="label">Last Updated</span>
+            <span class="value date">{{member.last_updated | date:'dd.MM.yyyy'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading club details...</p>
+  </div>
+</ng-template>

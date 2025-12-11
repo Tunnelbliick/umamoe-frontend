@@ -1,0 +1,58 @@
+<div class="christmas-popup-container">
+  <!-- Christmas Lights -->
+  <div class="christmas-lights">
+    <ul class="lightrope">
+      <li *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"></li>
+    </ul>
+  </div>
+
+  <div class="popup-header">
+    <div class="header-logo"></div>
+    <h2>Christmas Update</h2>
+  </div>
+
+  <div class="popup-content">
+    <p class="intro-text">Welcome to the latest update! Here is what's new:</p>
+    
+    <div class="feature-list">
+      <div class="feature-item">
+        <mat-icon class="feature-icon">filter_list</mat-icon>
+        <span>Expanded filter options</span>
+      </div>
+      <div class="feature-item">
+        <mat-icon class="feature-icon">group</mat-icon>
+        <span>Tracking of clubs</span>
+      </div>
+      <div class="feature-item">
+        <mat-icon class="feature-icon">update</mat-icon>
+        <span>Daily automatic Database updates</span>
+      </div>
+      <div class="feature-item">
+        <mat-icon class="feature-icon">storage</mat-icon>
+        <span>Club database</span>
+      </div>
+    </div>
+
+    <div class="theme-notice">
+      <mat-icon class="notice-icon">palette</mat-icon>
+      <p>
+        We've also added a festive theme! If it's not to your taste, you can toggle it off using the snowflake icon in the navigation bar.
+      </p>
+    </div>
+
+    <div class="discord-notice">
+      <mat-icon class="notice-icon">bug_report</mat-icon>
+      <p>
+        Encountered a bug? Please report it on our <a href="https://discord.uma.moe/" target="_blank">Discord</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="popup-actions">
+    <button mat-stroked-button class="btn-dont-show" (click)="dontShowAgain()">Don't show again</button>
+    <button mat-raised-button class="btn-close" (click)="close()">
+      <mat-icon>check</mat-icon>
+      Close
+    </button>
+  </div>
+</div>

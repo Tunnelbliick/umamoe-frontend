@@ -329,6 +329,7 @@
                 [href]="item.eventData?.gametoraURL"
                 target="_blank"
                 rel="noopener noreferrer"
+                (click)="onLinkClick($event)"
               >
                 <!-- Event cards (only for events, not milestones) -->
                 <mat-card

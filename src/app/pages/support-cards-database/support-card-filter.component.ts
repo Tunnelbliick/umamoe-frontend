@@ -182,6 +182,7 @@ export class SupportCardFilterComponent implements OnInit {
   openCardDialog() {
     const dialogRef = this.dialog.open(SupportCardSelectDialogComponent, {
       maxWidth: '800px',
+      panelClass: 'modern-dialog-panel',
       data: { initialCard: this.selectedCard }
     });
 

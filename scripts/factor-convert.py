@@ -30,7 +30,7 @@ def load_existing_data(file_path):
     return None
 
 parser = argparse.ArgumentParser(prog='factor-convert.py')
-parser.add_argument('--dblocation', default='C:/Users/lars1/AppData/LocalLow/Cygames/Umamusume/master/master.mdb')
+parser.add_argument('--dblocation', default='C:/Users/lars/AppData/LocalLow/Cygames/Umamusume/master/master.mdb')
 parser.add_argument('--dry-run', action='store_true')
 parser.add_argument('--output', default='./factors.json', help='Output JSON file path')
 args = parser.parse_args()

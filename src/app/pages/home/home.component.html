@@ -5,7 +5,7 @@
       <div class="hero-branding">
         <div class="hero-logo-img-wrapper">
           <img
-            src="assets/logo.png"
+            [src]="(isChristmas$ | async) ? 'assets/crimmas.png' : 'assets/logo.png'"
             alt="Site Logo"
             class="hero-logo-img"
             (error)="onLogoError($event)"
@@ -18,24 +18,24 @@
       <p class="hero-subtitle">Umamusume resource hub for the global version</p>
 
       <div class="quick-links">
-        <a routerLink="/inheritance" class="quick-link inheritance">
-          <mat-icon>family_restroom</mat-icon>
+        <a routerLink="/database" class="quick-link inheritance">
+          <mat-icon>dataset</mat-icon>
           <div class="link-content">
             <span class="link-title"
-              >Inheritance
-              <!--<span class="updated-badge">UPDATED</span>--></span
+              >Database
+              <span class="updated-badge">UPDATED</span></span
             >
-            <span class="link-desc">Browse the Inheritance Database</span>
+            <span class="link-desc">Browse the Database</span>
           </div>
         </a>
 
-        <a routerLink="/support-cards" class="quick-link support-cards">
-          <mat-icon>style</mat-icon>
+        <a routerLink="/circles" class="quick-link support-cards">
+          <mat-icon>groups</mat-icon>
           <div class="link-content">
             <span class="link-title"
-              >Support Cards<!--<span class="updated-badge">UPDATED</span>--></span
+              >Clubs<span class="new-badge">NEW</span></span
             >
-            <span class="link-desc">Search the Support Card Database</span>
+            <span class="link-desc">Club Database and Fan Progression</span>
           </div>
         </a>
 
