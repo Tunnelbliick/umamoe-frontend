@@ -166,6 +166,10 @@ export interface InheritanceSearchFilters {
   mainParentGreenSparks?: number[];
   mainParentWhiteSparks?: number[];
   
+  // Optional White Factors (for scoring/sorting, no level required)
+  optionalWhiteSparks?: number[];
+  optionalMainWhiteSparks?: number[];
+  
   minMainBlueFactors?: number;
   minMainPinkFactors?: number;
   minMainGreenFactors?: number;

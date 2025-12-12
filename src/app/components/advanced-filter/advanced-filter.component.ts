@@ -28,7 +28,7 @@ export interface ActiveFilterChip {
   value?: string;
   showStar?: boolean;
   range?: string; // Star range like "1-9", "5+", etc.
-  type: 'blue' | 'pink' | 'green' | 'white' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other';
+  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other';
   filterIndex?: number;
   filterList?: FactorFilter[];
 }
@@ -39,6 +39,9 @@ interface CompressedState {
   g?: (number|null)[][]; // green factors [id, min]
   w?: (number|null)[][]; // white factors [id, min]
   
+  ow?: number[]; // optional white factors [id]
+  omw?: number[]; // optional main white factors [id]
+
   mb?: (number|null)[][]; // main blue
   mp?: (number|null)[][]; // main pink
   mg?: (number|null)[][]; // main green
@@ -102,6 +105,10 @@ export interface UnifiedSearchParams {
   min_main_pink_factors?: number;
   min_main_green_factors?: number;
   min_main_white_count?: number;
+
+  // Optional white sparks (no level requirement, used for sorting by match score)
+  optional_white_sparks?: number[];
+  optional_main_white_sparks?: number[];
 
   // Support card filtering
   support_card_id?: number;
@@ -174,6 +181,10 @@ export class AdvancedFilterComponent implements OnInit {
   mainGreenFactorFilters: FactorFilter[] = [];
   mainWhiteFactorFilters: FactorFilter[] = [];
 
+  // Optional white factors (no level, just ID - for scoring/sorting)
+  optionalWhiteFactorFilters: FactorFilter[] = [];
+  optionalMainWhiteFactorFilters: FactorFilter[] = [];
+
   ngOnInit() {
     this.filterChangeSubject.pipe(
       debounceTime(500)
@@ -218,6 +229,8 @@ export class AdvancedFilterComponent implements OnInit {
   filteredWhiteFactorOptions: any[][] = [];
   filteredMainWhiteFactorOptions: any[][] = [];
   filteredMainGreenFactorOptions: any[][] = [];
+  filteredOptionalWhiteFactorOptions: any[][] = [];
+  filteredOptionalMainWhiteFactorOptions: any[][] = [];
 
   private uuidCounter = 0;
 
@@ -236,6 +249,15 @@ export class AdvancedFilterComponent implements OnInit {
     if (this.pinkFactorFilters.length) state.p = this.pinkFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.greenFactorFilters.length) state.g = this.greenFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.whiteFactorFilters.length) state.w = this.whiteFactorFilters.map(f => [f.factorId, f.min, f.max]);
+
+    if (this.optionalWhiteFactorFilters.length) {
+      const ids = this.optionalWhiteFactorFilters.filter(f => f.factorId && f.factorId > 0).map(f => f.factorId!);
+      if (ids.length) state.ow = ids;
+    }
+    if (this.optionalMainWhiteFactorFilters.length) {
+      const ids = this.optionalMainWhiteFactorFilters.filter(f => f.factorId && f.factorId > 0).map(f => f.factorId!);
+      if (ids.length) state.omw = ids;
+    }
 
     if (this.mainBlueFactorFilters.length) state.mb = this.mainBlueFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.mainPinkFactorFilters.length) state.mp = this.mainPinkFactorFilters.map(f => [f.factorId, f.min, f.max]);
@@ -304,9 +326,13 @@ export class AdvancedFilterComponent implements OnInit {
       this.mainPinkFactorFilters = [];
       this.mainGreenFactorFilters = [];
       this.mainWhiteFactorFilters = [];
+      this.optionalWhiteFactorFilters = [];
+      this.optionalMainWhiteFactorFilters = [];
       this.filteredGreenFactorOptions = [];
       this.filteredWhiteFactorOptions = [];
       this.filteredMainWhiteFactorOptions = [];
+      this.filteredOptionalWhiteFactorOptions = [];
+      this.filteredOptionalMainWhiteFactorOptions = [];
 
       restoreFactors(state.b, this.blueFactorFilters);
       restoreFactors(state.p, this.pinkFactorFilters);
@@ -322,6 +348,26 @@ export class AdvancedFilterComponent implements OnInit {
       // Let's assume it works like others.
       
       restoreFactors(state.mw, this.mainWhiteFactorFilters, 'mainWhite');
+
+      // Restore Optional Factors
+      const restoreOptionalFactors = (source: number[] | undefined, target: FactorFilter[], type: 'optionalWhite' | 'optionalMainWhite') => {
+        if (!source) return;
+        source.forEach(id => {
+          const filter: FactorFilter = {
+            uuid: this.getUuid(),
+            factorId: id,
+            min: 1,
+            max: 9
+          };
+          target.push(filter);
+          
+          if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions.push([...this.whiteFactors]);
+          if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.push([...this.whiteFactors]);
+        });
+      };
+
+      restoreOptionalFactors(state.ow, this.optionalWhiteFactorFilters, 'optionalWhite');
+      restoreOptionalFactors(state.omw, this.optionalMainWhiteFactorFilters, 'optionalMainWhite');
 
       // Restore Tree
       if (state.t) {
@@ -399,7 +445,7 @@ export class AdvancedFilterComponent implements OnInit {
 
   // --- Factor Filter Management ---
 
-  addFactorFilter(list: FactorFilter[], defaultFactorId: number | null, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen') {
+  addFactorFilter(list: FactorFilter[], defaultFactorId: number | null, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite') {
     list.push({
       uuid: this.getUuid(),
       factorId: defaultFactorId,
@@ -411,6 +457,8 @@ export class AdvancedFilterComponent implements OnInit {
     if (type === 'white') this.filteredWhiteFactorOptions.push([...this.whiteFactors]);
     if (type === 'mainWhite') this.filteredMainWhiteFactorOptions.push([...this.whiteFactors]);
     if (type === 'mainGreen') this.filteredMainGreenFactorOptions.push([...this.greenFactors]);
+    if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions.push([...this.whiteFactors]);
+    if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.push([...this.whiteFactors]);
 
     // Enforce single green factor for main parent
     if (type === 'mainGreen' && this.mainGreenFactorFilters.length > 1) {
@@ -418,28 +466,42 @@ export class AdvancedFilterComponent implements OnInit {
       this.removeFactorFilter(this.mainGreenFactorFilters, 0, 'mainGreen');
     }
 
-    this.onFilterChange();
+    // Only trigger filter change if a valid factor is already selected
+    // For white factors with null default, don't trigger until user selects something
+    if (defaultFactorId !== null) {
+      this.onFilterChange();
+    }
   }
 
-  removeFactorFilter(list: FactorFilter[], index: number, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen') {
+  removeFactorFilter(list: FactorFilter[], index: number, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite') {
+    // Check if the filter being removed had a valid selection
+    const removedFilter = list[index];
+    const hadValidSelection = removedFilter && removedFilter.factorId !== null && removedFilter.factorId !== 0;
+    
     list.splice(index, 1);
     
     if (type === 'green') this.filteredGreenFactorOptions.splice(index, 1);
     if (type === 'white') this.filteredWhiteFactorOptions.splice(index, 1);
     if (type === 'mainWhite') this.filteredMainWhiteFactorOptions.splice(index, 1);
     if (type === 'mainGreen') this.filteredMainGreenFactorOptions.splice(index, 1);
+    if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions.splice(index, 1);
+    if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.splice(index, 1);
 
+    // Always trigger filter change to update chips and URL
     this.onFilterChange();
   }
 
   // --- Autocomplete Logic ---
 
-  filterFactors(value: string, type: 'green' | 'white' | 'mainWhite' | 'mainGreen', index: number) {
-    const filterValue = value.toLowerCase();
+  filterFactors(value: string | number, type: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite', index: number) {
+    // If value is a number (factor ID selected), don't filter - just return
+    if (typeof value === 'number') return;
+    
+    const filterValue = (value || '').toLowerCase();
     let sourceList: any[] = [];
     
     if (type === 'green' || type === 'mainGreen') sourceList = this.greenFactors;
-    else sourceList = this.whiteFactors; // Both white and mainWhite use whiteFactors
+    else sourceList = this.whiteFactors; // All white types use whiteFactors
 
     const filtered = sourceList.filter(option => option.text.toLowerCase().includes(filterValue));
 
@@ -447,11 +509,12 @@ export class AdvancedFilterComponent implements OnInit {
     if (type === 'white') this.filteredWhiteFactorOptions[index] = filtered;
     if (type === 'mainWhite') this.filteredMainWhiteFactorOptions[index] = filtered;
     if (type === 'mainGreen') this.filteredMainGreenFactorOptions[index] = filtered;
+    if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions[index] = filtered;
+    if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions[index] = filtered;
   }
 
   getFactorText(id: number | null | undefined, type: 'green' | 'white'): string {
-    if (id === 0) return 'Any';
-    if (!id) return '';
+    if (!id || id === 0) return '';
     const list = type === 'green' ? this.greenFactors : this.whiteFactors;
     const found = list.find(f => f.id === id);
     return found ? found.text : '';
@@ -653,6 +716,15 @@ export class AdvancedFilterComponent implements OnInit {
     this.filterState.main_parent_white_sparks = this.generateSparkIds(this.mainWhiteFactorFilters, this.whiteFactors, 3);
     // min_main_white_count is handled by the input field directly, do not overwrite it here based on specific factor filters.
 
+    // Optional White Sparks (just IDs, no levels - for scoring/sorting)
+    this.filterState.optional_white_sparks = this.optionalWhiteFactorFilters
+      .filter(f => f.factorId && f.factorId > 0)
+      .map(f => f.factorId!);
+    
+    this.filterState.optional_main_white_sparks = this.optionalMainWhiteFactorFilters
+      .filter(f => f.factorId && f.factorId > 0)
+      .map(f => f.factorId!);
+
     // Update active filter chips
     this.updateActiveFilterChips();
 
@@ -730,6 +802,40 @@ export class AdvancedFilterComponent implements OnInit {
     
     // Main Parent White Factors
     addFactorChips(this.mainWhiteFactorFilters, this.whiteFactors, 'mainWhite', 'Main: ', 3);
+
+    // Optional White Factors (no level, just for scoring)
+    this.optionalWhiteFactorFilters.forEach((f, index) => {
+      if (f.factorId && f.factorId > 0) {
+        const factorName = this.whiteFactors.find(factor => factor.id === f.factorId)?.text || 'Unknown';
+        this.activeFilterChips.push({
+          id: `optionalWhite-${index}`,
+          label: `Optional: ${factorName}`,
+          name: 'Optional',
+          value: factorName,
+          showStar: false,
+          type: 'optionalWhite',
+          filterIndex: index,
+          filterList: this.optionalWhiteFactorFilters
+        });
+      }
+    });
+
+    // Optional Main White Factors (no level, just for scoring)
+    this.optionalMainWhiteFactorFilters.forEach((f, index) => {
+      if (f.factorId && f.factorId > 0) {
+        const factorName = this.whiteFactors.find(factor => factor.id === f.factorId)?.text || 'Unknown';
+        this.activeFilterChips.push({
+          id: `optionalMainWhite-${index}`,
+          label: `Main Optional: ${factorName}`,
+          name: 'Main Optional',
+          value: factorName,
+          showStar: false,
+          type: 'optionalMainWhite',
+          filterIndex: index,
+          filterList: this.optionalMainWhiteFactorFilters
+        });
+      }
+    });
 
     // Tree Characters
     if (this.treeData.characterId) {
@@ -901,6 +1007,16 @@ export class AdvancedFilterComponent implements OnInit {
           this.removeFactorFilter(this.mainWhiteFactorFilters, chip.filterIndex, 'mainWhite');
         }
         break;
+      case 'optionalWhite':
+        if (chip.filterIndex !== undefined) {
+          this.removeFactorFilter(this.optionalWhiteFactorFilters, chip.filterIndex, 'optionalWhite');
+        }
+        break;
+      case 'optionalMainWhite':
+        if (chip.filterIndex !== undefined) {
+          this.removeFactorFilter(this.optionalMainWhiteFactorFilters, chip.filterIndex, 'optionalMainWhite');
+        }
+        break;
       case 'character':
         // Clear the appropriate tree node
         if (chip.id === 'tree-target') {
@@ -952,6 +1068,9 @@ export class AdvancedFilterComponent implements OnInit {
       case 'white':
       case 'mainWhite':
         return 'chip-white';
+      case 'optionalWhite':
+      case 'optionalMainWhite':
+        return 'chip-optional-white';
       case 'character':
         return 'chip-character';
       case 'supportCard':

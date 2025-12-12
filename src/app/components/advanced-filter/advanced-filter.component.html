@@ -287,7 +287,7 @@
 
           <!-- White Factors -->
           <div class="factor-section">
-            <div class="section-label">White Factors (Skills/Races)</div>
+            <div class="section-label">White Factors - Required (Skills/Races)</div>
             <div class="factor-list">
               <div class="factor-row-item" *ngFor="let filter of whiteFactorFilters; let i = index">
                 <div class="row-top">
@@ -297,7 +297,6 @@
                            (ngModelChange)="filterFactors($event, 'white', i)"
                            placeholder="Search White Factor">
                     <mat-autocomplete #autoWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
-                      <mat-option [value]="0">Any</mat-option>
                       <mat-option *ngFor="let f of filteredWhiteFactorOptions[i]" [value]="f.id">
                         {{f.text}}
                       </mat-option>
@@ -318,8 +317,36 @@
                   </div>
                 </div>
               </div>
-              <button mat-button class="add-btn" (click)="addFactorFilter(whiteFactorFilters, 0, 'white')">
+              <button mat-button class="add-btn" (click)="addFactorFilter(whiteFactorFilters, null, 'white')">
                 <mat-icon>add</mat-icon> Add White Factor
+              </button>
+            </div>
+          </div>
+
+          <!-- Optional White Factors (for scoring/sorting) -->
+          <div class="factor-section">
+            <div class="section-label">Preferred White Factors (Sorts by Match Count)</div>
+            <div class="factor-list">
+              <div class="factor-row-item optional-factor" *ngFor="let filter of optionalWhiteFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select full-width" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoOptionalWhite" 
+                           [ngModel]="getFactorText(filter.factorId, 'white')"
+                           (ngModelChange)="filterFactors($event, 'optionalWhite', i)"
+                           placeholder="Search White Factor">
+                    <mat-autocomplete #autoOptionalWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option *ngFor="let f of filteredOptionalWhiteFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(optionalWhiteFactorFilters, i, 'optionalWhite')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(optionalWhiteFactorFilters, null, 'optionalWhite')">
+                <mat-icon>add</mat-icon> Add Optional White Factor
               </button>
             </div>
           </div>
@@ -433,7 +460,7 @@
 
           <!-- Main White Factors -->
           <div class="factor-section">
-            <div class="section-label">White Factors (Skills/Races)</div>
+            <div class="section-label">White Factors - Required (Skills/Races)</div>
             <div class="factor-list">
               <div class="factor-row-item" *ngFor="let filter of mainWhiteFactorFilters; let i = index">
                 <div class="row-top">
@@ -443,7 +470,6 @@
                            (ngModelChange)="filterFactors($event, 'mainWhite', i)"
                            placeholder="Search White Factor (Skills/Races)">
                     <mat-autocomplete #autoMainWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
-                      <mat-option [value]="0">Any</mat-option>
                       <mat-option *ngFor="let f of filteredMainWhiteFactorOptions[i]" [value]="f.id">
                         {{f.text}}
                       </mat-option>
@@ -463,8 +489,36 @@
                   </div>
                 </div>
               </div>
-              <button mat-button class="add-btn" (click)="addFactorFilter(mainWhiteFactorFilters, 0, 'mainWhite')">
+              <button mat-button class="add-btn" (click)="addFactorFilter(mainWhiteFactorFilters, null, 'mainWhite')">
                 <mat-icon>add</mat-icon> Add White Factor (Skills/Races)
+              </button>
+            </div>
+          </div>
+
+          <!-- Optional Main White Factors (for scoring/sorting) -->
+          <div class="factor-section">
+            <div class="section-label">Preferred White Factors (Sorts by Match Count)</div>
+            <div class="factor-list">
+              <div class="factor-row-item optional-factor" *ngFor="let filter of optionalMainWhiteFactorFilters; let i = index">
+                <div class="row-top">
+                  <mat-form-field appearance="outline" class="factor-select full-width" subscriptSizing="dynamic">
+                    <input type="text" matInput [matAutocomplete]="autoOptionalMainWhite" 
+                           [ngModel]="getFactorText(filter.factorId, 'white')"
+                           (ngModelChange)="filterFactors($event, 'optionalMainWhite', i)"
+                           placeholder="Search White Factor">
+                    <mat-autocomplete #autoOptionalMainWhite="matAutocomplete" (optionSelected)="onFactorSelected($event, filter)">
+                      <mat-option *ngFor="let f of filteredOptionalMainWhiteFactorOptions[i]" [value]="f.id">
+                        {{f.text}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button mat-icon-button color="warn" class="remove-btn" (click)="removeFactorFilter(optionalMainWhiteFactorFilters, i, 'optionalMainWhite')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <button mat-button class="add-btn" (click)="addFactorFilter(optionalMainWhiteFactorFilters, null, 'optionalMainWhite')">
+                <mat-icon>add</mat-icon> Add Optional White Factor
               </button>
             </div>
           </div>

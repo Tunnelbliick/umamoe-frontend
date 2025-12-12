@@ -1001,6 +1001,23 @@
         }
     }
 
+    // Optional factors - using a muted/dashed style to indicate optional nature
+    &.optional-factor {
+        border-style: dashed;
+        border-color: rgba(180, 180, 180, 0.3);
+        background: rgba(180, 180, 180, 0.02);
+        
+        .factor-select {
+            ::ng-deep .mat-mdc-text-field-wrapper {
+                border-color: rgba(180, 180, 180, 0.3) !important;
+                background: rgba(180, 180, 180, 0.05) !important;
+            }
+            &.mat-focused ::ng-deep .mat-mdc-text-field-wrapper {
+                border-color: rgba(200, 200, 200, 0.6) !important;
+            }
+        }
+    }
+
     mat-slider {
         width: calc(100% - 20px);
         margin-left: 5px;
@@ -1482,6 +1499,17 @@
 
             &:hover {
                 background: rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        &.chip-optional-white {
+            background: rgba(158, 158, 158, 0.1);
+            color: rgba(180, 180, 180, 0.8);
+            border-color: rgba(158, 158, 158, 0.25);
+            border-style: dashed;
+
+            &:hover {
+                background: rgba(158, 158, 158, 0.18);
             }
         }
 

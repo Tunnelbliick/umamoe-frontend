@@ -1,0 +1,27 @@
+# Cloudflare Pages headers file
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Cache index.html for 12 hours
+/
+  Cache-Control: public, max-age=43200
+
+/index.html
+  Cache-Control: public, max-age=43200
+
+# Cache hashed assets for 1 year (they have unique hashes)
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache static assets for 1 week (can be purged if needed)
+/assets/*
+  Cache-Control: public, max-age=604800
+
+# Font files - cache for 1 year
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable

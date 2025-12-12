@@ -254,6 +254,15 @@ export class InheritanceService {
       params = params.set('main_parent_white_sparks', filters.mainParentWhiteSparks.join(','));
     }
 
+    // Optional White Factors (for scoring/sorting, no level required)
+    if (filters.optionalWhiteSparks && filters.optionalWhiteSparks.length > 0) {
+      params = params.set('optional_white_sparks', filters.optionalWhiteSparks.join(','));
+    }
+
+    if (filters.optionalMainWhiteSparks && filters.optionalMainWhiteSparks.length > 0) {
+      params = params.set('optional_main_white_sparks', filters.optionalMainWhiteSparks.join(','));
+    }
+
     if (filters.minMainBlueFactors !== undefined) {
       params = params.set('min_main_blue_factors', filters.minMainBlueFactors.toString());
     }

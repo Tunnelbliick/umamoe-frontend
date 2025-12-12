@@ -260,6 +260,9 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
         mainParentGreenSparks: af.main_parent_green_sparks,
         mainParentWhiteSparks: af.main_parent_white_sparks,
         
+        optionalWhiteSparks: af.optional_white_sparks,
+        optionalMainWhiteSparks: af.optional_main_white_sparks,
+        
         minMainBlueFactors: af.min_main_blue_factors,
         minMainPinkFactors: af.min_main_pink_factors,
         minMainGreenFactors: af.min_main_green_factors,
@@ -968,6 +971,11 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
        if (checkGroups(filters.green_sparks)) return true;
     } else { // White
        if (checkGroups(filters.white_sparks)) return true;
+       
+       // Check optional white sparks (match by factorId only)
+       if (filters.optional_white_sparks && filters.optional_white_sparks.includes(parseInt(spark.factorId, 10))) {
+         return true;
+       }
     }
 
     // Check main parent filters (only if spark is from main parent)
@@ -980,6 +988,11 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
          if (checkArray(filters.main_parent_green_sparks)) return true;
       } else { // White
          if (checkArray(filters.main_parent_white_sparks)) return true;
+         
+         // Check optional main white sparks (match by factorId only)
+         if (filters.optional_main_white_sparks && filters.optional_main_white_sparks.includes(parseInt(spark.factorId, 10))) {
+           return true;
+         }
       }
     }
 
