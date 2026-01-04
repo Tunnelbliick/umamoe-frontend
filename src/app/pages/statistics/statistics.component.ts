@@ -13,6 +13,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subject, takeUntil, BehaviorSubject, forkJoin, of, combineLatest, take } from 'rxjs';
@@ -44,6 +46,8 @@ import { CharacterService } from '../../services/character.service';
     MatGridListModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    MatChipsModule,
+    MatCheckboxModule,
     ReactiveFormsModule,
     StatisticsChartComponent,
     ClassFilterComponent
@@ -91,6 +95,22 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     '5': true,
     '6': true
   };
+  
+  scenarioFilters: { [key: string]: boolean } = {
+    '1': true, // URA
+    '2': true, // Aoharu
+    '3': true, // Climax
+    '4': true, // Grand Masters
+    '5': true  // UAF
+  };
+  
+  scenarioNames: { [key: string]: string } = {
+    '1': 'URA',
+    '2': 'Aoharu',
+    '3': 'Climax',
+    '4': 'Grand Masters',
+    '5': 'UAF'
+  };
 
   // Available distances
   availableDistances = ['sprint', 'mile', 'medium', 'long', 'dirt'];
@@ -122,10 +142,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   private headerStickyActive = false;
   private classFilterOriginalTop = 0;
   private classFilterStickyActive = false;
-  private distanceSelectorOriginalTop = 0;
-  private distanceSelectorStickyActive = false;
-  private characterDistanceSelectorOriginalTop = 0;
-  private characterDistanceSelectorStickyActive = false;
+  // Sticky logic for distance selectors removed
   private scrollThrottleTimer: any = null;
 
   // Standard chart configurations for consistency
@@ -249,22 +266,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.headerStickyActive) {
       this.updateCharacterHeaderPosition();
     }
-    if (this.distanceSelectorStickyActive) {
-      this.updateDistanceSelectorPosition();
-    }
-    if (this.characterDistanceSelectorStickyActive) {
-      this.updateCharacterDistanceSelectorPosition();
-    }
   }
 
   private updateClassFilterPosition() {
-    const classFilter = document.querySelector('app-class-filter') as HTMLElement;
+    const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
     const sidebar = document.querySelector('.sidebar') as HTMLElement;
 
-    if (classFilter && sidebar && this.classFilterStickyActive) {
+    if (sidebarContent && sidebar && this.classFilterStickyActive) {
       const sidebarRect = sidebar.getBoundingClientRect();
-      classFilter.style.left = `${sidebarRect.left}px`;
-      classFilter.style.width = `${sidebarRect.width}px`;
+      sidebarContent.style.left = `${sidebarRect.left}px`;
+      sidebarContent.style.width = `${sidebarRect.width}px`;
     }
   }
 
@@ -281,68 +292,54 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
-    // Throttle scroll events for better performance
+    // Use requestAnimationFrame for smoother updates
     if (this.scrollThrottleTimer) {
       return;
     }
 
-    this.scrollThrottleTimer = setTimeout(() => {
+    this.scrollThrottleTimer = requestAnimationFrame(() => {
       const currentScrollY = window.scrollY;
 
       this.handleClassFilterSticky(currentScrollY);
       this.handleCharacterHeaderSticky(currentScrollY);
-      this.handleDistanceSelectorSticky(currentScrollY);
-      this.handleCharacterDistanceSelectorSticky(currentScrollY);
-      // Removed updateDistanceSelectorVisibility to prevent performance issues
 
       this.lastScrollY = currentScrollY;
       this.scrollThrottleTimer = null;
-    }, 16); // ~60fps
+    });
   }
 
   private handleClassFilterSticky(currentScrollY: number) {
     // Don't make class filter sticky on mobile when sidebar is hidden
     if (this.isMobile) return;
 
-    const classFilter = document.querySelector('app-class-filter') as HTMLElement;
+    const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
     const sidebar = document.querySelector('.sidebar') as HTMLElement;
 
-    if (!classFilter || !sidebar) return;
+    if (!sidebarContent || !sidebar) return;
 
-    // Get class filter's original position if not set
-    if (this.classFilterOriginalTop === 0) {
-      const rect = classFilter.getBoundingClientRect();
-      this.classFilterOriginalTop = rect.top + currentScrollY;
-    }
-
-    // Add a small buffer to prevent flickering when scrolling around the threshold
-    const buffer = 10; // Small buffer to prevent instant snapping
-
-    // Class filter becomes sticky when past original position + buffer
-    // and unsticks when scrolling back above original position - buffer
-    let shouldBeSticky: boolean;
-
-    if (this.classFilterStickyActive) {
-      // If already sticky, only unstick when we scroll well above the original position
-      shouldBeSticky = currentScrollY > (this.classFilterOriginalTop - buffer);
-    } else {
-      // If not sticky, become sticky when we scroll past the original position plus buffer
-      shouldBeSticky = currentScrollY > (this.classFilterOriginalTop + buffer);
-    }
+    // Get sidebar's position relative to viewport
+    const sidebarRect = sidebar.getBoundingClientRect();
+    
+    // Make sticky when sidebar top goes above the sticky threshold (80px from top)
+    const stickyThreshold = 80;
+    const shouldBeSticky = sidebarRect.top < stickyThreshold;
 
     if (shouldBeSticky !== this.classFilterStickyActive) {
       this.classFilterStickyActive = shouldBeSticky;
+      
       if (shouldBeSticky) {
-        // Calculate the sidebar's current position to match it exactly
-        const sidebarRect = sidebar.getBoundingClientRect();
-        classFilter.classList.add('sticky-mode');
-        classFilter.style.left = `${sidebarRect.left}px`;
-        classFilter.style.width = `${sidebarRect.width}px`;
+        sidebarContent.classList.add('sticky-mode');
+        sidebarContent.style.left = `${sidebarRect.left}px`;
+        sidebarContent.style.width = `${sidebarRect.width}px`;
       } else {
-        classFilter.classList.remove('sticky-mode');
-        classFilter.style.left = '';
-        classFilter.style.width = '';
+        sidebarContent.classList.remove('sticky-mode');
+        sidebarContent.style.left = '';
+        sidebarContent.style.width = '';
       }
+    } else if (shouldBeSticky) {
+      // Update position while sticky (in case of horizontal scroll or resize)
+      sidebarContent.style.left = `${sidebarRect.left}px`;
+      sidebarContent.style.width = `${sidebarRect.width}px`;
     }
   }
 
@@ -389,124 +386,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private updateDistanceSelectorPosition() {
-    const distanceSelector = document.querySelector('.distance-selector-container') as HTMLElement;
-    const contentArea = document.querySelector('.content-area') as HTMLElement;
+  // Distance selector sticky methods removed
 
-    if (distanceSelector && contentArea && this.distanceSelectorStickyActive) {
-      const contentAreaRect = contentArea.getBoundingClientRect();
-      distanceSelector.style.left = `${contentAreaRect.left}px`;
-      distanceSelector.style.width = `${contentAreaRect.width}px`;
-    }
-  }
-
-  private updateCharacterDistanceSelectorPosition() {
-    const characterDistanceSelector = document.querySelector('.character-section .distance-selector-container') as HTMLElement;
-    const contentArea = document.querySelector('.content-area') as HTMLElement;
-
-    if (characterDistanceSelector && contentArea && this.characterDistanceSelectorStickyActive) {
-      const contentAreaRect = contentArea.getBoundingClientRect();
-      characterDistanceSelector.style.left = `${contentAreaRect.left}px`;
-      characterDistanceSelector.style.width = `${contentAreaRect.width}px`;
-    }
-  }
-
-  private handleDistanceSelectorSticky(currentScrollY: number) {
-    const distanceSelector = document.querySelector('.distance-selector-container') as HTMLElement;
-    const characterSection = document.querySelector('.character-section') as HTMLElement;
-
-    if (!distanceSelector) return;
-
-    // Initialize originalTop once when first found
-    if (this.distanceSelectorOriginalTop === 0) {
-      const rect = distanceSelector.getBoundingClientRect();
-      this.distanceSelectorOriginalTop = rect.top + currentScrollY;
-    }
-
-    // Stop being sticky when we reach the character section
-    let maxStickyPosition = Infinity;
-    if (characterSection) {
-      const characterRect = characterSection.getBoundingClientRect();
-      maxStickyPosition = characterRect.top + currentScrollY;
-    }
-
-    const buffer = 10;
-    let shouldBeSticky;
-
-    // Use hysteresis to prevent flickering
-    if (this.distanceSelectorStickyActive) {
-      // Currently sticky, check if we should stop being sticky
-      shouldBeSticky = currentScrollY > (this.distanceSelectorOriginalTop - buffer) &&
-        currentScrollY < (maxStickyPosition - buffer);
-    } else {
-      // Not sticky, check if we should become sticky
-      shouldBeSticky = currentScrollY > (this.distanceSelectorOriginalTop + buffer) &&
-        currentScrollY < (maxStickyPosition + buffer);
-    }
-
-    if (shouldBeSticky !== this.distanceSelectorStickyActive) {
-      this.distanceSelectorStickyActive = shouldBeSticky;
-      if (shouldBeSticky) {
-        const contentArea = document.querySelector('.content-area') as HTMLElement;
-        const contentAreaRect = contentArea.getBoundingClientRect();
-        distanceSelector.classList.add('sticky-mode');
-        distanceSelector.style.left = `${contentAreaRect.left}px`;
-        distanceSelector.style.width = `${contentAreaRect.width}px`;
-      } else {
-        distanceSelector.classList.remove('sticky-mode');
-        distanceSelector.style.left = '';
-        distanceSelector.style.width = '';
-      }
-    }
-  }
-
-  private handleCharacterDistanceSelectorSticky(currentScrollY: number) {
-    const characterSection = document.querySelector('.character-section') as HTMLElement;
-    const characterDistanceSelector = document.querySelector('.character-section .distance-selector-container') as HTMLElement;
-
-    if (!characterSection || !characterDistanceSelector) return;
-
-    // Initialize originalTop once when first found
-    if (this.characterDistanceSelectorOriginalTop === 0) {
-      const rect = characterDistanceSelector.getBoundingClientRect();
-      this.characterDistanceSelectorOriginalTop = rect.top + currentScrollY;
-    }
-
-    // Only be sticky within the character section bounds
-    const characterRect = characterSection.getBoundingClientRect();
-    const characterBottom = characterRect.bottom + currentScrollY;
-    const characterTop = characterRect.top + currentScrollY;
-
-    const buffer = 10;
-    let shouldBeSticky;
-
-    // Check if we're within the character section bounds
-    const withinBounds = currentScrollY >= characterTop && currentScrollY <= characterBottom - 200; // 200px buffer from bottom
-
-    // Use hysteresis to prevent flickering
-    if (this.characterDistanceSelectorStickyActive) {
-      // Currently sticky, check if we should stop being sticky
-      shouldBeSticky = currentScrollY > (this.characterDistanceSelectorOriginalTop - buffer) && withinBounds;
-    } else {
-      // Not sticky, check if we should become sticky
-      shouldBeSticky = currentScrollY > (this.characterDistanceSelectorOriginalTop + buffer) && withinBounds;
-    }
-
-    if (shouldBeSticky !== this.characterDistanceSelectorStickyActive) {
-      this.characterDistanceSelectorStickyActive = shouldBeSticky;
-      if (shouldBeSticky) {
-        const contentArea = document.querySelector('.content-area') as HTMLElement;
-        const contentAreaRect = contentArea.getBoundingClientRect();
-        characterDistanceSelector.classList.add('sticky-mode');
-        characterDistanceSelector.style.left = `${contentAreaRect.left}px`;
-        characterDistanceSelector.style.width = `${contentAreaRect.width}px`;
-      } else {
-        characterDistanceSelector.classList.remove('sticky-mode');
-        characterDistanceSelector.style.left = '';
-        characterDistanceSelector.style.width = '';
-      }
-    }
-  }
 
   // Distance selector visibility method removed to prevent performance issues
   // Distance selector is now shown by default in relevant sections
@@ -628,6 +509,40 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     return window.innerWidth;
   }
 
+  private initializeScenarioFilters() {
+    if (this.globalStats?.scenario_distribution) {
+      const availableScenarios = Object.keys(this.globalStats.scenario_distribution).sort();
+      
+      // Reset filters and names
+      this.scenarioFilters = {};
+      this.scenarioNames = {};
+      
+      // Default scenario names mapping
+      const defaultNames: {[key: string]: string} = {
+        '1': 'URA',
+        '2': 'Aoharu',
+        '3': 'Climax',
+        '4': 'Grand Masters',
+        '5': 'UAF',
+        '6': 'Great Food',
+        '7': 'Mecha'
+      };
+
+      availableScenarios.forEach(id => {
+        // Skip total_entries or any non-numeric ID that shouldn't be a filter
+        if (id === 'total_entries' || id === 'total' || id === 'unknown') {
+          return;
+        }
+
+        // Enable all by default
+        this.scenarioFilters[id] = true;
+        
+        // Set name
+        this.scenarioNames[id] = defaultNames[id] || `Scenario ${id}`;
+      });
+    }
+  }
+
   private loadGlobalStats() {
     this.globalLoading = true;
 
@@ -638,6 +553,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.globalStats = globalData;
           this.rawData = globalData;
 
+          // Initialize scenario filters based on available data
+          this.initializeScenarioFilters();
+
           // Update all chart data once
           this.updateAllChartData();
 
@@ -645,7 +563,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.setupReactiveUpdates();
 
           // Load distance and character stats
-          this.loadDistanceStats();
+          // this.loadDistanceStats(); // Handled by setupReactiveUpdates
           this.loadCharacterStats();
 
           this.globalLoading = false;
@@ -843,6 +761,58 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const filterTime = performance.now() - startTime;
+  }
+
+  // Scenario filter methods
+  onScenarioFilterChanged(scenarioId: string): void {
+    this.scenarioFilters[scenarioId] = !this.scenarioFilters[scenarioId];
+    
+    // Clear cache that depends on scenario filters
+    this.invalidateCache('scenarioFilters');
+    
+    // Update all charts with new scenario filter
+    requestAnimationFrame(() => {
+      this.updateAllChartData();
+
+      // Also update distance-specific charts if a distance is selected
+      const currentDistance = this.selectedDistance.value;
+      if (currentDistance && this.distanceStats[currentDistance]) {
+        this.updateDistanceChartData(currentDistance);
+      }
+
+      // Update character charts if a character is selected
+      if (this.selectedCharacterDetail) {
+        this.debouncedCharacterUpdate(this.selectedCharacterDetail);
+        this.updateAllCharacterCharts();
+      }
+    });
+  }
+  
+  toggleAllScenarios(): void {
+    const allEnabled = Object.values(this.scenarioFilters).every(v => v);
+    const newValue = !allEnabled;
+    
+    Object.keys(this.scenarioFilters).forEach(key => {
+      this.scenarioFilters[key] = newValue;
+    });
+    
+    this.onScenarioFilterChanged(''); // Trigger update
+  }
+
+  areAllScenariosSelected(): boolean {
+    return Object.values(this.scenarioFilters).length > 0 && Object.values(this.scenarioFilters).every(v => v);
+  }
+
+  isScenarioIndeterminate(): boolean {
+    const values = Object.values(this.scenarioFilters);
+    if (values.length === 0) return false;
+    const someSelected = values.some(v => v);
+    const allSelected = values.every(v => v);
+    return someSelected && !allSelected;
+  }
+  
+  getActiveScenarios(): string[] {
+    return Object.keys(this.scenarioFilters).filter(key => this.scenarioFilters[key]);
   }
 
   // Distance event handler from class-filter component
@@ -1101,11 +1071,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (distanceInfo.by_team_class) {
         // Sum counts from all active team classes for this distance
         activeClasses.forEach(classId => {
-          const classData = distanceInfo.by_team_class[classId];
-          if (classData) {
+          const dataList = this.getMetricData('', classId, distanceInfo);
+          dataList.forEach(classData => {
             const count = classData.total || classData.count || classData.total_trained_umas || 0;
             totalCount += count;
-          }
+          });
         });
       } else {
         // Fallback to direct count if no by_team_class structure
@@ -1165,11 +1135,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (distanceInfo.by_team_class) {
         activeClasses.forEach(classId => {
-          const classData = distanceInfo.by_team_class[classId];
-          if (classData) {
+          const dataList = this.getMetricData('', classId, distanceInfo);
+          dataList.forEach(classData => {
             const count = classData.total || classData.count || classData.total_trained_umas || 0;
             totalCount += count;
-          }
+          });
         });
       } else {
         // Fallback to direct count if no by_team_class structure
@@ -1227,10 +1197,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.values(characterData.by_distance).forEach((distanceData: any) => {
       if (distanceData.by_team_class) {
         activeClasses.forEach(classId => {
-          const classData = distanceData.by_team_class[classId];
-          if (classData?.common_support_cards) {
-            Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
-              let cardType = 'Other';
+          const dataList = this.getMetricData('', classId, distanceData);
+          dataList.forEach(classData => {
+            if (classData?.common_support_cards) {
+              Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
+                let cardType = 'Other';
 
               if (data.type) {
                 cardType = data.type;
@@ -1250,6 +1221,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               cardTypes.set(cardType, current + count);
             });
           }
+        });
         });
       }
     });
@@ -1349,7 +1321,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Update team class data for this character at this distance
     if (distanceData.by_team_class) {
-      this.updateCharacterDistanceClassData(distanceData.by_team_class);
+      this.updateCharacterDistanceClassData(distanceData);
     }
 
     // Update the missing observables for character distance analysis
@@ -1368,18 +1340,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       let classesProcessed = 0;
 
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        const statData = classData?.stat_averages?.[stat];
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          const statData = classData?.stat_averages?.[stat];
 
-        if (statData?.histogram) {
-          classesProcessed++;
-          Object.entries(statData.histogram).forEach(([bucket, count]: [string, any]) => {
-            const currentCount = aggregatedHistogram.get(bucket) || 0;
-            const newCount = currentCount + (typeof count === 'number' ? count : count.count || 0);
-            aggregatedHistogram.set(bucket, newCount);
-            totalCount += (typeof count === 'number' ? count : count.count || 0);
-          });
-        }
+          if (statData?.histogram) {
+            classesProcessed++;
+            Object.entries(statData.histogram).forEach(([bucket, count]: [string, any]) => {
+              const currentCount = aggregatedHistogram.get(bucket) || 0;
+              const newCount = currentCount + (typeof count === 'number' ? count : count.count || 0);
+              aggregatedHistogram.set(bucket, newCount);
+              totalCount += (typeof count === 'number' ? count : count.count || 0);
+            });
+          }
+        });
       });
 
       let chartData: ChartDataPoint[] = [];
@@ -1425,35 +1400,38 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     let totalEntries = 0;
 
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.common_support_cards) {
-        totalEntries += classData.total_entries || 0;
-        Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.total || data.count || 0;
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.common_support_cards) {
+          totalEntries += classData.total_entries || 0;
+          Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.total || data.count || 0;
 
-          // Backend now uses card IDs as keys directly
-          const cardKey = cardId.toString();
-          const existing = mergedSupportCards.get(cardKey);
+            // Backend now uses card IDs as keys directly
+            const cardKey = cardId.toString();
+            const existing = mergedSupportCards.get(cardKey);
 
-          if (existing) {
-            // Add to existing count, preserve metadata
-            mergedSupportCards.set(cardKey, {
-              ...existing,
-              count: existing.count + count
-            });
-          } else {
-            // Store the full data object including id, type, name, etc.
-            mergedSupportCards.set(cardKey, {
-              count: count,
-              id: data.id || cardId,
-              name: data.name || `Card ${cardId}`,
-              type: data.type || null,
-              avg_level: data.avg_level || 0,
-              by_level: data.by_level || {}
-            });
-          }
-        });
-      }
+            if (existing) {
+              // Add to existing count, preserve metadata
+              mergedSupportCards.set(cardKey, {
+                ...existing,
+                count: existing.count + count
+              });
+            } else {
+              // Store the full data object including id, type, name, etc.
+              mergedSupportCards.set(cardKey, {
+                count: count,
+                id: data.id || cardId,
+                name: data.name || `Card ${cardId}`,
+                type: data.type || null,
+                avg_level: data.avg_level || 0,
+                by_level: data.by_level || {}
+              });
+            }
+          });
+        }
+      });
     });
 
     if (mergedSupportCards.size === 0) {
@@ -1477,14 +1455,23 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.characterDistanceSupportCardData$.next(supportCardData);
   }
 
-  private updateCharacterDistanceClassData(classData: any): void {
+  private updateCharacterDistanceClassData(distanceData: any): void {
     const activeClasses = this.getActiveClassIds();
 
     // Create team class distribution chart data (usage counts per class) - ONLY for active classes
     const chartData = activeClasses
       .map(classId => {
-        const data = classData[classId];
-        const count = typeof data === 'number' ? data : (data?.total_trained_umas || 0);
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        let count = 0;
+        dataList.forEach(data => {
+          if (typeof data === 'number') {
+            count += data;
+          } else if (data) {
+            count += (data.total_trained_umas || data.count || data.total_entries || 0);
+          }
+        });
+
         return {
           label: `Class ${classId}`,
           value: count,
@@ -1525,50 +1512,61 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // OPTION 1: Each STAT as a series (same as global) - this is what the image shows
       const statsByClassData = stats.map(stat => {
         const data = activeClasses.map(classId => {
-          const classData = distanceData.by_team_class[classId];
+          const dataList = this.getMetricData('', classId, distanceData);
+          
+          let weightedSum = 0;
+          let totalCount = 0;
+          
+          dataList.forEach(classData => {
+            // Try multiple possible locations for stat data
+            let statValue = 0;
 
-          // Try multiple possible locations for stat data
-          let statValue = 0;
-
-          // Check if stat_averages exists and has our stat
-          if (classData?.stat_averages?.[stat.key]) {
-            const statData = classData.stat_averages[stat.key];
-            statValue = Math.round(statData.average || statData.mean || statData.value || 0);
-          }
-          // Check if there's a direct stat field
-          else if (classData?.[stat.key + '_average'] !== undefined) {
-            statValue = Math.round(classData[stat.key + '_average']);
-          }
-          // Check if there's stat data in a stats object
-          else if (classData?.stats?.[stat.key]) {
-            const statData = classData.stats[stat.key];
-            statValue = Math.round(statData.average || statData.mean || statData.value || statData || 0);
-          }
-          // Check if there's average stats
-          else if (classData?.average_stats?.[stat.key]) {
-            statValue = Math.round(classData.average_stats[stat.key]);
-          }
-          // If no specific stat data, try to compute from histogram if available
-          else if (classData?.stat_histograms?.[stat.key] || classData?.histograms?.[stat.key]) {
-            const histogram = classData.stat_histograms?.[stat.key] || classData.histograms?.[stat.key];
-            if (histogram) {
-              let totalValue = 0;
-              let totalCount = 0;
-              Object.entries(histogram).forEach(([bucket, count]: [string, any]) => {
-                const bucketValue = parseInt(bucket.split('-')[0]);
-                const bucketCount = typeof count === 'number' ? count : count.count || 0;
-                totalValue += bucketValue * bucketCount;
-                totalCount += bucketCount;
-              });
-              statValue = totalCount > 0 ? Math.round(totalValue / totalCount) : 0;
+            // Check if stat_averages exists and has our stat
+            if (classData?.stat_averages?.[stat.key]) {
+              const statData = classData.stat_averages[stat.key];
+              statValue = Math.round(statData.average || statData.mean || statData.value || 0);
             }
-          }
-          else {
-          }
+            // Check if there's a direct stat field
+            else if (classData?.[stat.key + '_average'] !== undefined) {
+              statValue = Math.round(classData[stat.key + '_average']);
+            }
+            // Check if there's stat data in a stats object
+            else if (classData?.stats?.[stat.key]) {
+              const statData = classData.stats[stat.key];
+              statValue = Math.round(statData.average || statData.mean || statData.value || statData || 0);
+            }
+            // Check if there's average stats
+            else if (classData?.average_stats?.[stat.key]) {
+              statValue = Math.round(classData.average_stats[stat.key]);
+            }
+            // If no specific stat data, try to compute from histogram if available
+            else if (classData?.stat_histograms?.[stat.key] || classData?.histograms?.[stat.key]) {
+              const histogram = classData.stat_histograms?.[stat.key] || classData.histograms?.[stat.key];
+              if (histogram) {
+                let totalValue = 0;
+                let histCount = 0;
+                Object.entries(histogram).forEach(([bucket, count]: [string, any]) => {
+                  const bucketValue = parseInt(bucket.split('-')[0]);
+                  const bucketCount = typeof count === 'number' ? count : count.count || 0;
+                  totalValue += bucketValue * bucketCount;
+                  histCount += bucketCount;
+                });
+                statValue = histCount > 0 ? Math.round(totalValue / histCount) : 0;
+              }
+            }
+            
+            if (statValue > 0) {
+              const count = classData?.total_entries || classData?.count || 1;
+              weightedSum += statValue * count;
+              totalCount += count;
+            }
+          });
+          
+          const finalStatValue = totalCount > 0 ? Math.round(weightedSum / totalCount) : 0;
 
           return {
             x: `Class ${classId}`,
-            y: statValue
+            y: finalStatValue
           };
         });
 
@@ -1590,14 +1588,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge uma distribution data from all active team classes
     const mergedUmaDistribution = new Map<string, number>();
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.uma_distribution) {
-        Object.entries(classData.uma_distribution).forEach(([name, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.count || data.total || 0;
-          const current = mergedUmaDistribution.get(name) || 0;
-          mergedUmaDistribution.set(name, current + count);
-        });
-      }
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.uma_distribution) {
+          Object.entries(classData.uma_distribution).forEach(([name, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.count || data.total || 0;
+            const current = mergedUmaDistribution.get(name) || 0;
+            mergedUmaDistribution.set(name, current + count);
+          });
+        }
+      });
     });
 
     if (mergedUmaDistribution.size > 0) {
@@ -1617,44 +1618,49 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge support cards data from all active team classes - BY ID
     const mergedSupportCards = new Map<string, any>();
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.common_support_cards) {
-        Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.total || data.count || 0;
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.common_support_cards) {
+          Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.total || data.count || 0;
 
-          // Backend now uses card IDs as keys directly
-          const cardKey = cardId.toString();
-          const existing = mergedSupportCards.get(cardKey);
+            // Backend now uses card IDs as keys directly
+            const cardKey = cardId.toString();
+            const existing = mergedSupportCards.get(cardKey);
 
-          if (existing) {
-            // Add to existing count, preserve metadata
-            mergedSupportCards.set(cardKey, {
-              ...existing,
-              count: existing.count + count
-            });
-          } else {
-            // Store the full data object including id, type, name, etc.
-            mergedSupportCards.set(cardKey, {
-              count: count,
-              id: data.id || cardId,
-              name: data.name || `Card ${cardId}`,
-              type: data.type || null,
-              avg_level: data.avg_level || 0,
-              by_level: data.by_level || {}
-            });
-          }
-        });
-      }
+            if (existing) {
+              // Add to existing count, preserve metadata
+              mergedSupportCards.set(cardKey, {
+                ...existing,
+                count: existing.count + count
+              });
+            } else {
+              // Store the full data object including id, type, name, etc.
+              mergedSupportCards.set(cardKey, {
+                count: count,
+                id: data.id || cardId,
+                name: data.name || `Card ${cardId}`,
+                type: data.type || null,
+                avg_level: data.avg_level || 0,
+                by_level: data.by_level || {}
+              });
+            }
+          });
+        }
+      });
     });
 
     if (mergedSupportCards.size > 0) {
       // Calculate total trained Uma Musume for this character/distance combination
       let totalTrainedUmas = 0;
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        if (classData) {
-          totalTrainedUmas += classData.uma_count || classData.total_entries || classData.count || 0;
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData) {
+            totalTrainedUmas += classData.uma_count || classData.total_entries || classData.count || 0;
+          }
+        });
       });
 
       const topSupportCards = Array.from(mergedSupportCards.entries())
@@ -1689,42 +1695,47 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge skills data from all active team classes
     const mergedSkills = new Map<string, any>();
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.common_skills) {
-        Object.entries(classData.common_skills).forEach(([skillId, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.total || data.count || 0;
-          const skillKey = skillId.toString();
-          const existing = mergedSkills.get(skillKey);
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.common_skills) {
+          Object.entries(classData.common_skills).forEach(([skillId, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.total || data.count || 0;
+            const skillKey = skillId.toString();
+            const existing = mergedSkills.get(skillKey);
 
-          if (existing) {
-            // Add to existing count, preserve metadata
-            mergedSkills.set(skillKey, {
-              ...existing,
-              count: existing.count + count
-            });
-          } else {
-            // Store the full data object including id, icon, etc.
-            mergedSkills.set(skillKey, {
-              count: count,
-              id: data.id || skillId,
-              name: data.name || `Skill ${skillId}`,
-              icon: data.icon || null,
-              avg_level: data.avg_level || 0,
-              by_level: data.by_level || {}
-            });
-          }
-        });
-      }
+            if (existing) {
+              // Add to existing count, preserve metadata
+              mergedSkills.set(skillKey, {
+                ...existing,
+                count: existing.count + count
+              });
+            } else {
+              // Store the full data object including id, icon, etc.
+              mergedSkills.set(skillKey, {
+                count: count,
+                id: data.id || skillId,
+                name: data.name || `Skill ${skillId}`,
+                icon: data.icon || null,
+                avg_level: data.avg_level || 0,
+                by_level: data.by_level || {}
+              });
+            }
+          });
+        }
+      });
     });
 
     if (mergedSkills.size > 0) {
       // Calculate total trained Uma Musume for this character/distance combination
       let totalTrainedUmas = 0;
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        if (classData) {
-          totalTrainedUmas += classData.uma_count || classData.total_entries || classData.count || 0;
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData) {
+            totalTrainedUmas += classData.uma_count || classData.total_entries || classData.count || 0;
+          }
+        });
       });
 
       const skillsWithImages = Array.from(mergedSkills.entries())
@@ -1762,11 +1773,14 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       let totalValue = 0;
       let classCount = 0;
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        if (classData?.stat_averages?.[stat.key]?.mean !== undefined) {
-          totalValue += classData.stat_averages[stat.key].mean;
-          classCount++;
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.stat_averages?.[stat.key]?.mean !== undefined) {
+            totalValue += classData.stat_averages[stat.key].mean;
+            classCount++;
+          }
+        });
       });
 
       return {
@@ -1780,14 +1794,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge card type distribution from all active team classes
     const mergedCardTypes = new Map<string, number>();
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.support_card_type_distribution) {
-        Object.entries(classData.support_card_type_distribution).forEach(([type, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.total_usage || data.count || 0;
-          const current = mergedCardTypes.get(type) || 0;
-          mergedCardTypes.set(type, current + count);
-        });
-      }
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.support_card_type_distribution) {
+          Object.entries(classData.support_card_type_distribution).forEach(([type, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.total_usage || data.count || 0;
+            const current = mergedCardTypes.get(type) || 0;
+            mergedCardTypes.set(type, current + count);
+          });
+        }
+      });
     });
 
     if (mergedCardTypes.size > 0) {
@@ -1803,21 +1820,24 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge deck compositions from all active team classes
     const mergedDeckCompositions = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
     activeClasses.forEach(classId => {
-      const classData = distanceData.by_team_class?.[classId];
-      if (classData?.support_card_combinations) {
-        Object.entries(classData.support_card_combinations).forEach(([compositionKey, data]: [string, any]) => {
-          const count = typeof data === 'number' ? data : data.count || 0;
-          const existing = mergedDeckCompositions.get(compositionKey) || { count: 0 };
-          existing.count += count;
+      const dataList = this.getMetricData('', classId, distanceData);
+      
+      dataList.forEach(classData => {
+        if (classData?.support_card_combinations) {
+          Object.entries(classData.support_card_combinations).forEach(([compositionKey, data]: [string, any]) => {
+            const count = typeof data === 'number' ? data : data.count || 0;
+            const existing = mergedDeckCompositions.get(compositionKey) || { count: 0 };
+            existing.count += count;
 
-          // Store composition data if available
-          if (data.composition) {
-            existing.composition = data.composition;
-          }
+            // Store composition data if available
+            if (data.composition) {
+              existing.composition = data.composition;
+            }
 
-          mergedDeckCompositions.set(compositionKey, existing);
-        });
-      }
+            mergedDeckCompositions.set(compositionKey, existing);
+          });
+        }
+      });
     });
 
     if (mergedDeckCompositions.size > 0) {
@@ -1858,7 +1878,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     return data;
   }
 
-  private invalidateCache(type: 'globalStats' | 'classFilters' | 'selectedDistance' | 'selectedCharacter' | 'all') {
+  private invalidateCache(type: 'globalStats' | 'classFilters' | 'scenarioFilters' | 'selectedDistance' | 'selectedCharacter' | 'all') {
     if (type === 'all') {
       this.chartDataCache.clear();
       return;
@@ -1871,6 +1891,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           return key.includes('global') || key.includes('team') || key.includes('support') || key.includes('skill');
         case 'classFilters':
           return key.includes('class') || key.includes('stat') || key.includes('distribution');
+        case 'scenarioFilters':
+          return key.includes('scenario') || key.includes('stat') || key.includes('distribution');
         case 'selectedDistance':
           return key.includes('distance');
         case 'selectedCharacter':
@@ -1897,16 +1919,44 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           selectedClasses: this.classFilters,
           classStats: this.globalStats?.team_class_distribution || {},
           selectedDistance: currentDistance,
-          distances: this.distances
+          distances: this.distances,
+          scenarioFilters: this.scenarioFilters,
+          scenarioNames: this.scenarioNames,
+          scenarioStats: this.globalStats?.scenario_distribution || {}
         },
         panelClass: 'team-class-bottom-sheet-panel'
       });
 
       bottomSheetRef.afterDismissed().subscribe((result) => {
         if (result) {
+          let changed = false;
           if (result.classFilters) {
-            this.onClassFiltersChanged(result.classFilters);
+            this.classFilters = result.classFilters;
+            this.invalidateCache('classFilters');
+            changed = true;
           }
+          if (result.scenarioFilters) {
+            this.scenarioFilters = result.scenarioFilters;
+            this.invalidateCache('scenarioFilters');
+            changed = true;
+          }
+          
+          if (changed) {
+            this.updateAllChartData();
+            
+            // Also update distance-specific charts if a distance is selected
+            const currentDistance = this.selectedDistance.value;
+            if (currentDistance && this.distanceStats[currentDistance]) {
+              this.updateDistanceChartData(currentDistance);
+            }
+
+            // Update character charts if a character is selected
+            if (this.selectedCharacterDetail) {
+              this.debouncedCharacterUpdate(this.selectedCharacterDetail);
+              this.updateAllCharacterCharts();
+            }
+          }
+
           if (result.distance) {
             this.onDistanceSelect(result.distance);
           }
@@ -1916,6 +1966,40 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Chart data methods
+  // Helper to handle new data format (overall/by_scenario) vs old format
+  private getMetricData(metric: string, classId: string, sourceData: any = null): any[] {
+    let classData;
+    
+    if (sourceData) {
+      // For character stats or other sources
+      classData = sourceData.by_team_class?.[classId];
+    } else {
+      // For global stats
+      classData = this.globalStats?.[metric]?.by_team_class?.[classId];
+    }
+
+    if (!classData) return [];
+
+    // Check if it's the new format (has 'overall' key)
+    if (classData.overall) {
+      const activeScenarios = this.getActiveScenarioIds();
+      const allScenarioCount = Object.keys(this.scenarioFilters).length;
+      
+      // If all scenarios are active OR by_scenario is missing (removed in backend), use overall
+      if (activeScenarios.length === allScenarioCount || !classData.by_scenario) {
+        return [classData.overall];
+      }
+      
+      // Otherwise, return data for active scenarios
+      return activeScenarios
+        .map(id => classData.by_scenario?.[id])
+        .filter(d => d);
+    }
+    
+    // Old format - return the classData itself as the only item
+    return [classData];
+  }
+
   private computeTeamClassChartData(): ChartDataPoint[] {
     if (!this.globalStats?.team_class_distribution) {
       return [];
@@ -1923,6 +2007,34 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Use ALL active classes (merge all)
     const activeClasses = this.getActiveClassIds();
+    const activeScenarios = this.getActiveScenarioIds();
+    const allScenarioCount = Object.keys(this.scenarioFilters).length;
+    const isAllScenariosActive = activeScenarios.length === allScenarioCount;
+
+    // If filtering by scenario, we need to aggregate data from active scenarios
+    if (!isAllScenariosActive && this.globalStats.team_class_distribution.by_scenario) {
+      const aggregatedData = new Map<string, number>();
+      
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats!.team_class_distribution.by_scenario[scenarioId];
+        if (scenarioData) {
+          activeClasses.forEach(classId => {
+            const classData = scenarioData[classId];
+            if (classData) {
+              // Sum counts (trainers)
+              const val = classData.count || 0;
+              aggregatedData.set(classId, (aggregatedData.get(classId) || 0) + val);
+            }
+          });
+        }
+      });
+      
+      return activeClasses.map(classId => ({
+        label: `Class ${classId}`,
+        value: aggregatedData.get(classId) || 0,
+        color: this.colorsService.getClassColor(classId)
+      })).filter(item => item.value > 0);
+    }
 
     const result = activeClasses
       .map((classId: string) => {
@@ -1950,23 +2062,52 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   private computeSupportCardCombinationsData(): ChartDataPoint[] {
     if (!this.globalStats?.support_card_combinations?.by_team_class) return [];
 
-    const combinations = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
-    // Use ALL active classes (merge all)
     const activeClasses = this.getActiveClassIds();
+    const allClassCount = Object.keys(this.classFilters).length;
+    const isAllClassesActive = activeClasses.length === allClassCount;
+    
+    const activeScenarios = this.getActiveScenarioIds();
+    const allScenarioCount = Object.keys(this.scenarioFilters).length;
+    const isAllScenariosActive = activeScenarios.length === allScenarioCount;
 
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats!.support_card_combinations.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([combination, count]: [string, any]) => {
-          const current = combinations.get(combination) || { count: 0 };
-          current.count += typeof count === 'number' ? count : (count.count || 0);
-          if (count.composition) {
-            current.composition = count.composition;
+    const combinations = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
+
+    // Determine if we should use scenario data
+    const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_card_combinations?.by_scenario;
+
+    if (useScenarioData) {
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats!.support_card_combinations.by_scenario[scenarioId];
+        if (scenarioData) {
+          Object.entries(scenarioData).forEach(([combination, count]: [string, any]) => {
+            const current = combinations.get(combination) || { count: 0 };
+            current.count += typeof count === 'number' ? count : (count.count || 0);
+            if (count.composition) {
+              current.composition = count.composition;
+            }
+            combinations.set(combination, current);
+          });
+        }
+      });
+    } else {
+      // Use ALL active classes (merge all)
+      activeClasses.forEach(classId => {
+        const dataList = this.getMetricData('support_card_combinations', classId);
+        
+        dataList.forEach(data => {
+          if (data) {
+            Object.entries(data).forEach(([combination, count]: [string, any]) => {
+              const current = combinations.get(combination) || { count: 0 };
+              current.count += typeof count === 'number' ? count : (count.count || 0);
+              if (count.composition) {
+                current.composition = count.composition;
+              }
+              combinations.set(combination, current);
+            });
           }
-          combinations.set(combination, current);
         });
-      }
-    });
+      });
+    }
 
     const result = Array.from(combinations.entries())
       .sort((a, b) => b[1].count - a[1].count)
@@ -1997,11 +2138,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return stats.map(stat => {
       const data = activeClasses.map((classId: string) => {
-        const classData = this.globalStats!.stat_averages.by_team_class[classId];
-        const statData = classData?.[stat.key];
+        const dataList = this.getMetricData('stat_averages', classId);
+        
+        let weightedSum = 0;
+        let totalCount = 0;
+        
+        dataList.forEach(data => {
+          const statData = data?.[stat.key];
+          if (statData) {
+            const n = statData.count || 1;
+            weightedSum += (statData.mean || 0) * n;
+            totalCount += n;
+          }
+        });
+        
+        const mean = totalCount > 0 ? weightedSum / totalCount : 0;
+
         return {
           x: `Class ${classId}`,
-          y: Math.round(statData?.mean || 0)
+          y: Math.round(mean)
         };
       });
 
@@ -2025,25 +2180,28 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get all support cards from ACTIVE classes only and find top cards - BY ID
     const allCards = new Map<string, { count: number, name: string, id?: string | number }>();
     activeClasses.forEach(classId => {
-      const classData = this.globalStats!.support_cards.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([cardName, data]: [string, any]) => {
-          // Use card ID as key, fallback to name if no ID
-          const cardKey = (data.id || cardName).toString();
-          const current = allCards.get(cardKey);
-          const count = data.total || data.count || 0;
+      const dataList = this.getMetricData('support_cards', classId);
+      
+      dataList.forEach(classData => {
+        if (classData) {
+          Object.entries(classData).forEach(([cardName, data]: [string, any]) => {
+            // Use card ID as key, fallback to name if no ID
+            const cardKey = (data.id || cardName).toString();
+            const current = allCards.get(cardKey);
+            const count = data.total || data.count || 0;
 
-          if (current) {
-            current.count += count;
-          } else {
-            allCards.set(cardKey, {
-              count: count,
-              name: cardName,
-              id: data.id || null
-            });
-          }
-        });
-      }
+            if (current) {
+              current.count += count;
+            } else {
+              allCards.set(cardKey, {
+                count: count,
+                name: cardName,
+                id: data.id || null
+              });
+            }
+          });
+        }
+      });
     });
 
     const topCards = Array.from(allCards.entries())
@@ -2055,7 +2213,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Use ALL active classes (merge all)
 
     return activeClasses.map((classId: string) => {
-      const classData = this.globalStats!.support_cards.by_team_class[classId];
+      const dataList = this.getMetricData('support_cards', classId);
+      
+      // Aggregate data for this class
+      const classData: any = {};
+      dataList.forEach(data => {
+        if (data) {
+          Object.entries(data).forEach(([key, val]: [string, any]) => {
+            if (classData[key]) {
+              classData[key].total = (classData[key].total || 0) + (val.total || val.count || 0);
+            } else {
+              classData[key] = { ...val };
+              if (classData[key].total === undefined) {
+                classData[key].total = val.count || 0;
+              }
+            }
+          });
+        }
+      });
+
       const data = topCards.map(cardInfo => {
         // Find the card data by looking for matching ID or name
         let foundCardData: any = null;
@@ -2107,20 +2283,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.globalStats?.support_cards?.by_team_class) return [];
 
     const cardTypes = new Map<string, number>();
-    // Use ALL active classes (merge all)
+    
     const activeClasses = this.getActiveClassIds();
+    const allClassCount = Object.keys(this.classFilters).length;
+    const isAllClassesActive = activeClasses.length === allClassCount;
+    
+    const activeScenarios = this.getActiveScenarioIds();
+    const allScenarioCount = Object.keys(this.scenarioFilters).length;
+    const isAllScenariosActive = activeScenarios.length === allScenarioCount;
 
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats!.support_cards.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([cardId, data]: [string, any]) => {
-          // Use the new "type" field from the data, fallback to name-based detection
-          let cardType = 'Other';
+    // Determine if we should use scenario data
+    const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_card_type_distribution?.by_scenario;
 
-          if (data.type) {
-            // Use the type from the JSON data
-            cardType = data.type;
-            // Normalize some type names for consistency
+    if (useScenarioData) {
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats!.support_card_type_distribution.by_scenario[scenarioId];
+        if (scenarioData) {
+          Object.entries(scenarioData).forEach(([type, data]: [string, any]) => {
+            // Normalize type name
+            let cardType = type;
             if (cardType.toLowerCase() === 'intelligence') {
               cardType = 'Intelligence';
             } else if (cardType.toLowerCase() === 'wit') {
@@ -2128,37 +2309,70 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             } else if (cardType.toLowerCase() === 'wiz') {
               cardType = 'Intelligence';
             } else {
-              // Capitalize first letter for consistency
               cardType = cardType.charAt(0).toUpperCase() + cardType.slice(1).toLowerCase();
             }
-          } else {
-            // Fallback to name-based detection for older data
-            const cardName = data.name || `Card ${cardId}`;
-            const lowerCardName = cardName.toLowerCase();
+            
+            const count = data.total_usage || data.total_count || 0;
+            const current = cardTypes.get(cardType) || 0;
+            cardTypes.set(cardType, current + count);
+          });
+        }
+      });
+    } else {
+      // Use ALL active classes (merge all)
+      activeClasses.forEach(classId => {
+        const dataList = this.getMetricData('support_cards', classId);
+        
+        dataList.forEach(classData => {
+          if (classData) {
+            Object.entries(classData).forEach(([cardId, data]: [string, any]) => {
+              // Use the new "type" field from the data, fallback to name-based detection
+              let cardType = 'Other';
 
-            if (lowerCardName.includes('スピード') || lowerCardName.includes('speed')) {
-              cardType = 'Speed';
-            } else if (lowerCardName.includes('パワー') || lowerCardName.includes('power')) {
-              cardType = 'Power';
-            } else if (lowerCardName.includes('スタミナ') || lowerCardName.includes('stamina')) {
-              cardType = 'Stamina';
-            } else if (lowerCardName.includes('賢さ') || lowerCardName.includes('wiz') || lowerCardName.includes('wisdom') || lowerCardName.includes('int')) {
-              cardType = 'Intelligence';
-            } else if (lowerCardName.includes('根性') || lowerCardName.includes('guts')) {
-              cardType = 'Guts';
-            } else if (lowerCardName.includes('友人') || lowerCardName.includes('friend')) {
-              cardType = 'Friend';
-            } else if (lowerCardName.includes('グループ') || lowerCardName.includes('group')) {
-              cardType = 'Group';
-            }
+              if (data.type) {
+                // Use the type from the JSON data
+                cardType = data.type;
+                // Normalize some type names for consistency
+                if (cardType.toLowerCase() === 'intelligence') {
+                  cardType = 'Intelligence';
+                } else if (cardType.toLowerCase() === 'wit') {
+                  cardType = 'Intelligence';
+                } else if (cardType.toLowerCase() === 'wiz') {
+                  cardType = 'Intelligence';
+                } else {
+                  // Capitalize first letter for consistency
+                  cardType = cardType.charAt(0).toUpperCase() + cardType.slice(1).toLowerCase();
+                }
+              } else {
+                // Fallback to name-based detection for older data
+                const cardName = data.name || `Card ${cardId}`;
+                const lowerCardName = cardName.toLowerCase();
+
+                if (lowerCardName.includes('スピード') || lowerCardName.includes('speed')) {
+                  cardType = 'Speed';
+                } else if (lowerCardName.includes('パワー') || lowerCardName.includes('power')) {
+                  cardType = 'Power';
+                } else if (lowerCardName.includes('スタミナ') || lowerCardName.includes('stamina')) {
+                  cardType = 'Stamina';
+                } else if (lowerCardName.includes('賢さ') || lowerCardName.includes('wiz') || lowerCardName.includes('wisdom') || lowerCardName.includes('int')) {
+                  cardType = 'Intelligence';
+                } else if (lowerCardName.includes('根性') || lowerCardName.includes('guts')) {
+                  cardType = 'Guts';
+                } else if (lowerCardName.includes('友人') || lowerCardName.includes('friend')) {
+                  cardType = 'Friend';
+                } else if (lowerCardName.includes('グループ') || lowerCardName.includes('group')) {
+                  cardType = 'Group';
+                }
+              }
+
+              const current = cardTypes.get(cardType) || 0;
+              const count = data.usage_count || data.total || data.count || 0;
+              cardTypes.set(cardType, current + count);
+            });
           }
-
-          const current = cardTypes.get(cardType) || 0;
-          const count = data.usage_count || data.total || data.count || 0;
-          cardTypes.set(cardType, current + count);
         });
-      }
-    });
+      });
+    }
 
     if (cardTypes.size === 0) {
       return [];
@@ -2183,13 +2397,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get top 15 skills from ACTIVE classes only
     const allSkills = new Map<string, number>();
     activeClasses.forEach(classId => {
-      const classData = this.globalStats!.skills.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([skillName, data]: [string, any]) => {
-          const current = allSkills.get(skillName) || 0;
-          allSkills.set(skillName, current + (data.total || data.count || 0));
-        });
-      }
+      const dataList = this.getMetricData('skills', classId);
+      
+      dataList.forEach(classData => {
+        if (classData) {
+          Object.entries(classData).forEach(([skillName, data]: [string, any]) => {
+            const current = allSkills.get(skillName) || 0;
+            allSkills.set(skillName, current + (data.total || data.count || 0));
+          });
+        }
+      });
     });
 
     const topSkills = Array.from(allSkills.entries())
@@ -2201,7 +2418,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Use ALL active classes (merge all)
 
     return activeClasses.map((classId: string) => {
-      const classData = this.globalStats!.skills.by_team_class[classId];
+      const dataList = this.getMetricData('skills', classId);
+      
+      // Aggregate data for this class
+      const classData: any = {};
+      dataList.forEach(data => {
+        if (data) {
+          Object.entries(data).forEach(([key, val]: [string, any]) => {
+            if (classData[key]) {
+              classData[key].total = (classData[key].total || 0) + (val.total || val.count || 0);
+            } else {
+              classData[key] = { ...val };
+              if (classData[key].total === undefined) {
+                classData[key].total = val.count || 0;
+              }
+            }
+          });
+        }
+      });
+
       const data = topSkills.map(skillName => {
         const skillData = classData?.[skillName];
         return {
@@ -2242,12 +2477,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       let totalWeight = 0;
 
       activeClasses.forEach(classId => {
-        const classData = this.globalStats!.stat_averages.by_team_class[classId];
-        const statData = classData?.[stat.key];
-        if (statData?.mean !== undefined && statData.count > 0) {
-          totalWeightedValue += statData.mean * statData.count;
-          totalWeight += statData.count;
-        }
+        const dataList = this.getMetricData('stat_averages', classId);
+        
+        dataList.forEach(data => {
+          const statData = data?.[stat.key];
+          if (statData?.mean !== undefined && statData.count > 0) {
+            totalWeightedValue += statData.mean * statData.count;
+            totalWeight += statData.count;
+          }
+        });
       });
 
       const averageValue = totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
@@ -2277,10 +2515,24 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Use uma distribution from global stats as approximation for class distribution
         const umaData = this.globalStats!.uma_distribution[umaName];
         const id = umaData?.id || this.statisticsService.getCharacterIdFromName(umaName);
-        const classPercentage = this.globalStats!.team_class_distribution[classId]?.percentage || 0;
-        // Calculate approximate count for this class
-        const totalCount = umaData?.count || 0;
-        const classCount = Math.round(totalCount * (classPercentage / 100));
+        
+        let classCount = 0;
+
+        // Check if we have granular data (new format)
+        if (this.globalStats!.uma_distribution.by_team_class) {
+          const dataList = this.getMetricData('uma_distribution', classId);
+          dataList.forEach(data => {
+            if (data && data[umaName]) {
+              classCount += (data[umaName].count || 0);
+            }
+          });
+        } else {
+          // Old format approximation
+          const classPercentage = this.globalStats!.team_class_distribution[classId]?.percentage || 0;
+          // Calculate approximate count for this class
+          const totalCount = umaData?.count || 0;
+          classCount = Math.round(totalCount * (classPercentage / 100));
+        }
 
         // Get character ID for image URL
         const imageUrl = id ? this.getCharacterImageUrl(id) : undefined;
@@ -2312,7 +2564,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.globalStats) return;
 
     const activeClasses = this.getActiveClassIds();
-    const cacheKey = `global_${activeClasses.join('_')}`;
+    const activeScenarios = this.getActiveScenarioIds();
+    const cacheKey = `global_${activeClasses.join('_')}_${activeScenarios.join('_')}`;
 
     // Check cache first
     if (this.chartDataCache.has(cacheKey)) {
@@ -2417,7 +2670,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Multi-series stat distribution showing aggregated data from all selected classes
   getStatDistributionMultiSeries(statName: string): any[] {
-    const cacheKey = this.generateCacheKey('statDistribution', statName, this.classFilters);
+    const cacheKey = this.generateCacheKey('statDistribution', statName, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       if (!this.globalStats?.stat_averages?.by_team_class) {
@@ -2432,18 +2685,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Aggregate histogram data from ALL selected classes
       activeClasses.forEach(classId => {
-        const classData = this.globalStats!.stat_averages.by_team_class[classId];
-        const statData = classData?.[statName];
+        const dataList = this.getMetricData('stat_averages', classId);
+        
+        dataList.forEach(classData => {
+          const statData = classData?.[statName];
 
-        if (statData?.histogram) {
-          classesProcessed++;
-          Object.entries(statData.histogram).forEach(([bucket, count]) => {
-            const currentCount = aggregatedHistogram.get(bucket) || 0;
-            const newCount = currentCount + (count as number);
-            aggregatedHistogram.set(bucket, newCount);
-            totalCount += (count as number);
-          });
-        }
+          if (statData?.histogram) {
+            classesProcessed++;
+            Object.entries(statData.histogram).forEach(([bucket, count]) => {
+              const currentCount = aggregatedHistogram.get(bucket) || 0;
+              const newCount = currentCount + (count as number);
+              aggregatedHistogram.set(bucket, newCount);
+              totalCount += (count as number);
+            });
+          }
+        });
       });
       if (aggregatedHistogram.size === 0) {
         return [];
@@ -2501,7 +2757,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Convert existing methods to compute methods (rename with "compute" prefix)
   private computeDistanceSkillsData(distance: string): any[] {
-    const cacheKey = this.generateCacheKey('distanceSkills', distance, this.classFilters);
+    const cacheKey = this.generateCacheKey('distanceSkills', distance, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
@@ -2512,14 +2768,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Get top 15 skills for this distance from ACTIVE classes only
       const allSkills = new Map<string, number>();
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        if (classData?.skills) {
-          Object.entries(classData.skills).forEach(([skillId, data]: [string, any]) => {
-            const skillKey = skillId.toString();
-            const current = allSkills.get(skillKey) || 0;
-            allSkills.set(skillKey, current + (data.total || data.count || 0));
-          });
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData?.skills) {
+            Object.entries(classData.skills).forEach(([skillId, data]: [string, any]) => {
+              const skillKey = skillId.toString();
+              const current = allSkills.get(skillKey) || 0;
+              allSkills.set(skillKey, current + (data.total || data.count || 0));
+            });
+          }
+        });
       });
 
       const topSkills = Array.from(allSkills.entries())
@@ -2530,13 +2788,26 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Create stacked data for each active class
 
       const result = activeClasses.map((classId: string) => {
-        const classData = distanceData.by_team_class[classId];
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        // Aggregate skill data for this class
+        const aggregatedSkills = new Map<string, { name: string, count: number }>();
+        dataList.forEach(classData => {
+          if (classData?.skills) {
+            Object.entries(classData.skills).forEach(([skillKey, skillData]: [string, any]) => {
+              const current = aggregatedSkills.get(skillKey) || { name: skillData.name || `Skill ${skillKey}`, count: 0 };
+              current.count += (skillData.total || skillData.count || 0);
+              aggregatedSkills.set(skillKey, current);
+            });
+          }
+        });
+
         const data = topSkills.map(skillKey => {
-          const skillData = classData?.skills?.[skillKey];
+          const skillData = aggregatedSkills.get(skillKey);
           const skillName = skillData?.name || `Skill ${skillKey}`;
           return {
             x: skillName.length > 25 ? skillName.substring(0, 22) + '...' : skillName,
-            y: skillData?.total || skillData?.count || 0
+            y: skillData?.count || 0
           };
         });
 
@@ -2563,11 +2834,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     activeClasses.forEach(classId => {
       if ((this.classFilters as any)[classId]) {
-        const classData = distanceData.by_team_class[classId];
-        if (classData?.support_cards) {
-          Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
-            // Use the new "type" field from the data, fallback to name-based detection
-            let cardType = 'Other';
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData?.support_cards) {
+            Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
+              // Use the new "type" field from the data, fallback to name-based detection
+              let cardType = 'Other';
 
             if (data.type) {
               // Use the type from the JSON data
@@ -2598,6 +2870,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             cardTypes.set(cardType, current + (data.total || data.count || 0));
           });
         }
+        });
       }
     });
 
@@ -2620,14 +2893,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get top 10 umas for this distance based on total count from ACTIVE classes only
     const allUmas = new Map<string, number>();
     classIds.forEach(classId => {
-      const classData = distanceData.by_team_class[classId];
-      if (classData?.uma_distribution) {
-        Object.entries(classData.uma_distribution).forEach(([umaName, data]: [string, any]) => {
-          const current = allUmas.get(umaName) || 0;
-          // Use count instead of percentage
-          allUmas.set(umaName, current + (data.count || 0));
-        });
-      }
+      const dataList = this.getMetricData('', classId, distanceData);
+      dataList.forEach(classData => {
+        if (classData?.uma_distribution) {
+          Object.entries(classData.uma_distribution).forEach(([umaName, data]: [string, any]) => {
+            const current = allUmas.get(umaName) || 0;
+            // Use count instead of percentage
+            allUmas.set(umaName, current + (data.count || 0));
+          });
+        }
+      });
     });
 
     const topUmas = Array.from(allUmas.entries())
@@ -2638,12 +2913,18 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Create stacked data for each class
     // Use ALL active classes (merge all)
     const series = classIds.map((classId: string) => {
-      const classData = distanceData.by_team_class[classId];
+      const dataList = this.getMetricData('', classId, distanceData);
+      
       const data = topUmas.map(umaName => {
-        const umaData = classData?.uma_distribution?.[umaName];
+        let count = 0;
+        dataList.forEach(classData => {
+          const umaData = classData?.uma_distribution?.[umaName];
+          count += (umaData?.count || 0);
+        });
+        
         return {
           x: umaName,
-          y: umaData?.count || 0  // Use actual count
+          y: count  // Use actual count
         };
       });
 
@@ -2681,13 +2962,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Aggregate mean values from ALL selected classes for this distance
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        const statData = classData?.stat_averages?.[stat.key];
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          const statData = classData?.stat_averages?.[stat.key];
 
-        if (statData?.mean !== undefined) {
-          totalMean += statData.mean;
-          classesWithData++;
-        }
+          if (statData?.mean !== undefined) {
+            totalMean += statData.mean;
+            classesWithData++;
+          }
+        });
       });
 
       const averageMean = classesWithData > 0 ? totalMean / classesWithData : 0;
@@ -2709,25 +2993,27 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get top 12 support cards for this distance based on count from ACTIVE classes only
     const allCards = new Map<string, { count: number, name: string, data: any }>();
     classIds.forEach(classId => {
-      const classData = distanceData.by_team_class[classId];
-      if (classData?.support_cards) {
-        Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
-          const actualCardId = data.id || cardId;
-          if (!actualCardId) {
-            console.warn(`Support card '${cardId}' missing ID in distance card data, skipping`);
-            return;
-          }
+      const dataList = this.getMetricData('', classId, distanceData);
+      dataList.forEach(classData => {
+        if (classData?.support_cards) {
+          Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
+            const actualCardId = data.id || cardId;
+            if (!actualCardId) {
+              console.warn(`Support card '${cardId}' missing ID in distance card data, skipping`);
+              return;
+            }
 
-          const cardName = data.name || `Card ${cardId}`;
-          const current = allCards.get(actualCardId) || { count: 0, name: cardName, data: data };
-          // Support both count and total properties
-          allCards.set(actualCardId, {
-            count: current.count + (data.count || data.total || 0),
-            name: cardName,
-            data: data
+            const cardName = data.name || `Card ${cardId}`;
+            const current = allCards.get(actualCardId) || { count: 0, name: cardName, data: data };
+            // Support both count and total properties
+            allCards.set(actualCardId, {
+              count: current.count + (data.count || data.total || 0),
+              name: cardName,
+              data: data
+            });
           });
-        });
-      }
+        }
+      });
     });
 
     if (allCards.size === 0) return [];
@@ -2765,49 +3051,55 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Distance-specific support cards with images (for image list display)
   private computeDistanceSupportCardsWithImages(distance: string): ChartDataPoint[] {
-    const distanceData = this.distanceStats[distance];
-    if (!distanceData?.by_team_class) return [];
+    const cacheKey = this.generateCacheKey('distanceSupportCardsWithImages', distance, this.classFilters, this.scenarioFilters);
 
-    // Get all support cards from active classes and aggregate by ID
-    const allCards = new Map<string, { total: number, cardData: any, name: string }>();
+    return this.getCachedData(cacheKey, () => {
+      const distanceData = this.distanceStats[distance];
+      if (!distanceData?.by_team_class) return [];
 
-    // Use the new total_trained_umas from distance data if available
-    let totalUmasTrained = 0;
-    this.getActiveClassIds().forEach(classId => {
-      const classData = distanceData.by_team_class[classId];
-      if (classData?.total_trained_umas !== undefined) {
-        totalUmasTrained += classData.total_trained_umas;
-      } else if (classData?.total_entries !== undefined) {
-        totalUmasTrained += classData.total_entries;
-      } else if (classData?.trainer_count !== undefined) {
-        totalUmasTrained += classData.trainer_count;
-      }
-    });
+      // Get all support cards from active classes and aggregate by ID
+      const allCards = new Map<string, { total: number, cardData: any, name: string }>();
 
-    this.getActiveClassIds().forEach(classId => {
-      const classData = distanceData.by_team_class[classId];
-      if (classData?.support_cards) {
-        Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
-          const count = data.total || data.count || 0;
-          const actualCardId = data.id || cardId;
-
-          if (!actualCardId) {
-            console.warn(`Support card '${cardId}' missing ID in distance data, skipping`);
-            return;
+      // Use the new total_trained_umas from distance data if available
+      let totalUmasTrained = 0;
+      this.getActiveClassIds().forEach(classId => {
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData?.total_trained_umas !== undefined) {
+            totalUmasTrained += classData.total_trained_umas;
+          } else if (classData?.total_entries !== undefined) {
+            totalUmasTrained += classData.total_entries;
+          } else if (classData?.trainer_count !== undefined) {
+            totalUmasTrained += classData.trainer_count;
           }
+        });
+      });
 
-          if (allCards.has(actualCardId)) {
-            const existing = allCards.get(actualCardId)!;
-            existing.total += count;
-            existing.cardData = { ...existing.cardData, ...data }; // Merge card data
-            existing.cardData.by_level = existing.cardData.by_level || {};
-            if (data.by_level) {
-              Object.entries(data.by_level).forEach(([level, levelCount]: [string, any]) => {
-                existing.cardData.by_level[level] = (existing.cardData.by_level[level] || 0) + levelCount;
-              });
-            }
-          } else {
-            allCards.set(actualCardId, {
+      this.getActiveClassIds().forEach(classId => {
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          if (classData?.support_cards) {
+            Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
+              const count = data.total || data.count || 0;
+              const actualCardId = data.id || cardId;
+
+              if (!actualCardId) {
+                console.warn(`Support card '${cardId}' missing ID in distance data, skipping`);
+                return;
+              }
+
+              if (allCards.has(actualCardId)) {
+                const existing = allCards.get(actualCardId)!;
+                existing.total += count;
+                existing.cardData = { ...existing.cardData, ...data }; // Merge card data
+                existing.cardData.by_level = existing.cardData.by_level || {};
+                if (data.by_level) {
+                  Object.entries(data.by_level).forEach(([level, levelCount]: [string, any]) => {
+                    existing.cardData.by_level[level] = (existing.cardData.by_level[level] || 0) + levelCount;
+                  });
+                }
+              } else {
+                allCards.set(actualCardId, {
               total: count,
               cardData: { ...data, by_level: { ...data.by_level } },
               name: data.name || `Card ${cardId}`
@@ -2816,6 +3108,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     });
+  });
 
     // Sort and slice to get top 50
     const sortedCards = Array.from(allCards.entries())
@@ -2844,6 +3137,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
     return result;
+    });
   }
 
   // Character-specific chart data methods
@@ -2872,11 +3166,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       distances.forEach(distance => {
         const distanceData = character.by_distance![distance];
         activeClasses.forEach(classId => {
-          const classData = distanceData.by_team_class?.[classId];
-          if (classData?.stat_averages?.[stat.key]?.mean !== undefined) {
-            totalStat += classData.stat_averages[stat.key].mean;
-            count++;
-          }
+          const dataList = this.getMetricData('', classId, distanceData);
+          dataList.forEach(classData => {
+            if (classData?.stat_averages?.[stat.key]?.mean !== undefined) {
+              totalStat += classData.stat_averages[stat.key].mean;
+              count++;
+            }
+          });
         });
       });
 
@@ -2890,7 +3186,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Individual stat distribution methods for distance with histogram data
   getDistanceStatHistogramData(distance: string, stat: string): ChartDataPoint[] {
-    const cacheKey = this.generateCacheKey('distanceStatHistogram', distance, stat, this.classFilters);
+    const cacheKey = this.generateCacheKey('distanceStatHistogram', distance, stat, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
@@ -2903,15 +3199,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       const histogramCombined = new Map<string, number>();
 
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        const statData = classData?.stat_averages?.[stat];
+        const dataList = this.getMetricData('', classId, distanceData);
+        dataList.forEach(classData => {
+          const statData = classData?.stat_averages?.[stat];
 
-        if (statData?.histogram) {
-          Object.entries(statData.histogram).forEach(([bucket, count]) => {
-            const current = histogramCombined.get(bucket) || 0;
-            histogramCombined.set(bucket, current + (count as number));
-          });
-        }
+          if (statData?.histogram) {
+            Object.entries(statData.histogram).forEach(([bucket, count]) => {
+              const current = histogramCombined.get(bucket) || 0;
+              histogramCombined.set(bucket, current + (count as number));
+            });
+          }
+        });
       });
 
       const result = Array.from(histogramCombined.entries())
@@ -2927,7 +3225,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Distance support card combinations with icon formatting
   getDistanceSupportCardCombinations(distance: string): ChartDataPoint[] {
-    const cacheKey = this.generateCacheKey('distanceSupportCardCombinations', distance, this.classFilters);
+    const cacheKey = this.generateCacheKey('distanceSupportCardCombinations', distance, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
@@ -2938,16 +3236,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       const activeClasses = this.getActiveClassIds();
 
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        if (classData?.support_card_combinations) {
-          Object.entries(classData.support_card_combinations).forEach(([combination, data]: [string, any]) => {
-            const current = combinations.get(combination) || { count: 0, composition: data.composition };
-            combinations.set(combination, {
-              count: current.count + (data.count || 0),
-              composition: data.composition || current.composition
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.support_card_combinations) {
+            Object.entries(classData.support_card_combinations).forEach(([combination, data]: [string, any]) => {
+              const current = combinations.get(combination) || { count: 0, composition: data.composition };
+              combinations.set(combination, {
+                count: current.count + (data.count || 0),
+                composition: data.composition || current.composition
+              });
             });
-          });
-        }
+          }
+        });
       });
 
       const result = Array.from(combinations.entries())
@@ -2974,9 +3275,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Aggregate histogram data across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
-        if (distanceData.by_team_class) {
-          activeClasses.forEach(classId => {
-            const classData = distanceData.by_team_class[classId];
+        activeClasses.forEach(classId => {
+          const dataList = this.getMetricData('', classId, distanceData);
+          dataList.forEach(classData => {
             const statData = classData?.stat_averages?.[stat];
             if (statData?.histogram) {
               Object.entries(statData.histogram).forEach(([bucket, count]) => {
@@ -2985,7 +3286,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               });
             }
           });
-        }
+        });
       });
     }
 
@@ -3009,9 +3310,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Aggregate combinations across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
-        if (distanceData.by_team_class) {
-          activeClasses.forEach(classId => {
-            const classData = distanceData.by_team_class[classId];
+        activeClasses.forEach(classId => {
+          const dataList = this.getMetricData('', classId, distanceData);
+          dataList.forEach(classData => {
             if (classData?.support_card_combinations) {
               Object.entries(classData.support_card_combinations).forEach(([combination, data]: [string, any]) => {
                 const current = combinations.get(combination) || { count: 0, composition: data.composition };
@@ -3022,7 +3323,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               });
             }
           });
-        }
+        });
       });
     }
 
@@ -3041,6 +3342,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   getActiveClassIds(): string[] {
     const activeIds = Object.keys(this.classFilters).filter((classId: string) =>
       (this.classFilters as any)[classId] !== false
+    );
+    return activeIds;
+  }
+  
+  getActiveScenarioIds(): string[] {
+    const activeIds = Object.keys(this.scenarioFilters).filter((scenarioId: string) =>
+      this.scenarioFilters[scenarioId] !== false
     );
     return activeIds;
   }
@@ -3390,61 +3698,116 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.globalStats?.support_cards?.by_team_class) return [];
 
     const activeClasses = this.getActiveClassIds();
+    const allClassCount = Object.keys(this.classFilters).length;
+    const isAllClassesActive = activeClasses.length === allClassCount;
+    
+    const activeScenarios = this.getActiveScenarioIds();
+    const allScenarioCount = Object.keys(this.scenarioFilters).length;
+    const isAllScenariosActive = activeScenarios.length === allScenarioCount;
+    
     const aggregatedCards = new Map<string, any>();
 
-    // Calculate total Uma Musume trained only from selected/active classes
+    // Calculate total Uma Musume trained
     let totalUmasTrained = 0;
 
-    // Use team_class_distribution to get trained_umas only from active classes
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats?.team_class_distribution?.[classId];
-      if (classData && typeof classData === 'object' && classData.trained_umas) {
-        totalUmasTrained += classData.trained_umas;
-      }
-    });
+    // Determine if we should use scenario data (when all classes are active and scenario filter is used)
+    const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_cards?.by_scenario;
 
-    // If no trained_umas data available, fallback to uma_distribution approach
-    if (totalUmasTrained === 0) {
-      if (this.globalStats?.uma_distribution) {
-        Object.values(this.globalStats.uma_distribution).forEach((data: any) => {
-          const count = data.count || data.total || 0;
-          totalUmasTrained += count;
-        });
-      }
-    }
-    // Aggregate all card data by ID instead of name
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats!.support_cards.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([cardId, cardData]: [string, any]) => {
-          const count = cardData.total || cardData.count || 0;
-          const actualCardId = cardData.id || cardId; // Use the ID from the data, fallback to key
+    if (useScenarioData) {
+      // Use scenario distribution to get trained_umas from active scenarios
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats?.scenario_distribution?.[scenarioId];
+        if (scenarioData && scenarioData.count) {
+          totalUmasTrained += scenarioData.count;
+        }
+      });
+      
+      // Aggregate card data from active scenarios
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats!.support_cards.by_scenario[scenarioId];
+        if (scenarioData) {
+          Object.entries(scenarioData).forEach(([cardId, cardData]: [string, any]) => {
+            const count = cardData.total || cardData.count || 0;
+            const actualCardId = cardData.id || cardId;
 
-          if (!actualCardId) {
-            console.warn(`Support card '${cardId}' missing ID, skipping`);
-            return;
-          }
+            if (!actualCardId) return;
 
-          if (aggregatedCards.has(actualCardId)) {
-            const existing = aggregatedCards.get(actualCardId);
-            existing.total += count;
-            existing.by_level = existing.by_level || {};
-            if (cardData.by_level) {
-              Object.entries(cardData.by_level).forEach(([level, levelCount]: [string, any]) => {
-                existing.by_level[level] = (existing.by_level[level] || 0) + levelCount;
+            if (aggregatedCards.has(actualCardId)) {
+              const existing = aggregatedCards.get(actualCardId);
+              existing.total += count;
+              existing.by_level = existing.by_level || {};
+              if (cardData.by_level) {
+                Object.entries(cardData.by_level).forEach(([level, levelCount]: [string, any]) => {
+                  existing.by_level[level] = (existing.by_level[level] || 0) + levelCount;
+                });
+              }
+            } else {
+              aggregatedCards.set(actualCardId, {
+                ...cardData,
+                name: cardData.name || `Card ${cardId}`,
+                total: count,
+                by_level: { ...cardData.by_level }
               });
             }
-          } else {
-            aggregatedCards.set(actualCardId, {
-              ...cardData,
-              name: cardData.name || `Card ${cardId}`, // Use name from data, fallback to card ID
-              total: count,
-              by_level: { ...cardData.by_level }
+          });
+        }
+      });
+    } else {
+      // Use team_class_distribution to get trained_umas only from active classes
+      activeClasses.forEach(classId => {
+        const classData = this.globalStats?.team_class_distribution?.[classId];
+        if (classData && typeof classData === 'object' && classData.trained_umas) {
+          totalUmasTrained += classData.trained_umas;
+        }
+      });
+
+      // If no trained_umas data available, fallback to uma_distribution approach
+      if (totalUmasTrained === 0) {
+        if (this.globalStats?.uma_distribution) {
+          Object.values(this.globalStats.uma_distribution).forEach((data: any) => {
+            const count = data.count || data.total || 0;
+            totalUmasTrained += count;
+          });
+        }
+      }
+      
+      // Aggregate all card data by ID instead of name from active classes
+      activeClasses.forEach(classId => {
+        const dataList = this.getMetricData('support_cards', classId);
+        
+        dataList.forEach(classData => {
+          if (classData) {
+            Object.entries(classData).forEach(([cardId, cardData]: [string, any]) => {
+              const count = cardData.total || cardData.count || 0;
+              const actualCardId = cardData.id || cardId; // Use the ID from the data, fallback to key
+
+              if (!actualCardId) {
+                console.warn(`Support card '${cardId}' missing ID, skipping`);
+                return;
+              }
+
+              if (aggregatedCards.has(actualCardId)) {
+                const existing = aggregatedCards.get(actualCardId);
+                existing.total += count;
+                existing.by_level = existing.by_level || {};
+                if (cardData.by_level) {
+                  Object.entries(cardData.by_level).forEach(([level, levelCount]: [string, any]) => {
+                    existing.by_level[level] = (existing.by_level[level] || 0) + levelCount;
+                  });
+                }
+              } else {
+                aggregatedCards.set(actualCardId, {
+                  ...cardData,
+                  name: cardData.name || `Card ${cardId}`, // Use name from data, fallback to card ID
+                  total: count,
+                  by_level: { ...cardData.by_level }
+                });
+              }
             });
           }
         });
-      }
-    });
+      });
+    }
 
     // Sort and slice to get top 50
     const sortedCards = Array.from(aggregatedCards.entries())
@@ -3510,18 +3873,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.globalStats?.uma_distribution?.by_team_class) {
       // Aggregate from per-class data (only from active classes)
       activeClasses.forEach(classId => {
-        const classUmaData = this.globalStats!.uma_distribution.by_team_class[classId];
-        if (classUmaData) {
-          Object.entries(classUmaData).forEach(([umaName, data]: [string, any]) => {
-            const count = data.count || data.total || 0;
-            const existing = allUmas.get(umaName) || { count: 0, character_id: data.character_id, character_color: data.character_color };
-            allUmas.set(umaName, {
-              count: existing.count + count,
-              character_id: data.character_id || existing.character_id,
-              character_color: data.character_color || existing.character_color
+        const dataList = this.getMetricData('uma_distribution', classId);
+        
+        dataList.forEach(classUmaData => {
+          if (classUmaData) {
+            Object.entries(classUmaData).forEach(([umaName, data]: [string, any]) => {
+              const count = data.count || data.total || 0;
+              const existing = allUmas.get(umaName) || { count: 0, character_id: data.character_id, character_color: data.character_color };
+              allUmas.set(umaName, {
+                count: existing.count + count,
+                character_id: data.character_id || existing.character_id,
+                character_color: data.character_color || existing.character_color
+              });
             });
-          });
-        }
+          }
+        });
       });
     } else {
       // Fallback to global uma distribution (legacy behavior)
@@ -3564,51 +3930,99 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.globalStats?.skills?.by_team_class) return [];
 
     const activeClasses = this.getActiveClassIds();
+    const allClassCount = Object.keys(this.classFilters).length;
+    const isAllClassesActive = activeClasses.length === allClassCount;
+    
+    const activeScenarios = this.getActiveScenarioIds();
+    const allScenarioCount = Object.keys(this.scenarioFilters).length;
+    const isAllScenariosActive = activeScenarios.length === allScenarioCount;
+    
     const aggregatedSkills = new Map<string, any>();
 
-    // Calculate total Uma Musume trained only from selected/active classes
+    // Calculate total Uma Musume trained
     let totalUmasTrained = 0;
 
-    // Use team_class_distribution to get trained_umas only from active classes
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats?.team_class_distribution?.[classId];
-      if (classData && typeof classData === 'object' && classData.trained_umas) {
-        totalUmasTrained += classData.trained_umas;
-      }
-    });
+    // Determine if we should use scenario data
+    const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.skills?.by_scenario;
 
-    // If no trained_umas data available, fallback to uma_distribution approach
-    if (totalUmasTrained === 0) {
-      if (this.globalStats?.uma_distribution) {
-        Object.values(this.globalStats.uma_distribution).forEach((data: any) => {
-          const count = data.count || data.total || 0;
-          totalUmasTrained += count;
-        });
-      }
-    }
-    // Aggregate skill data
-    activeClasses.forEach(classId => {
-      const classData = this.globalStats!.skills.by_team_class[classId];
-      if (classData) {
-        Object.entries(classData).forEach(([skillId, skillData]: [string, any]) => {
-          const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
+    if (useScenarioData) {
+      // Use scenario distribution to get trained_umas from active scenarios
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats?.scenario_distribution?.[scenarioId];
+        if (scenarioData && scenarioData.count) {
+          totalUmasTrained += scenarioData.count;
+        }
+      });
+      
+      // Aggregate skill data from active scenarios
+      activeScenarios.forEach(scenarioId => {
+        const scenarioData = this.globalStats!.skills.by_scenario[scenarioId];
+        if (scenarioData) {
+          Object.entries(scenarioData).forEach(([skillId, skillData]: [string, any]) => {
+            const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
 
-          if (aggregatedSkills.has(skillId)) {
-            const existing = aggregatedSkills.get(skillId);
-            existing.total += count;
-            existing.avg_level = ((existing.avg_level * existing.count + (skillData.avg_level || 0) * count) / (existing.count + count));
-            existing.count += count;
-          } else {
-            aggregatedSkills.set(skillId, {
-              ...skillData,
-              name: skillData.name || `Skill ${skillId}`, // Store proper name with fallback
-              total: count,
-              count: count
+            if (aggregatedSkills.has(skillId)) {
+              const existing = aggregatedSkills.get(skillId);
+              existing.total += count;
+              existing.avg_level = ((existing.avg_level * existing.count + (skillData.avg_level || 0) * count) / (existing.count + count));
+              existing.count += count;
+            } else {
+              aggregatedSkills.set(skillId, {
+                ...skillData,
+                name: skillData.name || `Skill ${skillId}`,
+                total: count,
+                count: count
+              });
+            }
+          });
+        }
+      });
+    } else {
+      // Use team_class_distribution to get trained_umas only from active classes
+      activeClasses.forEach(classId => {
+        const classData = this.globalStats?.team_class_distribution?.[classId];
+        if (classData && typeof classData === 'object' && classData.trained_umas) {
+          totalUmasTrained += classData.trained_umas;
+        }
+      });
+
+      // If no trained_umas data available, fallback to uma_distribution approach
+      if (totalUmasTrained === 0) {
+        if (this.globalStats?.uma_distribution) {
+          Object.values(this.globalStats.uma_distribution).forEach((data: any) => {
+            const count = data.count || data.total || 0;
+            totalUmasTrained += count;
+          });
+        }
+      }
+      
+      // Aggregate skill data from active classes
+      activeClasses.forEach(classId => {
+        const dataList = this.getMetricData('skills', classId);
+        
+        dataList.forEach(classData => {
+          if (classData) {
+            Object.entries(classData).forEach(([skillId, skillData]: [string, any]) => {
+              const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
+
+              if (aggregatedSkills.has(skillId)) {
+                const existing = aggregatedSkills.get(skillId);
+                existing.total += count;
+                existing.avg_level = ((existing.avg_level * existing.count + (skillData.avg_level || 0) * count) / (existing.count + count));
+                existing.count += count;
+              } else {
+                aggregatedSkills.set(skillId, {
+                  ...skillData,
+                  name: skillData.name || `Skill ${skillId}`, // Store proper name with fallback
+                  total: count,
+                  count: count
+                });
+              }
             });
           }
         });
-      }
-    });
+      });
+    }
 
     // Sort and slice to get top 50
     const sortedSkills = Array.from(aggregatedSkills.entries())
@@ -3704,12 +4118,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.values(character.by_distance).forEach((distanceData: any) => {
       if (distanceData.by_team_class) {
         activeClasses.forEach(classId => {
-          const data = distanceData.by_team_class[classId];
-          if (data) {
-            const current = classData.get(classId) || 0;
-            const count = data.total_entries || data.count || data.total || 0;
-            classData.set(classId, current + count);
-          }
+          // Use getMetricData to handle scenario filtering and new data structure
+          const dataList = this.getMetricData('', classId, distanceData);
+          
+          dataList.forEach(data => {
+            if (data) {
+              const current = classData.get(classId) || 0;
+              const count = data.total_entries || data.count || data.total || 0;
+              classData.set(classId, current + count);
+            }
+          });
         });
       }
     });
@@ -3752,9 +4170,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Aggregate card type data across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
-        if (distanceData.by_team_class) {
-          activeClasses.forEach(classId => {
-            const classData = distanceData.by_team_class[classId];
+        activeClasses.forEach(classId => {
+          const dataList = this.getMetricData('', classId, distanceData);
+          dataList.forEach(classData => {
             if (classData?.support_cards) {
               Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
                 let cardType = 'Other';
@@ -3777,7 +4195,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               });
             }
           });
-        }
+        });
       });
     }
 
@@ -3793,7 +4211,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Distance-specific image list methods
   private computeDistanceUmasWithImages(distance: string): ChartDataPoint[] {
-    const cacheKey = this.generateCacheKey('distanceUmasWithImages', distance, this.classFilters);
+    const cacheKey = this.generateCacheKey('distanceUmasWithImages', distance, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
@@ -3805,14 +4223,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Use the correct field names from distance data structure (same as support cards method)
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        if (classData?.total_trained_umas !== undefined) {
-          totalUmasTrained += classData.total_trained_umas;
-        } else if (classData?.total_entries !== undefined) {
-          totalUmasTrained += classData.total_entries;
-        } else if (classData?.trainer_count !== undefined) {
-          totalUmasTrained += classData.trainer_count;
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.total_trained_umas !== undefined) {
+            totalUmasTrained += classData.total_trained_umas;
+          } else if (classData?.total_entries !== undefined) {
+            totalUmasTrained += classData.total_entries;
+          } else if (classData?.trainer_count !== undefined) {
+            totalUmasTrained += classData.trainer_count;
+          }
+        });
       });
 
       // Aggregate Uma data from distance classes
@@ -3820,18 +4241,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Aggregate Uma data from active classes in by_team_class structure
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        if (classData?.uma_distribution) {
-          Object.entries(classData.uma_distribution).forEach(([umaName, data]: [string, any]) => {
-            const count = data.count || data.total || data;
-            const existing = allUmas.get(umaName) || { count: 0, character_id: data.character_id, character_color: data.character_color };
-            allUmas.set(umaName, {
-              count: existing.count + count,
-              character_id: data.character_id || existing.character_id,
-              character_color: data.character_color || existing.character_color
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.uma_distribution) {
+            Object.entries(classData.uma_distribution).forEach(([umaName, data]: [string, any]) => {
+              const count = data.count || data.total || data;
+              const existing = allUmas.get(umaName) || { count: 0, character_id: data.character_id, character_color: data.character_color };
+              allUmas.set(umaName, {
+                count: existing.count + count,
+                character_id: data.character_id || existing.character_id,
+                character_color: data.character_color || existing.character_color
+              });
             });
-          });
-        }
+          }
+        });
       });
 
       // Convert to ChartDataPoint with images and sort to get top 20
@@ -3860,7 +4284,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private computeDistanceSkillsWithImages(distance: string): ChartDataPoint[] {
-    const cacheKey = this.generateCacheKey('distanceSkillsWithImages', distance, this.classFilters);
+    const cacheKey = this.generateCacheKey('distanceSkillsWithImages', distance, this.classFilters, this.scenarioFilters);
 
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
@@ -3874,20 +4298,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Use the correct field names from distance data structure (same as support cards method)
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class[classId];
-        if (classData?.total_trained_umas !== undefined) {
-          totalUmasTrained += classData.total_trained_umas;
-        } else if (classData?.total_entries !== undefined) {
-          totalUmasTrained += classData.total_entries;
-        } else if (classData?.trainer_count !== undefined) {
-          totalUmasTrained += classData.trainer_count;
-        }
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.total_trained_umas !== undefined) {
+            totalUmasTrained += classData.total_trained_umas;
+          } else if (classData?.total_entries !== undefined) {
+            totalUmasTrained += classData.total_entries;
+          } else if (classData?.trainer_count !== undefined) {
+            totalUmasTrained += classData.trainer_count;
+          }
+        });
       });
       // Aggregate skill data from active classes only
       activeClasses.forEach(classId => {
-        const classData = distanceData.by_team_class?.[classId];
-        if (classData?.skills) {
-          Object.entries(classData.skills).forEach(([skillId, skillData]: [string, any]) => {
+        const dataList = this.getMetricData('', classId, distanceData);
+        
+        dataList.forEach(classData => {
+          if (classData?.skills) {
+            Object.entries(classData.skills).forEach(([skillId, skillData]: [string, any]) => {
             const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
 
             if (aggregatedSkills.has(skillId)) {
@@ -3904,6 +4333,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         }
+      });
       });
 
       // Sort and slice to get top 50

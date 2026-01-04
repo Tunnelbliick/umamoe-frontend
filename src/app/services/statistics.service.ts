@@ -48,8 +48,8 @@ export class StatisticsService {
         map(response => {
           // Sort datasets by date (newest first)
           const sortedDatasets = response.datasets.sort((a, b) => {
-            const dateA = new Date(a.date || a.index.generated_at);
-            const dateB = new Date(b.date || b.index.generated_at);
+            const dateA = new Date(a.date || (a.index && a.index.generated_at) || 0);
+            const dateB = new Date(b.date || (b.index && b.index.generated_at) || 0);
             return dateB.getTime() - dateA.getTime();
           });
           

@@ -648,3 +648,24 @@ body.christmas-theme {
     background: transparent;
   }
 }
+
+// Team Class Bottom Sheet Panel
+.team-class-bottom-sheet-panel {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  margin: 0 !important;
+
+  // Target both MDC and legacy classes to ensure we catch the right container
+  .mat-mdc-bottom-sheet-container,
+  .mat-bottom-sheet-container {
+    background: transparent !important;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+}

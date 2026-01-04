@@ -8,7 +8,7 @@
   border-bottom: none;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  margin: 0 16px;
+  margin: 0; // Removed margin to attach to bottom
   box-shadow: 
     0 -8px 32px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -34,19 +34,6 @@
     pointer-events: none;
     z-index: -1;
   }
-}
-
-// Reset Material's bottom sheet container completely
-::ng-deep .mat-mdc-bottom-sheet-container {
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  // Match the card background from your app
-  background: rgba(26, 26, 30, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-bottom: none !important;
 }
 
 // Header styling
@@ -98,7 +85,11 @@
 
 // All Classes Toggle - more compact
 .all-classes-toggle {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
   ::ng-deep .mat-mdc-checkbox {
     .mdc-form-field {
@@ -117,63 +108,130 @@
   }
 }
 
-// Class options - much more compact
-.class-options {
-  display: flex;
-  flex-direction: column;
-  gap: 4px; // Much smaller gap
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.class-option {
+.scenario-chip {
   display: flex;
   align-items: center;
-  padding: 6px 0; // Much smaller padding
-  border-radius: 4px;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
   
-  ::ng-deep .mat-mdc-checkbox {
-    margin-right: 12px;
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     
-    .mdc-checkbox {
-      padding: 6px; // Smaller checkbox
+    .chip-label {
+      color: #fff;
     }
     
-    .mdc-checkbox__background {
-      border-color: #64b5f6;
-    }
-    
-    &.mat-mdc-checkbox-checked .mdc-checkbox__background {
-      background-color: #64b5f6;
-      border-color: #64b5f6;
+    .chip-percent {
+      color: rgba(255, 255, 255, 0.9);
     }
   }
-  
-  .class-badge {
-    padding: 2px 8px; // Smaller badge
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-right: auto;
-    min-width: 60px;
-    text-align: center;
-    color: white;
+
+  .chip-label {
+    font-weight: 600;
+    transition: color 0.2s;
   }
+
+  .chip-percent {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: monospace;
+  }
+}
+
+.class-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.class-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
   
-  .class-stats {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    font-size: 12px;
-    line-height: 1.2;
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.active {
+    // Frosted glass effect with color tint
+    background: rgba(255, 255, 255, 0.05); // Fallback
+    border-color: var(--chip-color);
+    color: #fff;
+    box-shadow: 
+      inset 4px 0 0 0 var(--chip-color), // Left accent bar
+      0 4px 12px rgba(0,0,0,0.2); // Drop shadow
     
-    .count {
-      font-weight: 600;
-      color: #ffffff;
+    // Create the frosted tint using a pseudo-element
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--chip-color);
+      opacity: 0.15; // Low opacity for the tint
+      z-index: 0;
     }
     
-    .percentage {
-      color: #64b5f6;
-      opacity: 0.8;
+    // Ensure content stays on top
+    .chip-label, .chip-percent {
+      position: relative;
+      z-index: 1;
     }
+    
+    .chip-label {
+      color: #fff;
+    }
+
+    .chip-percent {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  .chip-label {
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .chip-percent {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: monospace;
   }
 }
 

@@ -27,8 +27,9 @@ export interface ActiveFilterChip {
   name?: string;
   value?: string;
   showStar?: boolean;
+  rankIcon?: string; // Path to rank icon image
   range?: string; // Star range like "1-9", "5+", etc.
-  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other';
+  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other' | 'blueStarSum' | 'pinkStarSum' | 'greenStarSum' | 'whiteStarSum';
   filterIndex?: number;
   filterList?: FactorFilter[];
 }
@@ -60,6 +61,14 @@ interface CompressedState {
   mwh?: number; // min white count
   pr?: number; // parent rank
   mf?: number; // max followers
+  
+  // Star sum filters (min only)
+  bss?: number; // blue stars sum min
+  pss?: number; // pink stars sum min
+  gss?: number; // green stars sum min
+  wss?: number; // white stars sum min
+  
+  mmwc?: number; // main parent min white count
 }
 
 export interface TreeNode {
@@ -96,9 +105,15 @@ export interface UnifiedSearchParams {
   main_parent_blue_sparks?: number[];
   main_parent_pink_sparks?: number[];
   main_parent_green_sparks?: number[];
-  main_parent_white_sparks?: number[];
+  main_parent_white_sparks?: number[][];
   min_win_count?: number;
   min_white_count?: number;
+
+  // Star sum filtering (min only)
+  min_blue_stars_sum?: number;
+  min_pink_stars_sum?: number;
+  min_green_stars_sum?: number;
+  min_white_stars_sum?: number;
 
   // Main inherit filtering
   min_main_blue_factors?: number;
@@ -288,6 +303,15 @@ export class AdvancedFilterComponent implements OnInit {
     if (this.filterState.min_white_count) state.mwh = this.filterState.min_white_count;
     if (this.filterState.parent_rank && this.filterState.parent_rank !== 1) state.pr = this.filterState.parent_rank;
     if (this.filterState.max_follower_num && this.filterState.max_follower_num !== 999) state.mf = this.filterState.max_follower_num;
+    
+    // Star sum filters (min only)
+    if (this.filterState.min_blue_stars_sum) state.bss = this.filterState.min_blue_stars_sum;
+    if (this.filterState.min_pink_stars_sum) state.pss = this.filterState.min_pink_stars_sum;
+    if (this.filterState.min_green_stars_sum) state.gss = this.filterState.min_green_stars_sum;
+    if (this.filterState.min_white_stars_sum) state.wss = this.filterState.min_white_stars_sum;
+    
+    // Main parent min white count
+    if (this.filterState.min_main_white_count) state.mmwc = this.filterState.min_main_white_count;
 
     return btoa(JSON.stringify(state));
   }
@@ -430,6 +454,25 @@ export class AdvancedFilterComponent implements OnInit {
       if (state.mwh !== undefined) this.filterState.min_white_count = state.mwh;
       if (state.pr !== undefined) this.filterState.parent_rank = state.pr;
       if (state.mf !== undefined) this.filterState.max_follower_num = state.mf;
+      
+      // Star sum filters (min only, with backwards compatibility for old [min, max] format)
+      if (state.bss !== undefined) {
+        this.filterState.min_blue_stars_sum = Array.isArray(state.bss) ? state.bss[0] : state.bss;
+      }
+      if (state.pss !== undefined) {
+        this.filterState.min_pink_stars_sum = Array.isArray(state.pss) ? state.pss[0] : state.pss;
+      }
+      if (state.gss !== undefined) {
+        this.filterState.min_green_stars_sum = Array.isArray(state.gss) ? state.gss[0] : state.gss;
+      }
+      if (state.wss !== undefined) {
+        this.filterState.min_white_stars_sum = Array.isArray(state.wss) ? state.wss[0] : state.wss;
+      }
+      
+      // Main parent min white count
+      if (state.mmwc !== undefined) {
+        this.filterState.min_main_white_count = state.mmwc;
+      }
 
       this.onFilterChange();
 
@@ -665,6 +708,31 @@ export class AdvancedFilterComponent implements OnInit {
   }
 
   onFilterChange() {
+    // Sanitize star sum filters - convert null to undefined and clamp values
+    // Blue, Pink, Green max is 9; White has no max
+    if (this.filterState.min_blue_stars_sum == null || this.filterState.min_blue_stars_sum <= 0) {
+      this.filterState.min_blue_stars_sum = undefined;
+    } else if (this.filterState.min_blue_stars_sum > 9) {
+      this.filterState.min_blue_stars_sum = 9;
+    }
+    
+    if (this.filterState.min_pink_stars_sum == null || this.filterState.min_pink_stars_sum <= 0) {
+      this.filterState.min_pink_stars_sum = undefined;
+    } else if (this.filterState.min_pink_stars_sum > 9) {
+      this.filterState.min_pink_stars_sum = 9;
+    }
+    
+    if (this.filterState.min_green_stars_sum == null || this.filterState.min_green_stars_sum <= 0) {
+      this.filterState.min_green_stars_sum = undefined;
+    } else if (this.filterState.min_green_stars_sum > 9) {
+      this.filterState.min_green_stars_sum = 9;
+    }
+    
+    if (this.filterState.min_white_stars_sum == null || this.filterState.min_white_stars_sum <= 0) {
+      this.filterState.min_white_stars_sum = undefined;
+    }
+    // White stars have no max limit
+    
     // Sync derived state
     this.filterState.min_limit_break = this.selectedLimitBreak > 0 ? this.selectedLimitBreak : undefined;
     this.filterState.trainer_id = this.searchUserId;
@@ -713,7 +781,7 @@ export class AdvancedFilterComponent implements OnInit {
       ? Math.max(...this.mainGreenFactorFilters.map(f => f.min))
       : undefined;
 
-    this.filterState.main_parent_white_sparks = this.generateSparkIds(this.mainWhiteFactorFilters, this.whiteFactors, 3);
+    this.filterState.main_parent_white_sparks = this.generateSparkIdGroups(this.mainWhiteFactorFilters, this.whiteFactors, 3);
     // min_main_white_count is handled by the input field directly, do not overwrite it here based on specific factor filters.
 
     // Optional White Sparks (just IDs, no levels - for scoring/sorting)
@@ -728,8 +796,8 @@ export class AdvancedFilterComponent implements OnInit {
     // Update active filter chips
     this.updateActiveFilterChips();
 
-    // Emit the filter state
-    this.filterChangeSubject.next(this.filterState);
+    // Emit a shallow copy of the filter state to ensure change detection
+    this.filterChangeSubject.next({ ...this.filterState });
   }
 
   private updateActiveFilterChips(): void {
@@ -737,16 +805,19 @@ export class AdvancedFilterComponent implements OnInit {
 
     // Helper to format value part
     const formatValue = (min: number, max: number, maxPossible: number = 9): string => {
-      if (min === max) {
+      // Clamp max to maxPossible (e.g., main parent factors cap at 3)
+      const clampedMax = Math.min(max, maxPossible);
+      
+      if (min === clampedMax) {
         return `${min}`;
-      } else if (min === 1 && max === maxPossible) {
-        return `${min}-${max}`;
-      } else if (min > 1 && max === maxPossible) {
+      } else if (min === 1 && clampedMax === maxPossible) {
+        return `${min}-${clampedMax}`;
+      } else if (min > 1 && clampedMax === maxPossible) {
         return `${min}+`;
-      } else if (min === 1 && max < maxPossible) {
-        return `≤${max}`;
+      } else if (min === 1 && clampedMax < maxPossible) {
+        return `≤${clampedMax}`;
       } else {
-        return `${min}-${max}`;
+        return `${min}-${clampedMax}`;
       }
     };
 
@@ -920,6 +991,17 @@ export class AdvancedFilterComponent implements OnInit {
       });
     }
 
+    // Main Parent Min White Count
+    if (this.filterState.min_main_white_count && this.filterState.min_main_white_count > 0) {
+      this.activeFilterChips.push({
+        id: 'main-min-white',
+        label: `Main White: ${this.filterState.min_main_white_count}+`,
+        name: 'Main White',
+        value: `${this.filterState.min_main_white_count}+`,
+        type: 'other'
+      });
+    }
+
     // Parent Rank
     if (this.filterState.parent_rank && this.filterState.parent_rank > 1) {
       this.activeFilterChips.push({
@@ -927,6 +1009,7 @@ export class AdvancedFilterComponent implements OnInit {
         label: `Rank: ${this.filterState.parent_rank}+`,
         name: 'Rank',
         value: `${this.filterState.parent_rank}+`,
+        rankIcon: this.getRankIconPath(this.filterState.parent_rank),
         type: 'other'
       });
     }
@@ -961,6 +1044,47 @@ export class AdvancedFilterComponent implements OnInit {
         name: 'User',
         value: this.searchUsername,
         type: 'other'
+      });
+    }
+
+    // Star Sum Filters (min only)
+    if (this.filterState.min_blue_stars_sum) {
+      this.activeFilterChips.push({
+        id: 'blue-stars-sum',
+        label: `Total Blue ★: ≥${this.filterState.min_blue_stars_sum}`,
+        name: 'Total Blue ★',
+        value: `≥${this.filterState.min_blue_stars_sum}`,
+        type: 'blueStarSum'
+      });
+    }
+
+    if (this.filterState.min_pink_stars_sum) {
+      this.activeFilterChips.push({
+        id: 'pink-stars-sum',
+        label: `Total Pink ★: ≥${this.filterState.min_pink_stars_sum}`,
+        name: 'Total Pink ★',
+        value: `≥${this.filterState.min_pink_stars_sum}`,
+        type: 'pinkStarSum'
+      });
+    }
+
+    if (this.filterState.min_green_stars_sum) {
+      this.activeFilterChips.push({
+        id: 'green-stars-sum',
+        label: `Total Green ★: ≥${this.filterState.min_green_stars_sum}`,
+        name: 'Total Green ★',
+        value: `≥${this.filterState.min_green_stars_sum}`,
+        type: 'greenStarSum'
+      });
+    }
+
+    if (this.filterState.min_white_stars_sum) {
+      this.activeFilterChips.push({
+        id: 'white-stars-sum',
+        label: `Total White ★: ≥${this.filterState.min_white_stars_sum}`,
+        name: 'Total White ★',
+        value: `≥${this.filterState.min_white_stars_sum}`,
+        type: 'whiteStarSum'
       });
     }
   }
@@ -1033,6 +1157,22 @@ export class AdvancedFilterComponent implements OnInit {
       case 'supportCard':
         this.removeSupportCard();
         break;
+      case 'blueStarSum':
+        this.filterState.min_blue_stars_sum = undefined;
+        this.onFilterChange();
+        break;
+      case 'pinkStarSum':
+        this.filterState.min_pink_stars_sum = undefined;
+        this.onFilterChange();
+        break;
+      case 'greenStarSum':
+        this.filterState.min_green_stars_sum = undefined;
+        this.onFilterChange();
+        break;
+      case 'whiteStarSum':
+        this.filterState.min_white_stars_sum = undefined;
+        this.onFilterChange();
+        break;
       case 'other':
         if (chip.id === 'limit-break') {
           this.selectedLimitBreak = 0;
@@ -1040,6 +1180,8 @@ export class AdvancedFilterComponent implements OnInit {
           this.filterState.min_win_count = 0;
         } else if (chip.id === 'min-white') {
           this.filterState.min_white_count = 0;
+        } else if (chip.id === 'main-min-white') {
+          this.filterState.min_main_white_count = 0;
         } else if (chip.id === 'parent-rank') {
           this.filterState.parent_rank = 1;
         } else if (chip.id === 'max-followers') {
@@ -1058,15 +1200,19 @@ export class AdvancedFilterComponent implements OnInit {
     switch (type) {
       case 'blue':
       case 'mainBlue':
+      case 'blueStarSum':
         return 'chip-blue';
       case 'pink':
       case 'mainPink':
+      case 'pinkStarSum':
         return 'chip-pink';
       case 'green':
       case 'mainGreen':
+      case 'greenStarSum':
         return 'chip-green';
       case 'white':
       case 'mainWhite':
+      case 'whiteStarSum':
         return 'chip-white';
       case 'optionalWhite':
       case 'optionalMainWhite':
@@ -1186,6 +1332,22 @@ export class AdvancedFilterComponent implements OnInit {
     }
   }
 
+  incrementStarSum(field: keyof UnifiedSearchParams, max?: number) {
+    const currentValue = (this.filterState[field] as number) || 0;
+    if (max === undefined || currentValue < max) {
+      (this.filterState[field] as any) = currentValue + 1;
+      this.onFilterChange();
+    }
+  }
+
+  decrementStarSum(field: keyof UnifiedSearchParams) {
+    const currentValue = (this.filterState[field] as number) || 0;
+    if (currentValue > 0) {
+      (this.filterState[field] as any) = currentValue - 1;
+      this.onFilterChange();
+    }
+  }
+
   // Rank Options
   rankOptions = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -1196,5 +1358,19 @@ export class AdvancedFilterComponent implements OnInit {
 
   onRankIconError(event: any, rank: number): void {
     event.target.style.display = 'none';
+  }
+
+  // Star Sum Helpers
+  getStarSumValue(type: 'blue' | 'pink' | 'green' | 'white'): number | undefined {
+    switch (type) {
+      case 'blue': return this.filterState.min_blue_stars_sum;
+      case 'pink': return this.filterState.min_pink_stars_sum;
+      case 'green': return this.filterState.min_green_stars_sum;
+      case 'white': return this.filterState.min_white_stars_sum;
+    }
+  }
+
+  onStarSumOpened(opened: boolean): void {
+    // Optional: Handle dropdown open state if needed
   }
 }

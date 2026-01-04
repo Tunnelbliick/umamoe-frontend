@@ -277,6 +277,12 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
         supportCardId: af.support_card_id,
         minLimitBreak: af.min_limit_break,
         
+        // Star Sum Filters
+        minBlueStarsSum: af.min_blue_stars_sum,
+        minPinkStarsSum: af.min_pink_stars_sum,
+        minGreenStarsSum: af.min_green_stars_sum,
+        minWhiteStarsSum: af.min_white_stars_sum,
+        
         page: this.currentPage,
         pageSize: this.pageSize,
         sortBy: this.mapSortByToBackend(this.currentSortBy),
@@ -474,6 +480,19 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
       (this.currentFilters?.skills && this.currentFilters.skills.length > 0) ||
       (this.currentFilters?.whiteSparks && this.currentFilters.whiteSparks.length > 0)
     );
+  }
+
+  hasOptionalWhiteFilters(): boolean {
+    if (!this.currentAdvancedFilters) return false;
+    return !!(
+      (this.currentAdvancedFilters.optional_white_sparks && this.currentAdvancedFilters.optional_white_sparks.length > 0) ||
+      (this.currentAdvancedFilters.optional_main_white_sparks && this.currentAdvancedFilters.optional_main_white_sparks.length > 0)
+    );
+  }
+
+  getSortLabel(): string {
+    const option = this.sortOptions.find(o => o.value === this.currentSortBy);
+    return option?.label || 'Affinity';
   }
 
   getStarArray(rating: number): number[] {
@@ -978,16 +997,46 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
        }
     }
 
-    // Check main parent filters (only if spark is from main parent)
+    // Helper to check arrays by factorId only (for main parent filters where the 
+    // total spark level can be higher than the main parent's individual contribution)
+    const checkArrayByFactorId = (arr: number[] | undefined) => {
+      if (!arr) return false;
+      const sparkFactorId = parseInt(spark.factorId, 10);
+      // Each ID in arr is like 103 (factorId 10 + level 3), extract factor ID by removing last digit
+      for (const fullId of arr) {
+        const arrFactorId = Math.floor(fullId / 10);
+        if (arrFactorId === sparkFactorId) return true;
+      }
+      return false;
+    };
+
+    // Check main parent filters - only highlight if the spark actually comes from the main parent
     if (isFromMainParent) {
+      // Match by factorId only since the displayed spark shows the TOTAL level across all parents,
+      // but the filter is for main parent only.
+      // e.g., filter for "main parent has 3★ speed" should highlight a result showing "9★ speed total"
+      // as long as the main parent contributes to that speed factor.
       if (spark.type === 0) { // Blue
-         if (checkArray(filters.main_parent_blue_sparks)) return true;
+         if (checkArrayByFactorId(filters.main_parent_blue_sparks)) return true;
       } else if (spark.type === 1) { // Pink
-         if (checkArray(filters.main_parent_pink_sparks)) return true;
+         if (checkArrayByFactorId(filters.main_parent_pink_sparks)) return true;
       } else if (spark.type === 5) { // Green
-         if (checkArray(filters.main_parent_green_sparks)) return true;
+         if (checkArrayByFactorId(filters.main_parent_green_sparks)) return true;
       } else { // White
-         if (checkArray(filters.main_parent_white_sparks)) return true;
+         // main_parent_white_sparks: check by factorId only
+         const checkGroupsByFactorId = (groups: number[][] | undefined) => {
+           if (!groups) return false;
+           const sparkFactorId = parseInt(spark.factorId, 10);
+           for (const group of groups) {
+             // Each ID in group is like 20159XX where last digit is level, extract factor ID
+             for (const fullId of group) {
+               const groupFactorId = Math.floor(fullId / 10);
+               if (groupFactorId === sparkFactorId) return true;
+             }
+           }
+           return false;
+         };
+         if (checkGroupsByFactorId(filters.main_parent_white_sparks)) return true;
          
          // Check optional main white sparks (match by factorId only)
          if (filters.optional_main_white_sparks && filters.optional_main_white_sparks.includes(parseInt(spark.factorId, 10))) {

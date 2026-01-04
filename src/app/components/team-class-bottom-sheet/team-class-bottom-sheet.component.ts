@@ -16,12 +16,21 @@ export interface BottomSheetData {
   classStats: { [key: string]: { count: number; percentage: number } };
   selectedDistance: string | null;
   distances: string[];
+  scenarioFilters: { [key: string]: boolean };
+  scenarioNames: { [key: string]: string };
+  scenarioStats?: { [key: string]: { count: number; percentage: number } };
 }
 
 interface ClassOption {
   value: string;
   label: string;
   count?: number;
+  percentage?: number;
+}
+
+interface ScenarioOption {
+  value: string;
+  label: string;
   percentage?: number;
 }
 
@@ -38,6 +47,24 @@ interface ClassOption {
     </div>
 
     <div class="bottom-sheet-content">
+      <!-- Scenario Filter Section -->
+      <div class="filter-section">
+        <div class="section-header">
+          <h3>Scenario Filter</h3>
+        </div>
+        
+        <div class="scenario-grid">
+          <button 
+            *ngFor="let scenario of scenarioOptions"
+            class="scenario-chip"
+            [class.active]="localScenarioFilters[scenario.value]"
+            (click)="toggleScenario(scenario.value)">
+            <span class="chip-label">{{ scenario.label }}</span>
+            <span class="chip-percent" *ngIf="scenario.percentage !== undefined">{{ (scenario.percentage || 0).toFixed(0) }}%</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Team Class Filter Section -->
       <div class="filter-section">
         <div class="section-header">
@@ -55,22 +82,16 @@ interface ClassOption {
         </div>
 
         <!-- Individual Class Options -->
-        <div class="class-options">
-          <div 
+        <div class="class-grid">
+          <button 
             *ngFor="let classOption of classOptions"
-            class="class-option">
-            <mat-checkbox 
-              [checked]="localSelectedClasses[classOption.value]"
-              (change)="toggleClass(classOption.value)">
-            </mat-checkbox>
-            <div class="class-badge" [ngStyle]="getBadgeStyle(classOption.value)">
-              {{ classOption.label }}
-            </div>
-            <div class="class-stats">
-              <div class="count">{{ formatNumber(classOption.count || 0) }}</div>
-              <div class="percentage">{{ (classOption.percentage || 0).toFixed(1) }}%</div>
-            </div>
-          </div>
+            class="class-chip"
+            [class.active]="localSelectedClasses[classOption.value]"
+            [style.--chip-color]="getBadgeColor(classOption.value)"
+            (click)="toggleClass(classOption.value)">
+            <span class="chip-label">{{ classOption.label }}</span>
+            <span class="chip-percent">{{ (classOption.percentage || 0).toFixed(0) }}%</span>
+          </button>
         </div>
       </div>
       
@@ -106,7 +127,9 @@ export class TeamClassBottomSheetComponent implements OnInit {
     { value: '1', label: 'Class 1' }
   ];
 
+  scenarioOptions: ScenarioOption[] = [];
   localSelectedClasses: ClassFilterState = {};
+  localScenarioFilters: { [key: string]: boolean } = {};
   localSelectedDistance: string | null = null;
 
   constructor(
@@ -116,11 +139,13 @@ export class TeamClassBottomSheetComponent implements OnInit {
   ) {
     // Initialize local state from passed data
     this.localSelectedClasses = { ...data.selectedClasses };
+    this.localScenarioFilters = { ...(data.scenarioFilters || {}) };
     this.localSelectedDistance = data.selectedDistance;
   }
 
   ngOnInit(): void {
     this.setupClassStats();
+    this.setupScenarioOptions();
   }
 
   get allClassesSelected(): boolean {
@@ -142,59 +167,56 @@ export class TeamClassBottomSheetComponent implements OnInit {
     });
   }
 
+  private setupScenarioOptions(): void {
+    if (this.data.scenarioNames) {
+      this.scenarioOptions = Object.entries(this.data.scenarioNames).map(([key, label]) => {
+        const stats = this.data.scenarioStats?.[key];
+        return {
+          value: key,
+          label: label,
+          percentage: stats?.percentage
+        };
+      });
+    }
+  }
+
   toggleAllClasses(checked: boolean): void {
     this.classOptions.forEach(option => {
       this.localSelectedClasses[option.value] = checked;
     });
-    this.propagateChanges();
+    // Don't close immediately on "All Classes" toggle? Or maybe yes?
+    // The current implementation closes on every change. I will keep it for now but maybe I should change it to only close on "Close" button or backdrop click, and apply changes then?
+    // But the `StatisticsComponent` expects the result in `afterDismissed`.
+    // If I want to support multiple changes, I should NOT call dismiss here.
+    // But if I don't call dismiss, the changes aren't applied until the user manually closes.
+    // Let's assume the user wants to apply changes when they close the sheet.
+    // So I will REMOVE propagateChanges() from the toggle methods and only return the data in close().
   }
 
   toggleClass(classValue: string): void {
     this.localSelectedClasses[classValue] = !this.localSelectedClasses[classValue];
-    this.propagateChanges();
+  }
+
+  toggleScenario(scenarioValue: string): void {
+    this.localScenarioFilters[scenarioValue] = !this.localScenarioFilters[scenarioValue];
   }
 
   selectDistance(distance: string): void {
     this.localSelectedDistance = distance;
-    this.propagateChanges();
+    // For distance, it's a single selection, so maybe closing immediately is fine?
+    // But for consistency, let's keep it open.
   }
 
-  private propagateChanges(): void {
-    // Immediately propagate changes without waiting for apply
+  close(): void {
     this.bottomSheetRef.dismiss({
       classFilters: this.localSelectedClasses,
+      scenarioFilters: this.localScenarioFilters,
       distance: this.localSelectedDistance
     });
   }
 
-  close(): void {
-    this.bottomSheetRef.dismiss();
-  }
-
-  getBadgeStyle(classValue: string): any {
-    const color = this.colorsService.getClassColor(classValue);
-    return {
-      'background-color': color,
-      'color': this.getTextColor(color)
-    };
-  }
-
-  private getTextColor(backgroundColor: string): string {
-    // Simple contrast calculation
-    const rgb = this.hexToRgb(backgroundColor);
-    if (!rgb) return '#000000';
-    
-    const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
-    return brightness > 128 ? '#000000' : '#ffffff';
-  }
-
-  private hexToRgb(hex: string) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+  getBadgeColor(classValue: string): string {
+    return this.colorsService.getClassColor(classValue);
   }
 
   formatNumber(num: number): string {

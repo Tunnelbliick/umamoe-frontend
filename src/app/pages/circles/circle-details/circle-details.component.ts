@@ -70,8 +70,8 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   allMemberData: CircleMemberMonthlyData[] = [];
   loading = true;
   
-  currentYear: number = new Date().getFullYear();
-  currentMonth: number = new Date().getMonth() + 1;
+  currentYear: number;
+  currentMonth: number;
 
   displayedColumns: string[] = ['name', 'role', 'fans', 'last_updated'];
   
@@ -114,6 +114,17 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
     private ngZone: NgZone,
     private dialog: MatDialog
   ) {
+    // Initialize with JST date to handle month rollover correctly
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const jstDate = new Date(utc + (3600000 * 9));
+
+    // Swap at the end of the 1st (start of the 2nd), so subtract 1 day
+    jstDate.setDate(jstDate.getDate() - 1);
+
+    this.currentYear = jstDate.getFullYear();
+    this.currentMonth = jstDate.getMonth() + 1;
+
     this.loadConfig();
   }
 
@@ -317,13 +328,23 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
         }
       }
       
-      // Calculate daily gain
+      // Calculate daily gain - skip 0 values (missing data)
       let dailyGain = 0;
-      if (isActive) {
-        if (maxIndexWithData >= 1 && fans.length > maxIndexWithData) {
-          dailyGain = fans[maxIndexWithData] - fans[maxIndexWithData - 1];
-        } else if (maxIndexWithData === 0 && fans.length > 0) {
-          dailyGain = fans[0];
+      if (isActive && lastIndex >= 0) {
+        // Find the previous non-zero value before lastIndex
+        let prevNonZeroValue = 0;
+        for (let i = lastIndex - 1; i >= 0; i--) {
+          if (fans[i] > 0) {
+            prevNonZeroValue = fans[i];
+            break;
+          }
+        }
+        
+        if (prevNonZeroValue > 0) {
+          dailyGain = lastFanCount - prevNonZeroValue;
+        } else if (lastFanCount > 0) {
+          // First day of data
+          dailyGain = lastFanCount;
         }
       }
 
@@ -340,17 +361,28 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
           dailyAvg = monthlyGain / days;
       }
 
-      // Calculate 7 Day Avg
+      // Calculate 7 Day Avg - skip 0 values
       let sevenDayAvg = 0;
       let weeklyGain = 0;
       if (isActive && lastIndex >= 0) {
-          const daysBack = 7;
-          const prevIndex = lastIndex - daysBack;
-          if (prevIndex >= 0 && fans[prevIndex] > 0) {
-              sevenDayAvg = (lastFanCount - fans[prevIndex]) / daysBack;
-              weeklyGain = lastFanCount - fans[prevIndex];
+          // Look back 7 days worth of non-zero data
+          const nonZeroValues: { index: number; value: number }[] = [];
+          for (let i = lastIndex; i >= 0 && nonZeroValues.length < 8; i--) {
+              if (fans[i] > 0) {
+                  nonZeroValues.push({ index: i, value: fans[i] });
+              }
+          }
+          
+          if (nonZeroValues.length >= 2) {
+              const latest = nonZeroValues[0];
+              const weekAgo = nonZeroValues[Math.min(7, nonZeroValues.length - 1)];
+              const daysDiff = latest.index - weekAgo.index;
+              if (daysDiff > 0) {
+                  sevenDayAvg = (latest.value - weekAgo.value) / daysDiff;
+                  weeklyGain = latest.value - weekAgo.value;
+              }
           } else if (firstIndex >= 0 && lastIndex > firstIndex) {
-              // Less than 7 days of data, average over available days
+              // Less than enough data points, average over available days
               const days = lastIndex - firstIndex;
               sevenDayAvg = (lastFanCount - firstFanCount) / days;
               weeklyGain = lastFanCount - firstFanCount;
@@ -358,17 +390,21 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
       }
 
       // Calculate Projected Monthly
+      // Formula: projectedMonthly = sevenDayAvg * remainingDays + currentMonthlyTotal
+      // This adds the expected gains for remaining days to what's already been gained
       let projectedMonthly = 0;
       const daysInMonth = new Date(this.currentYear, this.currentMonth, 0).getDate();
-      // Estimate days active in current month based on data points
-      // If we have data from day 1 to day X, daysActive is X.
-      // If we started mid-month, it's less.
-      // For simplicity, let's use the average daily gain * days in month
+      const currentDay = lastIndex + 1; // lastIndex is 0-based, so day 1 = index 0
+      const remainingDays = Math.max(0, daysInMonth - currentDay);
+      
       if (sevenDayAvg > 0) {
-        projectedMonthly = sevenDayAvg * daysInMonth;
+        // Project remaining days using 7-day average + current monthly total
+        projectedMonthly = (sevenDayAvg * remainingDays) + monthlyGain;
       } else if (monthlyGain > 0 && lastIndex > firstIndex) {
-         const days = lastIndex - firstIndex;
-         projectedMonthly = (monthlyGain / days) * daysInMonth;
+        // Fallback: use month-to-date daily average for remaining days
+        const days = lastIndex - firstIndex;
+        const dailyAvgFromMonth = monthlyGain / days;
+        projectedMonthly = (dailyAvgFromMonth * remainingDays) + monthlyGain;
       }
 
       const memberObj = {
@@ -640,13 +676,36 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
         baseline = firstNonZero;
       }
       
-      const data = member.daily_fans
-        .slice(0, daysToShow)
-        .map(val => {
-          // If value is 0, return null to break the line
-          if (val === 0) return null; 
-          return val - baseline;
-        });
+      // Process data with gap handling
+      const data: (number | null)[] = [];
+      const isCarriedForward: boolean[] = []; // Track which points are carried forward
+      let lastKnownValue: number | null = null;
+      
+      for (let i = 0; i < daysToShow; i++) {
+        const rawValue = member.daily_fans[i];
+        
+        if (rawValue > 0) {
+          // Valid data point
+          const value = rawValue - baseline;
+          data.push(value);
+          isCarriedForward.push(false);
+          lastKnownValue = value;
+        } else {
+          // Missing data (0 value)
+          // Check if next day has data - if so, carry forward last known value
+          const nextValue = i + 1 < daysToShow ? member.daily_fans[i + 1] : 0;
+          
+          if (nextValue > 0 && lastKnownValue !== null) {
+            // Carry forward the last known value so we can connect to next day
+            data.push(lastKnownValue);
+            isCarriedForward.push(true); // Mark as carried forward
+          } else {
+            // No data coming next, just leave it as gap
+            data.push(null);
+            isCarriedForward.push(false);
+          }
+        }
+      }
 
       return {
         label: member.trainer_name,
@@ -656,7 +715,18 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
         borderWidth: 2,
         tension: 0.4,
         pointRadius: 0,
-        pointHoverRadius: 4
+        pointHoverRadius: 4,
+        spanGaps: false,
+        segment: {
+          borderColor: (ctx: any) => {
+            // Hide line segments going INTO carried-forward values (missing raw data)
+            const p1Index = ctx.p1DataIndex;
+            if (p1Index !== undefined && isCarriedForward[p1Index]) {
+              return 'transparent'; // Hide line going into carried-forward point
+            }
+            return color;
+          }
+        }
       };
     });
 
@@ -726,19 +796,23 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 let dailyGain = 0;
                 if (dataIndex === 0) {
-                    // For the first day shown, the gain is the value itself (since baseline is 0 relative to start)
-                    // Or we can show 0 if we strictly mean "gain from previous day".
-                    // But since we show cumulative gain on Y-axis, maybe user wants to see that?
-                    // User said: "hint should show the gain that day instead of total gain"
-                    // If Y-axis is cumulative gain from start of month (normalized), then
-                    // gain that day = currentVal - prevVal.
                     dailyGain = currentVal;
                 } else {
-                    const prevVal = dataset.data[dataIndex - 1] as number;
-                    // If prevVal is null (e.g. missing data), treat as 0 or skip?
-                    // If we have a gap, the gain might be large.
-                    const prev = (prevVal !== null && prevVal !== undefined) ? prevVal : 0;
-                    dailyGain = currentVal - prev;
+                    // Find previous non-null value
+                    let prevVal: number | null = null;
+                    for (let i = dataIndex - 1; i >= 0; i--) {
+                        const val = dataset.data[i];
+                        if (val !== null && val !== undefined) {
+                            prevVal = val as number;
+                            break;
+                        }
+                    }
+                    
+                    if (prevVal !== null) {
+                        dailyGain = currentVal - prevVal;
+                    } else {
+                        dailyGain = currentVal;
+                    }
                 }
 
                 if (dailyGain > 0) {

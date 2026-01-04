@@ -37,27 +37,23 @@ interface ClassOption {
     <!-- Desktop Mode Only - Class Filter Card -->
     <div class="filter-container">
       <div class="filter-header">
-        <h3>Team Class Filter</h3>
+        <h3>Team Class</h3>
+        <button class="toggle-all-btn" (click)="toggleAll()">
+           {{ isAllSelected ? 'None' : 'All' }}
+        </button>
       </div>
 
-      <div class="filter-options">
-        <div class="filter-option" *ngFor="let classOption of classOptions">
-          <mat-checkbox 
-            [formControl]="getClassControl(classOption.value)"
-            [color]="'primary'"
-            class="class-checkbox">
-            <div class="class-option-content">
-              <div class="class-badge" 
-                   [ngStyle]="getBadgeStyle(classOption.value)">
-                {{ classOption.label }}
-              </div>
-              <div class="class-info" *ngIf="classOption.count">
-                <span class="count">{{ formatNumber(classOption.count) }}</span>
-                <span class="percentage">{{ classOption.percentage?.toFixed(1) }}%</span>
-              </div>
-            </div>
-          </mat-checkbox>
-        </div>
+      <div class="class-grid">
+        <ng-container *ngFor="let classOption of classOptions">
+          <button *ngIf="classOption.value !== 'overall'"
+                  class="class-chip"
+                  [class.active]="getClassControl(classOption.value).value"
+                  [style.--chip-color]="getBadgeColor(classOption.value)"
+                  (click)="onClassToggle(classOption.value)">
+             <span class="chip-label">{{ classOption.label }}</span>
+             <span class="chip-percent" *ngIf="classOption.percentage">{{ classOption.percentage | number:'1.0-0' }}%</span>
+          </button>
+        </ng-container>
       </div>
     </div>
 
@@ -70,7 +66,7 @@ interface ClassOption {
     >
       <div class="distance-header">
         <mat-icon>track_changes</mat-icon>
-        <span>Race Distance</span>
+        <span>Distance</span>
       </div>
       
       <div class="distance-pills">
@@ -349,6 +345,21 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
       'dirt': '#9b59b6'       // Purple for dirt
     };
     return colors[distance] || '#6c757d';
+  }
+
+  getBadgeColor(classValue: string): string {
+    return this.colorsService.getClassColor(classValue);
+  }
+
+  toggleAll(): void {
+    const control = this.classControls['overall'];
+    if (control) {
+      control.setValue(!control.value);
+    }
+  }
+
+  get isAllSelected(): boolean {
+    return this.classControls['overall']?.value === true;
   }
 
   onClassToggle(classValue: string): void {

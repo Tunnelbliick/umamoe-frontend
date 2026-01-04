@@ -164,7 +164,7 @@ export interface InheritanceSearchFilters {
   mainParentBlueSparks?: number[];
   mainParentPinkSparks?: number[];
   mainParentGreenSparks?: number[];
-  mainParentWhiteSparks?: number[];
+  mainParentWhiteSparks?: number[][];  // Groups for AND logic
   
   // Optional White Factors (for scoring/sorting, no level required)
   optionalWhiteSparks?: number[];
@@ -183,6 +183,12 @@ export interface InheritanceSearchFilters {
   // Support Card Filters
   supportCardId?: number;
   minLimitBreak?: number;
+
+  // Star Sum Filters (min only)
+  minBlueStarsSum?: number;
+  minPinkStarsSum?: number;
+  minGreenStarsSum?: number;
+  minWhiteStarsSum?: number;
 
   // Pagination
   page?: number;

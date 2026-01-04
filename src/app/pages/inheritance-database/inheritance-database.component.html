@@ -56,6 +56,12 @@
         </div>
       </div>
 
+      <!-- Optional Whites Sorting Notice -->
+      <div *ngIf="hasOptionalWhiteFilters()" class="sorting-notice">
+        <mat-icon>info</mat-icon>
+        <span>Results are sorted by preferred white factor matches first, then by {{ getSortLabel() }}</span>
+      </div>
+
       <!-- Loading State -->
       <div *ngIf="loading" class="loading-container">
         <mat-spinner></mat-spinner>

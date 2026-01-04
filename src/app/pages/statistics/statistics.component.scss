@@ -32,6 +32,7 @@
 .sidebar {
   width: 280px;
   flex-shrink: 0;
+  position: relative; // Changed from sticky - we'll use JS for better control
 
   @media (max-width: 1199px) {
     display: none;
@@ -41,6 +42,124 @@
     width: 100%;
   }
 }
+
+.sidebar-content {
+  transition: none; // Prevent any transition that could cause jumps
+  
+  &.sticky-mode {
+    position: fixed;
+    top: 80px;
+    z-index: 100;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+    
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari/Opera
+    }
+  }
+}
+
+// Scenario Filter Styling
+.scenario-filter-card {
+  background: rgba(20, 20, 20, 0.6); // Darker, consistent background
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+
+  .filter-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      color: #64b5f6;
+    }
+  }
+
+  .scenario-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .scenario-toggles {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.25rem;
+    border-radius: 8px;
+  }
+
+  .scenario-toggle {
+    flex: 1;
+    padding: 0.5rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    // Reset default button styles
+    outline: none;
+    font-family: inherit;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+      background: rgba(100, 181, 246, 0.15);
+      border-color: rgba(100, 181, 246, 0.3);
+      color: #64b5f6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  }
+
+  .scenario-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.25rem;
+
+    .scenario-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.25rem;
+    }
+
+    .stat-value {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+      font-family: monospace; // Better alignment for numbers
+    }
+  }
+}
+
+
 
 .content-area {
   flex: 1;

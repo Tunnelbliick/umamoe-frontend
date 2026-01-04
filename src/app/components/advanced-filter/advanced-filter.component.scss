@@ -2,14 +2,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     cursor: pointer;
     user-select: none;
     transition: background-color 0.2s ease;
     background: rgba(255, 255, 255, 0.02);
     border: 1.5px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 
     &:hover {
         background: rgba(33, 150, 243, 0.08);
@@ -53,9 +53,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     align-items: stretch;
-    padding: 14px 18px;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.02);
     border: 1.5px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
@@ -788,14 +788,14 @@
 
 // Property filters (compact single row when possible)
 .property-filters-compact {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .filters-header-compact {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 
     h4 {
         margin: 0;
@@ -822,7 +822,7 @@
 .filters-grid-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
 }
 
 .filter-group {
@@ -830,10 +830,10 @@
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     transition: all 0.2s ease;
 
     @media (max-width: 600px) {
@@ -847,14 +847,14 @@
 }
 
 .group-title {
-    margin: 0 0 8px 0;
-    font-size: 13px;
+    margin: 0 0 4px 0;
+    font-size: 12px;
     font-weight: 600;
     color: #2196f3;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid rgba(33, 150, 243, 0.2);
-    padding-bottom: 8px;
+    padding-bottom: 6px;
 }
 
 .factor-row {
@@ -878,7 +878,7 @@
 }
 
 .factor-section {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 
     &:last-child {
         margin-bottom: 0;
@@ -886,26 +886,36 @@
 }
 
 .section-label {
-    font-size: 12px;
+    font-size: 11px;
     color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-weight: 500;
+}
+
+.filter-hint {
+    font-size: 11px;
+    color: rgba(255, 193, 7, 0.8);
+    margin: -4px 0 8px 0;
+    padding: 6px 10px;
+    background: rgba(255, 193, 7, 0.08);
+    border-radius: 4px;
+    border-left: 2px solid rgba(255, 193, 7, 0.5);
 }
 
 .factor-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .factor-row-item {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 6px;
+    padding: 8px 10px;
 
     .row-top {
         display: flex;
@@ -1168,7 +1178,7 @@
 .input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 8px;
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
@@ -1181,11 +1191,11 @@
     .input-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 3px;
     }
 
     .input-label {
-        font-size: 12px;
+        font-size: 11px;
         color: rgba(255, 255, 255, 0.6);
         font-weight: 500;
         margin-left: 2px;
@@ -1369,20 +1379,21 @@
 
 // Active Filters Chips Section
 .active-filters-section {
-    margin-top: 12px;
-    padding: 12px 16px;
+    margin-top: 8px;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.02);
     border: 1.5px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    border-radius: 6px;
 
     .active-filters-container {
         display: flex;
-        align-items: flex-start;
-        gap: 12px;
+        align-items: center;
+        gap: 10px;
         flex-wrap: wrap;
 
         @media (max-width: 600px) {
             flex-direction: column;
+            align-items: flex-start;
             gap: 8px;
         }
     }
@@ -1392,12 +1403,12 @@
         font-weight: 500;
         color: rgba(255, 255, 255, 0.6);
         white-space: nowrap;
-        padding-top: 4px;
     }
 
     .active-filters-chips {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: 8px;
         flex: 1;
     }
@@ -1405,10 +1416,10 @@
     .filter-chip {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 4px 10px;
-        border-radius: 16px;
-        font-size: 12px;
+        gap: 6px;
+        padding: 5px 10px;
+        border-radius: 14px;
+        font-size: 13px;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -1425,8 +1436,8 @@
         .chip-label {
             white-space: nowrap;
             display: flex;
-            align-items: baseline;
-            gap: 2px;
+            align-items: center;
+            gap: 4px;
         }
 
         .chip-name {
@@ -1440,23 +1451,29 @@
 
         .chip-value {
             font-weight: 700;
-            font-size: 13px; // Slightly larger than base 12px
+            font-size: 14px;
             display: inline-flex;
             align-items: center;
 
             .star-icon {
-                font-size: 13px;
-                width: 13px;
-                height: 13px;
+                font-size: 14px;
+                width: 14px;
+                height: 14px;
                 margin-left: 1px;
                 margin-bottom: 1px;
             }
         }
 
+        .chip-rank-icon {
+            height: 20px;
+            width: auto;
+            vertical-align: middle;
+        }
+
         .chip-remove {
-            font-size: 14px;
-            width: 14px;
-            height: 14px;
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
             opacity: 0.7;
             transition: opacity 0.2s ease;
         }
@@ -1544,3 +1561,273 @@
         }
     }
 }
+
+// Star Sum Select Panel Styles
+::ng-deep .star-sum-panel {
+  .mat-mdc-select-panel {
+    min-width: 280px !important;
+    max-width: 320px !important;
+    padding: 0 !important;
+  }
+
+  .custom-panel-option {
+    height: auto !important;
+    min-height: 48px;
+    padding: 0 !important;
+    background: transparent !important;
+    cursor: default !important;
+    
+    &:hover, &:focus, &.mat-mdc-option-active {
+      background: transparent !important;
+    }
+
+    .mdc-list-item__primary-text {
+      width: 100%;
+      white-space: normal;
+    }
+  }
+
+  .custom-select-content {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: default;
+  }
+
+  .slider-container {
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+    }
+
+    mat-slider {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  .inputs-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+
+    .small-input {
+      width: 80px;
+      
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+
+    .separator {
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: bold;
+      margin-top: 16px; // Align with input field
+    }
+  }
+
+  // Compact Input Wrapper for Star Sum Panel
+  .compact-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    .small-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-left: 2px;
+    }
+
+    .compact-input {
+      width: 90px;
+      
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+
+      .mat-mdc-text-field-wrapper {
+        padding: 0 8px;
+        height: 36px;
+      }
+
+      .mat-mdc-form-field-infix {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        min-height: 36px;
+      }
+
+      input.mat-mdc-input-element {
+        margin-top: 0;
+      }
+      
+      // Re-use spinner controls styles
+      .spinner-controls {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        margin-right: -4px;
+        margin-top: -2px; // Adjust for compact height
+
+        mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 12px;
+            line-height: 12px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+
+            &:hover {
+                color: #2196f3;
+                background: rgba(33, 150, 243, 0.1);
+                border-radius: 2px;
+            }
+
+            &:active {
+                color: #64b5f6;
+            }
+        }
+      }
+    }
+  }
+}
+
+// Filter description text
+.filter-description {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: -2px 0 6px 0;
+  font-style: italic;
+}
+
+// Colored star labels for Total Star Count section
+.input-label.star-label {
+  &.blue { color: #64b5f6; }
+  &.pink { color: #f06292; }
+  &.green { color: #81c784; }
+  &.white { color: #bdbdbd; }
+}
+// Compact Input Group for Star Sum Panel
+::ng-deep .star-sum-panel {
+ .compact-input-group {
+ display: flex;
+ flex-direction: column;
+ gap: 4px;
+ 
+ .input-label-small {
+ font-size: 11px;
+ color: rgba(255, 255, 255, 0.6);
+ margin-left: 2px;
+ font-weight: 500;
+ }
+
+ .compact-input-field {
+ width: 90px;
+ 
+ // Hide default outline elements
+ .mdc-notched-outline__leading,
+ .mdc-notched-outline__notch,
+ .mdc-notched-outline__trailing {
+ border: none !important;
+ }
+
+ // Style the wrapper to look like a custom input
+ .mat-mdc-text-field-wrapper {
+ height: 36px !important;
+ padding: 0 8px !important;
+ background: rgba(255, 255, 255, 0.05) !important;
+ border: 1px solid rgba(255, 255, 255, 0.1) !important;
+ border-radius: 6px !important;
+ transition: all 0.2s ease;
+ }
+
+ // Hover state
+ &:hover .mat-mdc-text-field-wrapper {
+ background: rgba(255, 255, 255, 0.08) !important;
+ border-color: rgba(255, 255, 255, 0.2) !important;
+ }
+
+ // Focused state
+ &.mat-focused .mat-mdc-text-field-wrapper {
+ background: rgba(255, 255, 255, 0.1) !important;
+ border-color: #2196f3 !important;
+ box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+ }
+
+ .mat-mdc-form-field-subscript-wrapper {
+ display: none;
+ }
+
+ .mat-mdc-form-field-infix {
+ padding: 0 !important;
+ min-height: 36px !important;
+ display: flex !important;
+ align-items: center !important;
+ }
+
+ input.mat-mdc-input-element {
+ margin-top: 0 !important;
+ position: relative !important;
+ top: 0 !important;
+ height: auto !important;
+ padding: 0 !important;
+ color: rgba(255, 255, 255, 0.9) !important;
+ font-weight: 500;
+ text-align: center;
+ }
+ 
+ // Spinner controls
+ .spinner-controls {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ height: 100%;
+ margin-right: -4px;
+
+ mat-icon {
+ font-size: 16px;
+ width: 16px;
+ height: 12px;
+ line-height: 12px;
+ cursor: pointer;
+ color: rgba(255, 255, 255, 0.4);
+ transition: all 0.2s;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ user-select: none;
+ background: transparent !important; // Ensure no background
+
+ &:hover {
+ color: #2196f3;
+ background: rgba(33, 150, 243, 0.1) !important;
+ border-radius: 2px;
+ }
+
+ &:active {
+ color: #64b5f6;
+ }
+ }
+ }
+ }
+ }
+ 
+ .separator {
+ margin-top: 18px; // Align with input field
+ color: rgba(255, 255, 255, 0.4);
+ }
+}
+

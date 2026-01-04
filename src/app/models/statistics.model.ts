@@ -122,32 +122,62 @@ export interface GlobalStatistics {
     [teamClass: string]: TeamClassDistribution | number | undefined;
   };
   uma_distribution: { 
-    by_team_class?: { [teamClass: string]: { [characterName: string]: CharacterDistribution } };
+    by_team_class?: { 
+      [teamClass: string]: { 
+        overall: { [characterName: string]: CharacterDistribution };
+        by_scenario: { [scenarioId: string]: { [characterName: string]: CharacterDistribution } };
+      } 
+    };
   } & { [characterName: string]: CharacterDistribution };
   stat_averages: {
     overall: { [stat: string]: StatDistribution };
-    by_team_class: { [teamClass: string]: { [stat: string]: StatDistribution } };
+    by_team_class: { 
+      [teamClass: string]: { 
+        overall: { [stat: string]: StatDistribution };
+        by_scenario: { [scenarioId: string]: { [stat: string]: StatDistribution } };
+      } 
+    };
   };
   support_cards: {
     overall?: { [cardName: string]: ItemWithLevels };
     total_support_cards?: number;
-    by_team_class: { [teamClass: string]: { [cardName: string]: ItemWithLevels } };
+    by_team_class: { 
+      [teamClass: string]: { 
+        overall: { [cardName: string]: ItemWithLevels };
+        by_scenario: { [scenarioId: string]: { [cardName: string]: ItemWithLevels } };
+      } 
+    };
     [key: string]: any; // For dynamic team class totals like total_support_cards_6
   };
   support_card_combinations: {
     overall?: { [combination: string]: SupportCardCombination };
     total_combinations?: number;
-    by_team_class: { [teamClass: string]: { [combination: string]: SupportCardCombination } };
+    by_team_class: { 
+      [teamClass: string]: { 
+        overall: { [combination: string]: SupportCardCombination };
+        by_scenario: { [scenarioId: string]: { [combination: string]: SupportCardCombination } };
+      } 
+    };
     [key: string]: any; // For dynamic team class totals
   };
   support_card_type_distribution: {
     overall?: { [cardType: string]: any };
-    by_team_class: { [teamClass: string]: { [cardType: string]: any } };
+    by_team_class: { 
+      [teamClass: string]: { 
+        overall: { [cardType: string]: any };
+        by_scenario: { [scenarioId: string]: { [cardType: string]: any } };
+      } 
+    };
   };
   skills: {
     overall?: { [skillName: string]: ItemWithLevels };
     total_skills?: number;
-    by_team_class: { [teamClass: string]: { [skillName: string]: ItemWithLevels } };
+    by_team_class: { 
+      [teamClass: string]: { 
+        overall: { [skillName: string]: ItemWithLevels };
+        by_scenario: { [scenarioId: string]: { [skillName: string]: ItemWithLevels } };
+      } 
+    };
     [key: string]: any; // For dynamic team class totals
   };
 }
@@ -156,17 +186,34 @@ export interface DistanceStatistics {
   metadata: StatisticsMetadata;
   by_team_class: {
     [teamClass: string]: {
-      total_entries: number;
-      total_trained_umas: number;
-      uma_distribution: { [characterName: string]: CharacterDistribution };
-      stat_averages: { [stat: string]: StatDistribution };
-      support_cards: { [cardName: string]: ItemWithLevels };
-      total_support_cards: number;
-      support_card_combinations: { [combination: string]: SupportCardCombination };
-      total_combinations: number;
-      support_card_type_distribution: { [cardType: string]: any };
-      skills: { [skillName: string]: ItemWithLevels };
-      total_skills: number;
+      overall: {
+        total_entries: number;
+        total_trained_umas: number;
+        uma_distribution: { [characterName: string]: CharacterDistribution };
+        stat_averages: { [stat: string]: StatDistribution };
+        support_cards: { [cardName: string]: ItemWithLevels };
+        total_support_cards: number;
+        support_card_combinations: { [combination: string]: SupportCardCombination };
+        total_combinations: number;
+        support_card_type_distribution: { [cardType: string]: any };
+        skills: { [skillName: string]: ItemWithLevels };
+        total_skills: number;
+      };
+      by_scenario: {
+        [scenarioId: string]: {
+          total_entries: number;
+          total_trained_umas: number;
+          uma_distribution: { [characterName: string]: CharacterDistribution };
+          stat_averages: { [stat: string]: StatDistribution };
+          support_cards: { [cardName: string]: ItemWithLevels };
+          total_support_cards: number;
+          support_card_combinations: { [combination: string]: SupportCardCombination };
+          total_combinations: number;
+          support_card_type_distribution: { [cardType: string]: any };
+          skills: { [skillName: string]: ItemWithLevels };
+          total_skills: number;
+        }
+      }
     };
   };
 }
@@ -191,16 +238,32 @@ export interface CharacterStatistics {
     [distance: string]: {
       by_team_class: {
         [teamClass: string]: {
-          total_entries: number;
-          total_trained_umas: number;
-          stat_averages: { [stat: string]: StatDistribution | Partial<StatDistribution> };
-          common_support_cards: { [cardName: string]: ItemWithLevels };
-          total_support_cards: number;
-          support_card_combinations: { [combination: string]: SupportCardCombination };
-          total_combinations: number;
-          support_card_type_distribution: { [cardType: string]: any };
-          common_skills: { [skillName: string]: ItemWithLevels };
-          total_skills: number;
+          overall: {
+            total_entries: number;
+            total_trained_umas: number;
+            stat_averages: { [stat: string]: StatDistribution | Partial<StatDistribution> };
+            common_support_cards: { [cardName: string]: ItemWithLevels };
+            total_support_cards: number;
+            support_card_combinations: { [combination: string]: SupportCardCombination };
+            total_combinations: number;
+            support_card_type_distribution: { [cardType: string]: any };
+            common_skills: { [skillName: string]: ItemWithLevels };
+            total_skills: number;
+          };
+          by_scenario: {
+            [scenarioId: string]: {
+              total_entries: number;
+              total_trained_umas: number;
+              stat_averages: { [stat: string]: StatDistribution | Partial<StatDistribution> };
+              common_support_cards: { [cardName: string]: ItemWithLevels };
+              total_support_cards: number;
+              support_card_combinations: { [combination: string]: SupportCardCombination };
+              total_combinations: number;
+              support_card_type_distribution: { [cardType: string]: any };
+              common_skills: { [skillName: string]: ItemWithLevels };
+              total_skills: number;
+            }
+          }
         };
       };
     };

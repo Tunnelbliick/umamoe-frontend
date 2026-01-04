@@ -107,6 +107,30 @@
     <!-- Left Sidebar with Class Filter and Distance Selector -->
     <aside class="sidebar">
       <div class="sidebar-content">
+        <!-- Scenario Filter -->
+        <div class="scenario-filter-card">
+          <h3 class="filter-title">
+            <mat-icon>movie_filter</mat-icon>
+            Scenario
+          </h3>
+          <div class="scenario-filters">
+            <div class="scenario-toggles">
+              <button *ngFor="let scenarioEntry of scenarioNames | keyvalue"
+                      class="scenario-toggle"
+                      [class.active]="scenarioFilters[scenarioEntry.key]"
+                      (click)="onScenarioFilterChanged(scenarioEntry.key)">
+                 {{ scenarioEntry.value }}
+              </button>
+            </div>
+            <div class="scenario-distribution" *ngIf="globalStats?.scenario_distribution">
+              <div class="scenario-stat" *ngFor="let scenarioEntry of scenarioNames | keyvalue">
+                <span class="stat-label">{{ scenarioEntry.value }}:</span>
+                <span class="stat-value">{{ globalStats.scenario_distribution[scenarioEntry.key]?.percentage || 0 }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <app-class-filter
           #classFilter
           [selectedClasses]="classFilters"

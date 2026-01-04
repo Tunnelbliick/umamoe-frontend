@@ -527,7 +527,7 @@
             <div class="input-wrapper">
               <div class="input-label">Min White Count</div>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput type="number" [(ngModel)]="filterState.min_main_white_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <input matInput type="number" [(ngModel)]="filterState.min_main_white_count" (ngModelChange)="onFilterChange()" min="0" placeholder="0">
                 <div matSuffix class="spinner-controls">
                   <mat-icon (click)="increment('min_main_white_count')">keyboard_arrow_up</mat-icon>
                   <mat-icon (click)="decrement('min_main_white_count')">keyboard_arrow_down</mat-icon>
@@ -544,7 +544,7 @@
             <div class="input-wrapper">
               <div class="input-label">Min Win Count</div>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput type="number" [(ngModel)]="filterState.min_win_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <input matInput type="number" [(ngModel)]="filterState.min_win_count" (ngModelChange)="onFilterChange()" min="0" placeholder="0">
                 <div matSuffix class="spinner-controls">
                   <mat-icon (click)="increment('min_win_count')">keyboard_arrow_up</mat-icon>
                   <mat-icon (click)="decrement('min_win_count')">keyboard_arrow_down</mat-icon>
@@ -554,7 +554,7 @@
             <div class="input-wrapper">
               <div class="input-label">Min White Factor Count</div>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput type="number" [(ngModel)]="filterState.min_white_count" (change)="onFilterChange()" min="0" placeholder="0">
+                <input matInput type="number" [(ngModel)]="filterState.min_white_count" (ngModelChange)="onFilterChange()" min="0" placeholder="0">
                 <div matSuffix class="spinner-controls">
                   <mat-icon (click)="increment('min_white_count')">keyboard_arrow_up</mat-icon>
                   <mat-icon (click)="decrement('min_white_count')">keyboard_arrow_down</mat-icon>
@@ -581,12 +581,58 @@
             <div class="input-wrapper">
               <div class="input-label">Max Followers</div>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput type="number" [(ngModel)]="filterState.max_follower_num" (change)="onFilterChange()" min="0" max="1000" placeholder="999">
+                <input matInput type="number" [(ngModel)]="filterState.max_follower_num" (ngModelChange)="onFilterChange()" min="0" max="1000" placeholder="999">
                 <div matSuffix class="spinner-controls">
                   <mat-icon (click)="increment('max_follower_num')">keyboard_arrow_up</mat-icon>
                   <mat-icon (click)="decrement('max_follower_num')">keyboard_arrow_down</mat-icon>
                 </div>
                 <mat-hint>Max 1000</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Star Sum Filters -->
+          <h5 class="group-title" style="margin-top: 16px;">Total Star Count</h5>
+          <p class="filter-description">Filter by the combined star count across all factors of each type</p>
+          <div class="input-grid">
+            <div class="input-wrapper">
+              <div class="input-label star-label blue">Total Blue ★</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_blue_stars_sum" (ngModelChange)="onFilterChange()" min="0" max="9" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="incrementStarSum('min_blue_stars_sum', 9)">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrementStarSum('min_blue_stars_sum')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label star-label pink">Total Pink ★</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_pink_stars_sum" (ngModelChange)="onFilterChange()" min="0" max="9" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="incrementStarSum('min_pink_stars_sum', 9)">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrementStarSum('min_pink_stars_sum')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label star-label green">Total Green ★</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_green_stars_sum" (ngModelChange)="onFilterChange()" min="0" max="9" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="incrementStarSum('min_green_stars_sum', 9)">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrementStarSum('min_green_stars_sum')">keyboard_arrow_down</mat-icon>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="input-wrapper">
+              <div class="input-label star-label white">Total White ★</div>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput type="number" [(ngModel)]="filterState.min_white_stars_sum" (ngModelChange)="onFilterChange()" min="0" placeholder="0">
+                <div matSuffix class="spinner-controls">
+                  <mat-icon (click)="incrementStarSum('min_white_stars_sum')">keyboard_arrow_up</mat-icon>
+                  <mat-icon (click)="decrementStarSum('min_white_stars_sum')">keyboard_arrow_down</mat-icon>
+                </div>
               </mat-form-field>
             </div>
           </div>
@@ -606,13 +652,18 @@
            [ngClass]="getChipColorClass(chip.type)"
            (click)="removeActiveFilter(chip)">
         <span class="chip-label">
-          <ng-container *ngIf="chip.name || chip.value; else legacyLabel">
-            <span class="chip-name" *ngIf="chip.name">{{chip.name}}<span class="separator">:</span></span>
-            <span class="chip-value" *ngIf="chip.value">
-              {{chip.value}}<mat-icon *ngIf="chip.showStar" class="star-icon">star</mat-icon>
-            </span>
+          <ng-container *ngIf="chip.rankIcon; else normalChip">
+            <img [src]="chip.rankIcon" class="chip-rank-icon" alt="Rank"><span class="chip-value">+</span>
           </ng-container>
-          <ng-template #legacyLabel>{{chip.label}}</ng-template>
+          <ng-template #normalChip>
+            <ng-container *ngIf="chip.name || chip.value; else legacyLabel">
+              <span class="chip-name" *ngIf="chip.name">{{chip.name}}<span class="separator">:</span></span>
+              <span class="chip-value" *ngIf="chip.value">
+                {{chip.value}}<mat-icon *ngIf="chip.showStar" class="star-icon">star</mat-icon>
+              </span>
+            </ng-container>
+            <ng-template #legacyLabel>{{chip.label}}</ng-template>
+          </ng-template>
         </span>
         <mat-icon class="chip-remove">close</mat-icon>
       </div>

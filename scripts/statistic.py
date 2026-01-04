@@ -32,7 +32,7 @@ class UmamusumeStatistics:
         self.engine = create_engine(connection_string)
         
         # Store game database path for character color extraction
-        self.game_db_path = game_db_path or 'C:/Users/lars1/AppData/LocalLow/Cygames/Umamusume/master/master.mdb'
+        self.game_db_path = game_db_path or 'C:/Users/lars/AppData/LocalLow/Cygames/Umamusume/master/master.mdb'
         
         # Use provided version or generate from current date
         if dataset_version:
@@ -57,6 +57,14 @@ class UmamusumeStatistics:
             2: 'Pace Chaser',
             3: 'Late Surger',
             4: 'End Closer'
+        }
+        
+        self.scenarios = {
+            1: 'URA',
+            2: 'Aoharu',
+            3: 'Climax',
+            4: 'Grand Masters',
+            5: 'UAF'
         }
         
         # Load name mappings
@@ -245,13 +253,21 @@ class UmamusumeStatistics:
             t.best_team_class,
             t.name as trainer_name,
             t.fans as trainer_fans,
-            t.follower_num
+            t.follower_num,
+            COALESCE(ts.scenario_id, 1) as effective_scenario_id
         FROM team_stadium ts
         LEFT JOIN trainer t ON ts.trainer_id = t.account_id
         ORDER BY ts.trainer_id, ts.distance_type, ts.member_id
         """
         print("Loading data from database...")
         df = pd.read_sql(query, self.engine)
+        
+        # Use effective_scenario_id to resolve potential duplicate column issues from ts.*
+        if 'effective_scenario_id' in df.columns:
+            # If scenario_id exists (from ts.*), this overwrites it with the coalesced value
+            # If it doesn't exist, this creates it
+            # If scenario_id was duplicated, this consolidates it to a single Series
+            df['scenario_id'] = df['effective_scenario_id']
         
         # Parse JSON fields
         def safe_json_parse(x):
@@ -265,9 +281,10 @@ class UmamusumeStatistics:
         df['skills'] = df['skills'].apply(safe_json_parse)
         df['support_cards'] = df['support_cards'].apply(safe_json_parse)
         
-        # Convert distance_type and running_style to readable names
+        # Convert distance_type, running_style, and scenario_id to readable names
         df['distance_name'] = df['distance_type'].map(self.distance_types)
         df['running_style_name'] = df['running_style'].map(self.running_styles)
+        df['scenario_name'] = df['scenario_id'].map(self.scenarios).fillna('Unknown')
         
         return df
     
@@ -341,18 +358,30 @@ class UmamusumeStatistics:
         """Analyze support card type combinations"""
         combinations = []
         
+        # Cache for card type to avoid repeated lookups
+        card_type_cache = {}
+        
         for cards in support_cards_list:
             if not cards:
                 continue
             
             type_counts = defaultdict(int)
             for card in cards:
-                card_id, _ = self.parse_item(str(card))
-                if card_id:
-                    card_type = self.get_support_card_type(str(card_id))
-                    if card_type != 'Unknown':
-                        # Normalize the type name (lowercase)
-                        type_counts[card_type.lower()] += 1
+                card_str = str(card)
+                if card_str in card_type_cache:
+                    card_type = card_type_cache[card_str]
+                else:
+                    card_id, _ = self.parse_item(card_str)
+                    if card_id:
+                        card_type = self.get_support_card_type(str(card_id))
+                        card_type_cache[card_str] = card_type
+                    else:
+                        card_type_cache[card_str] = 'Unknown'
+                        card_type = 'Unknown'
+                
+                if card_type != 'Unknown':
+                    # Normalize the type name (lowercase)
+                    type_counts[card_type.lower()] += 1
             
             if type_counts:
                 # Convert to regular dict for storing
@@ -396,6 +425,9 @@ class UmamusumeStatistics:
         total_decks_with_cards = 0
         total_cards_used = 0
         
+        # Cache for card info to avoid repeated lookups
+        card_info_cache = {}
+        
         for cards in support_cards_list:
             if not cards:
                 continue
@@ -404,11 +436,20 @@ class UmamusumeStatistics:
             deck_has_valid_cards = False
             
             for card in cards:
-                card_id, level = self.parse_item(str(card))
+                card_str = str(card)
+                if card_str in card_info_cache:
+                    card_id, card_name, card_type = card_info_cache[card_str]
+                else:
+                    card_id, level = self.parse_item(card_str)
+                    if card_id:
+                        card_name = self.get_support_card_name(str(card_id))
+                        card_type = self.get_support_card_type(str(card_id))
+                        card_info_cache[card_str] = (card_id, card_name, card_type)
+                    else:
+                        card_info_cache[card_str] = (None, None, None)
+                        card_id = None
+                
                 if card_id:
-                    card_name = self.get_support_card_name(str(card_id))
-                    card_type = self.get_support_card_type(str(card_id))
-                    
                     if card_type != 'Unknown':
                         type_normalized = card_type.lower()
                         type_stats[type_normalized]['total_count'] += 1
@@ -470,15 +511,17 @@ class UmamusumeStatistics:
     
     def process_items_with_levels(self, items: List[str], item_type: str) -> Dict[str, Any]:
         """Process items with names and levels - FIXED: Now aggregates by ID with proper counting"""
+        # Optimization: Count raw items first to minimize parse_item calls
+        raw_counts = Counter(items)
         item_stats = defaultdict(lambda: defaultdict(int))
         
-        for item in items:
-            if item:
-                item_id, level = self.parse_item(str(item))
+        for item_str, count in raw_counts.items():
+            if item_str:
+                item_id, level = self.parse_item(str(item_str))
                 if item_id is not None:
                     # Use item_id as the key to prevent incorrect merging
                     item_key = str(item_id)
-                    item_stats[item_key][str(level)] += 1
+                    item_stats[item_key][str(level)] += count
         
         # Convert to regular dict and sort by total usage
         result = {}
@@ -546,26 +589,32 @@ class UmamusumeStatistics:
                 'total_trained_umas': len(df)  # Total count for percentage calculations
             },
             'team_class_distribution': {},
+            'scenario_distribution': {},
             'uma_distribution': {},
             'stat_averages': {
                 'overall': {},
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             },
             'support_cards': {
                 'overall': {},
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             },
             'support_card_combinations': {
                 'overall': {},
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             },
             'support_card_type_distribution': {
                 'overall': {},
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             },
             'skills': {
                 'overall': {},
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             }
         }
         
@@ -579,7 +628,8 @@ class UmamusumeStatistics:
         
         global_stats['team_class_distribution'] = {
             'total_trainers': total_trainers,
-            'total_trained_umas': total_trained_umas
+            'total_trained_umas': total_trained_umas,
+            'by_scenario': {}
         }
         for team_class, trainer_count in team_class_dist.items():
             if pd.notna(team_class):
@@ -589,6 +639,48 @@ class UmamusumeStatistics:
                     'percentage': round(trainer_count / total_trainers * 100, 2),
                     'trained_umas': int(uma_count),
                     'trained_umas_percentage': round(uma_count / total_trained_umas * 100, 2)
+                }
+        
+        # Calculate team class distribution by scenario
+        for scenario_id in df['scenario_id'].dropna().unique():
+            scenario_df = df[df['scenario_id'] == scenario_id]
+            scenario_str = str(int(scenario_id))
+            
+            # Trainer counts in this scenario
+            sc_team_class_dist = scenario_df.groupby('trainer_id')['team_class'].first().value_counts().to_dict()
+            sc_total_trainers = scenario_df['trainer_id'].nunique()
+            
+            # Uma counts in this scenario
+            sc_team_class_uma_counts = scenario_df['team_class'].value_counts().to_dict()
+            sc_total_umas = len(scenario_df)
+            
+            global_stats['team_class_distribution']['by_scenario'][scenario_str] = {
+                'total_trainers': sc_total_trainers,
+                'total_trained_umas': sc_total_umas
+            }
+            
+            for team_class, trainer_count in sc_team_class_dist.items():
+                 if pd.notna(team_class):
+                    uma_count = sc_team_class_uma_counts.get(team_class, 0)
+                    global_stats['team_class_distribution']['by_scenario'][scenario_str][str(int(team_class))] = {
+                        'count': int(trainer_count),
+                        'percentage': round(trainer_count / sc_total_trainers * 100, 2) if sc_total_trainers > 0 else 0,
+                        'trained_umas': int(uma_count),
+                        'trained_umas_percentage': round(uma_count / sc_total_umas * 100, 2) if sc_total_umas > 0 else 0
+                    }
+
+        # Scenario distribution with percentages
+        scenario_counts = df['scenario_id'].value_counts().to_dict()
+        global_stats['scenario_distribution'] = {
+            'total_entries': total_trained_umas
+        }
+        for scenario_id, count in scenario_counts.items():
+            if pd.notna(scenario_id):
+                scenario_name = self.scenarios.get(int(scenario_id), f'Scenario_{scenario_id}')
+                global_stats['scenario_distribution'][str(int(scenario_id))] = {
+                    'name': scenario_name,
+                    'count': int(count),
+                    'percentage': round(count / total_trained_umas * 100, 2)
                 }
         
         # Global uma distribution with percentages
@@ -611,15 +703,11 @@ class UmamusumeStatistics:
         
         # Calculate overall global support cards, skills, and combinations
         print("Calculating overall support cards and skills...")
-        all_support_cards = []
-        all_skills = []
-        all_support_cards_by_team = []
         
-        for idx, row in df.iterrows():
-            all_support_cards.extend([str(c) for c in row['support_cards'] if c])
-            all_skills.extend([str(s) for s in row['skills'] if s])
-            if row['support_cards']:
-                all_support_cards_by_team.append([str(c) for c in row['support_cards']])
+        # Optimized extraction using list comprehensions and explode
+        all_support_cards = [str(c) for sublist in df['support_cards'] for c in sublist if c]
+        all_skills = [str(s) for sublist in df['skills'] for s in sublist if s]
+        all_support_cards_by_team = [list(map(str, cards)) for cards in df['support_cards'] if cards]
         
         # Store overall statistics with totals
         support_cards_data = self.process_items_with_levels(all_support_cards, 'support_cards')
@@ -643,38 +731,46 @@ class UmamusumeStatistics:
                 class_df = df[df['team_class'] == team_class]
                 team_class_str = str(int(team_class))
                 
-                # Stat averages
-                if len(class_df) > 100:
-                    global_stats['stat_averages']['by_team_class'][team_class_str] = {}
-                    for stat in stat_cols:
-                        global_stats['stat_averages']['by_team_class'][team_class_str][stat] = \
-                            self.get_stat_distribution(class_df[stat], stat)
+                # Initialize structure for this team class
+                for metric in ['stat_averages', 'support_cards', 'support_card_combinations', 'support_card_type_distribution', 'skills']:
+                    if team_class_str not in global_stats[metric]['by_team_class']:
+                        global_stats[metric]['by_team_class'][team_class_str] = {
+                            'overall': {},
+                            'by_scenario': {}
+                        }
                 
-                # Support cards, combinations, and skills by team class
-                class_support_cards = []
-                class_skills = []
-                support_cards_by_team = []
-                
-                for idx, row in class_df.iterrows():
-                    class_support_cards.extend([str(c) for c in row['support_cards'] if c])
-                    class_skills.extend([str(s) for s in row['skills'] if s])
-                    if row['support_cards']:
-                        support_cards_by_team.append([str(c) for c in row['support_cards']])
-                
-                # Uma distribution by team class
+                # Uma distribution special handling
                 if 'uma_distribution' not in global_stats:
                     global_stats['uma_distribution'] = {'by_team_class': {}}
                 elif 'by_team_class' not in global_stats['uma_distribution']:
                     global_stats['uma_distribution']['by_team_class'] = {}
-                    
+                
+                global_stats['uma_distribution']['by_team_class'][team_class_str] = {
+                    'overall': {},
+                    'by_scenario': {}
+                }
+                
+                # --- OVERALL STATS FOR TEAM CLASS ---
+                
+                # Stat averages
+                if len(class_df) > 100:
+                    for stat in stat_cols:
+                        global_stats['stat_averages']['by_team_class'][team_class_str]['overall'][stat] = \
+                            self.get_stat_distribution(class_df[stat], stat)
+                
+                # Support cards, combinations, and skills by team class
+                class_support_cards = [str(c) for sublist in class_df['support_cards'] for c in sublist if c]
+                class_skills = [str(s) for sublist in class_df['skills'] for s in sublist if s]
+                support_cards_by_team = [list(map(str, cards)) for cards in class_df['support_cards'] if cards]
+                
+                # Uma distribution by team class
                 uma_counts_class = class_df['card_id'].value_counts().head(30)
                 total_uma_entries_class = len(class_df)
-                global_stats['uma_distribution']['by_team_class'][team_class_str] = {}
                 
                 for char_id, count in uma_counts_class.items():
                     char_name = self.get_character_name(str(char_id))
                     char_color = self.get_character_color(str(char_id))
-                    global_stats['uma_distribution']['by_team_class'][team_class_str][char_name] = {
+                    global_stats['uma_distribution']['by_team_class'][team_class_str]['overall'][char_name] = {
                         'count': int(count),
                         'percentage': round(count / total_uma_entries_class * 100, 2),
                         'character_id': str(char_id),
@@ -682,20 +778,13 @@ class UmamusumeStatistics:
                     }
                 
                 # Store by team class with totals
-                if not global_stats['support_cards']['by_team_class']:
-                    global_stats['support_cards']['by_team_class'] = {}
-                if not global_stats['support_card_combinations']['by_team_class']:
-                    global_stats['support_card_combinations']['by_team_class'] = {}
-                if not global_stats['skills']['by_team_class']:
-                    global_stats['skills']['by_team_class'] = {}
-                    
-                global_stats['support_cards']['by_team_class'][team_class_str] = \
+                global_stats['support_cards']['by_team_class'][team_class_str]['overall'] = \
                     self.process_items_with_levels(class_support_cards, 'support_cards')
-                global_stats['support_card_combinations']['by_team_class'][team_class_str] = \
+                global_stats['support_card_combinations']['by_team_class'][team_class_str]['overall'] = \
                     self.analyze_support_card_combinations(support_cards_by_team)
-                global_stats['support_card_type_distribution']['by_team_class'][team_class_str] = \
+                global_stats['support_card_type_distribution']['by_team_class'][team_class_str]['overall'] = \
                     self.analyze_support_card_type_distribution(support_cards_by_team)
-                global_stats['skills']['by_team_class'][team_class_str] = \
+                global_stats['skills']['by_team_class'][team_class_str]['overall'] = \
                     self.process_items_with_levels(class_skills, 'skills')
                 
                 # Add totals for this team class
@@ -705,6 +794,94 @@ class UmamusumeStatistics:
                     global_stats['support_card_combinations'][f'total_combinations_{team_class_str}'] = len(support_cards_by_team)
                 if f'total_skills_{team_class_str}' not in global_stats['skills']:
                     global_stats['skills'][f'total_skills_{team_class_str}'] = len(class_skills)
+                
+                # Process by scenario within team class
+                for scenario_id in class_df['scenario_id'].dropna().unique():
+                    if scenario_id >= 1:
+                        scenario_class_df = class_df[class_df['scenario_id'] == scenario_id]
+                        scenario_str = str(int(scenario_id))
+                        
+                        # Initialize scenario dicts
+                        for metric in ['stat_averages', 'support_cards', 'support_card_combinations', 'support_card_type_distribution', 'skills']:
+                             global_stats[metric]['by_team_class'][team_class_str]['by_scenario'][scenario_str] = {}
+                        
+                        global_stats['uma_distribution']['by_team_class'][team_class_str]['by_scenario'][scenario_str] = {}
+                        
+                        # Stat averages
+                        for stat in stat_cols:
+                             global_stats['stat_averages']['by_team_class'][team_class_str]['by_scenario'][scenario_str][stat] = \
+                                 self.get_stat_distribution(scenario_class_df[stat], stat)
+                        
+                        # Support cards, combinations, and skills by team class AND scenario
+                        sc_support_cards = [str(c) for sublist in scenario_class_df['support_cards'] for c in sublist if c]
+                        sc_skills = [str(s) for sublist in scenario_class_df['skills'] for s in sublist if s]
+                        sc_support_cards_by_team = [list(map(str, cards)) for cards in scenario_class_df['support_cards'] if cards]
+                        
+                        global_stats['support_cards']['by_team_class'][team_class_str]['by_scenario'][scenario_str] = \
+                            self.process_items_with_levels(sc_support_cards, 'support_cards')
+                        global_stats['support_card_combinations']['by_team_class'][team_class_str]['by_scenario'][scenario_str] = \
+                            self.analyze_support_card_combinations(sc_support_cards_by_team)
+                        global_stats['support_card_type_distribution']['by_team_class'][team_class_str]['by_scenario'][scenario_str] = \
+                            self.analyze_support_card_type_distribution(sc_support_cards_by_team)
+                        global_stats['skills']['by_team_class'][team_class_str]['by_scenario'][scenario_str] = \
+                            self.process_items_with_levels(sc_skills, 'skills')
+                        
+                        # Uma distribution by team class AND scenario
+                        uma_counts_scenario_class = scenario_class_df['card_id'].value_counts().head(30)
+                        total_uma_entries_scenario_class = len(scenario_class_df)
+                        
+                        for char_id, count in uma_counts_scenario_class.items():
+                            char_name = self.get_character_name(str(char_id))
+                            char_color = self.get_character_color(str(char_id))
+                            global_stats['uma_distribution']['by_team_class'][team_class_str]['by_scenario'][scenario_str][char_name] = {
+                                'count': int(count),
+                                'percentage': round(count / total_uma_entries_scenario_class * 100, 2),
+                                'character_id': str(char_id),
+                                'character_color': char_color
+                            }
+        
+        # Process by scenario
+        for scenario_id in df['scenario_id'].dropna().unique():
+            if scenario_id >= 1:
+                scenario_df = df[df['scenario_id'] == scenario_id]
+                scenario_str = str(int(scenario_id))
+                scenario_name = self.scenarios.get(int(scenario_id), f'Scenario_{scenario_id}')
+                
+                print(f"  Processing scenario {scenario_name}...")
+                
+                # Stat averages by scenario (if sufficient data)
+                if len(scenario_df) > 100:
+                    global_stats['stat_averages']['by_scenario'][scenario_str] = {}
+                    for stat in stat_cols:
+                        global_stats['stat_averages']['by_scenario'][scenario_str][stat] = \
+                            self.get_stat_distribution(scenario_df[stat], stat)
+                
+                # Support cards, combinations, and skills by scenario
+                scenario_support_cards = [str(c) for sublist in scenario_df['support_cards'] for c in sublist if c]
+                scenario_skills = [str(s) for sublist in scenario_df['skills'] for s in sublist if s]
+                scenario_support_cards_by_team = [list(map(str, cards)) for cards in scenario_df['support_cards'] if cards]
+                
+                # Store by scenario with totals
+                if not global_stats['support_cards']['by_scenario']:
+                    global_stats['support_cards']['by_scenario'] = {}
+                if not global_stats['support_card_combinations']['by_scenario']:
+                    global_stats['support_card_combinations']['by_scenario'] = {}
+                if not global_stats['skills']['by_scenario']:
+                    global_stats['skills']['by_scenario'] = {}
+                
+                global_stats['support_cards']['by_scenario'][scenario_str] = \
+                    self.process_items_with_levels(scenario_support_cards, 'support_cards')
+                global_stats['support_card_combinations']['by_scenario'][scenario_str] = \
+                    self.analyze_support_card_combinations(scenario_support_cards_by_team)
+                global_stats['support_card_type_distribution']['by_scenario'][scenario_str] = \
+                    self.analyze_support_card_type_distribution(scenario_support_cards_by_team)
+                global_stats['skills']['by_scenario'][scenario_str] = \
+                    self.process_items_with_levels(scenario_skills, 'skills')
+                
+                # Add totals for this scenario
+                global_stats['support_cards'][f'total_support_cards_scenario_{scenario_str}'] = len(scenario_support_cards)
+                global_stats['support_card_combinations'][f'total_combinations_scenario_{scenario_str}'] = len(scenario_support_cards_by_team)
+                global_stats['skills'][f'total_skills_scenario_{scenario_str}'] = len(scenario_skills)
         
         return global_stats
     
@@ -726,7 +903,8 @@ class UmamusumeStatistics:
                     'total_entries': len(dist_df),
                     'generated_at': datetime.now().isoformat()
                 },
-                'by_team_class': {}
+                'by_team_class': {},
+                'by_scenario': {}
             }
             
             # Process by team class
@@ -736,6 +914,7 @@ class UmamusumeStatistics:
                     if len(class_df) > 50:
                         team_class_str = str(int(team_class))
                         
+                        # --- OVERALL ---
                         # Uma distribution with percentages
                         uma_counts = class_df['card_id'].value_counts().head(20)
                         total_uma_entries = len(class_df)
@@ -757,28 +936,117 @@ class UmamusumeStatistics:
                             stat_averages[stat] = self.get_stat_distribution(class_df[stat], stat)
                         
                         # Support cards and skills
-                        class_cards = []
-                        class_skills = []
-                        support_cards_by_team = []
-                        
-                        for idx, row in class_df.iterrows():
-                            class_cards.extend([str(c) for c in row['support_cards'] if c])
-                            class_skills.extend([str(s) for s in row['skills'] if s])
-                            if row['support_cards']:
-                                support_cards_by_team.append([str(c) for c in row['support_cards']])
+                        class_cards = [str(c) for sublist in class_df['support_cards'] for c in sublist if c]
+                        class_skills = [str(s) for sublist in class_df['skills'] for s in sublist if s]
+                        support_cards_by_team = [list(map(str, cards)) for cards in class_df['support_cards'] if cards]
                         
                         distance_stats['by_team_class'][team_class_str] = {
-                            'total_entries': len(class_df),
-                            'total_trained_umas': len(class_df),
+                            'overall': {
+                                'total_entries': len(class_df),
+                                'total_trained_umas': len(class_df),
+                                'uma_distribution': uma_dist,
+                                'stat_averages': stat_averages,
+                                'support_cards': self.process_items_with_levels(class_cards, 'support_cards'),
+                                'total_support_cards': len(class_cards),
+                                'support_card_combinations': self.analyze_support_card_combinations(support_cards_by_team),
+                                'total_combinations': len(support_cards_by_team),
+                                'support_card_type_distribution': self.analyze_support_card_type_distribution(support_cards_by_team),
+                                'skills': self.process_items_with_levels(class_skills, 'skills'),
+                                'total_skills': len(class_skills)
+                            },
+                            'by_scenario': {}
+                        }
+
+                        # --- BY SCENARIO ---
+                        for scenario_id in class_df['scenario_id'].dropna().unique():
+                            if scenario_id >= 1:
+                                scenario_class_df = class_df[class_df['scenario_id'] == scenario_id]
+                                scenario_str = str(int(scenario_id))
+                                
+                                # Uma distribution
+                                sc_uma_counts = scenario_class_df['card_id'].value_counts().head(20)
+                                sc_total_uma = len(scenario_class_df)
+                                sc_uma_dist = {}
+                                for char_id, count in sc_uma_counts.items():
+                                    char_name = self.get_character_name(str(char_id))
+                                    char_color = self.get_character_color(str(char_id))
+                                    sc_uma_dist[char_name] = {
+                                        'count': int(count),
+                                        'percentage': round(count / sc_total_uma * 100, 2),
+                                        'character_id': str(char_id),
+                                        'character_color': char_color
+                                    }
+                                
+                                # Stat averages
+                                sc_stat_averages = {}
+                                for stat in stat_cols:
+                                    sc_stat_averages[stat] = self.get_stat_distribution(scenario_class_df[stat], stat)
+                                
+                                # Support cards and skills
+                                sc_cards = [str(c) for sublist in scenario_class_df['support_cards'] for c in sublist if c]
+                                sc_skills = [str(s) for sublist in scenario_class_df['skills'] for s in sublist if s]
+                                sc_support_cards_by_team = [list(map(str, cards)) for cards in scenario_class_df['support_cards'] if cards]
+                                
+                                distance_stats['by_team_class'][team_class_str]['by_scenario'][scenario_str] = {
+                                    'total_entries': len(scenario_class_df),
+                                    'total_trained_umas': len(scenario_class_df),
+                                    'uma_distribution': sc_uma_dist,
+                                    'stat_averages': sc_stat_averages,
+                                    'support_cards': self.process_items_with_levels(sc_cards, 'support_cards'),
+                                    'total_support_cards': len(sc_cards),
+                                    'support_card_combinations': self.analyze_support_card_combinations(sc_support_cards_by_team),
+                                    'total_combinations': len(sc_support_cards_by_team),
+                                    'support_card_type_distribution': self.analyze_support_card_type_distribution(sc_support_cards_by_team),
+                                    'skills': self.process_items_with_levels(sc_skills, 'skills'),
+                                    'total_skills': len(sc_skills)
+                                }
+            
+            # Process by scenario
+            for scenario_id in dist_df['scenario_id'].dropna().unique():
+                if scenario_id >= 1:
+                    scenario_df = dist_df[dist_df['scenario_id'] == scenario_id]
+                    if len(scenario_df) > 50:
+                        scenario_str = str(int(scenario_id))
+                        scenario_name = self.scenarios.get(int(scenario_id), f'Scenario_{scenario_id}')
+                        
+                        # Uma distribution with percentages
+                        uma_counts = scenario_df['card_id'].value_counts().head(20)
+                        total_uma_entries = len(scenario_df)
+                        uma_dist = {}
+                        for char_id, count in uma_counts.items():
+                            char_name = self.get_character_name(str(char_id))
+                            char_color = self.get_character_color(str(char_id))
+                            uma_dist[char_name] = {
+                                'count': int(count),
+                                'percentage': round(count / total_uma_entries * 100, 2),
+                                'character_id': str(char_id),
+                                'character_color': char_color
+                            }
+                        
+                        # Stat averages
+                        stat_averages = {}
+                        stat_cols = ['speed', 'power', 'stamina', 'wiz', 'guts', 'rank_score']
+                        for stat in stat_cols:
+                            stat_averages[stat] = self.get_stat_distribution(scenario_df[stat], stat)
+                        
+                        # Support cards and skills
+                        scenario_cards = [str(c) for sublist in scenario_df['support_cards'] for c in sublist if c]
+                        scenario_skills = [str(s) for sublist in scenario_df['skills'] for s in sublist if s]
+                        support_cards_by_team = [list(map(str, cards)) for cards in scenario_df['support_cards'] if cards]
+                        
+                        distance_stats['by_scenario'][scenario_str] = {
+                            'name': scenario_name,
+                            'total_entries': len(scenario_df),
+                            'total_trained_umas': len(scenario_df),
                             'uma_distribution': uma_dist,
                             'stat_averages': stat_averages,
-                            'support_cards': self.process_items_with_levels(class_cards, 'support_cards'),
-                            'total_support_cards': len(class_cards),
+                            'support_cards': self.process_items_with_levels(scenario_cards, 'support_cards'),
+                            'total_support_cards': len(scenario_cards),
                             'support_card_combinations': self.analyze_support_card_combinations(support_cards_by_team),
                             'total_combinations': len(support_cards_by_team),
                             'support_card_type_distribution': self.analyze_support_card_type_distribution(support_cards_by_team),
-                            'skills': self.process_items_with_levels(class_skills, 'skills'),
-                            'total_skills': len(class_skills)
+                            'skills': self.process_items_with_levels(scenario_skills, 'skills'),
+                            'total_skills': len(scenario_skills)
                         }
             
             # Save to file
@@ -811,10 +1079,68 @@ class UmamusumeStatistics:
                 'global': {
                     'distance_distribution': {},
                     'running_style_distribution': {},
+                    'scenario_distribution': {},
                     'team_class_distribution': {}
                 },
+                'overall': {},
+                'by_scenario': {},
                 'by_distance': {}
             }
+            
+            # --- OVERALL CHARACTER STATS ---
+            # Stat averages
+            stat_averages = {}
+            stat_cols = ['speed', 'power', 'stamina', 'wiz', 'guts', 'rank_score']
+            for stat in stat_cols:
+                stat_averages[stat] = self.get_stat_distribution(char_df[stat], stat)
+            
+            # Support cards and skills
+            all_char_cards = [str(c) for sublist in char_df['support_cards'] for c in sublist if c]
+            all_char_skills = [str(s) for sublist in char_df['skills'] for s in sublist if s]
+            all_char_cards_by_team = [list(map(str, cards)) for cards in char_df['support_cards'] if cards]
+            
+            character_stats['overall'] = {
+                'total_entries': len(char_df),
+                'total_trained_umas': len(char_df),
+                'stat_averages': stat_averages,
+                'support_cards': self.process_items_with_levels(all_char_cards, 'support_cards'),
+                'total_support_cards': len(all_char_cards),
+                'support_card_combinations': self.analyze_support_card_combinations(all_char_cards_by_team),
+                'total_combinations': len(all_char_cards_by_team),
+                'support_card_type_distribution': self.analyze_support_card_type_distribution(all_char_cards_by_team),
+                'skills': self.process_items_with_levels(all_char_skills, 'skills'),
+                'total_skills': len(all_char_skills)
+            }
+
+            # --- BY SCENARIO (Top Level) ---
+            character_stats['by_scenario'] = {}
+            for scenario_id in char_df['scenario_id'].dropna().unique():
+                if scenario_id >= 1:
+                    scenario_char_df = char_df[char_df['scenario_id'] == scenario_id]
+                    scenario_str = str(int(scenario_id))
+                    
+                    # Stat averages
+                    sc_stat_averages = {}
+                    for stat in stat_cols:
+                        sc_stat_averages[stat] = self.get_stat_distribution(scenario_char_df[stat], stat)
+                    
+                    # Support cards and skills
+                    sc_cards = [str(c) for sublist in scenario_char_df['support_cards'] for c in sublist if c]
+                    sc_skills = [str(s) for sublist in scenario_char_df['skills'] for s in sublist if s]
+                    sc_support_cards_by_team = [list(map(str, cards)) for cards in scenario_char_df['support_cards'] if cards]
+                    
+                    character_stats['by_scenario'][scenario_str] = {
+                        'total_entries': len(scenario_char_df),
+                        'total_trained_umas': len(scenario_char_df),
+                        'stat_averages': sc_stat_averages,
+                        'support_cards': self.process_items_with_levels(sc_cards, 'support_cards') if sc_cards else {},
+                        'total_support_cards': len(sc_cards),
+                        'support_card_combinations': self.analyze_support_card_combinations(sc_support_cards_by_team) if sc_support_cards_by_team else {},
+                        'total_combinations': len(sc_support_cards_by_team),
+                        'support_card_type_distribution': self.analyze_support_card_type_distribution(sc_support_cards_by_team) if sc_support_cards_by_team else {},
+                        'skills': self.process_items_with_levels(sc_skills, 'skills') if sc_skills else {},
+                        'total_skills': len(sc_skills)
+                    }
             
             # Distance distribution with percentages
             distance_counts = char_df['distance_name'].value_counts()
@@ -843,6 +1169,23 @@ class UmamusumeStatistics:
                     'character_id': char_id_str,
                     'character_color': char_color
                 }
+            
+            # Scenario distribution with percentages
+            scenario_counts = char_df['scenario_id'].value_counts()
+            total_scenario_entries = len(char_df)
+            character_stats['global']['scenario_distribution'] = {
+                'total_entries': total_scenario_entries
+            }
+            for scenario_id, count in scenario_counts.items():
+                if pd.notna(scenario_id):
+                    scenario_name = self.scenarios.get(int(scenario_id), f'Scenario_{scenario_id}')
+                    character_stats['global']['scenario_distribution'][str(int(scenario_id))] = {
+                        'name': scenario_name,
+                        'count': int(count),
+                        'percentage': round(count / total_scenario_entries * 100, 2),
+                        'character_id': char_id_str,
+                        'character_color': char_color
+                    }
             
             # Team class distribution with percentages
             team_class_dist = char_df.groupby('trainer_id')['team_class'].first().value_counts().to_dict()
@@ -883,6 +1226,7 @@ class UmamusumeStatistics:
                             if len(class_dist_df) > 5:
                                 team_class_str = str(int(team_class))
                                 
+                                # --- OVERALL ---
                                 # Stat averages with histogram data
                                 stat_averages = {}
                                 stat_cols = ['speed', 'power', 'stamina', 'wiz', 'guts', 'rank_score']
@@ -900,28 +1244,63 @@ class UmamusumeStatistics:
                                         }
                                 
                                 # Support cards and skills
-                                cards = []
-                                skills = []
-                                support_cards_by_team = []
-                                
-                                for idx, row in class_dist_df.iterrows():
-                                    cards.extend([str(c) for c in row['support_cards'] if c])
-                                    skills.extend([str(s) for s in row['skills'] if s])
-                                    if row['support_cards']:
-                                        support_cards_by_team.append([str(c) for c in row['support_cards']])
+                                cards = [str(c) for sublist in class_dist_df['support_cards'] for c in sublist if c]
+                                skills = [str(s) for sublist in class_dist_df['skills'] for s in sublist if s]
+                                support_cards_by_team = [list(map(str, cards)) for cards in class_dist_df['support_cards'] if cards]
                                 
                                 character_stats['by_distance'][distance_name]['by_team_class'][team_class_str] = {
-                                    'total_entries': len(class_dist_df),
-                                    'total_trained_umas': len(class_dist_df),
-                                    'stat_averages': stat_averages,
-                                    'common_support_cards': self.process_items_with_levels(cards, 'support_cards') if cards else {},
-                                    'total_support_cards': len(cards),
-                                    'support_card_combinations': self.analyze_support_card_combinations(support_cards_by_team) if support_cards_by_team else {},
-                                    'total_combinations': len(support_cards_by_team),
-                                    'support_card_type_distribution': self.analyze_support_card_type_distribution(support_cards_by_team) if support_cards_by_team else {},
-                                    'common_skills': self.process_items_with_levels(skills, 'skills') if skills else {},
-                                    'total_skills': len(skills)
+                                    'overall': {
+                                        'total_entries': len(class_dist_df),
+                                        'total_trained_umas': len(class_dist_df),
+                                        'stat_averages': stat_averages,
+                                        'common_support_cards': self.process_items_with_levels(cards, 'support_cards') if cards else {},
+                                        'total_support_cards': len(cards),
+                                        'support_card_combinations': self.analyze_support_card_combinations(support_cards_by_team) if support_cards_by_team else {},
+                                        'total_combinations': len(support_cards_by_team),
+                                        'support_card_type_distribution': self.analyze_support_card_type_distribution(support_cards_by_team) if support_cards_by_team else {},
+                                        'common_skills': self.process_items_with_levels(skills, 'skills') if skills else {},
+                                        'total_skills': len(skills)
+                                    },
+                                    'by_scenario': {}
                                 }
+
+                                # --- BY SCENARIO ---
+                                for scenario_id in class_dist_df['scenario_id'].dropna().unique():
+                                    if scenario_id >= 1:
+                                        scenario_class_dist_df = class_dist_df[class_dist_df['scenario_id'] == scenario_id]
+                                        scenario_str = str(int(scenario_id))
+                                        
+                                        # Stat averages
+                                        sc_stat_averages = {}
+                                        for stat in stat_cols:
+                                            if len(scenario_class_dist_df) > 20:
+                                                sc_stat_averages[stat] = self.get_stat_distribution(scenario_class_dist_df[stat], stat)
+                                            else:
+                                                sc_stat_averages[stat] = {
+                                                    'mean': float(scenario_class_dist_df[stat].mean()),
+                                                    'median': float(scenario_class_dist_df[stat].median()),
+                                                    'min': int(scenario_class_dist_df[stat].min()),
+                                                    'max': int(scenario_class_dist_df[stat].max()),
+                                                    'count': len(scenario_class_dist_df)
+                                                }
+                                        
+                                        # Support cards and skills
+                                        sc_cards = [str(c) for sublist in scenario_class_dist_df['support_cards'] for c in sublist if c]
+                                        sc_skills = [str(s) for sublist in scenario_class_dist_df['skills'] for s in sublist if s]
+                                        sc_support_cards_by_team = [list(map(str, cards)) for cards in scenario_class_dist_df['support_cards'] if cards]
+                                        
+                                        character_stats['by_distance'][distance_name]['by_team_class'][team_class_str]['by_scenario'][scenario_str] = {
+                                            'total_entries': len(scenario_class_dist_df),
+                                            'total_trained_umas': len(scenario_class_dist_df),
+                                            'stat_averages': sc_stat_averages,
+                                            'common_support_cards': self.process_items_with_levels(sc_cards, 'support_cards') if sc_cards else {},
+                                            'total_support_cards': len(sc_cards),
+                                            'support_card_combinations': self.analyze_support_card_combinations(sc_support_cards_by_team) if sc_support_cards_by_team else {},
+                                            'total_combinations': len(sc_support_cards_by_team),
+                                            'support_card_type_distribution': self.analyze_support_card_type_distribution(sc_support_cards_by_team) if sc_support_cards_by_team else {},
+                                            'common_skills': self.process_items_with_levels(sc_skills, 'skills') if sc_skills else {},
+                                            'total_skills': len(sc_skills)
+                                        }
             
             # Save to file
             filename = f"{self.base_path}/characters/{char_id_str}.json"
@@ -1077,7 +1456,7 @@ def main():
     CONNECTION_STRING = "postgresql://honsemoe:awx3cdl0@127.0.0.1:5432/honsemoe_db"
     
     # Path to the game database (adjust as needed)
-    GAME_DB_PATH = "C:/Users/lars1/AppData/LocalLow/Cygames/Umamusume/master/master.mdb"
+    GAME_DB_PATH = "C:/Users/lars/AppData/LocalLow/Cygames/Umamusume/master/master.mdb"
     
     # Initialize and run statistics compilation
     # Version will default to today's date (YYYY-MM-DD) if not specified

@@ -251,7 +251,10 @@ export class InheritanceService {
     }
 
     if (filters.mainParentWhiteSparks && filters.mainParentWhiteSparks.length > 0) {
-      params = params.set('main_parent_white_sparks', filters.mainParentWhiteSparks.join(','));
+      // Send as multiple groups for AND logic (same as white_sparks)
+      filters.mainParentWhiteSparks.forEach(group => {
+        params = params.append('main_parent_white_sparks', group.join(','));
+      });
     }
 
     // Optional White Factors (for scoring/sorting, no level required)
@@ -295,6 +298,27 @@ export class InheritanceService {
 
     if (filters.minLimitBreak !== undefined) {
       params = params.set('min_limit_break', filters.minLimitBreak.toString());
+    }
+
+    // Star Sum Filters (min only) - check for both undefined and null, and validate max values
+    if (filters.minBlueStarsSum != null && filters.minBlueStarsSum > 0) {
+      // Blue stars max is 9 (5 stats × 3 max level, but capped at 9)
+      const clampedValue = Math.min(filters.minBlueStarsSum, 9);
+      params = params.set('min_blue_stars_sum', clampedValue.toString());
+    }
+    if (filters.minPinkStarsSum != null && filters.minPinkStarsSum > 0) {
+      // Pink stars max is 9
+      const clampedValue = Math.min(filters.minPinkStarsSum, 9);
+      params = params.set('min_pink_stars_sum', clampedValue.toString());
+    }
+    if (filters.minGreenStarsSum != null && filters.minGreenStarsSum > 0) {
+      // Green stars max is 9
+      const clampedValue = Math.min(filters.minGreenStarsSum, 9);
+      params = params.set('min_green_stars_sum', clampedValue.toString());
+    }
+    if (filters.minWhiteStarsSum != null && filters.minWhiteStarsSum > 0) {
+      // White stars have no max limit
+      params = params.set('min_white_stars_sum', filters.minWhiteStarsSum.toString());
     }
 
     // Add sorting parameters
