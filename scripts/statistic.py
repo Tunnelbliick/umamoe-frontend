@@ -3,17 +3,24 @@ import numpy as np
 from sqlalchemy import create_engine
 import json
 import os
+import itertools
 from datetime import datetime
 from typing import Dict, List, Any, Tuple
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import psycopg2
 from tqdm import tqdm
 import gzip
 import time
 from pathlib import Path
-from pathlib import Path
-import os
 import sqlite3
+
+try:
+    import orjson as _orjson
+    def _json_loads(s): return _orjson.loads(s)
+except ImportError:
+    _orjson = None
+    def _json_loads(s): return json.loads(s)
 
 class UmamusumeStatistics:
     def __init__(self, connection_string: str, dataset_version: str = None, game_db_path: str = None):
@@ -260,32 +267,40 @@ class UmamusumeStatistics:
         ORDER BY ts.trainer_id, ts.distance_type, ts.member_id
         """
         print("Loading data from database...")
-        df = pd.read_sql(query, self.engine)
+        # Use chunksize + concat to avoid one giant allocation; also lets SQLAlchemy stream
+        chunks = pd.read_sql(query, self.engine, chunksize=200_000)
+        df = pd.concat(chunks, ignore_index=True)
         
         # Use effective_scenario_id to resolve potential duplicate column issues from ts.*
         if 'effective_scenario_id' in df.columns:
-            # If scenario_id exists (from ts.*), this overwrites it with the coalesced value
-            # If it doesn't exist, this creates it
-            # If scenario_id was duplicated, this consolidates it to a single Series
             df['scenario_id'] = df['effective_scenario_id']
         
-        # Parse JSON fields
-        def safe_json_parse(x):
-            if isinstance(x, list):
-                return x
-            elif isinstance(x, str):
-                return json.loads(x) if x else []
-            else:
-                return []
-        
-        df['skills'] = df['skills'].apply(safe_json_parse)
-        df['support_cards'] = df['support_cards'].apply(safe_json_parse)
+        # Parse JSON fields — use orjson when available (up to 10x faster than stdlib json)
+        def _parse_col(col: pd.Series) -> pd.Series:
+            """Vectorised JSON parse for a column of JSON strings / already-parsed lists."""
+            out = [None] * len(col)
+            for i, x in enumerate(col):
+                if isinstance(x, list):
+                    out[i] = x
+                elif x:
+                    try:
+                        out[i] = _json_loads(x)
+                    except Exception:
+                        out[i] = []
+                else:
+                    out[i] = []
+            return pd.array(out, dtype=object)
+
+        print("  Parsing JSON columns...")
+        df['skills'] = _parse_col(df['skills'])
+        df['support_cards'] = _parse_col(df['support_cards'])
         
         # Convert distance_type, running_style, and scenario_id to readable names
         df['distance_name'] = df['distance_type'].map(self.distance_types)
         df['running_style_name'] = df['running_style'].map(self.running_styles)
         df['scenario_name'] = df['scenario_id'].map(self.scenarios).fillna('Unknown')
         
+        print(f"  Loaded {len(df):,} rows.")
         return df
     
     def parse_item(self, item_str: str) -> Tuple[int, int]:
@@ -305,276 +320,246 @@ class UmamusumeStatistics:
         return item_id, item_level
     
     def get_stat_distribution(self, series: pd.Series, stat_name: str) -> Dict[str, Any]:
-        """Get stat distribution with consistent histogram buckets"""
+        """Get stat distribution with consistent histogram buckets.
+        Uses np.histogram for a single O(N) C-level pass instead of 20 boolean-mask passes."""
         if len(series) == 0:
             return {}
         
-        # Get config for this stat
         config = self.stat_config.get(stat_name, {
-            'min': int(series.min()), 
-            'max': int(series.max()), 
+            'min': int(series.min()),
+            'max': int(series.max()),
             'buckets': 20
         })
-        
-        # Create consistent buckets
         min_val = config['min']
         max_val = config['max']
         num_buckets = config['buckets']
         
-        bucket_size = (max_val - min_val) / num_buckets
-        buckets = {}
+        # Single-pass histogram entirely in C/numpy
+        edges = np.linspace(min_val, max_val, num_buckets + 1)
+        arr = series.to_numpy(dtype=np.float64, na_value=np.nan)
+        arr = arr[~np.isnan(arr)]
+        counts, _ = np.histogram(arr, bins=edges)
         
-        for i in range(num_buckets):
-            bucket_start = min_val + (i * bucket_size)
-            bucket_end = min_val + ((i + 1) * bucket_size)
-            
-            if i == num_buckets - 1:
-                # Last bucket includes max value
-                count = len(series[(series >= bucket_start) & (series <= bucket_end)])
-            else:
-                count = len(series[(series >= bucket_start) & (series < bucket_end)])
-            
-            # Use consistent bucket key format
-            bucket_key = f"{int(bucket_start)}-{int(bucket_end)}"
-            buckets[bucket_key] = count
+        buckets = {
+            f"{int(edges[i])}-{int(edges[i + 1])}": int(counts[i])
+            for i in range(num_buckets)
+        }
         
         return {
-            'mean': float(series.mean()),
-            'std': float(series.std()),
-            'min': int(series.min()),
-            'max': int(series.max()),
-            'median': float(series.median()),
+            'mean': float(np.mean(arr)),
+            'std': float(np.std(arr, ddof=1)) if len(arr) > 1 else 0.0,
+            'min': int(np.min(arr)),
+            'max': int(np.max(arr)),
+            'median': float(np.median(arr)),
             'percentiles': {
-                '25': float(series.quantile(0.25)),
-                '50': float(series.quantile(0.50)),
-                '75': float(series.quantile(0.75)),
-                '95': float(series.quantile(0.95))
+                '25': float(np.percentile(arr, 25)),
+                '50': float(np.percentile(arr, 50)),
+                '75': float(np.percentile(arr, 75)),
+                '95': float(np.percentile(arr, 95))
             },
-            'count': len(series),
+            'count': len(arr),
             'histogram': buckets
         }
     
+    def _get_raw_to_type_map(self) -> Dict[str, str]:
+        """Build / return a cached raw-card-string → lowercased card-type dict.
+        Covers every possible card_id × level (0-9) combination up-front so
+        per-deck lookups are guaranteed O(1) dict gets with no branching."""
+        if hasattr(self, '_raw_to_type_map_cache'):
+            return self._raw_to_type_map_cache
+        mapping: Dict[str, str] = {}
+        for card_id_str, card_type in self.support_card_types.items():
+            ct = card_type.lower()
+            for level in range(10):
+                mapping[f"{card_id_str}{level}"] = ct
+        self._raw_to_type_map_cache = mapping
+        return mapping
+
     def analyze_support_card_combinations(self, support_cards_list: List[List[str]]) -> Dict[str, Any]:
-        """Analyze support card type combinations"""
-        combinations = []
-        
-        # Cache for card type to avoid repeated lookups
-        card_type_cache = {}
-        
-        for cards in support_cards_list:
-            if not cards:
-                continue
-            
-            type_counts = defaultdict(int)
-            for card in cards:
-                card_str = str(card)
-                if card_str in card_type_cache:
-                    card_type = card_type_cache[card_str]
-                else:
-                    card_id, _ = self.parse_item(card_str)
-                    if card_id:
-                        card_type = self.get_support_card_type(str(card_id))
-                        card_type_cache[card_str] = card_type
-                    else:
-                        card_type_cache[card_str] = 'Unknown'
-                        card_type = 'Unknown'
-                
-                if card_type != 'Unknown':
-                    # Normalize the type name (lowercase)
-                    type_counts[card_type.lower()] += 1
-            
-            if type_counts:
-                # Convert to regular dict for storing
-                combinations.append(dict(type_counts))
-        
-        if not combinations:
+        """Analyze support card type combinations.
+        Vectorised via pandas explode + groupby to avoid a Python loop over every card."""
+        if not support_cards_list:
             return {}
-        
-        # Count each unique combination
-        combo_strings = []
-        for combo in combinations:
-            # Create a sorted string representation for counting
-            sorted_combo = sorted(combo.items(), key=lambda x: (-x[1], x[0]))
-            combo_str = '_'.join([f"{count}x{type_name}" for type_name, count in sorted_combo])
-            combo_strings.append(combo_str)
-        
-        combo_counter = Counter(combo_strings)
-        total = len(combinations)
-        
-        # Get top combinations with their actual type counts
+
+        raw_to_type = self._get_raw_to_type_map()
+        total = len(support_cards_list)
+
+        # Build a Series of lists, explode, map types, re-group by deck index
+        s = pd.Series(support_cards_list, dtype=object)
+        exp = s.explode()                              # index = original deck index
+        exp = exp.dropna().astype(str)
+        exp = exp[exp != '']
+
+        type_series = exp.map(raw_to_type)             # unknown raws → NaN
+        type_series = type_series.dropna()
+
+        if type_series.empty:
+            return {}
+
+        # Per deck: sorted combo string
+        def _make_combo(types):
+            cnt = Counter(types)
+            return '_'.join(f"{v}x{k}" for k, v in sorted(cnt.items(), key=lambda x: (-x[1], x[0])))
+
+        combo_series = type_series.groupby(level=0).agg(list).map(_make_combo)
+        combo_counter = Counter(combo_series)
+
         top_combinations = {}
         for combo_str, count in combo_counter.most_common(50):
-            # Parse the combo string back to dict
+            if not combo_str:
+                continue
             type_dict = {}
             for part in combo_str.split('_'):
                 if 'x' in part:
-                    count_str, type_name = part.split('x', 1)
-                    type_dict[type_name] = int(count_str)
-            
+                    cnt_str, type_name = part.split('x', 1)
+                    type_dict[type_name] = int(cnt_str)
             top_combinations[combo_str] = {
                 'count': count,
                 'percentage': round(count / total * 100, 2),
                 'composition': type_dict
             }
-        
+
         return top_combinations
     
     def analyze_support_card_type_distribution(self, support_cards_list: List[List[str]]) -> Dict[str, Any]:
-        """Analyze support card usage distribution by type - FIXED: Proper ID-based aggregation"""
-        type_stats = defaultdict(lambda: {'total_count': 0, 'deck_count': 0, 'cards': defaultdict(lambda: {'count': 0, 'name': '', 'id': ''})})
-        total_decks_with_cards = 0
-        total_cards_used = 0
-        
-        # Cache for card info to avoid repeated lookups
-        card_info_cache = {}
-        
-        for cards in support_cards_list:
-            if not cards:
-                continue
-                
-            deck_types_used = set()
-            deck_has_valid_cards = False
-            
-            for card in cards:
-                card_str = str(card)
-                if card_str in card_info_cache:
-                    card_id, card_name, card_type = card_info_cache[card_str]
-                else:
-                    card_id, level = self.parse_item(card_str)
-                    if card_id:
-                        card_name = self.get_support_card_name(str(card_id))
-                        card_type = self.get_support_card_type(str(card_id))
-                        card_info_cache[card_str] = (card_id, card_name, card_type)
-                    else:
-                        card_info_cache[card_str] = (None, None, None)
-                        card_id = None
-                
-                if card_id:
-                    if card_type != 'Unknown':
-                        type_normalized = card_type.lower()
-                        type_stats[type_normalized]['total_count'] += 1
-                        
-                        # Use card_id as key for aggregation
-                        card_key = str(card_id)
-                        type_stats[type_normalized]['cards'][card_key]['count'] += 1
-                        type_stats[type_normalized]['cards'][card_key]['name'] = card_name
-                        type_stats[type_normalized]['cards'][card_key]['id'] = str(card_id)
-                        
-                        deck_types_used.add(type_normalized)
-                        total_cards_used += 1
-                        deck_has_valid_cards = True
-            
-            # Only count this deck if it has valid support cards
-            if deck_has_valid_cards:
-                total_decks_with_cards += 1
-                
-                # Count decks that use each type
-                for deck_type in deck_types_used:
-                    type_stats[deck_type]['deck_count'] += 1
-        
-        # Convert to regular dict and calculate percentages
+        """Analyze support card usage distribution by type.
+        Vectorised via pandas explode + groupby."""
+        if not support_cards_list:
+            return {}
+
+        raw_to_type = self._get_raw_to_type_map()
+
+        # Build raw → card_id lookup (strip last char = level)
+        if not hasattr(self, '_raw_to_id_cache'):
+            self._raw_to_id_cache: Dict[str, int] = {}
+            for card_id_str in self.support_card_types:
+                cid = int(card_id_str)
+                for level in range(10):
+                    self._raw_to_id_cache[f"{card_id_str}{level}"] = cid
+        raw_to_id = self._raw_to_id_cache
+
+        # Build raw → card_name lookup
+        if not hasattr(self, '_raw_to_name_cache'):
+            self._raw_to_name_cache: Dict[str, str] = {}
+            for card_id_str, name in self.support_card_names.items():
+                for level in range(10):
+                    self._raw_to_name_cache[f"{card_id_str}{level}"] = name
+        raw_to_name = self._raw_to_name_cache
+
+        s = pd.Series(support_cards_list, dtype=object)
+        total_decks = len(s)
+
+        exp = s.explode().dropna().astype(str)
+        exp = exp[exp != '']
+        if exp.empty:
+            return {}
+
+        # Map to card_id and card_type
+        deck_idx = exp.index                       # original deck indices
+        card_ids = exp.map(raw_to_id)              # NaN for unknowns
+        card_types = exp.map(raw_to_type)          # NaN for unknowns
+        card_names = exp.map(raw_to_name)
+
+        valid = card_types.notna() & card_ids.notna()
+        card_ids = card_ids[valid].astype(int)
+        card_types = card_types[valid]
+        card_names = card_names[valid].fillna('')
+        deck_idx_valid = deck_idx[valid]
+
+        if card_types.empty:
+            return {}
+
+        total_cards_used = int(valid.sum())
+        total_decks_with_cards = int(pd.Series(deck_idx_valid).nunique())
+
+        # Deck-level type presence for deck_count
+        deck_type_df = pd.DataFrame({'deck': deck_idx_valid, 'card_type': card_types.values})
+        deck_type_counts = deck_type_df.drop_duplicates().groupby('card_type').size()
+
+        # Card-level counts per (type, card_id)
+        card_df = pd.DataFrame({
+            'card_type': card_types.values,
+            'card_id': card_ids.values,
+            'card_name': card_names.values
+        })
+        card_counts = card_df.groupby(['card_type', 'card_id']).agg(
+            count=('card_id', 'size'),
+            name=('card_name', 'first')
+        ).reset_index()
+        type_totals = card_df.groupby('card_type').size()
+
         result = {}
-        for card_type, stats in type_stats.items():
-            # Sort cards by count and get top 50
-            sorted_cards = sorted(stats['cards'].items(), key=lambda x: x[1]['count'], reverse=True)[:50]
-            
-            # Create top cards dict using card ID as key but including display info
+        for ct, group in card_counts.groupby('card_type'):
+            total_ct = int(type_totals[ct])
+            dk = int(deck_type_counts.get(ct, 0))
             top_cards = {}
-            for card_id, card_info in sorted_cards:
-                # Use card_id as the key to maintain uniqueness
-                top_cards[card_id] = {
-                    'count': card_info['count'],
-                    'name': card_info['name'],
-                    'id': card_info['id']
+            for row in group.nlargest(50, 'count').itertuples(index=False):
+                cid_str = str(row.card_id)
+                top_cards[cid_str] = {
+                    'count': int(row.count),
+                    'name': row.name,
+                    'id': cid_str
                 }
-            
-            result[card_type] = {
-                'total_usage': stats['total_count'],
-                'usage_percentage': round(stats['total_count'] / total_cards_used * 100, 2) if total_cards_used > 0 else 0,
-                'deck_usage': stats['deck_count'],
-                'deck_percentage': round(stats['deck_count'] / total_decks_with_cards * 100, 2) if total_decks_with_cards > 0 else 0,
-                'avg_per_deck': round(stats['total_count'] / stats['deck_count'], 2) if stats['deck_count'] > 0 else 0,
+            result[ct] = {
+                'total_usage': total_ct,
+                'usage_percentage': round(total_ct / total_cards_used * 100, 2) if total_cards_used > 0 else 0,
+                'deck_usage': dk,
+                'deck_percentage': round(dk / total_decks_with_cards * 100, 2) if total_decks_with_cards > 0 else 0,
+                'avg_per_deck': round(total_ct / dk, 2) if dk > 0 else 0,
                 'top_cards': top_cards
             }
-            
-            result[card_type] = {
-                'total_usage': stats['total_count'],
-                'usage_percentage': round(stats['total_count'] / total_cards_used * 100, 2) if total_cards_used > 0 else 0,
-                'deck_usage': stats['deck_count'],
-                'deck_percentage': round(stats['deck_count'] / total_decks_with_cards * 100, 2) if total_decks_with_cards > 0 else 0,
-                'avg_per_deck': round(stats['total_count'] / stats['deck_count'], 2) if stats['deck_count'] > 0 else 0,
-                'top_cards': top_cards
-            }
-        
-        # Sort by total usage
+
         return dict(sorted(result.items(), key=lambda x: x[1]['total_usage'], reverse=True))
     
-    def process_items_with_levels(self, items: List[str], item_type: str) -> Dict[str, Any]:
-        """Process items with names and levels - FIXED: Now aggregates by ID with proper counting"""
-        # Optimization: Count raw items first to minimize parse_item calls
-        raw_counts = Counter(items)
-        item_stats = defaultdict(lambda: defaultdict(int))
-        
+    def process_items_with_levels(self, items, item_type: str) -> Dict[str, Any]:
+        """Process items with names and levels. Accepts a flat iterable (list, iterator, or
+        generator) of raw item strings. Uses itertools.chain to avoid building a full copy."""
+        if items is None:
+            return {}
+        # Accept both lists and generators; count raw tokens (parse_item only called per unique)
+        raw_counts: Counter = Counter(items)
+        item_stats: Dict[str, Dict[str, int]] = defaultdict(lambda: defaultdict(int))
+
         for item_str, count in raw_counts.items():
             if item_str:
                 item_id, level = self.parse_item(str(item_str))
                 if item_id is not None:
-                    # Use item_id as the key to prevent incorrect merging
-                    item_key = str(item_id)
-                    item_stats[item_key][str(level)] += count
-        
-        # Convert to regular dict and sort by total usage
+                    item_stats[str(item_id)][str(level)] += count
+
         result = {}
         for item_key, levels in item_stats.items():
             total = sum(levels.values())
-            
-            # Get proper name based on item type
+            avg_level = sum(int(lvl) * cnt for lvl, cnt in levels.items()) / total if total > 0 else 0
+
             if item_type == 'skills':
-                item_name = self.get_skill_name(item_key)
-                item_data = {
+                result[item_key] = {
                     'total': total,
                     'by_level': dict(levels),
-                    'avg_level': sum(int(lvl) * count for lvl, count in levels.items()) / total if total > 0 else 0,
-                    'name': item_name,
+                    'avg_level': avg_level,
+                    'name': self.get_skill_name(item_key),
                     'icon': self.get_skill_icon(item_key),
                     'id': item_key
                 }
             elif item_type == 'support_cards':
-                item_name = self.get_support_card_name(item_key)
-                item_data = {
+                result[item_key] = {
                     'total': total,
                     'by_level': dict(levels),
-                    'avg_level': sum(int(lvl) * count for lvl, count in levels.items()) / total if total > 0 else 0,
-                    'name': item_name,
+                    'avg_level': avg_level,
+                    'name': self.get_support_card_name(item_key),
                     'type': self.get_support_card_type(item_key),
                     'id': item_key
                 }
             else:
-                item_name = item_key
-                item_data = {
+                result[item_key] = {
                     'total': total,
                     'by_level': dict(levels),
-                    'avg_level': sum(int(lvl) * count for lvl, count in levels.items()) / total if total > 0 else 0,
-                    'name': item_name,
+                    'avg_level': avg_level,
+                    'name': item_key,
                     'id': item_key
                 }
-            
-            # Use item_key (ID) as the result key to prevent overwrites
-            result[item_key] = item_data
-        
-        # Sort by total usage and limit
+
         sorted_items = sorted(result.items(), key=lambda x: x[1]['total'], reverse=True)
-        limit = 50  # Top 50 for both skills and support cards
-        
-        # Return items using ID as key
-        return dict(sorted_items[:limit])
-        
-        # Sort by total usage and limit
-        sorted_items = sorted(result.items(), key=lambda x: x[1]['total'], reverse=True)
-        limit = 50  # Top 50 for both skills and support cards
-        
-        # Return items directly without 'items' wrapper
-        return dict(sorted_items[:limit])
+        return dict(sorted_items[:50])
     
     def calculate_global_statistics(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Calculate global statistics"""
@@ -704,9 +689,9 @@ class UmamusumeStatistics:
         # Calculate overall global support cards, skills, and combinations
         print("Calculating overall support cards and skills...")
         
-        # Optimized extraction using list comprehensions and explode
-        all_support_cards = [str(c) for sublist in df['support_cards'] for c in sublist if c]
-        all_skills = [str(s) for sublist in df['skills'] for s in sublist if s]
+        # Flatten using itertools.chain — avoids building an intermediate list copy
+        all_support_cards = list(map(str, filter(None, itertools.chain.from_iterable(df['support_cards']))))
+        all_skills = list(map(str, filter(None, itertools.chain.from_iterable(df['skills']))))
         all_support_cards_by_team = [list(map(str, cards)) for cards in df['support_cards'] if cards]
         
         # Store overall statistics with totals
@@ -1055,14 +1040,26 @@ class UmamusumeStatistics:
                 json.dump(distance_stats, f, ensure_ascii=False, indent=2)
             print(f"    Saved to {filename}")
     
+    def _write_character_file(self, char_id_str: str, character_stats: dict) -> str:
+        """Write one character JSON file (called from thread pool)."""
+        filename = f"{self.base_path}/characters/{char_id_str}.json"
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(character_stats, f, ensure_ascii=False, indent=2)
+        return filename
+
     def calculate_character_statistics(self, df: pd.DataFrame) -> None:
-        """Calculate and save character-specific statistics to separate files"""
+        """Calculate and save character-specific statistics to separate files.
+        Uses df.groupby so we scan the DataFrame exactly once instead of once per character.
+        File I/O is parallelised across a thread pool."""
         print("Calculating character-specific statistics...")
-        
-        unique_characters = df['card_id'].unique()
-        
-        for char_id in tqdm(unique_characters, desc="Processing characters"):
-            char_df = df[df['card_id'] == char_id]
+
+        # Group once — O(N) scan instead of O(N × N_characters)
+        grouped = df.groupby('card_id', sort=False)
+        futures_map = {}
+
+        with ThreadPoolExecutor(max_workers=8) as executor:
+          for char_id, char_df in tqdm(grouped, desc="Processing characters", total=grouped.ngroups):
+            char_id_str = str(char_id)
             char_id_str = str(char_id)
             char_name = self.get_character_name(char_id_str)
             char_color = self.get_character_color(char_id_str)
@@ -1302,11 +1299,17 @@ class UmamusumeStatistics:
                                             'total_skills': len(sc_skills)
                                         }
             
-            # Save to file
-            filename = f"{self.base_path}/characters/{char_id_str}.json"
-            with open(filename, 'w', encoding='utf-8') as f:
-                json.dump(character_stats, f, ensure_ascii=False, indent=2)
-    
+            # Submit file write to thread pool — compute is done, only I/O is async
+            fut = executor.submit(self._write_character_file, char_id_str, character_stats)
+            futures_map[fut] = char_id_str
+
+          # Collect results / surface any write errors
+          for fut in as_completed(futures_map):
+            try:
+                fut.result()
+            except Exception as exc:
+                print(f"  Warning: failed to write {futures_map[fut]}: {exc}")
+
     def compile_statistics(self) -> None:
         """Compile all statistics and save to versioned organized files"""
         print(f"\n{'='*60}")

@@ -3,23 +3,19 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map, filter, take } from 'rxjs/operators';
 import { Character } from '../models/character.model';
 import { getAllCharacters, getCharacterById } from '../data/character.data';
-
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
   private charactersSubject = new BehaviorSubject<Character[]>([]);
   public characters$ = this.charactersSubject.asObservable();
-
   constructor() {
     // Load characters from bundled data immediately
     this.charactersSubject.next(getAllCharacters());
   }
-
   getCharacters(): Observable<Character[]> {
     return this.characters$;
   }
-
   getCharacterById(id: number | string): Observable<Character | undefined> {
     return this.characters$.pipe(
       filter(characters => characters.length > 0), // Only emit when characters are loaded
@@ -30,7 +26,6 @@ export class CharacterService {
       take(1) // Complete after first emission
     );
   }
-
   searchCharacters(query: string): Observable<Character[]> {
     return this.characters$.pipe(
       filter(characters => characters.length > 0),
@@ -40,7 +35,6 @@ export class CharacterService {
       ))
     );
   }
-
   /**
    * Get characters that have been released globally by a specific date
    * Uses the timeline calculation logic similar to the timeline service
@@ -71,14 +65,13 @@ export class CharacterService {
       })
     );
   }
-
   /**
    * Calculate estimated global release date based on timeline service logic
    * This mirrors the calculation used in timeline.service.ts
    */
   private calculateGlobalReleaseDate(jpDate: Date, globalLaunchDate: Date): Date {
     const jpLaunchDate = new Date('2021-02-24'); // JP game launch
-    const catchupRate = 1 / 1.6; // Global is catching up at 1.6x speed
+    const catchupRate = 1 / 1.42; // Global is catching up at 1.6x speed
     
     // Days since JP launch
     const daysSinceJpLaunch = Math.floor((jpDate.getTime() - jpLaunchDate.getTime()) / (1000 * 60 * 60 * 24));

@@ -10,7 +10,6 @@ export interface StatisticsMetadata {
   character_name?: string;
   character_color?: string;
 }
-
 export interface StatDistribution {
   mean: number;
   std: number;
@@ -26,7 +25,6 @@ export interface StatDistribution {
   count: number;
   histogram: { [key: string]: number };
 }
-
 export interface ItemWithLevels {
   total: number;
   percentage?: number;  // Made optional since it's calculated on frontend
@@ -36,20 +34,17 @@ export interface ItemWithLevels {
   id?: string;    // New: For items
   type?: string;  // New: For support cards
 }
-
 export interface SupportCardCombination {
   count: number;
   percentage: number;
   composition: { [cardType: string]: number };
 }
-
 export interface CharacterDistribution {
   count: number;
   percentage: number;
   character_id: string;
   character_color?: string;
 }
-
 export interface TeamClassDistribution {
   count: number;
   percentage: number;
@@ -60,7 +55,6 @@ export interface TeamClassDistribution {
   character_id?: string;  // For character-specific data
   character_color?: string;  // For character-specific data
 }
-
 export interface StatFactorData {
   name: string;
   stat_type: string;
@@ -68,7 +62,6 @@ export interface StatFactorData {
   percentage: number;
   by_level: { [level: string]: { count: number; percentage: number } };
 }
-
 export interface ThreeDigitFactorData {
   name: string;
   category: string;
@@ -76,7 +69,6 @@ export interface ThreeDigitFactorData {
   percentage: number;
   by_level: { [level: string]: { count: number; percentage: number } };
 }
-
 export interface RandomnessAnalysis {
   level_uniformity: {
     average_deviation: number;
@@ -93,7 +85,6 @@ export interface RandomnessAnalysis {
   };
   conclusion: string;
 }
-
 export interface ExpectedVsActual {
   expected_count: number;
   actual_count: number;
@@ -101,20 +92,17 @@ export interface ExpectedVsActual {
   actual_percentage: number;
   deviation: number;
 }
-
 export interface CategoryData {
   count: number;
   percentage: number;
   by_level: { [level: string]: { count: number; percentage: number } };
 }
-
 export interface CombinationData {
   factors?: string[];
   categories?: string[];
   count: number;
   percentage: number;
 }
-
 export interface GlobalStatistics {
   metadata: StatisticsMetadata;
   team_class_distribution: { 
@@ -181,7 +169,6 @@ export interface GlobalStatistics {
     [key: string]: any; // For dynamic team class totals
   };
 }
-
 export interface DistanceStatistics {
   metadata: StatisticsMetadata;
   by_team_class: {
@@ -217,7 +204,6 @@ export interface DistanceStatistics {
     };
   };
 }
-
 export interface CharacterStatistics {
   metadata: StatisticsMetadata;
   global: {
@@ -269,7 +255,6 @@ export interface CharacterStatistics {
     };
   };
 }
-
 export interface StatisticsIndex {
   generated_at: string;
   total_entries: number;
@@ -280,7 +265,6 @@ export interface StatisticsIndex {
   version?: string;
   name?: string;
 }
-
 export interface StatisticsDataset {
   id: string;
   name: string;

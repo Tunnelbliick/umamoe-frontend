@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
 @Component({
     selector: 'app-domain-migration-popup',
     standalone: true,
@@ -19,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
         <mat-icon class="migration-icon">campaign</mat-icon>
         <h2 mat-dialog-title>Important Update!</h2>
       </div>
-
       <div mat-dialog-content class="popup-content">
         <div class="domain-change">
           <div class="old-domain">
@@ -46,7 +44,6 @@ import { MatIconModule } from '@angular/material/icon';
           </ul>
         </div>
       </div>
-
       <div mat-dialog-actions class="popup-actions">
         <button mat-raised-button color="primary" (click)="dismiss()" class="dismiss-btn">
           <mat-icon>check</mat-icon>
@@ -63,7 +60,6 @@ import { MatIconModule } from '@angular/material/icon';
       color: var(--text-primary);
       border-radius: 16px;
     }
-
     .popup-header {
       display: flex;
       align-items: center;
@@ -73,7 +69,6 @@ import { MatIconModule } from '@angular/material/icon';
       border-bottom: 1px solid rgba(33, 150, 243, 0.2);
       position: relative;
     }
-
     .popup-header::after {
       content: '';
       position: absolute;
@@ -84,7 +79,6 @@ import { MatIconModule } from '@angular/material/icon';
       background: linear-gradient(90deg, transparent 0%, #64b5f6 50%, transparent 100%);
       opacity: 0.5;
     }
-
     .migration-icon {
       font-size: 2.5rem;
       width: 2.5rem;
@@ -93,7 +87,6 @@ import { MatIconModule } from '@angular/material/icon';
       filter: drop-shadow(0 3px 12px rgba(100, 181, 246, 0.4));
       animation: icon-glow 3s ease-in-out infinite;
     }
-
     @keyframes icon-glow {
       0%, 100% { 
         filter: drop-shadow(0 3px 12px rgba(100, 181, 246, 0.4));
@@ -102,7 +95,6 @@ import { MatIconModule } from '@angular/material/icon';
         filter: drop-shadow(0 4px 16px rgba(100, 181, 246, 0.6));
       }
     }
-
     h2 {
       margin: 0;
       color: var(--text-primary);
@@ -111,11 +103,9 @@ import { MatIconModule } from '@angular/material/icon';
       text-shadow: 0 2px 8px rgba(100, 181, 246, 0.2);
       letter-spacing: -0.025em;
     }
-
     .popup-content {
       margin-bottom: 0;
     }
-
     .domain-change {
       display: flex;
       align-items: center;
@@ -129,7 +119,6 @@ import { MatIconModule } from '@angular/material/icon';
       position: relative;
       overflow: hidden;
     }
-
     .domain-change::before {
       content: '';
       position: absolute;
@@ -142,7 +131,6 @@ import { MatIconModule } from '@angular/material/icon';
         radial-gradient(circle at 80% 20%, rgba(129, 199, 132, 0.05) 0%, transparent 50%);
       pointer-events: none;
     }
-
     .old-domain, .new-domain {
       display: flex;
       flex-direction: column;
@@ -151,7 +139,6 @@ import { MatIconModule } from '@angular/material/icon';
       position: relative;
       z-index: 1;
     }
-
     .domain-label {
       font-size: 0.75rem;
       font-weight: 500;
@@ -159,7 +146,6 @@ import { MatIconModule } from '@angular/material/icon';
       color: var(--text-muted);
       letter-spacing: 0.5px;
     }
-
     .domain-name {
       font-size: 1.1rem;
       font-weight: 700;
@@ -169,14 +155,12 @@ import { MatIconModule } from '@angular/material/icon';
       text-align: center;
       transition: all 0.3s ease;
     }
-
     .domain-name.old {
       background: rgba(244, 67, 54, 0.15);
       color: #ef5350;
       text-decoration: line-through;
       border: 1px solid rgba(244, 67, 54, 0.3);
     }
-
     .domain-name.new {
       background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
       color: white;
@@ -185,7 +169,6 @@ import { MatIconModule } from '@angular/material/icon';
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
       animation: gentle-glow 3s ease-in-out infinite;
     }
-
     @keyframes gentle-glow {
       0%, 100% { 
         box-shadow: 
@@ -198,14 +181,12 @@ import { MatIconModule } from '@angular/material/icon';
           0 0 0 1px rgba(255, 255, 255, 0.2) inset;
       }
     }
-
     .arrow-icon {
       font-size: 1.5rem;
       color: #64b5f6;
       animation: pulse-arrow 2s ease-in-out infinite;
       filter: drop-shadow(0 2px 4px rgba(100, 181, 246, 0.3));
     }
-
     @keyframes pulse-arrow {
       0%, 100% { 
         transform: scale(1);
@@ -216,7 +197,6 @@ import { MatIconModule } from '@angular/material/icon';
         opacity: 1;
       }
     }
-
     .migration-message {
       font-size: 1rem;
       line-height: 1.6;
@@ -224,22 +204,18 @@ import { MatIconModule } from '@angular/material/icon';
       color: var(--text-primary);
       text-align: center;
     }
-
     .migration-message strong {
       color: #64b5f6;
       font-weight: 600;
     }
-
     .migration-details {
       margin: 0;
     }
-
     .migration-details ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-
     .migration-details li {
       padding: 0.75rem 0;
       display: flex;
@@ -248,7 +224,6 @@ import { MatIconModule } from '@angular/material/icon';
       font-size: 0.9rem;
       transition: color 0.2s ease;
     }
-
     .migration-details li::before {
       content: '✓';
       color: #81c784;
@@ -257,11 +232,9 @@ import { MatIconModule } from '@angular/material/icon';
       font-size: 1rem;
       filter: drop-shadow(0 1px 2px rgba(129, 199, 132, 0.3));
     }
-
     .migration-details li:hover {
       color: var(--text-primary);
     }
-
     .popup-actions {
       display: flex;
       justify-content: center;
@@ -269,7 +242,6 @@ import { MatIconModule } from '@angular/material/icon';
       border-top: 1px solid rgba(33, 150, 243, 0.1);
       margin-top: 0;
     }
-
     .dismiss-btn {
       padding: 0.75rem 2rem;
       font-weight: 600;
@@ -283,44 +255,36 @@ import { MatIconModule } from '@angular/material/icon';
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
       transition: all 0.2s ease;
     }
-
     .dismiss-btn:hover {
       transform: translateY(-1px);
       box-shadow: 
         0 6px 16px rgba(25, 118, 210, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.2) inset;
     }
-
     .dismiss-btn mat-icon {
       margin-right: 0.5rem;
       font-size: 1.1rem;
     }
-
     @media (max-width: 600px) {
       .migration-popup {
         padding: 1.25rem;
         max-width: 90vw;
       }
-
       .domain-change {
         flex-direction: column;
         gap: 1rem;
         padding: 1.25rem;
       }
-
       .arrow-icon {
         transform: rotate(90deg);
       }
-
       .domain-name {
         min-width: 140px;
         font-size: 1rem;
       }
-
       .migration-message {
         font-size: 0.95rem;
       }
-
       .migration-details li {
         font-size: 0.85rem;
       }
@@ -332,7 +296,6 @@ export class DomainMigrationPopupComponent {
         public dialogRef: MatDialogRef<DomainMigrationPopupComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) { }
-
     dismiss(): void {
         this.dialogRef.close();
     }

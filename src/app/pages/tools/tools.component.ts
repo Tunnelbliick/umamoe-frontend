@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { StatsService, StatsResponse } from '../../services/stats.service';
-
 @Component({
   selector: 'app-tools',
   standalone: true,
@@ -23,12 +22,10 @@ export class ToolsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   stats: StatsResponse | null = null;
   loading = true;
-
   dailyUsers = 0;
   totalAccounts = 0;
   totalCircles = 0;
   totalCharacters = 0;
-
   constructor(
     private meta: Meta,
     private title: Title,
@@ -43,16 +40,13 @@ export class ToolsComponent implements OnInit, OnDestroy {
       { property: 'og:url', content: 'https://honsemoe.com/tools' }
     ]);
   }
-
   ngOnInit(): void {
     this.loadStats();
   }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   private loadStats() {
     this.statsService.getStats()
       .pipe(takeUntil(this.destroy$))
@@ -65,7 +59,6 @@ export class ToolsComponent implements OnInit, OnDestroy {
         error: () => { this.loading = false; }
       });
   }
-
   private updateDisplayValues(stats: StatsResponse) {
     this.dailyUsers = Math.round(stats.rolling_averages.unique_visitors_7_day);
     this.totalAccounts = stats.totals.total_accounts_tracked;

@@ -2,7 +2,6 @@
  * Simplified Support Card Database Models
  * Reduced version containing only essential information: id, name, rarity, type, releasedate
  */
-
 export interface SupportCardSimple {
   id: string;
   name: string;
@@ -10,7 +9,6 @@ export interface SupportCardSimple {
   type: SupportCardTypeString;
   release_date: string; // ISO date string
 }
-
 export type SupportCardTypeString = 
   | 'speed' 
   | 'stamina' 
@@ -18,7 +16,6 @@ export type SupportCardTypeString =
   | 'guts' 
   | 'intelligence' 
   | 'friend';
-
 export enum SupportCardTypeEnum {
   SPEED = 'speed',
   STAMINA = 'stamina',
@@ -27,13 +24,11 @@ export enum SupportCardTypeEnum {
   INTELLIGENCE = 'intelligence',
   FRIEND = 'friend'
 }
-
 export enum SupportCardRarity {
   R = 1,
   SR = 2,
   SSR = 3
 }
-
 export interface SupportCardSearchFilter {
   name?: string;
   type?: SupportCardTypeString;
@@ -41,13 +36,11 @@ export interface SupportCardSearchFilter {
   minReleaseDate?: string;
   maxReleaseDate?: string;
 }
-
 export interface SupportCardSearchResult {
   cards: SupportCardSimple[];
   total: number;
   filters: SupportCardSearchFilter;
 }
-
 // Utility functions for working with support cards
 export class SupportCardUtils {
   
@@ -59,7 +52,6 @@ export class SupportCardUtils {
       default: return 'Unknown';
     }
   }
-
   static getTypeDisplayName(type: SupportCardTypeString): string {
     switch (type) {
       case 'speed': return 'Speed';
@@ -71,7 +63,6 @@ export class SupportCardUtils {
       default: return 'Unknown';
     }
   }
-
   static getTypeColor(type: SupportCardTypeString): string {
     switch (type) {
       case 'speed': return '#ff4444';
@@ -83,7 +74,6 @@ export class SupportCardUtils {
       default: return '#888888';
     }
   }
-
   static getRarityColor(rarity: number): string {
     switch (rarity) {
       case 1: return '#c0c0c0'; // Silver for R

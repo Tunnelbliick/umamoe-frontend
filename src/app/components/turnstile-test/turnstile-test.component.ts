@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { TurnstileService } from '../../services/turnstile.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-
 @Component({
   selector: 'app-turnstile-test',
   standalone: true,
@@ -23,7 +22,6 @@ import { environment } from '../../../environments/environment';
           <p><strong>Last Token:</strong> {{ lastToken || 'None' }}</p>
           <p><strong>Test Result:</strong> {{ testResult || 'Not tested' }}</p>
         </div>
-
         <div class="test-actions">
           <button mat-raised-button color="primary" (click)="generateToken()" [disabled]="!turnstileReady">
             Generate Token
@@ -59,18 +57,15 @@ export class TurnstileTestComponent implements OnInit {
   turnstileReady = false;
   lastToken: string | null = null;
   testResult: string | null = null;
-
   constructor(
     private turnstileService: TurnstileService,
     private http: HttpClient
   ) {}
-
   ngOnInit() {
     // Check if Turnstile is ready
     this.turnstileService.waitForReady().subscribe({
       next: (ready) => {
         this.turnstileReady = ready;
-        console.log('Turnstile is ready');
       },
       error: (error) => {
         console.error('Turnstile failed to load:', error);
@@ -78,7 +73,6 @@ export class TurnstileTestComponent implements OnInit {
       }
     });
   }
-
   generateToken() {
     this.testResult = 'Generating token...';
     
@@ -86,7 +80,6 @@ export class TurnstileTestComponent implements OnInit {
       next: (token) => {
         this.lastToken = token.substring(0, 50) + '...';
         this.testResult = 'Token generated successfully';
-        console.log('Generated token:', token);
       },
       error: (error) => {
         this.testResult = 'Failed to generate token: ' + error;
@@ -94,10 +87,8 @@ export class TurnstileTestComponent implements OnInit {
       }
     });
   }
-
   testApiCall() {
     if (!this.lastToken) return;
-
     this.testResult = 'Testing API call...';
     
     // Make a test POST request that should include the Turnstile token
@@ -107,7 +98,6 @@ export class TurnstileTestComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         this.testResult = 'API call successful: ' + JSON.stringify(response);
-        console.log('API test successful:', response);
       },
       error: (error) => {
         this.testResult = 'API call failed: ' + (error.error?.message || error.message);

@@ -192,10 +192,10 @@
         top: 0;
         bottom: 0;
         width: 2px;
-        background: linear-gradient(to bottom, 
-          rgba(255, 255, 255, 0.3) 0%, 
-          rgba(255, 255, 255, 0.6) 50%, 
-          rgba(255, 255, 255, 0.3) 100%);
+        background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0.3) 100%);
       }
 
       .timeline-markers {
@@ -422,6 +422,16 @@
                   height: auto;
                   display: block;
                 }
+
+                // Campaign images need padding since logos have busy edges
+                &.campaign-image {
+                  padding: 8px 12px;
+                  overflow: visible;
+
+                  img {
+                    border-radius: 8px;
+                  }
+                }
               }
 
               .related-items {
@@ -551,10 +561,12 @@
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 0.8;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -589,6 +601,7 @@
         width: 60px;
 
         .timeline-markers .timeline-marker {
+
           &.marker-year,
           &.marker-month {
             .marker-label {

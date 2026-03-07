@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, from, throwError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { tap } from 'rxjs/operators';
-
 declare global {
   interface Window {
     turnstile: {
@@ -14,7 +13,6 @@ declare global {
     };
   }
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +23,6 @@ export class TurnstileService {
   private readonly TOKEN_LIFETIME = 300000; // 5 minutes in milliseconds (matches backend cache)
   
   constructor() {}
-
   /**
    * Generate a Turnstile token for API requests
    * This uses the invisible/headless mode for seamless user experience
@@ -37,7 +34,6 @@ export class TurnstileService {
         observer.error('Turnstile not loaded');
         return;
       }
-
       try {
         // Use execute for headless/invisible verification
         window.turnstile.execute(document.body, {
@@ -46,7 +42,6 @@ export class TurnstileService {
           size: 'invisible',
           callback: (token: string) => {
             if (!environment.production) {
-              console.log('Turnstile token generated:', token.substring(0, 20) + '...');
             }
             observer.next(token);
             observer.complete();
@@ -70,14 +65,12 @@ export class TurnstileService {
       }
     });
   }
-
   /**
    * Check if Turnstile is ready
    */
   isReady(): boolean {
     return typeof window !== 'undefined' && !!window.turnstile;
   }
-
   /**
    * Wait for Turnstile to be ready
    */
@@ -88,7 +81,6 @@ export class TurnstileService {
         observer.complete();
         return;
       }
-
       const checkInterval = setInterval(() => {
         if (this.isReady()) {
           clearInterval(checkInterval);
@@ -96,7 +88,6 @@ export class TurnstileService {
           observer.complete();
         }
       }, 100);
-
       // Timeout after 10 seconds
       setTimeout(() => {
         clearInterval(checkInterval);
@@ -104,14 +95,12 @@ export class TurnstileService {
       }, 10000);
     });
   }
-
   /**
    * Generate token with retry logic
    */
   generateTokenWithRetry(maxRetries: number = 3): Observable<string> {
     return new Observable(observer => {
       let attempts = 0;
-
       const attemptGeneration = () => {
         attempts++;
         
@@ -134,7 +123,6 @@ export class TurnstileService {
           }
         });
       };
-
       // Wait for Turnstile to be ready before attempting
       this.waitForReady().subscribe({
         next: () => attemptGeneration(),
@@ -142,7 +130,6 @@ export class TurnstileService {
       });
     });
   }
-
   /**
    * Get a cached token or generate a new one if expired
    */
@@ -152,14 +139,12 @@ export class TurnstileService {
     // If we have a valid cached token, return it
     if (this.cachedToken && now < this.tokenExpiry) {
       if (!environment.production) {
-        console.log('Using cached Turnstile token');
       }
       return of(this.cachedToken);
     }
     
     // Generate a new token and cache it
     if (!environment.production) {
-      console.log('Generating new Turnstile token (cache expired or missing)');
     }
     
     return this.generateToken().pipe(
@@ -167,12 +152,10 @@ export class TurnstileService {
         this.cachedToken = token;
         this.tokenExpiry = now + this.TOKEN_LIFETIME;
         if (!environment.production) {
-          console.log(`Turnstile token cached, expires in ${this.TOKEN_LIFETIME / 1000} seconds`);
         }
       })
     );
   }
-
   /**
    * Force refresh the cached token
    */

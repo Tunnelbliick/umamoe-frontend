@@ -8,11 +8,54 @@
 
   <div class="content-container">
     <div class="filters-container">
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Search Clubs</mat-label>
-        <input matInput (input)="onSearch($event)" placeholder="Search by Club Name, Leader Name/ID, or Member Name/ID" [value]="searchTerm">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+      <div class="search-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search Clubs</mat-label>
+          <input matInput (input)="onSearch($event)" placeholder="Search by Club Name, Leader Name/ID, or Member Name/ID" [value]="searchTerm">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-chips">
+          <button class="filter-chip chip-open" [class.active]="joinStyleFilter === 'open'" (click)="setJoinStyleFilter(joinStyleFilter === 'open' ? 'all' : 'open')">
+            <mat-icon>lock_open</mat-icon> Open
+          </button>
+          <button class="filter-chip chip-approval" [class.active]="joinStyleFilter === 'approval'" (click)="setJoinStyleFilter(joinStyleFilter === 'approval' ? 'all' : 'approval')">
+            <mat-icon>hourglass_empty</mat-icon> Approval
+          </button>
+          <button class="filter-chip chip-closed" [class.active]="joinStyleFilter === 'closed'" (click)="setJoinStyleFilter(joinStyleFilter === 'closed' ? 'all' : 'closed')">
+            <mat-icon>lock</mat-icon> Closed
+          </button>
+          <button class="filter-chip toggle-chip" [class.active]="hasOpenSpots" (click)="toggleHasOpenSpots()">
+            <mat-icon>group_add</mat-icon> Has Spots
+          </button>
+        </div>
+
+        <div class="filter-dropdowns">
+          <mat-form-field appearance="outline" class="compact-select policy-select">
+            <mat-icon matPrefix>sports_esports</mat-icon>
+            <mat-select [(value)]="policyFilter" (selectionChange)="onPolicyFilterChange()" placeholder="Playstyle">
+              <mat-option *ngFor="let opt of policyOptions" [value]="opt.value">{{opt.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <button class="clear-filters-btn" *ngIf="hasActiveFilters" (click)="clearAllFilters()">
+          <mat-icon>clear</mat-icon>
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="live-refresh-bar" *ngIf="isTop100View">
+      <span class="live-dot"></span>
+      <span class="live-label">Live</span>
+      <span class="countdown" *ngIf="!liveRefreshing">Next update in {{formatCountdown(secondsUntilRefresh)}}</span>
+      <span class="countdown refreshing" *ngIf="liveRefreshing">Updating…</span>
+      <button class="refresh-now-btn" (click)="refreshNow()" [disabled]="liveRefreshing" title="Update now">
+        <mat-icon>refresh</mat-icon>
+      </button>
     </div>
 
     <div class="loading-container" *ngIf="loading">
@@ -20,15 +63,21 @@
       <p>Loading clubs...</p>
     </div>
 
-    <div class="results-grid" *ngIf="!loading">
-      <div class="circle-card" *ngFor="let circle of circles"
+    <div class="results-info" *ngIf="!loading && (joinStyleFilter !== 'all' || hasOpenSpots || policyFilter !== null)">
+      <span class="results-count">Showing {{filteredCircles.length}} of {{circles.length}} clubs on this page</span>
+    </div>
+
+    <div class="results-grid" *ngIf="!loading && filteredCircles.length > 0">
+      <div class="circle-card" *ngFor="let circle of filteredCircles; trackBy: trackByCircleId"
+           [attr.data-circle-id]="circle.circle_id"
            [class.rank-1]="circle.monthly_rank === 1"
            [class.rank-2]="circle.monthly_rank === 2"
-           [class.rank-3]="circle.monthly_rank === 3">
+           [class.rank-3]="circle.monthly_rank === 3"
+           (click)="navigateToCircle(circle.circle_id)">
         <div class="card-header">
           <div class="rank-section">
             <div class="rank-main">
-              <span class="rank-number">#{{circle.monthly_rank}}</span>
+              <span class="rank-number"><app-animated-number [value]="circle.monthly_rank" prefix="#"></app-animated-number></span>
               
               <div class="rank-diff" 
                    [class.positive]="(circle.yesterday_rank - circle.monthly_rank) > 0"
@@ -44,6 +93,10 @@
             </div>
           </div>
 
+          <div class="club-rank-icon" *ngIf="getClubRankIcon(circle.club_rank)">
+            <img [src]="getClubRankIcon(circle.club_rank)" alt="Club Rank" />
+          </div>
+
           <div class="circle-info">
             <a [routerLink]="['/circles', circle.circle_id]" class="circle-name">{{circle.name}}</a>
             <div class="circle-meta">
@@ -56,16 +109,24 @@
               <span class="meta-item join-style" [ngClass]="{'open': circle.join_style === 1, 'approval': circle.join_style === 2, 'closed': circle.join_style === 3}">
                 {{ circle.join_style === 1 ? 'Open' : (circle.join_style === 2 ? 'Approval' : 'Closed') }}
               </span>
+              <span class="meta-item policy-badge" *ngIf="circle.policy">
+                {{ getPolicyLabel(circle.policy) }}
+              </span>
             </div>
           </div>
 
           <div class="fans-section">
-            <span class="fans-count">{{circle.monthly_point | number}} Fans</span>
-            
-            <div class="daily-gain" *ngIf="circle.yesterday_points">
-              <span class="label">Daily:</span>
-              <span class="value" [class.positive]="(circle.monthly_point - circle.yesterday_points) > 0">
-                +{{ (circle.monthly_point - circle.yesterday_points) | number }}
+            <span class="fans-count"><app-animated-number [value]="(circle.live_points != null && circle.live_points > circle.monthly_point) ? circle.live_points : circle.monthly_point" suffix=" Fans"></app-animated-number></span>
+
+            <div class="gains-row" *ngIf="circle.yesterday_points || getTodayGain(circle) !== null">
+              <span class="gain-item" *ngIf="circle.yesterday_points">
+                <span class="gain-label">Daily</span>
+                <span class="gain-value positive"><app-animated-number [value]="circle.monthly_point - circle.yesterday_points" [sign]="true"></app-animated-number></span>
+              </span>
+              <span class="gains-sep" *ngIf="circle.yesterday_points && getTodayGain(circle) !== null">·</span>
+              <span class="gain-item" *ngIf="getTodayGain(circle) !== null">
+                <span class="gain-label">Today</span>
+                <span class="gain-value" [class.positive]="getTodayGain(circle)! > 0"><app-animated-number [value]="getTodayGain(circle)!" [sign]="true"></app-animated-number></span>
               </span>
             </div>
           </div>
@@ -81,6 +142,12 @@
           <p class="comment" [innerHTML]="circle.comment | discordLink"></p>
         </div>
       </div>
+    </div>
+
+    <div class="no-results" *ngIf="!loading && filteredCircles.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p>No clubs match your filters.</p>
+      <button class="clear-filters-btn inline" (click)="clearAllFilters()">Clear all filters</button>
     </div>
 
     <mat-paginator [length]="totalCircles"

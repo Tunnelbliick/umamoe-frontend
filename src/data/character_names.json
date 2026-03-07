@@ -1,0 +1,1135 @@
+{
+  "1001": {
+    "name": "Special Week",
+    "skins": {
+      "01": "Original",
+      "02": "Summer",
+      "03": "Commander"
+    }
+  },
+  "1002": {
+    "name": "Silence Suzuka",
+    "skins": {
+      "01": "Original",
+      "02": "Summer"
+    }
+  },
+  "1003": {
+    "name": "Tokai Teio",
+    "skins": {
+      "01": "Original",
+      "02": "Anime Collab",
+      "03": "Festival"
+    }
+  },
+  "1004": {
+    "name": "Maruzensky",
+    "skins": {
+      "01": "Original",
+      "02": "Summer",
+      "03": "New Year"
+    }
+  },
+  "1005": {
+    "name": "Fuji Kiseki",
+    "skins": {
+      "01": "Original",
+      "02": "Ballroom"
+    }
+  },
+  "1006": {
+    "name": "Oguri Cap",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas",
+      "03": "Anime Collab"
+    }
+  },
+  "1007": {
+    "name": "Gold Ship",
+    "skins": {
+      "01": "Original",
+      "02": "Summer",
+      "03": "Project L'arc"
+    }
+  },
+  "1008": {
+    "name": "Vodka",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1009": {
+    "name": "Daiwa Scarlet",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1010": {
+    "name": "Taiki Shuttle",
+    "skins": {
+      "01": "Original",
+      "02": "Camping",
+      "03": "Valentine"
+    }
+  },
+  "1011": {
+    "name": "Grass Wonder",
+    "skins": {
+      "01": "Original",
+      "02": "Fantasy",
+      "03": "New Year"
+    }
+  },
+  "1012": {
+    "name": "Hishi Amazon",
+    "skins": {
+      "01": "Original",
+      "02": "Wedding"
+    }
+  },
+  "1013": {
+    "name": "Mejiro McQueen",
+    "skins": {
+      "01": "Original",
+      "02": "Anime Collab",
+      "03": "Summer"
+    }
+  },
+  "1014": {
+    "name": "El Condor Pasa",
+    "skins": {
+      "01": "Original",
+      "02": "Fantasy"
+    }
+  },
+  "1015": {
+    "name": "TM Opera O",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1016": {
+    "name": "Narita Brian",
+    "skins": {
+      "01": "Original",
+      "02": "Blaze"
+    }
+  },
+  "1017": {
+    "name": "Symboli Rudolf",
+    "skins": {
+      "01": "Original",
+      "02": "Festival"
+    }
+  },
+  "1018": {
+    "name": "Air Groove",
+    "skins": {
+      "01": "Original",
+      "02": "Wedding"
+    }
+  },
+  "1019": {
+    "name": "Agnes Digital",
+    "skins": {
+      "01": "Original",
+      "02": "Halloween"
+    }
+  },
+  "1020": {
+    "name": "Seiun Sky",
+    "skins": {
+      "01": "Original",
+      "02": "Ballroom"
+    }
+  },
+  "1021": {
+    "name": "Tamamo Cross",
+    "skins": {
+      "01": "Original",
+      "02": "Festival"
+    }
+  },
+  "1022": {
+    "name": "Fine Motion",
+    "skins": {
+      "01": "Original",
+      "02": "Titania"
+    }
+  },
+  "1023": {
+    "name": "Biwa Hayahide",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas",
+      "03": "Engineered Victory"
+    }
+  },
+  "1024": {
+    "name": "Mayano Top Gun",
+    "skins": {
+      "01": "Original",
+      "02": "Wedding",
+      "03": "Halloween"
+    }
+  },
+  "1025": {
+    "name": "Manhattan Cafe",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1026": {
+    "name": "Mihono Bourbon",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1027": {
+    "name": "Mejiro Ryan",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1028": {
+    "name": "Hishi Akebono",
+    "skins": {
+      "01": "Original",
+      "02": "Halloween"
+    }
+  },
+  "1029": {
+    "name": "Yukino Bijin",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1030": {
+    "name": "Rice Shower",
+    "skins": {
+      "01": "Original",
+      "02": "Make up Vampire!",
+      "03": "Yummy Dreamy Fairy"
+    }
+  },
+  "1031": {
+    "name": "Ines Fujin",
+    "skins": {
+      "01": "Original",
+      "02": "MELTY GIFT",
+      "03": "Hello Hello Island"
+    }
+  },
+  "1032": {
+    "name": "Agnes Tachyon",
+    "skins": {
+      "01": "Original",
+      "02": "Lunatic Lab",
+      "03": "Σ Experiment"
+    }
+  },
+  "1033": {
+    "name": "Admire Vega",
+    "skins": {
+      "01": "Original",
+      "02": "Glacialis Vega"
+    }
+  },
+  "1034": {
+    "name": "Inari One",
+    "skins": {
+      "01": "Original",
+      "02": "Festival"
+    }
+  },
+  "1035": {
+    "name": "Winning Ticket",
+    "skins": {
+      "01": "Original",
+      "02": "Dream Deliverer",
+      "03": "Glorious Coat"
+    }
+  },
+  "1036": {
+    "name": "Air Shakur",
+    "skins": {
+      "01": "Original",
+      "02": "Belphegor's Prime"
+    }
+  },
+  "1037": {
+    "name": "Eishin Flash",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine",
+      "03": "Reines Plätschern"
+    }
+  },
+  "1038": {
+    "name": "Curren Chan",
+    "skins": {
+      "01": "Original",
+      "02": "Wedding"
+    }
+  },
+  "1039": {
+    "name": "Kawakami Princess",
+    "skins": {
+      "01": "Original",
+      "02": "Festival"
+    }
+  },
+  "1040": {
+    "name": "Gold City",
+    "skins": {
+      "01": "Original",
+      "02": "Festival",
+      "03": "Boho Flare"
+    }
+  },
+  "1041": {
+    "name": "Sakura Bakushin O",
+    "skins": {
+      "01": "Original",
+      "02": "Sports Festival"
+    }
+  },
+  "1042": {
+    "name": "Seeking the Pearl",
+    "skins": {
+      "01": "Original",
+      "02": "Be♪Witched"
+    }
+  },
+  "1043": {
+    "name": "Shinko Windy",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1044": {
+    "name": "Sweep Tosho",
+    "skins": {
+      "01": "Original",
+      "02": "Wedding"
+    }
+  },
+  "1045": {
+    "name": "Super Creek",
+    "skins": {
+      "01": "Original",
+      "02": "Halloween",
+      "03": "Warfare"
+    }
+  },
+  "1046": {
+    "name": "Smart Falcon",
+    "skins": {
+      "01": "Original",
+      "02": "Grand Live",
+      "03": "Parade"
+    }
+  },
+  "1047": {
+    "name": "Zenno Rob Roy",
+    "skins": {
+      "01": "Original",
+      "02": "Inlaid Stories"
+    }
+  },
+  "1048": {
+    "name": "Tosen Jordan",
+    "skins": {
+      "01": "Original",
+      "02": "Aurore☆Vacances",
+      "03": "Highkey☆Hallowed"
+    }
+  },
+  "1049": {
+    "name": "Nakayama Festa",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1050": {
+    "name": "Narita Taishin",
+    "skins": {
+      "01": "Original",
+      "02": "Steampunk",
+      "03": "Mecha"
+    }
+  },
+  "1051": {
+    "name": "Nishino Flower",
+    "skins": {
+      "01": "Original",
+      "02": "Sweet Juneberry"
+    }
+  },
+  "1052": {
+    "name": "Haru Urara",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1053": {
+    "name": "Bamboo Memory",
+    "skins": {
+      "01": "Original",
+      "02": "Ultra☆Marine"
+    }
+  },
+  "1054": {
+    "name": "Biko Pegasus",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1055": {
+    "name": "Marvelous Sunday",
+    "skins": {
+      "01": "Original",
+      "02": "Halloween"
+    }
+  },
+  "1056": {
+    "name": "Matikanefukukitaru",
+    "skins": {
+      "01": "Original",
+      "02": "Full Armor"
+    }
+  },
+  "1057": {
+    "name": "Mr. C.B.",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1058": {
+    "name": "Meisho Doto",
+    "skins": {
+      "01": "Original",
+      "02": "Dot-o'-Lantern"
+    }
+  },
+  "1059": {
+    "name": "Mejiro Dober",
+    "skins": {
+      "01": "Original",
+      "02": "Camping"
+    }
+  },
+  "1060": {
+    "name": "Nice Nature",
+    "skins": {
+      "01": "Original",
+      "02": "Cheerleader",
+      "03": "New Year"
+    }
+  },
+  "1061": {
+    "name": "King Halo",
+    "skins": {
+      "01": "Original",
+      "02": "Cheerleader",
+      "03": "Evergreen Identity"
+    }
+  },
+  "1062": {
+    "name": "Matikanetannhauser",
+    "skins": {
+      "01": "Original",
+      "02": "Sports Festival"
+    }
+  },
+  "1063": {
+    "name": "Ikuno Dictus",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1064": {
+    "name": "Mejiro Palmer",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1065": {
+    "name": "Daitaku Helios",
+    "skins": {
+      "01": "Original",
+      "02": "Joyful Jamboree!"
+    }
+  },
+  "1066": {
+    "name": "Twin Turbo",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1067": {
+    "name": "Satono Diamond",
+    "skins": {
+      "01": "Original",
+      "02": "New Year",
+      "03": "Project L'Arc"
+    }
+  },
+  "1068": {
+    "name": "Kitasan Black",
+    "skins": {
+      "01": "Original",
+      "02": "New Year",
+      "03": "Anime Collab"
+    }
+  },
+  "1069": {
+    "name": "Sakura Chiyono O",
+    "skins": {
+      "01": "Original",
+      "02": "Fleur Enneigée"
+    }
+  },
+  "1070": {
+    "name": "Sirius Symboli",
+    "skins": {
+      "01": "Original",
+      "02": "Louve stellaire"
+    }
+  },
+  "1071": {
+    "name": "Mejiro Ardan",
+    "skins": {
+      "01": "Original",
+      "02": "Neige Émeraude"
+    }
+  },
+  "1072": {
+    "name": "Yaeno Muteki",
+    "skins": {
+      "01": "Original",
+      "02": "Warfare"
+    }
+  },
+  "1073": {
+    "name": "Tsurumaru Tsuyoshi",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1074": {
+    "name": "Mejiro Bright",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1075": {
+    "name": "Daring Tact",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1076": {
+    "name": "Sakura Laurel",
+    "skins": {
+      "01": "Original",
+      "02": "Nouvelle pousse"
+    }
+  },
+  "1077": {
+    "name": "Narita Top Road",
+    "skins": {
+      "01": "Original",
+      "02": "Celestial Road"
+    }
+  },
+  "1078": {
+    "name": "Yamanin Zephyr",
+    "skins": {
+      "01": "Original",
+      "02": "Sugary Wind"
+    }
+  },
+  "1079": {
+    "name": "Furioso",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1080": {
+    "name": "Transcend",
+    "skins": {
+      "01": "Original",
+      "02": "Onsen"
+    }
+  },
+  "1081": {
+    "name": "Espoir City",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1082": {
+    "name": "North Flight",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1083": {
+    "name": "Symboli Kris S",
+    "skins": {
+      "01": "Original",
+      "02": "Jetblack Automaton"
+    }
+  },
+  "1084": {
+    "name": "Tanino Gimlet",
+    "skins": {
+      "01": "Original",
+      "02": "With a Twist"
+    }
+  },
+  "1085": {
+    "name": "Daiichi Ruby",
+    "skins": {
+      "01": "Original",
+      "02": "Flowing Blue"
+    }
+  },
+  "1086": {
+    "name": "Mejiro Ramonu",
+    "skins": {
+      "01": "Original",
+      "02": "Untouchable Eden"
+    }
+  },
+  "1087": {
+    "name": "Aston Machan",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1088": {
+    "name": "Satono Crown",
+    "skins": {
+      "01": "Original",
+      "02": "Summer"
+    }
+  },
+  "1089": {
+    "name": "Cheval Grand",
+    "skins": {
+      "01": "Original",
+      "02": "Summer"
+    }
+  },
+  "1090": {
+    "name": "Verxina",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1091": {
+    "name": "Vivlos",
+    "skins": {
+      "01": "Original",
+      "02": "Éclat d'été"
+    }
+  },
+  "1092": {
+    "name": "Dantsu Flame",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1093": {
+    "name": "K.S.Miracle",
+    "skins": {
+      "01": "Original",
+      "02": "Alt Version"
+    }
+  },
+  "1094": {
+    "name": "Jungle Pocket",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1095": {
+    "name": "Believe",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1096": {
+    "name": "No Reason",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1097": {
+    "name": "Still in Love",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1098": {
+    "name": "Copano Rickey",
+    "skins": {
+      "01": "Original",
+      "02": "Parade"
+    }
+  },
+  "1099": {
+    "name": "Hokko Tarumae",
+    "skins": {
+      "01": "Original",
+      "02": "Summer Trip"
+    }
+  },
+  "1100": {
+    "name": "Wonder Acute",
+    "skins": {
+      "01": "Original",
+      "02": "Onsen"
+    }
+  },
+  "1102": {
+    "name": "Sounds of Earth",
+    "skins": {
+      "01": "Original",
+      "02": "Valentine"
+    }
+  },
+  "1103": {
+    "name": "Royce and Royce",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1104": {
+    "name": "Katsuragi Ace",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1105": {
+    "name": "Neo Universe",
+    "skins": {
+      "01": "Original",
+      "02": "Like “ZEER”"
+    }
+  },
+  "1106": {
+    "name": "Hishi Miracle",
+    "skins": {
+      "01": "Original",
+      "02": "Alt Version"
+    }
+  },
+  "1107": {
+    "name": "Tap Dance City",
+    "skins": {
+      "01": "Original",
+      "02": "Tap! Tap! Tap!"
+    }
+  },
+  "1108": {
+    "name": "Duramente",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1109": {
+    "name": "Rhein Kraft",
+    "skins": {
+      "01": "Original",
+      "02": "Eternal Fairytale"
+    }
+  },
+  "1110": {
+    "name": "Cesario",
+    "skins": {
+      "01": "Original",
+      "02": "Twinbell Queen"
+    }
+  },
+  "1111": {
+    "name": "Air Messiah",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1112": {
+    "name": "Daring Heart",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1113": {
+    "name": "Fusaichi Pandora",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1114": {
+    "name": "Buena Vista",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1115": {
+    "name": "Orfevre",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1116": {
+    "name": "Gentildonna",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1117": {
+    "name": "Win Variation",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1118": {
+    "name": "Admire Groove",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1119": {
+    "name": "Dream Journey",
+    "skins": {
+      "01": "Original",
+      "02": "Christmas"
+    }
+  },
+  "1120": {
+    "name": "Calstone Light O",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1121": {
+    "name": "Durandal",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1124": {
+    "name": "Bubble Gum Fellow",
+    "skins": {
+      "01": "Original",
+      "02": "New Year"
+    }
+  },
+  "1126": {
+    "name": "Sakura Chitose O",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1127": {
+    "name": "Fenomeno",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1128": {
+    "name": "Blast One Piece",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1129": {
+    "name": "Almond Eye",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1130": {
+    "name": "Lucky Lilac",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1131": {
+    "name": "Gran Alegria",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1132": {
+    "name": "Loves Only You",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1133": {
+    "name": "Chrono Genesis",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1134": {
+    "name": "Curren Bouquetd'or",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1135": {
+    "name": "Stay Gold",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1136": {
+    "name": "Red Desire",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1137": {
+    "name": "Kiseki",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1138": {
+    "name": "Forever Young",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1139": {
+    "name": "Casino Drive",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1140": {
+    "name": "Marche Lorraine",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1141": {
+    "name": "Epiphaneia",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1142": {
+    "name": "Logotype",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1143": {
+    "name": "Victoire Pisa",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1144": {
+    "name": "Rose Kingdom",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "1145": {
+    "name": "Rulership",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2001": {
+    "name": "Happy Meek",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2002": {
+    "name": "Bitter Glace",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2003": {
+    "name": "Little Cocon",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2004": {
+    "name": "Montjeu",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2005": {
+    "name": "Venus Park",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2006": {
+    "name": "Rigantona",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2007": {
+    "name": "Sonon Elphy",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "2008": {
+    "name": "ST-2",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9001": {
+    "name": "Tazuna Hayakawa",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9002": {
+    "name": "Yayoi Akikawa",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9003": {
+    "name": "Etsuko Otonashi",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9004": {
+    "name": "Aoi Kiryuin",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9005": {
+    "name": "Sasami Anshinzawa",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9006": {
+    "name": "Riko Kashimoto",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9007": {
+    "name": "Beauty Anshinzawa",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9008": {
+    "name": "Light Hello",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9040": {
+    "name": "Darley Arabian",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9041": {
+    "name": "Godolphin Barb",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9042": {
+    "name": "Byerley Turk",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9043": {
+    "name": "Mei Sadake",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9044": {
+    "name": "Ryoka Tsurugi",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9045": {
+    "name": "Sugar Lights",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9046": {
+    "name": "St. Lite",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9047": {
+    "name": "Speed Symboli",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9048": {
+    "name": "Haiseiko",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9049": {
+    "name": "Tucker Brine",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9050": {
+    "name": "Kenko Hoshina",
+    "skins": {
+      "01": "Original"
+    }
+  },
+  "9051": {
+    "name": "Yunohana Bloom",
+    "skins": {
+      "01": "Original"
+    }
+  }
+}

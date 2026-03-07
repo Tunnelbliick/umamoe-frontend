@@ -6,11 +6,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
 import { ColorsService } from '../../services/colors.service';
-
 export interface ClassFilterState {
   [key: string]: boolean;
 }
-
 export interface BottomSheetData {
   selectedClasses: ClassFilterState;
   classStats: { [key: string]: { count: number; percentage: number } };
@@ -20,20 +18,17 @@ export interface BottomSheetData {
   scenarioNames: { [key: string]: string };
   scenarioStats?: { [key: string]: { count: number; percentage: number } };
 }
-
 interface ClassOption {
   value: string;
   label: string;
   count?: number;
   percentage?: number;
 }
-
 interface ScenarioOption {
   value: string;
   label: string;
   percentage?: number;
 }
-
 @Component({
   selector: 'app-team-class-bottom-sheet',
   standalone: true,
@@ -45,7 +40,6 @@ interface ScenarioOption {
         <mat-icon>close</mat-icon>
       </button>
     </div>
-
     <div class="bottom-sheet-content">
       <!-- Scenario Filter Section -->
       <div class="filter-section">
@@ -64,7 +58,6 @@ interface ScenarioOption {
           </button>
         </div>
       </div>
-
       <!-- Team Class Filter Section -->
       <div class="filter-section">
         <div class="section-header">
@@ -80,7 +73,6 @@ interface ScenarioOption {
             All Classes
           </mat-checkbox>
         </div>
-
         <!-- Individual Class Options -->
         <div class="class-grid">
           <button 
@@ -126,12 +118,10 @@ export class TeamClassBottomSheetComponent implements OnInit {
     { value: '2', label: 'Class 2' },
     { value: '1', label: 'Class 1' }
   ];
-
   scenarioOptions: ScenarioOption[] = [];
   localSelectedClasses: ClassFilterState = {};
   localScenarioFilters: { [key: string]: boolean } = {};
   localSelectedDistance: string | null = null;
-
   constructor(
     private bottomSheetRef: MatBottomSheetRef<TeamClassBottomSheetComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: BottomSheetData,
@@ -142,20 +132,16 @@ export class TeamClassBottomSheetComponent implements OnInit {
     this.localScenarioFilters = { ...(data.scenarioFilters || {}) };
     this.localSelectedDistance = data.selectedDistance;
   }
-
   ngOnInit(): void {
     this.setupClassStats();
     this.setupScenarioOptions();
   }
-
   get allClassesSelected(): boolean {
     return this.classOptions.every(option => this.localSelectedClasses[option.value]);
   }
-
   get someClassesSelected(): boolean {
     return this.classOptions.some(option => this.localSelectedClasses[option.value]);
   }
-
   private setupClassStats(): void {
     this.classOptions = this.classOptions.map(option => {
       const stats = this.data.classStats[option.value];
@@ -166,7 +152,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
       };
     });
   }
-
   private setupScenarioOptions(): void {
     if (this.data.scenarioNames) {
       this.scenarioOptions = Object.entries(this.data.scenarioNames).map(([key, label]) => {
@@ -179,7 +164,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
       });
     }
   }
-
   toggleAllClasses(checked: boolean): void {
     this.classOptions.forEach(option => {
       this.localSelectedClasses[option.value] = checked;
@@ -192,21 +176,17 @@ export class TeamClassBottomSheetComponent implements OnInit {
     // Let's assume the user wants to apply changes when they close the sheet.
     // So I will REMOVE propagateChanges() from the toggle methods and only return the data in close().
   }
-
   toggleClass(classValue: string): void {
     this.localSelectedClasses[classValue] = !this.localSelectedClasses[classValue];
   }
-
   toggleScenario(scenarioValue: string): void {
     this.localScenarioFilters[scenarioValue] = !this.localScenarioFilters[scenarioValue];
   }
-
   selectDistance(distance: string): void {
     this.localSelectedDistance = distance;
     // For distance, it's a single selection, so maybe closing immediately is fine?
     // But for consistency, let's keep it open.
   }
-
   close(): void {
     this.bottomSheetRef.dismiss({
       classFilters: this.localSelectedClasses,
@@ -214,11 +194,9 @@ export class TeamClassBottomSheetComponent implements OnInit {
       distance: this.localSelectedDistance
     });
   }
-
   getBadgeColor(classValue: string): string {
     return this.colorsService.getClassColor(classValue);
   }
-
   formatNumber(num: number): string {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
@@ -227,7 +205,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
     }
     return num.toString();
   }
-
   getDistanceIcon(distance: string): string {
     const icons: { [key: string]: string } = {
       'sprint': 'flash_on',
@@ -238,7 +215,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
     };
     return icons[distance] || 'track_changes';
   }
-
   getDistanceLabel(distance: string): string {
     const labels: { [key: string]: string } = {
       'sprint': 'Sprint',
@@ -249,7 +225,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
     };
     return labels[distance] || distance;
   }
-
   getDistanceColor(distance: string): string {
     const colors: { [key: string]: string } = {
       'sprint': '#e74c3c', // Red
@@ -260,7 +235,6 @@ export class TeamClassBottomSheetComponent implements OnInit {
     };
     return colors[distance] || '#7f8c8d';
   }
-
   getDistanceButtonStyle(distance: string): any {
     const isSelected = this.localSelectedDistance === distance;
     const color = this.getDistanceColor(distance);

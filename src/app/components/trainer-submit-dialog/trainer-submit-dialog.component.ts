@@ -19,14 +19,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 export interface TrainerSubmissionConfig {
   title: string;
   subtitle: string;
   submitEndpoint?: string; // Optional endpoint for custom submission
   onSubmit?: (trainerId: string) => Promise<boolean>; // Custom submit handler
 }
-
 @Component({
   selector: 'app-trainer-submit-dialog',
   standalone: true,
@@ -44,26 +42,24 @@ export interface TrainerSubmissionConfig {
     MatProgressSpinnerModule,
   ],
   template: `
-    <div class="submit-dialog-container">
-      <!-- Modern Header -->
-      <div class="dialog-header">
-        <div class="header-icon-wrapper">
-          <mat-icon class="header-icon">share</mat-icon>
-        </div>
-        <div class="header-text">
-          <h2>{{ config.title }}</h2>
-          <p>{{ config.subtitle }}</p>
-        </div>
+    <div class="select-dialog">
+      <div class="select-header">
+        <mat-icon class="select-header-icon">share</mat-icon>
+        <span class="select-header-title">{{ config.title }}</span>
+        <button mat-icon-button class="close-btn" (click)="close()" [disabled]="isSubmitting">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
-
-      <!-- Main content -->
-      <mat-dialog-content class="dialog-content">
+      <mat-dialog-content class="select-body">
         <form [formGroup]="submissionForm" class="trainer-form">
           <div class="form-group">
-            <mat-form-field appearance="fill" class="trainer-input">
-              <mat-label>Trainer ID</mat-label>
+            <div class="label-row">
+              <label class="input-label">Trainer ID</label>
+              <span class="digit-count" [class.complete]="getDigitCount() === 12">{{ getDigitCount() }} / 12</span>
+            </div>
+            <div class="custom-input-wrapper" [class.has-error]="submissionForm.get('trainerId')?.touched && submissionForm.get('trainerId')?.invalid">
+              <mat-icon class="input-prefix-icon">badge</mat-icon>
               <input
-                matInput
                 formControlName="trainerId"
                 placeholder="123 456 789 012"
                 (input)="formatTrainerId($event)"
@@ -71,16 +67,10 @@ export interface TrainerSubmissionConfig {
                 autocomplete="off"
                 inputmode="numeric"
                 pattern="[0-9]*"
+                class="custom-input"
               />
-              <mat-icon matSuffix class="input-icon">badge</mat-icon>
-            </mat-form-field>
-            
-            <div class="input-help">
-              <mat-icon class="help-icon">info_outline</mat-icon>
-              <span>Your trainer ID can be found in your in-game profile</span>
             </div>
           </div>
-
           <!-- Validation messages -->
           <div class="validation-messages" *ngIf="submissionForm.get('trainerId')?.touched">
             <div *ngIf="submissionForm.get('trainerId')?.hasError('required')" 
@@ -88,18 +78,19 @@ export interface TrainerSubmissionConfig {
               <mat-icon>error_outline</mat-icon>
               <span>Trainer ID is required</span>
             </div>
-
-            <div *ngIf="submissionForm.get('trainerId')?.hasError('pattern')" 
+            <div *ngIf="submissionForm.get('trainerId')?.hasError('pattern') && !submissionForm.get('trainerId')?.hasError('required')" 
                  class="validation-error">
               <mat-icon>error_outline</mat-icon>
-              <span>Please enter a valid 9-12 digit trainer ID</span>
+              <span>Please enter a valid 12-digit trainer ID</span>
             </div>
+          </div>
+          <div class="input-help">
+            <mat-icon class="help-icon">info_outline</mat-icon>
+            <span>Find your Trainer ID in your in-game profile settings</span>
           </div>
         </form>
       </mat-dialog-content>
-
-      <!-- Footer actions -->
-      <mat-dialog-actions class="dialog-actions">
+      <div class="dialog-actions">
         <button mat-stroked-button (click)="close()" class="cancel-btn" [disabled]="isSubmitting">
           Cancel
         </button>
@@ -114,7 +105,7 @@ export interface TrainerSubmissionConfig {
           <mat-icon *ngIf="!isSubmitting">send</mat-icon>
           <span>{{ isSubmitting ? 'Submitting...' : 'Submit' }}</span>
         </button>
-      </mat-dialog-actions>
+      </div>
     </div>
   `,
   styleUrls: ['./trainer-submit-dialog.component.scss'],
@@ -123,7 +114,6 @@ export class TrainerSubmitDialogComponent implements OnInit {
   submissionForm: FormGroup;
   isSubmitting = false;
   config: TrainerSubmissionConfig;
-
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -135,25 +125,26 @@ export class TrainerSubmitDialogComponent implements OnInit {
       title: 'Share Trainer ID',
       subtitle: 'Help the community grow'
     };
-
     this.submissionForm = this.fb.group({
       trainerId: ['', [
         Validators.required,
-        Validators.pattern(/^[0-9]{9,12}$/)
+        Validators.pattern(/^[0-9]{12}$/)
       ]]
     });
   }
-
   ngOnInit() {
     // Focus the input field when dialog opens
     setTimeout(() => {
-      const input = document.querySelector('.trainer-input input') as HTMLInputElement;
+      const input = document.querySelector('.custom-input') as HTMLInputElement;
       if (input) {
         input.focus();
       }
     }, 100);
   }
-
+  getDigitCount(): number {
+    const val = this.submissionForm.get('trainerId')?.value || '';
+    return val.replace(/\D/g, '').length;
+  }
   formatTrainerId(event: any) {
     let value = event.target.value.replace(/\D/g, ''); // Remove non-digits
     
@@ -177,22 +168,17 @@ export class TrainerSubmitDialogComponent implements OnInit {
     
     event.target.value = displayValue;
   }
-
   isFormValid(): boolean {
     return this.submissionForm.valid;
   }
-
   async submit() {
     if (!this.isFormValid() || this.isSubmitting) {
       return;
     }
-
     this.isSubmitting = true;
     const trainerId = this.submissionForm.get('trainerId')?.value.replace(/\s/g, '');
-
     try {
       let success = false;
-
       if (this.config.onSubmit) {
         // Use custom submit handler
         success = await this.config.onSubmit(trainerId);
@@ -229,7 +215,6 @@ export class TrainerSubmitDialogComponent implements OnInit {
           success = false;
         }
       }
-
       if (success) {
         this.dialogRef.close({ trainerId });
       }
@@ -243,12 +228,10 @@ export class TrainerSubmitDialogComponent implements OnInit {
       this.isSubmitting = false;
     }
   }
-
   async reportUnavailable() {
     if (this.isSubmitting) {
       return;
     }
-
     const trainerId = this.submissionForm.get('trainerId')?.value.replace(/\s/g, '') || '';
     
     // If no trainer ID entered, close dialog immediately
@@ -260,9 +243,7 @@ export class TrainerSubmitDialogComponent implements OnInit {
       this.dialogRef.close({ unavailable: true });
       return;
     }
-
     this.isSubmitting = true;
-
     try {
       if (this.config.onSubmit) {
         // Use custom submit handler - let it handle the unavailable flag
@@ -274,10 +255,8 @@ export class TrainerSubmitDialogComponent implements OnInit {
           status: 'unavailable'
         }).toPromise().catch(error => {
           // Ignore errors for background processing
-          console.log('Background unavailable report:', error);
         });
       }
-
       this.snackBar.open('Reported as unavailable. Processing in background.', 'Close', {
         duration: 2000,
         panelClass: ['success-snackbar']
@@ -286,7 +265,6 @@ export class TrainerSubmitDialogComponent implements OnInit {
       // Close immediately - process in background
       this.dialogRef.close({ trainerId, unavailable: true });
     } catch (error) {
-      console.log('Background unavailable report error:', error);
       // Still close the dialog - this is background processing
       this.snackBar.open('Reported as unavailable. Processing in background.', 'Close', {
         duration: 2000,
@@ -297,7 +275,6 @@ export class TrainerSubmitDialogComponent implements OnInit {
       this.isSubmitting = false;
     }
   }
-
   close() {
     this.dialogRef.close();
   }

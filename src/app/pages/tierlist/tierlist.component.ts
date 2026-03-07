@@ -18,13 +18,11 @@ import { TierlistScatterChartComponent } from '../../components/tierlist-scatter
 import { CardHoverMenuComponent as CardHoverMenuSimpleComponent } from '../../components/card-hover-menu/card-hover-menu.component';
 import { CardDetailsDialogComponent } from '../../components/card-details-dialog/card-details-dialog.component';
 import { trigger, transition, style, animate } from '@angular/animations';
-
 interface TierGroup {
   tier: string;
   cards: PrecomputedCardData[];
   percentileRange: { min: number; max: number };
 }
-
 interface TypeTierlist {
   type: number;
   typeName: string;
@@ -33,7 +31,6 @@ interface TypeTierlist {
   error?: string;
   allCards?: PrecomputedCardData[];
 }
-
 @Component({
   selector: 'app-tierlist',
   standalone: true,
@@ -89,17 +86,14 @@ export class TierlistComponent implements OnInit, OnDestroy {
   hoveredCard: PrecomputedCardData | null = null;
   hoverMenuVisible: boolean = false;
   hoverMenuPosition: { x: number; y: number } = { x: 0, y: 0 };
-
   // Mobile detection
   isMobile: boolean = false;
-
   constructor(
     private tierlistService: TierlistOptimizedService,
     private dialog: MatDialog
   ) {
     this.initializeTypeTierlists();
   }
-
   ngOnInit(): void {
     this.detectMobile();
     this.calculateAllTierlists();
@@ -108,17 +102,13 @@ export class TierlistComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       (window as any).toggleMobileTest = () => {
         this.isMobile = !this.isMobile;
-        console.log('Mobile mode toggled for testing:', this.isMobile);
       };
-      console.log('Use toggleMobileTest() in console to test mobile dialog on desktop');
     }
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   private initializeTypeTierlists(): void {
     // Initialize for stat types only (0-4), excluding friend (6) and group cards
     for (let type = 0; type < 5; type++) {
@@ -130,13 +120,11 @@ export class TierlistComponent implements OnInit, OnDestroy {
       });
     }
   }
-
   private calculateAllTierlists(): void {
     // Calculate tierlist for each type in parallel using precomputed data
     const calculations = this.typeTierlists.map(typeData => 
       this.tierlistService.getCardsByType(typeData.type, this.selectedLB)
     );
-
     forkJoin(calculations)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -158,12 +146,10 @@ export class TierlistComponent implements OnInit, OnDestroy {
         }
       });
   }
-
   private filterLB4Cards(cards: PrecomputedCardData[]): PrecomputedCardData[] {
     // Cards are already filtered for LB4 in the precomputed service
     return cards;
   }
-
   private organizeTiers(cards: PrecomputedCardData[]): TierGroup[] {
     const tiers: TierGroup[] = [];
     
@@ -175,11 +161,9 @@ export class TierlistComponent implements OnInit, OnDestroy {
         percentileRange: TIER_PERCENTILES[tierName as keyof typeof TIER_PERCENTILES]
       });
     });
-
     // Sort cards by selected LB score descending
     const sortedCards = [...cards].sort((a, b) => b.scores[this.selectedLB] - a.scores[this.selectedLB]);
     const totalCards = sortedCards.length;
-
     // Assign cards to tiers based on percentile
     sortedCards.forEach((card, index) => {
       const percentile = ((totalCards - index) / totalCards) * 100;
@@ -189,11 +173,9 @@ export class TierlistComponent implements OnInit, OnDestroy {
         tierGroup.cards.push(card);
       }
     });
-
     // Only return tiers that have cards
     return tiers.filter(tier => tier.cards.length > 0);
   }
-
   onLBChange(newLB: number): void {
     // Mark all types as loading
     this.typeTierlists.forEach(tierlist => tierlist.loading = true);
@@ -204,7 +186,6 @@ export class TierlistComponent implements OnInit, OnDestroy {
     // Recalculate tierlists with new LB level
     this.calculateAllTierlists();
   }
-
   private getTierForPercentile(percentile: number): string {
     for (const [tier, range] of Object.entries(TIER_PERCENTILES)) {
       if (percentile >= range.min && percentile <= range.max) {
@@ -213,7 +194,6 @@ export class TierlistComponent implements OnInit, OnDestroy {
     }
     return 'D'; // Default to lowest tier
   }
-
   getTierColor(tier: string): string {
     const colors: { [key: string]: string } = {
       'S+': '#ff1744',  // Deep red
@@ -225,12 +205,10 @@ export class TierlistComponent implements OnInit, OnDestroy {
     };
     return colors[tier] || '#8e8e8e';
   }
-
   getCardImageUrl(card: PrecomputedCardData): string {
     // You'll need to implement this based on your asset structure
     return `/assets/images/support_card/half/support_card_s_${card.id}.png`;
   }
-
   onCardClick(card: PrecomputedCardData): void {
     // Toggle power progression display
     if (this.selectedCardForProgression?.id === card.id) {
@@ -238,9 +216,7 @@ export class TierlistComponent implements OnInit, OnDestroy {
     } else {
       this.selectedCardForProgression = card;
     }
-    console.log('Card clicked:', card);
   }
-
   refreshTierlist(): void {
     this.loading = true;
     this.typeTierlists.forEach(typeData => {
@@ -249,7 +225,6 @@ export class TierlistComponent implements OnInit, OnDestroy {
     });
     this.calculateAllTierlists();
   }
-
   getScoreColor(card: PrecomputedCardData): string {
     const score = card.scores[4]; // Use LB4 score
     // Color gradient based on percentile tiers
@@ -260,11 +235,9 @@ export class TierlistComponent implements OnInit, OnDestroy {
     if (score >= 200) return '#7cb342';
     return '#26a69a';
   }
-
   trackByCardId(index: number, card: PrecomputedCardData): string {
     return card.id.toString();
   }
-
   getTierThreshold(tier: string): string {
     const range = TIER_PERCENTILES[tier as keyof typeof TIER_PERCENTILES];
     if (!range) return 'N/A';
@@ -274,19 +247,16 @@ export class TierlistComponent implements OnInit, OnDestroy {
     }
     return `${range.min}-${range.max}%`;
   }
-
   getCurrentTypeCards(): PrecomputedCardData[] {
     const currentType = this.typeTierlists[this.selectedTabIndex];
     return currentType?.allCards || [];
   }
-
   getUpcomingCardsForType(): UpcomingCard[] {
     const currentType = this.typeTierlists[this.selectedTabIndex];
     if (!currentType) return [];
     
     return this.upcomingCards.filter(card => card.type === currentType.type);
   }
-
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     this.hoverMenuPosition = {
@@ -294,12 +264,10 @@ export class TierlistComponent implements OnInit, OnDestroy {
       y: event.clientY
     };
   }
-
   @HostListener('document:mouseleave', ['$event'])
   onMouseLeave(): void {
     this.hideHoverMenu();
   }
-
   showHoverMenu(card: PrecomputedCardData, event?: MouseEvent): void {
     this.hoveredCard = card;
     this.hoverMenuVisible = true;
@@ -311,30 +279,24 @@ export class TierlistComponent implements OnInit, OnDestroy {
       };
     }
   }
-
   hideHoverMenu(): void {
     this.hoveredCard = null;
     this.hoverMenuVisible = false;
   }
-
   onCardHover(card: PrecomputedCardData, event: MouseEvent): void {
     this.showHoverMenu(card, event);
   }
-
   onCardLeave(): void {
     this.hideHoverMenu();
   }
-
   // Mobile detection and handling
   private detectMobile(): void {
     this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
   }
-
   @HostListener('window:resize', ['$event'])
   onResize(): void {
     this.detectMobile();
   }
-
   // Dialog methods
   openCardDialog(card: PrecomputedCardData): void {
     const dialogRef = this.dialog.open(CardDetailsDialogComponent, {
@@ -346,26 +308,21 @@ export class TierlistComponent implements OnInit, OnDestroy {
       restoreFocus: false,
       panelClass: 'card-details-dialog'
     });
-
     // Optional: handle dialog close
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Card dialog closed');
     });
   }
-
   // Card interaction methods for both desktop and mobile
   onCardHoverDesktop(card: PrecomputedCardData, event: MouseEvent): void {
     if (!this.isMobile) {
       this.showHoverMenu(card, event);
     }
   }
-
   onCardLeaveDesktop(): void {
     if (!this.isMobile) {
       this.hideHoverMenu();
     }
   }
-
   onCardClickMobile(card: PrecomputedCardData, event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
@@ -377,7 +334,6 @@ export class TierlistComponent implements OnInit, OnDestroy {
       this.onCardClick(card);
     }
   }
-
   onChartCardClick(event: any): void {
     if (this.isMobile && event.card) {
       this.openCardDialog(event.card);

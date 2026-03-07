@@ -10,59 +10,121 @@
 <div class="filter-content" [class.expanded]="isExpanded">
   <div class="filter-inner">
     <!-- Single Row Layout: Everything Horizontal -->
-    <div class="main-layout">
-      <!-- Legacy Tree -->
-      <div class="filter-section-wrapper">
-        <h4 class="section-header">Legacy Tree</h4>
-        <div class="tree-section">
-          <div class="character-box target-box" (click)="selectNode(treeData)">
-            <div class="character-circle" [class.empty]="!treeData.characterId">
-              <img *ngIf="treeData.characterId" [src]="getCharacterImagePath(treeData.image)" [alt]="treeData.name">
-              <mat-icon *ngIf="!treeData.characterId">add</mat-icon>
-            </div>
-            <div class="character-label">Main Character</div>
-            <button mat-icon-button class="clear-node-btn" *ngIf="treeData.characterId" (click)="clearNode(treeData, $event)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-
-          <div class="connector-line"></div>
-
-          <div class="character-box parent-box" 
-               (click)="selectNode(treeData.children![0])">
-            <div class="character-circle" [class.empty]="!treeData.children![0].characterId">
-              <img *ngIf="treeData.children![0].characterId" [src]="getCharacterImagePath(treeData.children![0].image)" [alt]="treeData.children![0].name">
-              <mat-icon *ngIf="!treeData.children![0].characterId">add</mat-icon>
-            </div>
-            <div class="character-label">Main Parent</div>
-            <button mat-icon-button class="clear-node-btn" *ngIf="treeData.children![0].characterId" (click)="clearNode(treeData.children![0], $event)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-
-          <div class="connector-line"></div>
-
-          <div class="grandparents-group">
-            <div class="grandparents-row">
-              <div class="character-box grandparent-box" 
-                   *ngFor="let grandparent of treeData.children![0].children; let i = index"
-                   (click)="selectNode(grandparent)">
-                <div class="character-circle" [class.empty]="!grandparent.characterId">
-                  <img *ngIf="grandparent.characterId" [src]="getCharacterImagePath(grandparent.image)" [alt]="grandparent.name">
-                  <mat-icon *ngIf="!grandparent.characterId">add</mat-icon>
-                </div>
-                <button mat-icon-button class="clear-node-btn" *ngIf="grandparent.characterId" (click)="clearNode(grandparent, $event)">
+    <div class="collapsible-section">
+      <div class="collapsible-header" (click)="toggleSection('quickFilters')">
+        <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('quickFilters')">expand_more</mat-icon>
+        <h4>Legacy Tree &mdash; Support Cards &mdash; Search</h4>
+      </div>
+      <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('quickFilters')">
+        <div class="collapsible-body-inner">
+    <div class="main-layout" #mainLayout [class.legacy-wrapped]="legacyWrapped" [class.search-wrapped]="searchWrapped">
+      <!-- Legacy Tree & Character Filters -->
+      <div class="filter-section-wrapper legacy-tree-wrapper" [class.is-wrapped]="legacyWrapped">
+        <h4 class="section-header legacy-tree-header" (click)="toggleSection('mLegacyTree')">
+          <mat-icon class="mobile-chevron" [class.collapsed]="isSectionCollapsed('mLegacyTree')">expand_more</mat-icon>
+          Legacy Tree
+        </h4>
+        <div class="m-collapse" [class.m-collapsed]="isSectionCollapsed('mLegacyTree')">
+        <div class="legacy-tree-section">
+          <!-- Target Character —  single select in container -->
+          <div class="tree-group">
+            <div class="tree-box target-box">
+              <div class="tree-circle target-circle" [class.has-character]="treeData.characterId" (click)="selectNode(treeData)">
+                <img *ngIf="treeData.characterId && treeData.image" [src]="getCharacterImagePath(treeData.image)" class="circle-img" [alt]="treeData.name">
+                <mat-icon *ngIf="!treeData.characterId" class="circle-add-icon">add</mat-icon>
+                <button *ngIf="treeData.characterId" class="circle-remove-btn" (click)="clearNode(treeData, $event)">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
+              <span *ngIf="treeData.characterId && treeData.name" class="target-character-name">{{ treeData.name }}</span>
             </div>
-            <div class="character-label group-label">Grand Parents</div>
+            <span class="tree-group-label target-color">Target</span>
           </div>
+
+          <span class="tree-connector">—</span>
+
+          <!-- Main Parent — include/exclude in container -->
+          <div class="tree-group">
+            <div class="tree-box parent-box">
+              <!-- Include section -->
+              <div class="filter-row include-row" (click)="addIncludeMainParent()">
+                <button class="filter-row-add include-btn" matTooltip="Include main parent">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <span class="filter-row-label include-label" *ngIf="includeMainParentCharacters.length === 0">Include</span>
+                <div class="filter-row-chips">
+                  <div class="filter-chip include" *ngFor="let char of includeMainParentCharacters; let i = index">
+                    <img *ngIf="char.image" [src]="getCharacterImagePath(char.image)" class="filter-chip-img" [alt]="char.name">
+                    <span class="filter-chip-name">{{ char.name }}</span>
+                    <mat-icon class="filter-chip-remove" (click)="removeIncludeMainParent(i); $event.stopPropagation()">close</mat-icon>
+                  </div>
+                </div>
+              </div>
+              <!-- Exclude section -->
+              <div class="filter-row exclude-row" (click)="addExcludeMainParent()">
+                <button class="filter-row-add exclude-btn" matTooltip="Exclude main parent">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="filter-row-label exclude-label" *ngIf="excludeMainParentCharacters.length === 0">Exclude</span>
+                <div class="filter-row-chips">
+                  <div class="filter-chip exclude" *ngFor="let char of excludeMainParentCharacters; let i = index">
+                    <img *ngIf="char.image" [src]="getCharacterImagePath(char.image)" class="filter-chip-img" [alt]="char.name">
+                    <span class="filter-chip-name">{{ char.name }}</span>
+                    <mat-icon class="filter-chip-remove" (click)="removeExcludeMainParent(i); $event.stopPropagation()">close</mat-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="tree-group-label parent-color">Main Parent</span>
+          </div>
+
+          <span class="tree-connector">—</span>
+
+          <!-- Grand Parents — include/exclude in container -->
+          <div class="tree-group">
+            <div class="tree-box grandparent-box">
+              <!-- Include section -->
+              <div class="filter-row include-row" (click)="addIncludeParent()">
+                <button class="filter-row-add include-btn" matTooltip="Include parent">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <span class="filter-row-label include-label" *ngIf="includeParentCharacters.length === 0">Include</span>
+                <div class="filter-row-chips">
+                  <div class="filter-chip include" *ngFor="let char of includeParentCharacters; let i = index">
+                    <img *ngIf="char.image" [src]="getCharacterImagePath(char.image)" class="filter-chip-img" [alt]="char.name">
+                    <span class="filter-chip-name">{{ char.name }}</span>
+                    <mat-icon class="filter-chip-remove" (click)="removeIncludeParent(i); $event.stopPropagation()">close</mat-icon>
+                  </div>
+                </div>
+              </div>
+              <!-- Exclude section -->
+              <div class="filter-row exclude-row" (click)="addExcludeParent()">
+                <button class="filter-row-add exclude-btn" matTooltip="Exclude parent">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="filter-row-label exclude-label" *ngIf="excludeParentCharacters.length === 0">Exclude</span>
+                <div class="filter-row-chips">
+                  <div class="filter-chip exclude" *ngFor="let char of excludeParentCharacters; let i = index">
+                    <img *ngIf="char.image" [src]="getCharacterImagePath(char.image)" class="filter-chip-img" [alt]="char.name">
+                    <span class="filter-chip-name">{{ char.name }}</span>
+                    <mat-icon class="filter-chip-remove" (click)="removeExcludeParent(i); $event.stopPropagation()">close</mat-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="tree-group-label grandparent-color">Grand Parents</span>
+          </div>
+        </div>
         </div>
       </div>
 
-      <div class="support-lb-group">
+      <div class="support-lb-group" [class.is-wrapped]="legacyWrapped">
+      <h4 class="section-header support-lb-mobile-header" (click)="toggleSection('mSupportCard')">
+        <mat-icon class="mobile-chevron" [class.collapsed]="isSectionCollapsed('mSupportCard')">expand_more</mat-icon>
+        Support Card & LB
+      </h4>
       <!-- Support Card Filter -->
+      <div class="m-collapse" [class.m-collapsed]="isSectionCollapsed('mSupportCard')">
       <div class="filter-section-wrapper">
         <h4 class="section-header">Support Card</h4>
         <div class="filter-item">
@@ -86,8 +148,10 @@
           </div>
         </div>
       </div>
+      </div>
 
       <!-- LB Selector -->
+      <div class="m-collapse" [class.m-collapsed]="isSectionCollapsed('mSupportCard')">
       <div class="filter-section-wrapper">
         <h4 class="section-header">Min LB</h4>
         <div class="filter-item lb-filter-item">
@@ -122,49 +186,62 @@
           </div>
         </div>
       </div>
+      </div>
 
       </div>
       <!-- Search Users -->
-      <div class="filter-section-wrapper search-wrapper">
-        <h4 class="section-header">Search Users</h4>
+      <div class="filter-section-wrapper search-wrapper" [class.is-wrapped]="searchWrapped">
+        <h4 class="section-header" (click)="toggleSection('mSearchUsers')">
+          <mat-icon class="mobile-chevron" [class.collapsed]="isSectionCollapsed('mSearchUsers')">expand_more</mat-icon>
+          Search Users
+        </h4>
+        <div class="m-collapse" [class.m-collapsed]="isSectionCollapsed('mSearchUsers')">
         <div class="filter-item search-item">
           <div class="search-inputs-row">
             <!-- User ID Search -->
-            <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
-              <mat-label>Trainer ID</mat-label>
-              <input 
-                matInput
-                [(ngModel)]="searchUserId"
-                (input)="onSearchChange()"
-                placeholder="123 456 789">
-              <mat-icon matSuffix class="input-icon" *ngIf="!searchUserId">badge</mat-icon>
-              <button 
-                *ngIf="searchUserId" 
-                matSuffix 
-                mat-icon-button 
-                (click)="clearSearchUserId()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
+            <div class="input-wrapper">
+              <span class="input-label">Trainer ID</span>
+              <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+                <input 
+                  matInput
+                  [(ngModel)]="searchUserId"
+                  (input)="onSearchChange()"
+                  placeholder="123 456 789">
+                <mat-icon matSuffix class="input-icon" *ngIf="!searchUserId">badge</mat-icon>
+                <button 
+                  *ngIf="searchUserId" 
+                  matSuffix 
+                  mat-icon-button 
+                  (click)="clearSearchUserId()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
 
             <!-- Username Search -->
-            <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
-              <mat-label>Username</mat-label>
-              <input 
-                matInput
-                [(ngModel)]="searchUsername"
-                (input)="onSearchChange()"
-                placeholder="Trainer Name">
-              <mat-icon matSuffix class="input-icon" *ngIf="!searchUsername">person</mat-icon>
-              <button 
-                *ngIf="searchUsername" 
-                matSuffix 
-                mat-icon-button 
-                (click)="clearSearchUsername()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
+            <div class="input-wrapper">
+              <span class="input-label">Username</span>
+              <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+                <input 
+                  matInput
+                  [(ngModel)]="searchUsername"
+                  (input)="onSearchChange()"
+                  placeholder="Trainer Name">
+                <mat-icon matSuffix class="input-icon" *ngIf="!searchUsername">person</mat-icon>
+                <button 
+                  *ngIf="searchUsername" 
+                  matSuffix 
+                  mat-icon-button 
+                  (click)="clearSearchUsername()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
           </div>
+        </div>
+        </div>
+      </div>
+    </div>
         </div>
       </div>
     </div>
@@ -178,8 +255,12 @@
       <div class="filters-grid-content">
         <!-- Group 1: Inheritance Stats -->
         <div class="filter-group">
-          <h5 class="group-title">Inheritance Factors</h5>
-          
+          <h5 class="group-title collapsible-group-title" (click)="toggleSection('inheritanceFactors')">
+            <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('inheritanceFactors')">expand_more</mat-icon>
+            Inheritance Factors
+          </h5>
+          <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('inheritanceFactors')">
+          <div class="collapsible-body-inner">
           <!-- Blue Factors -->
           <div class="factor-section">
             <div class="section-label">Blue Factors (Stats)</div>
@@ -350,12 +431,18 @@
               </button>
             </div>
           </div>
+          </div>
+          </div>
         </div>
 
         <!-- Group 2: Main Parent Specifics -->
         <div class="filter-group">
-          <h5 class="group-title">Main Parent Factors</h5>
-          
+          <h5 class="group-title collapsible-group-title" (click)="toggleSection('mainParentFactors')">
+            <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('mainParentFactors')">expand_more</mat-icon>
+            Main Parent Factors
+          </h5>
+          <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('mainParentFactors')">
+          <div class="collapsible-body-inner">
           <!-- Main Blue Factors -->
           <div class="factor-section">
             <div class="section-label">Blue Factors (Stats)</div>
@@ -535,11 +622,19 @@
               </mat-form-field>
             </div>
           </div>
+          </div>
+          </div>
         </div>
 
-        <!-- Group 3: General Criteria -->
+        <!-- Group 3+4: General Criteria & Total Star Count -->
+        <div class="criteria-starcount-group">
         <div class="filter-group">
-          <h5 class="group-title">General Criteria</h5>
+          <h5 class="group-title collapsible-group-title" (click)="toggleSection('generalCriteria')">
+            <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('generalCriteria')">expand_more</mat-icon>
+            General Criteria
+          </h5>
+          <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('generalCriteria')">
+          <div class="collapsible-body-inner">
           <div class="input-grid">
             <div class="input-wrapper">
               <div class="input-label">Min Win Count</div>
@@ -578,21 +673,31 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="input-wrapper">
-              <div class="input-label">Max Followers</div>
-              <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput type="number" [(ngModel)]="filterState.max_follower_num" (ngModelChange)="onFilterChange()" min="0" max="1000" placeholder="999">
-                <div matSuffix class="spinner-controls">
-                  <mat-icon (click)="increment('max_follower_num')">keyboard_arrow_up</mat-icon>
-                  <mat-icon (click)="decrement('max_follower_num')">keyboard_arrow_down</mat-icon>
-                </div>
-                <mat-hint>Max 1000</mat-hint>
-              </mat-form-field>
+            <div class="input-wrapper toggle-wrapper">
+              <div class="input-label">Max Follower Accounts</div>
+              <button
+                class="follower-toggle-btn"
+                [class.included]="includeMaxFollowers"
+                [class.excluded]="!includeMaxFollowers"
+                (click)="toggleMaxFollowers(!includeMaxFollowers)">
+                <mat-icon class="toggle-btn-icon">{{ includeMaxFollowers ? 'visibility' : 'visibility_off' }}</mat-icon>
+                <span class="toggle-btn-text">{{ includeMaxFollowers ? 'Showing' : 'Hidden' }}</span>
+              </button>
             </div>
           </div>
 
-          <!-- Star Sum Filters -->
-          <h5 class="group-title" style="margin-top: 16px;">Total Star Count</h5>
+          </div>
+          </div>
+        </div>
+
+        <!-- Group 4: Total Star Count -->
+        <div class="filter-group">
+          <h5 class="group-title collapsible-group-title" (click)="toggleSection('totalStarCount')">
+            <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('totalStarCount')">expand_more</mat-icon>
+            Total Star Count
+          </h5>
+          <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('totalStarCount')">
+          <div class="collapsible-body-inner">
           <p class="filter-description">Filter by the combined star count across all factors of each type</p>
           <div class="input-grid">
             <div class="input-wrapper">
@@ -636,6 +741,9 @@
               </mat-form-field>
             </div>
           </div>
+          </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -670,3 +778,14 @@
     </div>
   </div>
 </div>
+
+<!-- Floating scroll-aware button — shows "Results" when in filter, "Back to Top" when past it -->
+<button class="floating-scroll-btn"
+        *ngIf="showFloatingBtn"
+        [class.results-mode]="floatingBtnMode === 'results'"
+        [class.top-mode]="floatingBtnMode === 'top'"
+        (click)="onFloatingBtnClick()">
+  <mat-icon>{{ floatingBtnMode === 'results' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
+  <span *ngIf="floatingBtnMode === 'results'">Results<ng-container *ngIf="resultCount !== null"> ({{ resultCount }})</ng-container></span>
+  <span *ngIf="floatingBtnMode === 'top'">Back to Top</span>
+</button>

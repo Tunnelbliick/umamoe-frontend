@@ -1,10 +1,8 @@
 // Skills data
 // This file contains all skill information bundled with the application
 // Data is imported at build time, so it doesn't appear in network requests
-
 import skillsData from '../../data/skills.json';
 import { Skill } from '../models/skill.model';
-
 // Raw skill data interface to match JSON structure
 interface RawSkillData {
   id: string | null;
@@ -23,7 +21,6 @@ interface RawSkillData {
   unique?: string; // Optional field for unique skills
   character_id?: number; // Character ID for unique skills
 }
-
 // Transform raw JSON data to Skill format (keeping existing model structure)
 export const SKILLS: Skill[] = (skillsData as RawSkillData[]).map(skill => ({
   id: skill.id,
@@ -42,20 +39,16 @@ export const SKILLS: Skill[] = (skillsData as RawSkillData[]).map(skill => ({
   character_id: skill.character_id, // Include character_id from source data
   unique: skill.unique, // Include unique field from source data
 }));
-
 // Export getters for convenience
 export function getAllSkills(): Skill[] {
   return SKILLS;
 }
-
 export function getSkillById(skillId: number): Skill | undefined {
   return SKILLS.find(skill => skill.skill_id === skillId);
 }
-
 export function getSkillsByCardId(cardId: string): Skill[] {
   return SKILLS.filter(skill => skill.card_id === cardId);
 }
-
 export function searchSkills(query: string): Skill[] {
   const lowercaseQuery = query.toLowerCase();
   return SKILLS.filter(skill =>
@@ -64,11 +57,9 @@ export function searchSkills(query: string): Skill[] {
     skill.effect.toLowerCase().includes(lowercaseQuery)
   );
 }
-
 export function getUniqueSkills(): Skill[] {
   return SKILLS.filter(skill => skill.unique == "true");
 }
-
 export function searchUniqueSkills(query: string): Skill[] {
   const lowercaseQuery = query.toLowerCase();
   return SKILLS.filter(skill =>

@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PrecomputedCardData } from '../../models/precomputed-tierlist.model';
 import { CardHoverMenuComponent } from '../card-hover-menu/card-hover-menu.component';
-
 @Component({
   selector: 'app-card-details-dialog',
   standalone: true,

@@ -7,10 +7,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
 @Injectable()
 export class CorsInterceptor implements HttpInterceptor {
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Only add credentials for requests to our API
     if (this.isApiRequest(req.url)) {
@@ -24,10 +22,8 @@ export class CorsInterceptor implements HttpInterceptor {
       
       return next.handle(corsReq);
     }
-
     return next.handle(req);
   }
-
   private isApiRequest(url: string): boolean {
     // Check if the request is to our API endpoints
     // Note: Apache redirects www.honse.moe -> honse.moe, but we handle both domains

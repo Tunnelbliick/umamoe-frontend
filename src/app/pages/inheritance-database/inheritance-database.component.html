@@ -20,7 +20,10 @@
 
   <div class="content-container">
     <!-- Filters -->
-  <app-advanced-filter (filterChange)="onAdvancedFilterChange($event)">
+  <app-advanced-filter 
+    [resultCount]="totalRecords"
+    (filterChange)="onAdvancedFilterChange($event)"
+    (maxFollowersToggled)="onMaxFollowersToggled($event)">
 
   </app-advanced-filter>
 
@@ -39,8 +42,18 @@
             </span>
           </p>
         </div>
-        <div class="sorting-controls">
-          <mat-form-field appearance="outline" class="sort-select">
+        <div class="header-spacer"></div>
+        <button
+          class="max-followers-badge"
+          [class.included]="includeMaxFollowers"
+          [class.excluded]="!includeMaxFollowers"
+          (click)="onHeaderMaxFollowersToggle(!includeMaxFollowers)"
+          matTooltip="Click to toggle — accounts with 1000 followers are often bots or inactive">
+          <mat-icon class="badge-icon">{{ includeMaxFollowers ? 'visibility' : 'visibility_off' }}</mat-icon>
+          <span class="badge-label">Max Followers</span>
+          <span class="badge-status">{{ includeMaxFollowers ? 'ON' : 'OFF' }}</span>
+        </button>
+        <mat-form-field appearance="outline" class="sort-select">
             <mat-label>Sort by</mat-label>
             <mat-select
               [(value)]="currentSortBy"
@@ -53,7 +66,6 @@
               <mat-option value="submitted_at">Newest First</mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
       </div>
 
       <!-- Optional Whites Sorting Notice -->
@@ -142,6 +154,12 @@
                       | date : "MMM d, y 'at' h:mm a"
                   }}</span>
                 </div>
+              </div>
+
+              <!-- Max Followers Warning Badge -->
+              <div *ngIf="isMaxFollowers(record)" class="max-followers-card-badge" matTooltip="This account has 1000 followers (max cap). May be difficult to add as a friend.">
+                <mat-icon>warning</mat-icon>
+                <span>Max Followers</span>
               </div>
 
               <!-- Trainer ID section - secondary -->

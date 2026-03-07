@@ -8,12 +8,10 @@ export interface User {
   joinedAt: Date;
   lastActiveAt: Date;
 }
-
 export interface PaginationParams {
   page: number;
   limit: number;
 }
-
 export interface PaginatedResponse<T> {
   data: T[];
   total: number;
@@ -21,14 +19,12 @@ export interface PaginatedResponse<T> {
   limit: number;
   totalPages: number;
 }
-
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
 }
-
 export interface Vote {
   id: string;
   userId: string;
@@ -37,7 +33,6 @@ export interface Vote {
   voteType: 'up' | 'down';
   createdAt: Date;
 }
-
 export interface SearchResult<T> {
   items: T[];
   total: number;

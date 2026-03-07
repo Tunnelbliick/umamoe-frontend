@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ThemeService } from '../../services/theme.service';
-
 @Component({
   selector: 'app-navigation',
   standalone: true,
@@ -25,13 +24,10 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class NavigationComponent {
   isChristmas$ = this.themeService.isChristmas$;
-
   constructor(private router: Router, private themeService: ThemeService) {}
-
   toggleTheme() {
     this.themeService.toggleChristmasTheme();
   }
-
   onLogoError(event: Event) {
     const target = event.target as HTMLImageElement;
     target.src = 'assets/logo.png';

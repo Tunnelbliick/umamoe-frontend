@@ -8,17 +8,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-
 import { SupportCard, SupportCardType, Rarity } from '../../models/support-card.model';
 import { SupportCardSelectDialogComponent } from './support-card-select-dialog.component';
-
 export interface SupportCardFilters {
   selectedCard: SupportCard | null;
   cardType: SupportCardType | null;
   rarity: Rarity | null;
   limitBreak: number;
 }
-
 @Component({
   selector: 'app-support-card-filter',
   standalone: true,
@@ -37,7 +34,6 @@ export interface SupportCardFilters {
     <div class="support-card-filter">
       <div class="filter-section">
         <h3>Support Card Filters</h3>
-
         <!-- Selected Support Card -->
         <div class="card-filter">
           <h4>Support Card</h4>
@@ -83,7 +79,6 @@ export interface SupportCardFilters {
             </div>
           </div>
         </div>
-
         <!-- Card Type Filter -->
         <!--<div class="type-filter">
           <h4>Card Type</h4>
@@ -97,7 +92,6 @@ export interface SupportCardFilters {
             </mat-select>
           </mat-form-field>
         </div>-->
-
         <!-- Rarity Filter -->
         <!--<div class="rarity-filter">
           <h4>Rarity</h4>
@@ -111,7 +105,6 @@ export interface SupportCardFilters {
             </mat-select>
           </mat-form-field>
         </div>-->
-
         <!-- Limit Break Slider -->
         <div class="limit-break-filter">
           <h4>Minimum Limit Break Level</h4>
@@ -150,13 +143,11 @@ export interface SupportCardFilters {
 })
 export class SupportCardFilterComponent implements OnInit {
   @Output() filtersChanged = new EventEmitter<SupportCardFilters>();
-
   selectedCard: SupportCard | null = null;
   cardType: SupportCardType | null = null;
   rarity: Rarity | null = null;
   limitBreak: number = 0;
   isImageLoading = true;
-
   cardTypes = [
     { value: SupportCardType.SPEED, label: 'Speed' },
     { value: SupportCardType.STAMINA, label: 'Stamina' },
@@ -165,27 +156,23 @@ export class SupportCardFilterComponent implements OnInit {
     { value: SupportCardType.WISDOM, label: 'Wisdom' },
     { value: SupportCardType.FRIEND, label: 'Friend' }
   ];
-
   rarities = [
     { value: Rarity.R, label: 'R' },
     { value: Rarity.SR, label: 'SR' },
     { value: Rarity.SSR, label: 'SSR' }
   ];
-
   constructor(private dialog: MatDialog) {}
-
   ngOnInit() {
     // Emit initial state
     this.onFiltersChanged();
   }
-
   openCardDialog() {
     const dialogRef = this.dialog.open(SupportCardSelectDialogComponent, {
-      maxWidth: '800px',
+      width: '700px',
+      maxWidth: '90vw',
       panelClass: 'modern-dialog-panel',
       data: { initialCard: this.selectedCard }
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isImageLoading = true;
@@ -194,17 +181,14 @@ export class SupportCardFilterComponent implements OnInit {
       }
     });
   }
-
   removeCard() {
     this.selectedCard = null;
     this.onFiltersChanged();
   }
-
   onLimitBreakChanged(value: number | null) {
     this.limitBreak = value || 0;
     this.onFiltersChanged();
   }
-
   onFiltersChanged() {
     const filters: SupportCardFilters = {
       selectedCard: this.selectedCard,
@@ -214,7 +198,6 @@ export class SupportCardFilterComponent implements OnInit {
     };
     this.filtersChanged.emit(filters);
   }
-
   clearFilters() {
     this.selectedCard = null;
     this.cardType = null;
@@ -222,7 +205,6 @@ export class SupportCardFilterComponent implements OnInit {
     this.limitBreak = 0;
     this.onFiltersChanged();
   }
-
   getTypeDisplayName(type: SupportCardType): string {
     const typeMap = {
       [SupportCardType.SPEED]: 'Speed',
@@ -234,7 +216,6 @@ export class SupportCardFilterComponent implements OnInit {
     };
     return typeMap[type] || 'Unknown';
   }
-
   getRarityDisplayName(rarity: Rarity): string {
     const rarityMap = {
       [Rarity.R]: 'R',
@@ -243,7 +224,6 @@ export class SupportCardFilterComponent implements OnInit {
     };
     return rarityMap[rarity] || 'Unknown';
   }
-
   onImageError(event: any) {
     event.target.src = 'assets/images/placeholder-card.png';
     this.isImageLoading = false;

@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, ChartType, registerables, ScatterDataPoint, Plugin } from 'chart.js';
 import { TIER_PERCENTILES } from '../../models/tierlist-calculation.model';
 import { PrecomputedCardData } from '../../models/precomputed-tierlist.model';
-
 Chart.register(...registerables);
-
 // Custom plugin for rendering card images
 const cardImagePlugin: Plugin = {
   id: 'cardImages',
@@ -13,7 +11,6 @@ const cardImagePlugin: Plugin = {
     const { ctx } = chart;
     const imageCache = (chart as any).imageCache || {};
     (chart as any).imageCache = imageCache;
-
     chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
       const meta = chart.getDatasetMeta(datasetIndex);
       if (!meta.hidden) {
@@ -22,7 +19,6 @@ const cardImagePlugin: Plugin = {
           if (dataPoint && dataPoint.imageUrl) {
             const { x, y } = element.getProps(['x', 'y'], true);
             const size = (chart as any).dynamicImageSize || 60; // Use dynamic size
-
             // Load and cache images
             if (!imageCache[dataPoint.imageUrl]) {
               const img = new Image();
@@ -40,7 +36,6 @@ const cardImagePlugin: Plugin = {
                 imageCache[dataPoint.imageUrl].loaded = false;
               };
             }
-
             const cachedImage = imageCache[dataPoint.imageUrl];
             if (cachedImage && cachedImage.loaded && cachedImage.img.complete) {
               ctx.save();
@@ -89,7 +84,6 @@ const cardImagePlugin: Plugin = {
     });
   }
 };
-
 interface ScatterPoint extends ScatterDataPoint {
   cardId: string;
   cardName: string;
@@ -97,7 +91,6 @@ interface ScatterPoint extends ScatterDataPoint {
   tier: string;
   card: PrecomputedCardData;
 }
-
 @Component({
   selector: 'app-tierlist-scatter-chart',
   standalone: true,
@@ -119,12 +112,10 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
   @Output() cardHover = new EventEmitter<{ card: PrecomputedCardData, event: MouseEvent }>();
   @Output() cardLeave = new EventEmitter<void>();
   @Output() cardClick = new EventEmitter<{ card: PrecomputedCardData, event: MouseEvent }>();
-
   private chart: Chart | null = null;
   private resizeObserver: ResizeObserver | null = null;
   showImages = true;
   private dynamicImageSize = 60; // Default size
-
   tierColors: { [key: string]: string } = {
     'S+': '#ff1744',
     'S': '#ff6b35',
@@ -133,7 +124,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
     'C': '#7cb342',
     'D': '#26a69a'
   };
-
   ngOnInit(): void {
     // Wait for DOM to be ready for better mobile initialization
     setTimeout(() => {
@@ -142,7 +132,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       this.setupResizeListener();
     }, 50);
   }
-
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
@@ -154,17 +143,14 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       this.resizeObserver.disconnect();
     }
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['cards'] || changes['selectedLB']) && this.chart) {
       this.updateChart();
     }
   }
-
   private initializeChart(): void {
     const ctx = this.chartCanvas.nativeElement.getContext('2d');
     if (!ctx) return;
-
     const isMobile = window.innerWidth <= 768;
     const containerWidth = this.chartCanvas.nativeElement.parentElement?.clientWidth || 800;
     
@@ -185,7 +171,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       bottom: 0,
       left: 40
     };
-
     const config: ChartConfiguration = {
       type: 'scatter' as ChartType,
       data: {
@@ -276,23 +261,19 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
         }
       }
     };
-
     this.chart = new Chart(ctx, config);
     
     // Store the dynamic size in the chart instance for the plugin to access
     (this.chart as any).dynamicImageSize = this.dynamicImageSize;
   }
-
   private createDatasets(): any[] {
     if (!this.cards.length) return [];
-
     const isMobile = window.innerWidth <= 768;
     const containerWidth = this.chartCanvas.nativeElement.parentElement?.clientWidth || 800;
     
     // Group cards by exact score position for precise overlap detection
     const cardPositions = new Map<number, PrecomputedCardData[]>();
     const overlapThreshold = isMobile ? Math.max(60, containerWidth * 0.08) : 150; // Dynamic threshold based on width
-
     // Process all cards and group them by position
     this.cards.forEach(card => {
       const score = card.scores[this.selectedLB]; // Use selected LB score
@@ -312,7 +293,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
         cardPositions.set(score, [card]);
       }
     });
-
     // Create datasets for each tier
     const tierDatasets: { [tier: string]: ScatterPoint[] } = {};
     
@@ -357,7 +337,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
         });
       });
     });
-
     // Convert to Chart.js datasets
     const datasets: any[] = [];
     const pointRadius = this.dynamicImageSize * 0.6;
@@ -376,20 +355,16 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
         pointBorderColor: 'transparent'
       });
     });
-
     return datasets;
   }
-
   private getTierYPosition(tier: string): number {
     // No longer needed since we're using horizontal layout
     return 0;
   }
-
   private groupByTier(cards: PrecomputedCardData[]): { [tier: string]: PrecomputedCardData[] } {
     // No longer needed since we're using horizontal layout
     return {};
   }
-
   private getTierForPercentile(percentile: number): string {
     for (const [tier, range] of Object.entries(TIER_PERCENTILES)) {
       if (percentile >= range.min && percentile <= range.max) {
@@ -398,18 +373,14 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
     }
     return 'D';
   }
-
   private getCardImageUrl(card: PrecomputedCardData): string {
     return `/assets/images/support_card/half/support_card_s_${card.id}.png`;
   }
-
   private updateChart(): void {
     if (!this.chart) return;
-
     this.chart.data.datasets = this.createDatasets();
     this.chart.update();
   }
-
   toggleImages(): void {
     this.showImages = !this.showImages;
     if (this.chart) {
@@ -418,7 +389,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       this.updateChart();
     }
   }
-
   private calculateDynamicImageSize(): void {
     const containerWidth = this.chartCanvas.nativeElement.parentElement?.clientWidth || 800;
     const isMobile = window.innerWidth <= 768;
@@ -453,7 +423,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       }
     }
   }
-
   private setupResizeListener(): void {
     // Enhanced resize handling with throttling for better performance
     let resizeTimeout: any;
@@ -483,7 +452,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       this.resizeObserver.observe(container);
     }
   }
-
   private onResize(): void {
     const oldSize = this.dynamicImageSize;
     const oldMobile = window.innerWidth <= 768;
@@ -563,7 +531,6 @@ export class TierlistScatterChartComponent implements OnInit, OnDestroy, OnChang
       }
     }
   }
-
   get Object() {
     return Object;
   }

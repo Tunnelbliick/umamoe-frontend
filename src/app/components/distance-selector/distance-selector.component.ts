@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-
 export interface DistanceChangeEvent {
   distance: string | null;
 }
-
 @Component({
   selector: 'app-distance-selector',
   standalone: true,
@@ -48,25 +46,20 @@ export class DistanceSelectorComponent implements OnInit, OnDestroy {
   @Input() distances: string[] = [];
   @Input() compactMode = false;
   @Output() distanceChanged = new EventEmitter<DistanceChangeEvent>();
-
   isVisible = false;
   private scrollListener: (() => void) | null = null;
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
-
   ngOnInit(): void {
     this.setupScrollListener();
   }
-
   ngOnDestroy(): void {
     if (this.scrollListener) {
       window.removeEventListener('scroll', this.scrollListener);
     }
   }
-
   private setupScrollListener(): void {
     let ticking = false;
-
     this.scrollListener = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -76,43 +69,36 @@ export class DistanceSelectorComponent implements OnInit, OnDestroy {
         ticking = true;
       }
     };
-
     window.addEventListener('scroll', this.scrollListener, { passive: true });
     
     // Initial check
     setTimeout(() => this.updateVisibility(), 100);
   }
-
   private updateVisibility(): void {
     const distanceSection = document.querySelector('.distance-section');
     const characterDetailsSection = document.querySelector('.character-details');
     
     let shouldShow = false;
-
     // Check if distance section is visible
     if (distanceSection) {
       const rect = distanceSection.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
       shouldShow = shouldShow || isVisible;
     }
-
     // Check if character details section is visible
     if (characterDetailsSection) {
       const rect = characterDetailsSection.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
       shouldShow = shouldShow || isVisible;
     }
-
     if (this.isVisible !== shouldShow) {
       this.isVisible = shouldShow;
       this.cdr.detectChanges();
     }
   }
-
   onDistanceSelect(distance: string): void {
     this.distanceChanged.emit({ distance });
   }
-
   getDistanceIcon(distance: string): string {
     const icons: { [key: string]: string } = {
       'sprint': 'flash_on',           // Lightning bolt for sprint
@@ -123,7 +109,6 @@ export class DistanceSelectorComponent implements OnInit, OnDestroy {
     };
     return icons[distance] || 'track_changes';
   }
-
   getDistanceLabel(distance: string): string {
     const labels: { [key: string]: string } = {
       'sprint': 'Sprint',

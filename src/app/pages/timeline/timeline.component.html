@@ -7,130 +7,71 @@
     <!-- Regular Header (shown when NOT in compact mode) -->
     <div class="page-header" *ngIf="!isCompactMode">
       <div class="header-content">
+
+        <!-- Left: Branding -->
         <div class="header-info">
           <h1><mat-icon class="page-icon">timeline</mat-icon>Timeline</h1>
-          <p>
-            Approximate Global content release timeline starting June 26, 2025
-          </p>
+          <p class="subtitle">Global content release timeline</p>
           <p class="event-count">
-            Showing {{ getFilteredEventCount() }} of
-            {{ getTotalEventCount() }} events
+            <mat-icon class="count-icon">filter_list</mat-icon>
+            {{ getFilteredEventCount() }} / {{ getTotalEventCount() }} events
           </p>
         </div>
 
-        <!-- Filter Controls -->
+        <div class="header-divider"></div>
+
+        <!-- Right: Search + Filters -->
         <div class="filter-controls">
-          <!-- Search Field -->
-          <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search by character or support card...</mat-label>
-            <input
-              matInput
-              [(ngModel)]="eventFilters.searchQuery"
-              (input)="onSearchChange()"
-              placeholder="e.g., Tokai Teio, SSR Oguri Cap"
-            />
-            <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>
 
-          <!-- Search Navigation -->
-          <div
-            class="search-navigation"
-            *ngIf="eventFilters.searchQuery.trim()"
-          >
-            <button
-              mat-icon-button
-              (click)="jumpToPreviousResult()"
-              [disabled]="!hasSearchResults()"
-              matTooltip="Previous result"
-            >
-              <mat-icon>keyboard_arrow_left</mat-icon>
-            </button>
-            <span class="search-results-count" *ngIf="hasSearchResults()">
-              {{ getCurrentSearchPosition() }}
-            </span>
-            <span class="no-results" *ngIf="!hasSearchResults()">
-              No results
-            </span>
-            <button
-              mat-icon-button
-              (click)="jumpToNextResult()"
-              [disabled]="!hasSearchResults()"
-              matTooltip="Next result"
-            >
-              <mat-icon>keyboard_arrow_right</mat-icon>
-            </button>
-          </div>
+          <!-- Search row -->
+          <div class="search-row">
+            <mat-form-field appearance="outline" class="search-field">
+              <input
+                matInput
+                [(ngModel)]="eventFilters.searchQuery"
+                (input)="onSearchChange()"
+                placeholder="Search characters or support cards..."
+              />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
 
-          <!-- Filter Checkboxes -->
-          <div class="filter-section">
-            <div class="filter-toggles">
-              <mat-checkbox
-                [checked]="eventFilters.showCharacters"
-                (change)="toggleCharacterFilter()"
-                class="character-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>person</mat-icon>
-                  <span>Characters</span>
-                </div>
-              </mat-checkbox>
-
-              <mat-checkbox
-                [checked]="eventFilters.showSupports"
-                (change)="toggleSupportFilter()"
-                class="support-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>style</mat-icon>
-                  <span>Support Cards</span>
-                </div>
-              </mat-checkbox>
-
-              <mat-checkbox
-                [checked]="eventFilters.showStoryEvents"
-                (change)="toggleStoryEventsFilter()"
-                class="story-events-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>auto_stories</mat-icon>
-                  <span>Story Events</span>
-                </div>
-              </mat-checkbox>
-
-              <mat-checkbox
-                [checked]="eventFilters.showChampionsMeetings"
-                (change)="toggleChampionsMeetingsFilter()"
-                class="champions-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>emoji_events</mat-icon>
-                  <span>Champions Meeting</span>
-                </div>
-              </mat-checkbox>
-
-              <mat-checkbox
-                [checked]="eventFilters.showLegendRaces"
-                (change)="toggleLegendRacesFilter()"
-                class="legend-races-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>sports_motorsports</mat-icon>
-                  <span>Legend Races</span>
-                </div>
-              </mat-checkbox>
-
-              <mat-checkbox
-                [checked]="eventFilters.showPaidBanners"
-                (change)="togglePaidBannersFilter()"
-                class="paid-toggle"
-              >
-                <div class="checkbox-content">
-                  <mat-icon>payments</mat-icon>
-                  <span>Paid Banners</span>
-                </div>
-              </mat-checkbox>
+            <div class="search-navigation" *ngIf="eventFilters.searchQuery.trim()">
+              <button mat-icon-button (click)="jumpToPreviousResult()" [disabled]="!hasSearchResults()" matTooltip="Previous result">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <span class="search-results-count" *ngIf="hasSearchResults()">{{ getCurrentSearchPosition() }}</span>
+              <span class="no-results" *ngIf="!hasSearchResults()">No results</span>
+              <button mat-icon-button (click)="jumpToNextResult()" [disabled]="!hasSearchResults()" matTooltip="Next result">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+              </button>
             </div>
           </div>
+
+          <!-- Filter chips -->
+          <div class="filter-chips">
+            <button class="filter-chip chip-character" [class.active]="eventFilters.showCharacters" (click)="toggleCharacterFilter()">
+              <mat-icon>person</mat-icon><span>Characters</span>
+            </button>
+            <button class="filter-chip chip-support" [class.active]="eventFilters.showSupports" (click)="toggleSupportFilter()">
+              <mat-icon>style</mat-icon><span>Support Cards</span>
+            </button>
+            <button class="filter-chip chip-story" [class.active]="eventFilters.showStoryEvents" (click)="toggleStoryEventsFilter()">
+              <mat-icon>auto_stories</mat-icon><span>Story Events</span>
+            </button>
+            <button class="filter-chip chip-champions" [class.active]="eventFilters.showChampionsMeetings" (click)="toggleChampionsMeetingsFilter()">
+              <mat-icon>emoji_events</mat-icon><span>Champions Meeting</span>
+            </button>
+            <button class="filter-chip chip-legend" [class.active]="eventFilters.showLegendRaces" (click)="toggleLegendRacesFilter()">
+              <mat-icon>sports_motorsports</mat-icon><span>Legend Races</span>
+            </button>
+            <button class="filter-chip chip-paid" [class.active]="eventFilters.showPaidBanners" (click)="togglePaidBannersFilter()">
+              <mat-icon>payments</mat-icon><span>Paid Banners</span>
+            </button>
+            <button class="filter-chip chip-campaign" [class.active]="eventFilters.showCampaigns" (click)="toggleCampaignsFilter()">
+              <mat-icon>campaign</mat-icon><span>Mission Campaigns</span>
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -157,12 +98,11 @@
       <mat-card-content>
         <!-- Search Field -->
         <mat-form-field appearance="outline" class="compact-search-field">
-          <mat-label>Search...</mat-label>
           <input
             matInput
             [(ngModel)]="eventFilters.searchQuery"
             (input)="onSearchChange()"
-            placeholder="Character or support card"
+            placeholder="Search characters or support cards..."
           />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
@@ -266,6 +206,17 @@
                 <span>Paid Banners</span>
               </div>
             </mat-checkbox>
+
+            <mat-checkbox
+              [checked]="eventFilters.showCampaigns"
+              (change)="toggleCampaignsFilter()"
+              class="compact-campaign-toggle"
+            >
+              <div class="compact-checkbox-content">
+                <mat-icon>campaign</mat-icon>
+                <span>Mission Campaigns</span>
+              </div>
+            </mat-checkbox>
           </div>
         </div>
       </mat-card-content>
@@ -320,9 +271,10 @@
             <div
               class="item-content grouped-content"
               [class]="'content-' + (item.side || 'center')"
-              [style.transform]="'scale(' + cardScale + ') translate(0%, ' + getTransformOffset(item.side) + '%)'" 
-              [style.bottom]="item.side === 'top' ? cardVerticalOffsetTop + '%' : 'auto'"
-              [style.top]="item.side === 'bottom' ? cardVerticalOffsetBottom + '%' : 'auto'"
+              [style.transform]="(item.type === 'today' || item.type === 'anniversary' || item.type === 'milestone') ? 'scale(' + cardScale + ')' : 'scale(' + cardScale + ') translateY(' + (item.side === 'top' ? '-60px' : '60px') + ')'"
+              [style.transform-origin]="item.side === 'top' ? 'bottom center' : 'top center'"
+              [style.bottom]="item.side === 'top' ? '50%' : 'auto'"
+              [style.top]="item.side === 'bottom' ? '50%' : (item.type === 'today' || item.type === 'anniversary' || item.type === 'milestone') ? '100%' : 'auto'"
             >
               <a
                 *ngIf="item.eventData?.gametoraURL"

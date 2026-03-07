@@ -118,6 +118,17 @@
           <span>Paid Banners</span>
         </div>
       </mat-checkbox>
+
+      <mat-checkbox
+        [checked]="eventFilters.showCampaigns"
+        (change)="toggleCampaigns()"
+        class="campaigns-toggle"
+      >
+        <div class="checkbox-content">
+          <mat-icon>assignment</mat-icon>
+          <span>Mission Campaigns</span>
+        </div>
+      </mat-checkbox>
     </div>
   </div>
 
@@ -186,7 +197,7 @@
               </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content *ngIf="item.eventData.imagePath">
-              <div class="event-image">
+              <div class="event-image" [class.campaign-image]="item.eventData.type === 'campaign'">
                 <img 
                   [src]="item.eventData.imagePath" 
                   [alt]="item.eventData.title"

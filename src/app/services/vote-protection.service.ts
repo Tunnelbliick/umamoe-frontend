@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomainStorageService } from './domain-storage.service';
-
 export interface VoteProtectionConfig {
   voteCooldownMs?: number;        // Cooldown per record (default: 2000ms)
   globalCooldownMs?: number;      // Global cooldown between any votes (default: 500ms)
   maxVotesPerRecord?: number;     // Max votes per record per session (default: unlimited)
   showCooldownMessages?: boolean; // Show cooldown messages (default: true)
 }
-
 export interface StoredVote {
   recordId: string;
   voteType: 'up' | 'down';
   timestamp: number;
 }
-
 export interface VoteState {
   hasVoted: boolean;
   voteType: 'up' | 'down' | null;
@@ -22,7 +19,6 @@ export interface VoteState {
   cooldownRemaining: number;
   isInProgress: boolean;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,27 +27,22 @@ export class VoteProtectionService {
   private voteHistory = new Map<string, number>();
   private voteCount = new Map<string, number>();
   private lastVoteTime = 0;
-
   // Report protection
   private reportedTrainers = new Set<string>();
   private reportingInProgress = new Set<string>();
-
   private readonly STORAGE_KEY = 'inheritance_votes';
   private readonly REPORTS_STORAGE_KEY = 'reported_trainers';
   private readonly MAX_STORED_DAYS = 30;
-
   private readonly defaultConfig: Required<VoteProtectionConfig> = {
     voteCooldownMs: 2000,
     globalCooldownMs: 500,
     maxVotesPerRecord: Number.MAX_SAFE_INTEGER,
     showCooldownMessages: true
   };
-
   constructor(private snackBar: MatSnackBar, private domainStorage: DomainStorageService) {
     this.loadStoredVotes();
     this.loadReportedTrainers();
   }
-
   /**
    * Load votes from localStorage
    */
@@ -59,7 +50,6 @@ export class VoteProtectionService {
     try {
       const stored = this.domainStorage.getItem(this.STORAGE_KEY);
       if (!stored) return;
-
       const votes: StoredVote[] = JSON.parse(stored);
       const cutoff = Date.now() - (this.MAX_STORED_DAYS * 24 * 60 * 60 * 1000);
       
@@ -72,7 +62,6 @@ export class VoteProtectionService {
       console.warn('Error loading stored votes:', error);
     }
   }
-
   /**
    * Save votes to localStorage
    */
@@ -83,7 +72,6 @@ export class VoteProtectionService {
       console.warn('Error saving votes to localStorage:', error);
     }
   }
-
   /**
    * Get stored votes from localStorage
    */
@@ -96,7 +84,6 @@ export class VoteProtectionService {
       return [];
     }
   }
-
   /**
    * Check if voting is allowed for a specific record
    */
@@ -125,7 +112,6 @@ export class VoteProtectionService {
     
     return true;
   }
-
   /**
    * Start voting process - marks record as voting in progress
    */
@@ -136,7 +122,6 @@ export class VoteProtectionService {
     this.lastVoteTime = Date.now();
     return true;
   }
-
   /**
    * Complete voting process - updates history and clears progress state
    */
@@ -149,14 +134,12 @@ export class VoteProtectionService {
       this.voteCount.set(recordId, currentCount + 1);
     }
   }
-
   /**
    * Check if voting is currently in progress for a record
    */
   isVotingInProgress(recordId: string): boolean {
     return this.votingInProgress.has(recordId);
   }
-
   /**
    * Get cooldown message for UI display
    */
@@ -187,7 +170,6 @@ export class VoteProtectionService {
     
     return '';
   }
-
   /**
    * Show appropriate cooldown message in snackbar
    */
@@ -200,7 +182,6 @@ export class VoteProtectionService {
       this.snackBar.open(message, 'Close', { duration: 1500 });
     }
   }
-
   /**
    * Attempt to vote with built-in protection checks
    */
@@ -222,7 +203,6 @@ export class VoteProtectionService {
     voteCallback();
     return true;
   }
-
   /**
    * Clear all voting data (useful for cleanup)
    */
@@ -235,7 +215,6 @@ export class VoteProtectionService {
     // Also clear localStorage
     this.domainStorage.removeItem(this.STORAGE_KEY);
   }
-
   /**
    * Get voting statistics
    */
@@ -252,7 +231,6 @@ export class VoteProtectionService {
       recordsVotedOn: this.voteCount.size
     };
   }
-
   /**
    * Get comprehensive vote state for a record
    */
@@ -278,7 +256,6 @@ export class VoteProtectionService {
       isInProgress: this.isVotingInProgress(recordId)
     };
   }
-
   /**
    * Record a vote in localStorage
    */
@@ -300,7 +277,6 @@ export class VoteProtectionService {
     
     return true;
   }
-
   /**
    * Remove a vote from localStorage
    */
@@ -315,7 +291,6 @@ export class VoteProtectionService {
     
     return false;
   }
-
   /**
    * Check if user has already voted on a record
    */
@@ -323,7 +298,6 @@ export class VoteProtectionService {
     const votes = this.getStoredVotes();
     return votes.some(v => v.recordId === recordId);
   }
-
   /**
    * Get user's vote type for a record
    */
@@ -332,9 +306,7 @@ export class VoteProtectionService {
     const vote = votes.find(v => v.recordId === recordId);
     return vote?.voteType || null;
   }
-
   // === REPORT PROTECTION METHODS ===
-
   /**
    * Load reported trainers from localStorage
    */
@@ -350,7 +322,6 @@ export class VoteProtectionService {
       this.reportedTrainers = new Set();
     }
   }
-
   /**
    * Save reported trainers to localStorage
    */
@@ -362,28 +333,24 @@ export class VoteProtectionService {
       console.warn('Failed to save reported trainers to localStorage:', error);
     }
   }
-
   /**
    * Check if a trainer has already been reported
    */
   hasReported(trainerId: string): boolean {
     return this.reportedTrainers.has(trainerId);
   }
-
   /**
    * Check if reporting is in progress for a trainer
    */
   isReportingInProgress(trainerId: string): boolean {
     return this.reportingInProgress.has(trainerId);
   }
-
   /**
    * Check if user can report a trainer (not already reported and not in progress)
    */
   canReport(trainerId: string): boolean {
     return !this.hasReported(trainerId) && !this.isReportingInProgress(trainerId);
   }
-
   /**
    * Attempt to report a trainer
    */
@@ -394,19 +361,16 @@ export class VoteProtectionService {
       }
       return false;
     }
-
     if (this.isReportingInProgress(trainerId)) {
       if (showMessages) {
         this.snackBar.open('Report already in progress', 'Close', { duration: 2000 });
       }
       return false;
     }
-
     // Mark as in progress
     this.reportingInProgress.add(trainerId);
     return true;
   }
-
   /**
    * Mark report as completed (successful)
    */
@@ -415,14 +379,12 @@ export class VoteProtectionService {
     this.reportedTrainers.add(trainerId);
     this.saveReportedTrainers();
   }
-
   /**
    * Mark report as failed (remove from in-progress)
    */
   markReportFailed(trainerId: string): void {
     this.reportingInProgress.delete(trainerId);
   }
-
   /**
    * Clear all reported trainers (for debugging/admin purposes)
    */

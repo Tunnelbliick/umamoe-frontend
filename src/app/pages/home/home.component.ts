@@ -9,7 +9,6 @@ import { DomainMigrationService } from '../../services/domain-migration.service'
 import { DomainMigrationPopupComponent } from '../../components/domain-migration-popup/domain-migration-popup.component';
 import { Meta, Title } from '@angular/platform-browser';
 import { ThemeService } from '../../services/theme.service';
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -26,7 +25,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   stats: StatsResponse | null = null;
   loading = true;
   isChristmas$ = this.themeService.isChristmas$;
-
   inheritanceRecords = 0;
   supportCardRecords = 0;
   dailyUsers = 0;
@@ -34,7 +32,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalAccounts = 0;
   totalCircles = 0;
   totalCharacters = 0;
-
   constructor(
     private statsService: StatsService, 
     private meta: Meta, 
@@ -57,18 +54,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       { name: 'twitter:image', content: 'https://honsemoe.com/assets/logo.png' }
     ]);
   }
-
   ngOnInit() {
     this.statsService.ensureDailyTracking();
     this.loadStats();
     this.checkForDomainMigrationPopup();
   }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   private loadStats() {
     this.statsService.getStats()
       .pipe(takeUntil(this.destroy$))
@@ -81,7 +75,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         error: () => { this.loading = false; }
       });
   }
-
   private updateDisplayValues(stats: StatsResponse) {
     this.totalRecords = stats.totals.total_records;
     this.inheritanceRecords = stats.totals.inheritance_records;
@@ -91,12 +84,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.totalCircles = stats.totals.total_circles_tracked;
     this.totalCharacters = stats.totals.total_characters;
   }
-
   onLogoError(event: Event) {
     const target = event.target as HTMLImageElement;
     target.src = 'assets/logo.png';
   }
-
   private checkForDomainMigrationPopup() {
     // Small delay to ensure the component is fully rendered
     setTimeout(() => {
@@ -108,7 +99,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           autoFocus: true,
           panelClass: 'domain-migration-dialog'
         });
-
         dialogRef.afterClosed().subscribe(() => {
           this.domainMigrationService.markPopupAsShown();
         });

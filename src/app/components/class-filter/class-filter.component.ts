@@ -6,15 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ColorsService } from '../../services/colors.service';
-
 export interface ClassFilterState {
   [key: string]: boolean;
 }
-
 export interface DistanceChangeEvent {
   distance: string | null;
 }
-
 interface ClassOption {
   value: string;
   label: string;
@@ -22,7 +19,6 @@ interface ClassOption {
   count?: number;
   percentage?: number;
 }
-
 @Component({
   selector: 'app-class-filter',
   standalone: true,
@@ -42,7 +38,6 @@ interface ClassOption {
            {{ isAllSelected ? 'None' : 'All' }}
         </button>
       </div>
-
       <div class="class-grid">
         <ng-container *ngFor="let classOption of classOptions">
           <button *ngIf="classOption.value !== 'overall'"
@@ -56,7 +51,6 @@ interface ClassOption {
         </ng-container>
       </div>
     </div>
-
     <!-- Distance Selector Card -->
     <div 
       class="distance-selector-card" 
@@ -92,14 +86,12 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() selectedClasses: ClassFilterState = {};
   @Input() classStats: { [key: string]: { count: number; percentage: number } } = {};
   @Output() filtersChanged = new EventEmitter<ClassFilterState>();
-
   // Distance selector inputs and outputs
   @Input() selectedDistance: string | null = null;
   @Input() distances: string[] = [];
   @Input() compactMode = false;
   @Input() showDistanceSelector = false;
   @Output() distanceChanged = new EventEmitter<DistanceChangeEvent>();
-
   classOptions: ClassOption[] = [
     { value: 'overall', label: 'All Classes', isOverall: true },
     { value: '6', label: 'Class 6' },
@@ -109,43 +101,35 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     { value: '2', label: 'Class 2' },
     { value: '1', label: 'Class 1' }
   ];
-
   classControls: { [key: string]: FormControl<boolean | null> } = {};
   private colorsService = inject(ColorsService);
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
-
   // Distance selector properties
   private scrollListener: (() => void) | null = null;
-
   constructor() {}
-
   ngOnInit(): void {
     this.initializeControls();
     this.setupClassStats();
     this.setupScrollListener();
   }
-
   ngOnDestroy(): void {
     if (this.scrollListener) {
       window.removeEventListener('scroll', this.scrollListener);
     }
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     // Re-setup class stats if they change
     if (changes['classStats'] || changes['selectedClasses']) {
       this.setupClassStats();
     }
   }
-
   private initializeControls(): void {
     // First, determine if all individual classes are currently selected
     const individualClasses = this.classOptions.filter(opt => opt.value !== 'overall');
     const allClassesSelected = individualClasses.every(option => 
       this.selectedClasses[option.value] !== false
     );
-
     this.classOptions.forEach(option => {
       let isSelected: boolean;
       
@@ -181,7 +165,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
       });
     });
   }
-
   private updateAllClassesState(): void {
     // Check if all individual classes are currently selected
     const individualClasses = this.classOptions.filter(opt => opt.value !== 'overall');
@@ -192,7 +175,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     // Update the "All Classes" checkbox state without triggering its change event
     this.classControls['overall'].setValue(allClassesSelected, { emitEvent: false });
   }
-
   private setupClassStats(): void {
     this.classOptions = this.classOptions.map(option => {
       if (option.isOverall) {
@@ -213,11 +195,9 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
   }
-
   getClassControl(classValue: string): FormControl<boolean | null> {
     return this.classControls[classValue];
   }
-
   private emitChanges(): void {
     const currentState: ClassFilterState = {};
     
@@ -228,7 +208,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     
     this.filtersChanged.emit(currentState);
   }
-
   formatNumber(num: number): string {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
@@ -237,7 +216,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
     return num.toString();
   }
-
   getBadgeStyle(classValue: string): any {
     const color = this.colorsService.getClassColor(classValue);
     return {
@@ -245,7 +223,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
       'color': this.getTextColor(color)
     };
   }
-
   private getTextColor(backgroundColor: string): string {
     // Simple contrast calculation
     const rgb = this.hexToRgb(backgroundColor);
@@ -254,7 +231,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
     return brightness > 128 ? '#000000' : '#ffffff';
   }
-
   private hexToRgb(hex: string) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -263,11 +239,9 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
       b: parseInt(result[3], 16)
     } : null;
   }
-
   // Distance selector methods
   private setupScrollListener(): void {
     let ticking = false;
-
     this.scrollListener = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -277,43 +251,36 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
         ticking = true;
       }
     };
-
     window.addEventListener('scroll', this.scrollListener, { passive: true });
     
     // Initial check
     setTimeout(() => this.updateDistanceVisibility(), 100);
   }
-
   private updateDistanceVisibility(): void {
     const distanceSection = document.querySelector('.distance-section');
     const characterDetailsSection = document.querySelector('.character-details');
     
     let shouldShow = false;
-
     // Check if distance section is visible and has meaningful content
     if (distanceSection) {
       const rect = distanceSection.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight * 0.9 && rect.bottom > -100;
       shouldShow = shouldShow || isVisible;
     }
-
     // Check if character details section is visible (character distance analysis)
     if (characterDetailsSection) {
       const rect = characterDetailsSection.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight * 0.9 && rect.bottom > -100;
       shouldShow = shouldShow || isVisible;
     }
-
     if (this.showDistanceSelector !== shouldShow) {
       this.showDistanceSelector = shouldShow;
       this.cdr.detectChanges();
     }
   }
-
   onDistanceSelect(distance: string): void {
     this.distanceChanged.emit({ distance });
   }
-
   getDistanceIcon(distance: string): string {
     const icons: { [key: string]: string } = {
       'sprint': 'flash_on',           // Lightning bolt for sprint
@@ -324,7 +291,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     };
     return icons[distance] || 'track_changes';
   }
-
   getDistanceLabel(distance: string): string {
     const labels: { [key: string]: string } = {
       'sprint': 'Sprint',
@@ -335,7 +301,6 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     };
     return labels[distance] || distance;
   }
-
   getDistanceColor(distance: string): string {
     const colors: { [key: string]: string } = {
       'sprint': '#e74c3c',    // Red for sprint
@@ -346,22 +311,18 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     };
     return colors[distance] || '#6c757d';
   }
-
   getBadgeColor(classValue: string): string {
     return this.colorsService.getClassColor(classValue);
   }
-
   toggleAll(): void {
     const control = this.classControls['overall'];
     if (control) {
       control.setValue(!control.value);
     }
   }
-
   get isAllSelected(): boolean {
     return this.classControls['overall']?.value === true;
   }
-
   onClassToggle(classValue: string): void {
     const control = this.classControls[classValue];
     if (control) {

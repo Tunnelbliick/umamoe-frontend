@@ -2,9 +2,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, OnChanges, 
 import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { ColorsService } from '../../services/colors.service';
-
 Chart.register(...registerables);
-
 export interface ChartDataPoint {
   label: string;
   value: number;
@@ -16,7 +14,6 @@ export interface ChartDataPoint {
   character_color?: string; // Color from game database
   composition?: { [cardType: string]: number }; // For stat symbol compositions
 }
-
 export interface ChartConfig {
   type: 'bar' | 'doughnut' | 'line' | 'horizontalBar';
   title?: string;
@@ -31,7 +28,6 @@ export interface ChartConfig {
   totalEntries?: number; // Total entries for percentage calculation
   showStatSymbols?: boolean; // Whether to show stat symbols for compositions
 }
-
 @Component({
   selector: 'app-statistics-chart',
   standalone: true,
@@ -124,45 +120,37 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
   @Input() data: ChartDataPoint[] = [];
   @Input() config: ChartConfig = { type: 'bar' };
   @Input() multiSeries: { [seriesName: string]: ChartDataPoint[] } | any[] = {};
-
   private chart: Chart | null = null;
   private colorsService = inject(ColorsService);
   private cdr = inject(ChangeDetectorRef);
   private imageCache = new Map<string, HTMLImageElement>();
   private resizeListener?: () => void;
   private lastDataHash: string = '';
-
   // Cached display state properties - computed only when inputs change
   private _showImageList: boolean = false;
   private _showStatSymbolList: boolean = false;
   private _showVerticalImageBar: boolean = false;
   private _shouldUseChartWithImages: boolean = false;
   private _statTypesCache = new Map<string, string[]>();
-
   // Safe getter for template binding
   get showImageList(): boolean {
     return this._showImageList;
   }
-
   // Safe getter for stat symbol list template binding
   get showStatSymbolList(): boolean {
     return this._showStatSymbolList;
   }
-
   // Safe getter for vertical image bar template binding
   get showVerticalImageBar(): boolean {
     return this._showVerticalImageBar;
   }
-
   // Safe getter to determine if we should use Chart.js with images
   get shouldUseChartWithImages(): boolean {
     return this._shouldUseChartWithImages;
   }
-
   private get defaultColors(): string[] {
     return this.colorsService.getChartColors();
   }
-
   // Hash-based color generation for consistent colors based on composition - now uses ColorsService
   private generateHashColor(composition: { [cardType: string]: number } | string): string {
     // Convert composition object to a stable string
@@ -174,22 +162,17 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       const sortedKeys = Object.keys(composition).sort();
       hashString = sortedKeys.map(key => `${key}:${composition[key]}`).join('|');
     }
-
     // Use ColorsService hash-based color generation
     return this.colorsService.getHashBasedColor(hashString);
   }
-
   ngOnInit(): void {
     // Add roundRect polyfill for older browsers
     this.addRoundRectPolyfill();
-
     // Compute initial display state
     this.computeDisplayState();
-
     // Preload images first, then initialize chart to prevent loading delay
     this.preloadImagesAndInitialize();
   }
-
   private computeDisplayState(): void {
     // Compute showImageList
     this._showImageList = !!(
@@ -204,14 +187,12 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         item.imageUrl !== 'null'
       )
     );
-
     // Compute showStatSymbolList
     this._showStatSymbolList = !!(
       this.config?.showStatSymbols &&
       this.data?.length > 0 &&
       this.data.every(item => item.composition)
     );
-
     // Compute showVerticalImageBar
     this._showVerticalImageBar = !!(
       this.config?.showImages &&
@@ -224,18 +205,15 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         item.imageUrl !== 'null'
       )
     );
-
     // Compute shouldUseChartWithImages
     this._shouldUseChartWithImages = !!(this.config?.showImages && this.config?.verticalImages);
   }
-
   private async preloadImagesAndInitialize(): Promise<void> {
     try {
       // If we need images, preload them first
       if (this.shouldUseChartWithImages && this.data && this.data.length > 0) {
         await this.preloadImages();
       }
-
       // Small delay to ensure ViewChild is available
       setTimeout(() => {
         this.initializeChart();
@@ -249,10 +227,8 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       }, 50);
     }
   }
-
   private setupResizeListener(): void {
     if (typeof window === 'undefined') return;
-
     this.resizeListener = () => {
       // Debounce resize events
       clearTimeout((this as any).resizeTimeout);
@@ -263,11 +239,9 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         }
       }, 150);
     };
-
     window.addEventListener('resize', this.resizeListener);
     window.addEventListener('orientationchange', this.resizeListener);
   }
-
   /**
    * Get responsive image size based on screen width and number of items
    */
@@ -275,13 +249,10 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     const baseSize = this.config.imageSize || 60;
     const screenWidth = window.innerWidth;
     const itemCount = this.data?.length || 1;
-
     // Calculate available width per item
     const availableWidth = screenWidth * 0.85; // 85% of screen width
     const widthPerItem = availableWidth / itemCount;
-
     let responsiveSize: number;
-
     if (screenWidth < 576) {
       // Mobile small: limit size based on available width
       responsiveSize = Math.min(baseSize * 0.6, widthPerItem * 0.8, 40);
@@ -295,18 +266,15 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       // Desktop - use full size but respect available space
       responsiveSize = Math.min(baseSize, widthPerItem * 0.95);
     }
-
     // Ensure minimum size for visibility
     return Math.max(responsiveSize, 28);
   }
-
   /**
    * Get responsive bottom padding for chart based on image size and layout
    */
   private getResponsiveBottomPadding(): number {
     const imageSize = this.getResponsiveImageSize();
     const isMobile = window.innerWidth < 768;
-
     if (isMobile) {
       // On mobile with staggered layout at bottom, we need space for two rows
       return (imageSize * 2) + 40; // Two rows of images + margins
@@ -315,7 +283,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       return imageSize + 20; // One row + margin
     }
   }
-
   /**
    * Get responsive top padding for chart to accommodate top images on mobile
    */
@@ -323,7 +290,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     // No top padding needed since all images are at the bottom
     return 0;
   }
-
   private addRoundRectPolyfill(): void {
     if (!CanvasRenderingContext2D.prototype.roundRect) {
       CanvasRenderingContext2D.prototype.roundRect = function (x: number, y: number, width: number, height: number, radii: number | number[]) {
@@ -342,34 +308,28 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       };
     }
   }
-
   ngAfterViewInit(): void {
     // Also try to initialize after view init
     if (!this.chart) {
       setTimeout(() => this.initializeChart(), 50);
     }
   }
-
   ngOnDestroy(): void {
     if (this.chart) {
       this.chart.destroy();
     }
-
     // Clean up resize listener
     if (this.resizeListener && typeof window !== 'undefined') {
       window.removeEventListener('resize', this.resizeListener);
       window.removeEventListener('orientationchange', this.resizeListener);
     }
-
     // Clear any pending resize timeout
     if ((this as any).resizeTimeout) {
       clearTimeout((this as any).resizeTimeout);
     }
-
     // Clear image cache to prevent memory leaks
     this.imageCache.clear();
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     // Recompute display state when inputs change
     if (changes['data'] || changes['config']) {
@@ -377,13 +337,10 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       // Clear caches when data changes
       this._statTypesCache.clear();
     }
-
     // Only update if we have a chart and there are meaningful changes
     if (!this.chart) return;
-
     let shouldUpdate = false;
     let needsImagePreload = false;
-
     // Check for data changes
     if (changes['data']) {
       const currentData = changes['data'].currentValue;
@@ -397,7 +354,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     }
-
     // Check for config or multiSeries changes
     if (changes['config'] && !changes['config'].firstChange) {
       shouldUpdate = true;
@@ -406,7 +362,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     if (changes['multiSeries'] && !changes['multiSeries'].firstChange) {
       shouldUpdate = true;
     }
-
     if (shouldUpdate) {
       if (needsImagePreload) {
         this.preloadImages().then(() => {
@@ -420,13 +375,11 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
-
   private hasDataChanged(previousData: any, currentData: any): boolean {
     // If either is null/undefined, they're different if they're not equal
     if (!previousData || !currentData) {
       return previousData !== currentData;
     }
-
     // If array lengths are different, data changed
     if (Array.isArray(previousData) && Array.isArray(currentData)) {
       if (previousData.length !== currentData.length) return true;
@@ -448,34 +401,27 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       }
       return false;
     }
-
     // For non-array data, do a simple comparison
     return JSON.stringify(previousData) !== JSON.stringify(currentData);
   }
-
   private initializeChart(): void {
     if (this.showImageList || this.showStatSymbolList) {
       return;
     }
-
     if (!this.chartCanvas?.nativeElement) {
       setTimeout(() => this.initializeChart(), 100);
       return;
     }
-
     // Destroy existing chart before creating a new one
     if (this.chart) {
       this.chart.destroy();
       this.chart = null;
     }
-
     const ctx = this.chartCanvas.nativeElement.getContext('2d');
     if (!ctx) {
       return;
     }
-
     const chartConfig = this.getChartConfiguration();
-
     // Register center text plugin for doughnut charts
     if (this.config.type === 'doughnut' && this.config.centerText !== undefined) {
       const centerTextPlugin = {
@@ -484,23 +430,19 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           const ctx = chart.ctx;
           const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
           const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-
           ctx.save();
           ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
           ctx.font = 'bold 50px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-
           const text = String(this.config.centerText);
           ctx.fillText(text, centerX, centerY);
           ctx.restore();
         }
       };
-
       chartConfig.plugins = chartConfig.plugins || [];
       (chartConfig.plugins as any[]).push(centerTextPlugin);
     }
-
     // Add icon plugin for doughnut charts (type distribution)
     if (this.config.type === 'doughnut' && this.data.some(item => item.type)) {
       const iconPlugin = {
@@ -520,14 +462,11 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           const innerRadius = meta.innerRadius || 0;
           const outerRadius = meta.outerRadius || 0;
           const middleRadius = (innerRadius + outerRadius) / 2;
-
           // Calculate total value for percentage calculation
           const total = this.data.reduce((sum, item) => sum + item.value, 0);
           if (total === 0) return;
-
           // Start angle at top of circle (-90 degrees in radians)
           let currentAngle = -Math.PI / 2;
-
           // Draw icons for each segment
           this.data.forEach((item, index) => {
             if (item.type && item.value > 0) {
@@ -584,13 +523,10 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           });
         }
       };
-
       chartConfig.plugins = chartConfig.plugins || [];
       (chartConfig.plugins as any[]).push(iconPlugin);
     }
-
     try {
-
       // Add custom image plugin for vertical image bars
       if (this.shouldUseChartWithImages) {
         const imagePlugin = {
@@ -601,20 +537,17 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
             const meta = chart.getDatasetMeta(0);
             const imageSize = this.getResponsiveImageSize();
             const isMobile = window.innerWidth < 768;
-
             this.data.forEach((item, index) => {
               if (item.imageUrl && meta.data[index]) {
                 const bar = meta.data[index];
                 const x = bar.x;
                 const chartBottom = chartArea.bottom;
-
                 const img = this.imageCache.get(item.imageUrl);
                 if (img && img.complete && img.naturalHeight !== 0) {
                   // Calculate staggered position at bottom
                   // On mobile: alternate between two rows at the bottom
                   // On desktop: single row at bottom
                   let imgX: number, imgY: number;
-
                   if (isMobile) {
                     // Stagger images in two rows at the bottom
                     const isLowerRow = index % 2 === 0;
@@ -622,7 +555,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
                     imgY = isLowerRow
                       ? chartBottom + 10  // First row (closer to chart)
                       : chartBottom + imageSize + 20; // Second row (below first row)
-
                     // Draw connecting line from bar to image
                     ctx.save();
                     ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
@@ -633,13 +565,11 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
                     ctx.lineTo(x, imgY + imageSize / 2); // Connect to center of image
                     ctx.stroke();
                     ctx.setLineDash([]);
-
                     // Draw small dot at bar bottom
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
                     ctx.beginPath();
                     ctx.arc(x, chartBottom, 3, 0, 2 * Math.PI);
                     ctx.fill();
-
                     // Draw small dot at image connection point
                     ctx.beginPath();
                     ctx.arc(x, imgY + imageSize / 2, 2, 0, 2 * Math.PI);
@@ -650,30 +580,24 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
                     imgX = x - imageSize / 2;
                     imgY = chartBottom + 10;
                   }
-
                   // Draw character image with border for better visibility
                   ctx.save();
-
                   // Add subtle shadow/glow for better visibility
                   ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
                   ctx.shadowBlur = 4;
                   ctx.shadowOffsetX = 0;
                   ctx.shadowOffsetY = 2;
-
                   // Draw the image
                   ctx.drawImage(img, imgX, imgY, imageSize, imageSize);
-
                   ctx.restore();
                 }
               }
             });
           }
         };
-
         chartConfig.plugins = chartConfig.plugins || [];
         (chartConfig.plugins as any[]).push(imagePlugin);
       }
-
       this.chart = new Chart(ctx, chartConfig);
     } catch (error) {
       console.error('Error creating chart:', error);
@@ -692,21 +616,17 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
-
   private getChartConfiguration(): ChartConfiguration {
     // Auto-detect if this should be a horizontal bar chart
     const shouldUseHorizontalBar = this.shouldUseHorizontalBar();
     const isHorizontalBar = this.config.type === 'horizontalBar' || shouldUseHorizontalBar;
     const isVerticalImageBar = this.shouldUseChartWithImages;
     const chartType = isHorizontalBar ? 'bar' : this.config.type;
-
     let datasets: any[] = [];
     let labels: string[] = [];
-
     // Handle vertical image bar case
     if (isVerticalImageBar) {
       labels = this.data.map(item => ''); // Empty labels since we'll draw images
-
       const intelligentColors = this.data.map((item, index) => {
         if (item.color) {
           return item.color;
@@ -717,7 +637,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         }
         return this.colorsService.getIntelligentColorForItem(item, index);
       });
-
       datasets = [{
         label: 'Usage',
         data: this.data.map(item => item.value),
@@ -734,10 +653,8 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       const firstSeries = this.multiSeries[0];
       if (firstSeries && firstSeries.data) {
         labels = firstSeries.data.map((item: any) => item.x || item.label);
-
         this.multiSeries.forEach((series: any, index: number) => {
           const color = this.colorsService.getIntelligentColorForLabel(series.name, index);
-
           datasets.push({
             label: series.name,
             data: series.data.map((item: any) => item.y || item.value),
@@ -752,15 +669,12 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     } else if (Object.keys(this.multiSeries).length > 0) {
       // Old format: object with series names as keys
       labels = [...new Set(Object.values(this.multiSeries as { [key: string]: ChartDataPoint[] }).flat().map(item => item.label))];
-
       Object.entries(this.multiSeries as { [key: string]: ChartDataPoint[] }).forEach(([seriesName, seriesData], index) => {
         const data = labels.map(label => {
           const item = seriesData.find((d: ChartDataPoint) => d.label === label);
           return item ? item.value : 0;
         });
-
         const color = this.colorsService.getIntelligentColorForLabel(seriesName, index);
-
         datasets.push({
           label: seriesName,
           data,
@@ -774,21 +688,17 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       // Handle single series data
       labels = this.data.map(item => item.label);
-
       // For single series, try to detect if labels are stats or classes
       const intelligentColors = labels.map((label, index) => {
         if (this.data[index].color) {
           return this.data[index].color!;
         }
-
         // Use hash-based colors for compositions
         if (this.data[index].composition) {
           return this.generateHashColor(this.data[index].composition!);
         }
-
         return this.colorsService.getIntelligentColorForLabel(label, index);
       });
-
       datasets = [{
         label: 'Value',
         data: this.data.map(item => item.value),
@@ -799,7 +709,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         borderSkipped: false,
       }];
     }
-
     const baseOptions: any = {
       responsive: true,
       maintainAspectRatio: false,
@@ -848,7 +757,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     };
-
     if (this.config.type === 'doughnut') {
       baseOptions.cutout = '60%';
       baseOptions.plugins.legend.position = 'right';
@@ -866,7 +774,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           lineWidth: 1
         }
       };
-
       if (isVerticalImageBar) {
         // Special configuration for vertical image bars
         baseOptions.scales = {
@@ -901,23 +808,19 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           y: { ...scaleOptions, beginAtZero: true }
         };
       }
-
       if (this.config.stacked) {
         baseOptions.scales.x.stacked = true;
         baseOptions.scales.y.stacked = true;
       }
     }
-
     return {
       type: chartType as ChartType,
       data: { labels, datasets },
       options: baseOptions
     };
   }
-
   private updateChart(): void {
     if (!this.chart) return;
-
     const config = this.getChartConfiguration();
     
     // Only update if configuration actually changed
@@ -930,7 +833,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     this.chart.data = config.data!;
     this.chart.options = config.options!;
     this.chart.update('none');
-
     // If using images, trigger a redraw after a short delay to ensure images are loaded
     if (this.shouldUseChartWithImages && this.data && this.data.some(item => item.imageUrl)) {
       setTimeout(() => {
@@ -940,16 +842,13 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       }, 100);
     }
   }
-
   private getColor(index: number): string {
     const colors = this.config.colors || this.colorsService.getChartColors();
     return colors[index % colors.length];
   }
-
   private getIntelligentColor(label: string, index: number): string {
     return this.colorsService.getIntelligentColorForLabel(label, index);
   }
-
   private formatValue(value: number): string {
     if (value >= 1000000) {
       // For millions, show one decimal place if it makes sense
@@ -970,116 +869,91 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     }
     return value.toString();
   }
-
   private formatValueWithPercentage(value: number, totalEntries?: number): string {
     const formattedValue = this.formatValue(value);
-
     if (totalEntries && totalEntries > 0) {
       const percentage = ((value / totalEntries) * 100).toFixed(1);
       return `${formattedValue} (${percentage}%)`;
     }
-
     return formattedValue;
   }
-
   private shouldUseHorizontalBar(): boolean {
     // Use horizontal bar for support card data or when we have long labels
     if (!this.data || this.data.length === 0) {
       return false;
     }
-
     // Check if any data items have support card IDs or types
     const hasSupportCardData = this.data.some(item =>
       item.id !== undefined ||
       item.type !== undefined ||
       (item.label && item.label.length > 15) // Long labels work better with horizontal bars
     );
-
     return hasSupportCardData && this.config.type === 'bar';
   }
-
   // Template helper methods
   getDisplayPercentage(item: ChartDataPoint): number {
     // Calculate relative percentage based on max value for bar width display
     if (!this.data || this.data.length === 0) {
       return 0;
     }
-
     const maxValue = Math.max(...this.data.map(dataItem => dataItem.value));
     if (maxValue === 0) {
       return 0;
     }
-
     // Scale the bars to use more of the available width while maintaining proportions
     // The highest value gets 95% width, others scale proportionally
     const relativePercentage = (item.value / maxValue) * 95;
-
     // Ensure minimum visibility for very small values
     if (relativePercentage > 0 && relativePercentage < 3) {
       return 3; // Minimum 3% width for visibility
     }
-
     return relativePercentage;
   }
-
   getActualPercentage(item: ChartDataPoint): number {
     // Always use pre-calculated percentage if available
     if (item.percentage !== undefined && item.percentage !== null) {
       return item.percentage;
     }
-
     // Fallback: calculate relative to dataset total
     const total = this.data.reduce((sum, d) => sum + d.value, 0);
     return total > 0 ? (item.value / total) * 100 : 0;
   }
-
   getItemColor(item: ChartDataPoint, index: number): string {
     if (item.color) {
       return item.color;
     }
-
     // Use hash-based colors for compositions (deck combinations)
     if (item.composition) {
       return this.generateHashColor(item.composition);
     }
-
     // Check for character_color from the item data
     if (item.character_color) {
       return item.character_color.startsWith('#') ? item.character_color : `#${item.character_color}`;
     }
-
     return this.colorsService.getIntelligentColorForItem(item, index);
   }
-
   trackByLabel(index: number, item: ChartDataPoint): string {
     return item.label;
   }
-
   handleImageError(event: any): void {
     // Hide broken images or show fallback
     event.target.style.display = 'none';
   }
-
   formatDisplayValue(value: number): string {
     return this.formatValue(value);
   }
-
   // Stat symbol helper methods (with caching for performance)
   getStatTypes(composition?: { [cardType: string]: number }): string[] {
     if (!composition) return [];
-
     // Create cache key from composition
     const cacheKey = JSON.stringify(composition);
     if (this._statTypesCache.has(cacheKey)) {
       return this._statTypesCache.get(cacheKey)!;
     }
-
     // Define the desired stat order: Speed, Stamina, Power, Guts, Intelligence, Friend, Group
     const statOrder = ['Speed', 'Stamina', 'Power', 'Guts', 'Intelligence', 'Friend', 'Group'];
-
     // Create a normalized map of what stats are available in the composition
     const availableStats = Object.keys(composition);
-
     // Create a map to normalize stat names to their canonical form
     const normalizedMap = new Map<string, string>();
     availableStats.forEach(stat => {
@@ -1094,10 +968,8 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       else if (lower === 'friend') normalizedMap.set(stat, 'Friend');
       else if (lower === 'group') normalizedMap.set(stat, 'Group');
     });
-
     // Build result array in the correct order
     const result: string[] = [];
-
     // Go through the desired order and add stats that exist in composition
     statOrder.forEach(canonicalStat => {
       // Find the original key in composition that maps to this canonical stat
@@ -1106,17 +978,14 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         result.push(originalKey);
       }
     });
-
     // Cache the result
     this._statTypesCache.set(cacheKey, result);
     return result;
   }
-
   getStatSymbolsForType(composition: { [cardType: string]: number }, statType: string): number[] {
     const count = composition[statType] || 0;
     return new Array(count).fill(0).map((_, index) => index);
   }
-
   getStatIconUrl(statType: string): string {
     const typeMap: { [key: string]: string } = {
       'speed': '/assets/images/icon/stats/speed.png',
@@ -1132,7 +1001,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     };
     return typeMap[statType.toLowerCase()] || typeMap['speed'];
   }
-
   getTypeIconUrl(cardType: string): string {
     const typeMap: { [key: string]: string } = {
       'speed': '/assets/images/icon/stats/speed.png',
@@ -1148,7 +1016,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
     };
     return typeMap[cardType.toLowerCase()] || typeMap['speed'];
   }
-
   // Helper method to load and cache images
   private async loadImage(url: string): Promise<HTMLImageElement> {
     if (this.imageCache.has(url)) {
@@ -1161,7 +1028,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         this.imageCache.delete(url);
       }
     }
-
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
@@ -1199,11 +1065,9 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
       img.src = url;
     });
   }
-
   // Preload all images for the chart
   private async preloadImages(): Promise<HTMLImageElement[]> {
     if (!this.data || this.data.length === 0) return [];
-
     const imagePromises: Promise<HTMLImageElement>[] = [];
     
     // Preload character images
@@ -1216,7 +1080,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
           })
         );
       });
-
     // Preload type icons for doughnut charts
     if (this.config.type === 'doughnut') {
       const uniqueTypes = [...new Set(this.data.map(item => item.type).filter(type => type))];
@@ -1230,7 +1093,6 @@ export class StatisticsChartComponent implements OnInit, OnDestroy, OnChanges {
         );
       });
     }
-
     try {
       const results = await Promise.allSettled(imagePromises);
       

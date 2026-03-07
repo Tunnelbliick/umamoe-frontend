@@ -17,7 +17,6 @@ import {
 import { PaginatedResponse, ApiResponse, SearchResult } from '../models/common.model';
 import { SUPPORT_CARDS, getAllSupportCards, getSupportCardById as getCardById, getSupportCardsByIds } from '../data/support-cards.data';
 import { TurnstileService } from './turnstile.service';
-
 // V3 API interfaces
 interface V3SearchResult {
   items: V3UnifiedAccountRecord[];
@@ -26,7 +25,6 @@ interface V3SearchResult {
   limit: number;
   total_pages: number;
 }
-
 interface V3UnifiedAccountRecord {
   account_id: string;
   trainer_name: string;
@@ -35,7 +33,6 @@ interface V3UnifiedAccountRecord {
   inheritance: V3InheritanceRecord | null;
   support_card: V3SupportCardRecord | null;
 }
-
 interface V3InheritanceRecord {
   inheritance_id: number;
   account_id: string;
@@ -56,14 +53,12 @@ interface V3InheritanceRecord {
   main_white_factors: number[];
   main_white_count: number;
 }
-
 interface V3SupportCardRecord {
   account_id: string;
   support_card_id: number;
   limit_break_count: number | null;
   experience: number;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -71,12 +66,10 @@ export class SupportCardService {
   private readonly apiUrl = '/api/v3'; // Updated to use v3 unified API
   private searchResults$ = new BehaviorSubject<SearchResult<SupportCardRecord> | null>(null);
   private supportCards$ = new BehaviorSubject<SupportCardShort[]>([]);
-
   constructor(private http: HttpClient, private turnstileService: TurnstileService) {
     // Load support cards from bundled data immediately
     this.supportCards$.next(getAllSupportCards());
   }
-
   // Map V3 backend response to frontend format
   private mapV3BackendToFrontend(
     response: V3SearchResult,
@@ -97,9 +90,7 @@ export class SupportCardService {
         experience: item.support_card!.experience,
         v3Data: item // Keep reference to full V3 data
       }));
-
     const enrichedResults = this.enrichtSupportCardRecordsV2WithInheritance(supportCardRecords);
-
     return {
       items: enrichedResults,
       totalPages: response.total_pages,
@@ -111,7 +102,6 @@ export class SupportCardService {
       sortOrder: filters.sortOrder || 'desc'
     };
   }
-
   // Search and filter support card records with enriched data
   searchSupportCardRecords(
     filters: SupportCardSearchFilters,
@@ -121,7 +111,6 @@ export class SupportCardService {
     let params = new HttpParams()
       .set('page', (page - 1).toString()) // Convert to 0-based indexing for backend
       .set('limit', limit.toString());
-
     // Add filters to params
     if (filters.cardId) params = params.set('cardId', filters.cardId);
     if (filters.type !== undefined && filters.type !== null) {
@@ -131,7 +120,6 @@ export class SupportCardService {
     if (filters.minLimitBreak !== undefined) params = params.set('minLimitBreak', filters.minLimitBreak.toString());
     if (filters.sortBy) params = params.set('sortBy', filters.sortBy);
     if (filters.sortOrder) params = params.set('sortOrder', filters.sortOrder);
-
     return this.http.get<any>(`${this.apiUrl}/api/support-cards/search`, { params })
       .pipe(
         map(response => {
@@ -182,7 +170,6 @@ export class SupportCardService {
         })
       );
   }
-
   // V3 unified search API for support cards
   searchSupportCardRecordsV2(
     filters: SupportCardSearchFilters,
@@ -191,17 +178,14 @@ export class SupportCardService {
   ): Observable<SearchResult<SupportCardRecordV2Enriched>> {
     const headers = new HttpHeaders()
       .set('Accept', 'application/json');
-
     let params = new HttpParams()
       .set('search_type', 'support_cards')
       .set('page', (page - 1).toString()) // Convert to 0-based indexing
       .set('limit', limit.toString());
-
     // Add trainer_id filter for direct trainer lookup
     if (filters.trainerId) {
       params = params.set('trainer_id', filters.trainerId);
     }
-
     // Map frontend filters to V3 backend parameters
     if (filters.cardId) {
       const cardId = parseInt(filters.cardId, 10);
@@ -209,23 +193,18 @@ export class SupportCardService {
         params = params.set('support_card_id', cardId.toString());
       }
     }
-
     if (filters.minLimitBreak !== undefined) {
       params = params.set('min_limit_break', filters.minLimitBreak.toString());
     }
-
     if (filters.maxLimitBreak !== undefined) {
       params = params.set('max_limit_break', filters.maxLimitBreak.toString());
     }
-
     if (filters.minExperience !== undefined) {
       params = params.set('min_experience', filters.minExperience.toString());
     }
-
     if (filters.maxFollowerNum !== undefined) {
       params = params.set('max_follower_num', filters.maxFollowerNum.toString());
     }
-
     // Map sorting parameters
     const sortByMapping: { [key: string]: string } = {
       'submittedAt': 'submitted_at',
@@ -233,15 +212,12 @@ export class SupportCardService {
       'limitBreak': 'limit_break_count',
       'followerNum': 'follower_num'
     };
-
     if (filters.sortBy && sortByMapping[filters.sortBy]) {
       params = params.set('sort_by', sortByMapping[filters.sortBy]);
     }
-
     if (filters.sortOrder) {
       params = params.set('sort_order', filters.sortOrder);
     }
-
     return this.http.get<V3SearchResult>(`${this.apiUrl}/search`, { headers, params })
       .pipe(
         map(response => this.mapV3BackendToFrontend(response, filters, page, limit)),
@@ -261,7 +237,6 @@ export class SupportCardService {
         })
       );
   }
-
   // Submit new support card record
   submitSupportCardRecord(submission: SupportCardSubmission): Observable<SupportCardRecord> {
     // Generate Turnstile token first, then submit with the token
@@ -270,7 +245,6 @@ export class SupportCardService {
         const headers = new HttpHeaders({
           'CF-Turnstile-Token': token
         });
-
         return this.http.post<SupportCardRecord>(`${this.apiUrl}/support-cards/submit`, submission, { headers });
       }),
       map(response => {
@@ -290,7 +264,6 @@ export class SupportCardService {
       })
     );
   }
-
   // Get support card record by ID
   getSupportCardRecordById(id: string): Observable<SupportCardRecord> {
     return this.http.get<ApiResponse<SupportCardRecord>>(`${this.apiUrl}/support-cards/record/${id}`)
@@ -303,7 +276,6 @@ export class SupportCardService {
         })
       );
   }
-
   // Vote on support card record
   voteOnSupportCardRecord(recordId: string, voteType: 'up' | 'down'): Observable<{ upvotes: number; downvotes: number }> {
     // Generate Turnstile token first, then vote with the token
@@ -312,7 +284,6 @@ export class SupportCardService {
         const headers = new HttpHeaders({
           'CF-Turnstile-Token': token
         });
-
         return this.http.post<ApiResponse<{ upvotes: number; downvotes: number }>>(
           `${this.apiUrl}/support-cards/record/${recordId}/vote`,
           { voteType },
@@ -327,7 +298,6 @@ export class SupportCardService {
       })
     );
   }
-
   // Get user's support card records
   getUserSupportCardRecords(userId: string): Observable<SupportCardRecord[]> {
     return this.http.get<ApiResponse<SupportCardRecord[]>>(`${this.apiUrl}/support-cards/user/${userId}`)
@@ -340,46 +310,37 @@ export class SupportCardService {
         })
       );
   }
-
   // Get all support cards (master data)
   getSupportCards(): Observable<SupportCardShort[]> {
     return this.supportCards$.asObservable();
   }
-
   // Get support card by ID (master data)
   getSupportCardById(id: string): Observable<SupportCardShort | undefined> {
     return of(getCardById(id));
   }
-
   // Get current search results
   getCurrentSearchResults(): Observable<SearchResult<SupportCardRecord> | null> {
     return this.searchResults$.asObservable();
   }
-
   // Clear search results
   clearSearchResults(): void {
     this.searchResults$.next(null);
   }
-
   // Get support cards by type
   getSupportCardsByType(type: number): Observable<SupportCardShort[]> {
     return of(SUPPORT_CARDS.filter(card => card.type === type));
   }
-
   // Get support cards by character
   // Legacy methods for backward compatibility with existing tierlist code
   getAllCards(): Observable<SupportCardShort[]> {
     return this.getSupportCards();
   }
-
   getCardsByType(type: number): Observable<SupportCardShort[]> {
     return this.getSupportCardsByType(type);
   }
-
   getCardById(id: string): Observable<SupportCardShort | undefined> {
     return this.getSupportCardById(id);
   }
-
   /**
    * Get support cards that have been released globally by a specific date
    * Uses the timeline calculation logic similar to the character service
@@ -388,46 +349,36 @@ export class SupportCardService {
   getReleasedSupportCards(cutoffDate?: Date, gracePeriodDays: number = 2): Observable<SupportCardShort[]> {
     const globalReleaseDate = new Date('2025-06-26'); // Global game launch
     const baseCutoffDate = cutoffDate || new Date(); // Default to today
-
     // Add grace period to the cutoff date
     const effectiveCutoffDate = new Date(baseCutoffDate);
     effectiveCutoffDate.setDate(effectiveCutoffDate.getDate() + gracePeriodDays);
-
     return of(SUPPORT_CARDS.filter(card => {
       // Parse the card's JP release date
       const jpReleaseDate = new Date(card.release_date);
       if (isNaN(jpReleaseDate.getTime())) return false;
-
       // Calculate estimated global release date using timeline logic
       const estimatedGlobalDate = this.calculateGlobalReleaseDate(jpReleaseDate, globalReleaseDate);
-
       // Return true if the card should be released by the cutoff date (including grace period)
       return estimatedGlobalDate <= effectiveCutoffDate;
     }));
   }
-
   /**
    * Calculate estimated global release date based on timeline service logic
    * This mirrors the calculation used in character.service.ts
    */
   private calculateGlobalReleaseDate(jpDate: Date, globalLaunchDate: Date): Date {
     const jpLaunchDate = new Date('2021-02-24'); // JP game launch
-    const catchupRate = 1 / 1.6; // Global is catching up at 1.6x speed
-
+    const catchupRate = 1 / 1.42; // Global is catching up at 1.6x speed
     // Days since JP launch
     const daysSinceJpLaunch = Math.floor((jpDate.getTime() - jpLaunchDate.getTime()) / (1000 * 60 * 60 * 24));
-
     // Calculate adjusted days for global (faster release schedule)
     const adjustedDays = Math.floor(daysSinceJpLaunch * catchupRate);
-
     // Global release date = Global launch + adjusted days
     const globalDate = new Date(globalLaunchDate);
     globalDate.setDate(globalDate.getDate() + adjustedDays);
     globalDate.setHours(22, 0, 0, 0); // Normalize to start of the day
-
     return globalDate;
   }
-
   /**
    * Search support cards by name or character and apply release date filtering
    */
@@ -439,7 +390,6 @@ export class SupportCardService {
       ))
     );
   }
-
   /**
    * Get released support cards by type
    */
@@ -448,7 +398,6 @@ export class SupportCardService {
       map(cards => cards.filter(card => card.type === type))
     );
   }
-
   // Health check endpoint to verify backend connectivity
   checkHealth(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`)
@@ -459,7 +408,6 @@ export class SupportCardService {
         })
       );
   }
-
   // Report user as unavailable/friend list full - now creates a task immediately
   reportUserUnavailable(trainerId: string): Observable<{ success: boolean; report_count: number; task_created: boolean; message: string }> {
     // Generate Turnstile token first, then report with the token
@@ -468,7 +416,6 @@ export class SupportCardService {
         const headers = new HttpHeaders({
           'CF-Turnstile-Token': token
         });
-
         return this.http.post<{ success: boolean; report_count: number; task_created: boolean; message: string }>(
           `${this.apiUrl}/tasks/report-unavailable/${trainerId}`, 
           {},
@@ -481,7 +428,6 @@ export class SupportCardService {
       })
     );
   }
-
   // Track when a trainer ID is copied (for automatic re-checking)
   trackTrainerCopy(trainerId: string): Observable<{ success: boolean; copy_count: number; task_created: boolean }> {
     return this.http.post<{ success: boolean; copy_count: number; task_created: boolean }>(
@@ -495,7 +441,6 @@ export class SupportCardService {
       })
     );
   }
-
   // Get trainer availability status
   getTrainerStatus(trainerId: string): Observable<{
     trainer_id: string;
@@ -519,17 +464,12 @@ export class SupportCardService {
         })
       );
   }
-
   private enrichtSupportCardRecords(records: SupportCardRecord[]): SupportCardRecordEnriched[] {
-
     if (!records || records.length === 0) {
       return [];
     }
-
     var cardids = records.map(record => record.card_id);
-    console.log(records);
     const supportCards = getSupportCardsByIds(cardids);
-
     return records.map(record => {
       const card = supportCards.get(record.card_id);
       if (!card) {
@@ -541,7 +481,6 @@ export class SupportCardService {
           cardImageUrl: '/assets/images/support_card/half/support_card_s_unknown.png' // Placeholder image
         };
       }
-
       return {
         ...record,
         cardName: card.name,
@@ -551,17 +490,12 @@ export class SupportCardService {
       };
     });
   }
-
   private enrichtSupportCardRecordsV2(records: SupportCardRecordV2[]): SupportCardRecordV2Enriched[] {
-
     if (!records || records.length === 0) {
       return [];
     }
-
     var cardids = records.map(record => record.support_card_id.toString());
-    console.log(records);
     const supportCards = getSupportCardsByIds(cardids);
-
     return records.map(record => {
       const card = supportCards.get(record.support_card_id.toString());
       if (!card) {
@@ -573,7 +507,6 @@ export class SupportCardService {
           cardImageUrl: '/assets/images/support_card/half/support_card_s_unknown.png' // Placeholder image
         };
       }
-
       return {
         ...record,
         cardName: card.name,
@@ -583,15 +516,12 @@ export class SupportCardService {
       };
     });
   }
-
   private enrichtSupportCardRecordsV2WithInheritance(records: (SupportCardRecordV2 & { v3Data: V3UnifiedAccountRecord })[]): SupportCardRecordV2Enriched[] {
     if (!records || records.length === 0) {
       return [];
     }
-
     var cardids = records.map(record => record.support_card_id.toString());
     const supportCards = getSupportCardsByIds(cardids);
-
     return records.map(record => {
       const card = supportCards.get(record.support_card_id.toString());
       const baseRecord = {
@@ -603,7 +533,6 @@ export class SupportCardService {
         limit_break_count: record.limit_break_count,
         experience: record.experience
       };
-
       if (!card) {
         return {
           ...baseRecord,
@@ -614,7 +543,6 @@ export class SupportCardService {
           inheritance: record.v3Data.inheritance || undefined
         };
       }
-
       return {
         ...baseRecord,
         cardName: card.name,

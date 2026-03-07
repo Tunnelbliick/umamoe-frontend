@@ -1,3 +1,13 @@
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .circle-details-page {
   min-height: calc(100vh - 60px);
   background: #121212;
@@ -5,95 +15,104 @@
 }
 
 .page-header {
-  background: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(129, 199, 132, 0.1) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem 0;
-  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 0;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 20;
 }
 
   .header-content {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2rem 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
 
     .header-top {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      height: 42px; // Fixed height for alignment
+      gap: 0.75rem;
 
-    .back-btn {
-      color: rgba(255, 255, 255, 0.7);
-      border: none;
-      background: transparent;
-      height: 42px;
-      width: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: background-color 0.2s, color 0.2s;
-      
-      &:hover {
-        background: rgba(255, 255, 255, 0.1);
+      .back-btn {
+        color: rgba(255, 255, 255, 0.5);
+        border: none;
+        background: transparent;
+        flex-shrink: 0;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: #fff;
+        }
+
+        mat-icon {
+          font-size: 22px;
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      .header-rank-icon {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        flex-shrink: 0;
+        margin: -18px -4px -18px 0;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
         color: #fff;
       }
 
-      mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-      }
-    }      .title-section {
+      .badges {
         display: flex;
+        gap: 0.4rem;
         align-items: center;
-        gap: 1rem;
-        height: 100%;
 
-        h1 {
-          font-size: 2rem; // Reduced from 2.5rem for better proportion
-          font-weight: 700;
-          margin: 0;
-          line-height: 1;
-          color: #fff;
-          background: linear-gradient(45deg, #64b5f6, #81c784);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          display: flex;
+        .badge {
+          padding: 3px 10px;
+          height: 26px;
+          display: inline-flex;
           align-items: center;
-        }
+          border-radius: 5px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          
+          &.rank-badge {
+            background: rgba(100, 181, 246, 0.12);
+            color: #90caf9;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+          }
+          
+          &.members-badge {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+          }
 
-        .badges {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
-          height: 100%;
-
-          .badge {
-            padding: 0 12px;
-            height: 32px; // Fixed height
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            
-            &.rank-badge {
-              background: rgba(100, 181, 246, 0.2);
-              color: #90caf9;
-              border: 1px solid rgba(100, 181, 246, 0.3);
+          &.join-badge {
+            &.open {
+              background: rgba(129, 199, 132, 0.1);
+              color: #81c784;
+              border: 1px solid rgba(129, 199, 132, 0.2);
             }
-            
-            &.members-badge {
-              background: rgba(255, 255, 255, 0.1);
-              color: rgba(255, 255, 255, 0.8);
-              border: 1px solid rgba(255, 255, 255, 0.1);
+            &.approval {
+              background: rgba(255, 183, 77, 0.1);
+              color: #ffb74d;
+              border: 1px solid rgba(255, 183, 77, 0.2);
+            }
+            &.closed {
+              background: rgba(229, 115, 115, 0.1);
+              color: #e57373;
+              border: 1px solid rgba(229, 115, 115, 0.2);
             }
           }
         }
@@ -103,17 +122,87 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      height: 42px; // Match header-top height
+      gap: 0.75rem;
+
+      .live-refresh-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        background: rgba(244, 67, 54, 0.06);
+        border: 1px solid rgba(244, 67, 54, 0.15);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+        white-space: nowrap;
+
+        .live-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #f44336;
+          flex-shrink: 0;
+          box-shadow: 0 0 5px rgba(244, 67, 54, 0.7);
+          animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        .live-label {
+          font-weight: 600;
+          color: #ef5350;
+          font-size: 0.7rem;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+
+        .countdown {
+          font-variant-numeric: tabular-nums;
+          min-width: 32px;
+          text-align: right;
+          &.refreshing {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.35);
+          }
+        }
+
+        .refresh-now-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 2px;
+          border-radius: 4px;
+          color: rgba(255, 255, 255, 0.4);
+          transition: color 0.15s, background 0.15s;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+
+          &:hover:not(:disabled) {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+          }
+
+          &:disabled {
+            opacity: 0.3;
+            cursor: default;
+            mat-icon { animation: spin 1s linear infinite; }
+          }
+        }
+      }
 
       .month-nav {
         display: flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;
         padding: 0 4px;
-        height: 42px;
+        height: 36px;
 
         button {
           color: rgba(255, 255, 255, 0.7);
@@ -152,18 +241,119 @@
         }
       }
 
-      .export-btn {
-        height: 42px; // Match height
-        color: #81c784;
-        border-color: rgba(129, 199, 132, 0.5);
-        font-weight: 600;
-        
-        &:hover {
-          background: rgba(129, 199, 132, 0.1);
+      .export-wrap {
+        position: relative;
+        z-index: 100;
+
+        .export-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          height: 36px;
+          padding: 0 12px;
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.04);
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.85rem;
+          font-weight: 600;
+          font-family: inherit;
+          cursor: pointer;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+          white-space: nowrap;
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            flex-shrink: 0;
+          }
+
+          .chevron {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            opacity: 0.5;
+            margin-left: -2px;
+            transition: transform 0.2s;
+          }
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+          }
+
+          &.open {
+            background: rgba(100, 181, 246, 0.1);
+            border-color: rgba(100, 181, 246, 0.3);
+            color: #64b5f6;
+
+            .chevron { transform: rotate(180deg); opacity: 0.8; }
+          }
+        }
+
+        .export-dropdown {
+          position: absolute;
+          top: calc(100% + 6px);
+          right: 0;
+          background: #1a1a1a;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          padding: 4px;
+          min-width: 160px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+          z-index: 9999;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .export-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 7px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.12s, color 0.12s;
+
+            mat-icon {
+              font-size: 17px;
+              width: 17px;
+              height: 17px;
+              line-height: 17px;
+              color: rgba(255, 255, 255, 0.35);
+              flex-shrink: 0;
+              transition: color 0.12s;
+            }
+
+            &:hover {
+              background: rgba(100, 181, 246, 0.08);
+              color: #fff;
+
+              mat-icon { color: #64b5f6; }
+            }
+
+            &:active {
+              background: rgba(100, 181, 246, 0.14);
+            }
+          }
         }
       }
     }
-  }.content-container {
+  }
+
+.content-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -174,10 +364,10 @@
 
 .top-grid {
   display: grid;
-  grid-template-columns: 350px 1fr;
+  grid-template-columns: minmax(0, 420px) 1fr;
   gap: 1.5rem;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     grid-template-columns: 1fr;
   }
 }
@@ -186,9 +376,11 @@
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 
   .card-header {
     padding: 1rem 1.5rem;
@@ -209,6 +401,13 @@
         color: #64b5f6;
       }
     }
+
+    .card-header-date {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.05em;
+    }
   }
 
   .card-content {
@@ -224,18 +423,166 @@
 .info-card .card-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  min-width: 0;
+  overflow: hidden;
+
+  .club-rank-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0.6rem 0.5rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    max-width: 100%;
+    overflow: hidden;
+
+    &.max-rank {
+      justify-content: center;
+      gap: 0;
+
+      .tier-side.lower {
+        flex: 0 1 auto;
+        justify-content: flex-end;
+      }
+
+      .rank-center {
+        flex: 0 0 auto;
+      }
+    }
+
+    .tier-side {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+
+      &.lower {
+        justify-content: flex-end;
+      }
+
+      &.upper {
+        justify-content: flex-start;
+      }
+
+      .tier-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        opacity: 0.45;
+        filter: grayscale(0.3);
+      }
+
+      .tier-arrow {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .tier-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+        min-width: 0;
+        overflow: hidden;
+
+        .tier-gap-label {
+          font-size: 0.6rem;
+          color: rgba(255, 255, 255, 0.35);
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+
+        .tier-gap-value {
+          font-size: 0.85rem;
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+
+          &.safe {
+            color: #81c784;
+          }
+
+          &.needed {
+            color: #ffb74d;
+          }
+        }
+
+        .tier-delta {
+          font-size: 0.65rem;
+          font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          color: rgba(255, 255, 255, 0.35);
+
+          &.positive {
+            color: #81c784;
+          }
+
+          &.negative {
+            color: #e57373;
+          }
+        }
+      }
+    }
+
+    .rank-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 0.6rem;
+      flex-shrink: 0;
+
+      .club-rank-icon {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
+
+      .rank-label {
+        font-size: 0.65rem;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+    }
+  }
 
   .info-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    &:first-child {
+      padding-top: 0;
+    }
 
     &:last-child {
       border-bottom: none;
       padding-bottom: 0;
+    }
+
+    &.no-border {
+      border-bottom: none;
     }
 
     &.description {
@@ -253,6 +600,7 @@
     .label {
       color: rgba(255, 255, 255, 0.5);
       font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     .value {
@@ -261,6 +609,9 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       a {
         color: #64b5f6;
@@ -285,30 +636,6 @@
         
         &:hover {
           text-decoration: underline;
-        }
-      }
-      
-      &.join-style {
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        
-        &.open {
-          background: rgba(129, 199, 132, 0.1);
-          color: #81c784;
-          border: 1px solid rgba(129, 199, 132, 0.2);
-        }
-        
-        &.approval {
-          background: rgba(255, 183, 77, 0.1);
-          color: #ffb74d;
-          border: 1px solid rgba(255, 183, 77, 0.2);
-        }
-        
-        &.closed {
-          background: rgba(229, 115, 115, 0.1);
-          color: #e57373;
-          border: 1px solid rgba(229, 115, 115, 0.2);
         }
       }
     }
@@ -384,7 +711,7 @@
 }
 
 .members-section-header {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -502,7 +829,7 @@
           border: 1px solid rgba(255, 167, 38, 0.3);
         }
         
-        &.sub-leader {
+        &.officer {
           background: rgba(102, 187, 106, 0.15);
           color: #66bb6a;
           border: 1px solid rgba(102, 187, 106, 0.3);
@@ -559,6 +886,28 @@
           }
         }
 
+        &.prior-circle-row {
+          margin: -0.125rem -0.75rem 0.25rem;
+          padding: 0.125rem 0.75rem;
+          
+          .prior-circle-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255, 152, 0, 0.7);
+            font-size: 0.7rem;
+            font-style: italic;
+            font-weight: 400;
+
+            .prior-icon {
+              font-size: 14px;
+              width: 14px;
+              height: 14px;
+              color: rgba(255, 152, 0, 0.6);
+            }
+          }
+        }
+
         .label {
           color: rgba(255, 255, 255, 0.5);
           font-size: 0.75rem;
@@ -599,6 +948,889 @@
   mat-spinner {
     circle {
       stroke: #64b5f6;
+    }
+  }
+}
+
+// View Toggle Buttons
+.view-toggles {
+  display: flex;
+  gap: 4px;
+}
+
+.toggle-btn {
+  color: rgba(255, 255, 255, 0.5) !important;
+  
+  &:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  &.active {
+    color: #64b5f6 !important;
+    background: rgba(100, 181, 246, 0.1);
+  }
+}
+
+.header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// Prior Club Data Badge
+.prior-club-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+
+  .badge-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .badge-label {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .badge-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  &.excluded {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .badge-icon {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .badge-status {
+      color: #ffb74d;
+      background: rgba(255, 152, 0, 0.15);
+    }
+  }
+
+  &.included {
+    background: rgba(76, 175, 80, 0.08);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+
+    &:hover {
+      background: rgba(76, 175, 80, 0.14);
+      border-color: rgba(76, 175, 80, 0.45);
+    }
+
+    .badge-icon {
+      color: #81c784;
+    }
+
+    .badge-status {
+      color: #81c784;
+      background: rgba(76, 175, 80, 0.15);
+    }
+  }
+}
+
+// Calendar View
+.calendar-view {
+  padding: 0 0.5rem 0.75rem !important;
+
+  .calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 2px;
+
+    .day-label {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.35);
+      padding: 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  .calendar-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .calendar-day {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    padding: 5px 6px;
+    min-height: 100px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transition: all 0.2s ease;
+
+    &.empty {
+      background: transparent;
+      border-color: transparent;
+      min-height: 0;
+    }
+
+    &.other-month {
+      background: rgba(255, 255, 255, 0.01);
+      border-color: rgba(255, 255, 255, 0.02);
+      min-height: 50px;
+      opacity: 0.35;
+
+      .day-number {
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    &.no-data {
+      background: rgba(255, 255, 255, 0.015);
+      min-height: 50px;
+      
+      .day-number {
+        color: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    &.has-data {
+      background: linear-gradient(160deg, rgba(129, 199, 132, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border-color: rgba(129, 199, 132, 0.1);
+
+      &:hover {
+        background: linear-gradient(160deg, rgba(129, 199, 132, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+        border-color: rgba(129, 199, 132, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+
+        .day-popover {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+
+    // Top row: day number + delta badge
+    .day-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1px;
+      overflow: hidden;
+    }
+
+    .day-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1;
+    }
+
+    .day-delta-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      line-height: 1;
+
+      &.positive {
+        color: #81c784;
+        background: rgba(129, 199, 132, 0.12);
+      }
+
+      &.negative {
+        color: #e57373;
+        background: rgba(229, 115, 115, 0.12);
+      }
+
+      &.neutral {
+        color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.04);
+      }
+    }
+
+    // Total fans row
+    .day-total-row {
+      display: none;
+    }
+
+    // Contributor rows
+    .day-contributors {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      overflow: hidden;
+
+      .contrib-row {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.7rem;
+        line-height: 1.2;
+        min-height: 14px;
+        overflow: hidden;
+      }
+
+      .rank-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.15);
+
+        &.gold   { background: #ffd700; box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
+        &.silver { background: #90a4ae; }
+        &.bronze { background: #cd7f32; }
+      }
+
+      .contrib-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: rgba(255, 255, 255, 0.6);
+        flex: 1;
+        min-width: 0;
+      }
+
+      .contrib-delta {
+        color: rgba(129, 199, 132, 0.7);
+        flex-shrink: 0;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    // Hover Popover — mirrors the calendar cell's contrib-row style
+    .day-popover {
+      display: none;
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      z-index: 200;
+      background: #1e1e1e;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      min-width: calc(100% + 8px);
+      width: max-content;
+      max-width: 260px;
+
+      .popover-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+        .popover-day {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        .popover-delta {
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.3);
+          &.positive { color: rgba(129, 199, 132, 0.7); }
+          &.negative { color: rgba(229, 115, 115, 0.7); }
+        }
+      }
+
+      .popover-list {
+        max-height: 220px;
+        overflow-y: auto;
+        padding: 3px 0;
+      }
+
+      .popover-row {
+        display: flex;
+        align-items: center;
+        padding: 4px 10px;
+        gap: 6px;
+        line-height: 1.3;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.02);
+        }
+
+        .rank-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          flex-shrink: 0;
+          background: rgba(255, 255, 255, 0.15);
+
+          &.gold   { background: #ffd700; box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
+          &.silver { background: #90a4ae; }
+          &.bronze { background: #cd7f32; }
+        }
+
+        .popover-name {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 0.7rem;
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .popover-rank {
+          font-size: 0.65rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.25);
+          min-width: 14px;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .popover-value {
+          flex-shrink: 0;
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: rgba(129, 199, 132, 0.7);
+          font-variant-numeric: tabular-nums;
+        }
+      }
+    }
+  }
+
+  // Right-edge columns: anchor popover to the right to avoid overflow
+  .calendar-week .calendar-day:nth-child(6),
+  .calendar-week .calendar-day:nth-child(7) {
+    .day-popover {
+      left: auto;
+      right: -4px;
+    }
+  }
+}
+
+// Row View
+.members-row-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .member-row-header {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+
+    .col-value, .col-total, .col-daily, .col-weekly, .col-avg, .col-date {
+      text-align: left;
+    }
+  }
+
+  .member-row {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #1e1e1e;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: #252525;
+      border-color: rgba(100, 181, 246, 0.2);
+    }
+
+    &.inactive {
+      opacity: 0.5;
+      border-style: dashed;
+    }
+
+    &.rank-1 {
+      border-color: rgba(255, 215, 0, 0.3);
+      .col-rank, .col-name { color: #ffd700; }
+    }
+
+    &.rank-2 {
+      border-color: rgba(144, 164, 174, 0.3);
+      .col-rank, .col-name { color: #90a4ae; }
+    }
+
+    &.rank-3 {
+      border-color: rgba(205, 127, 50, 0.3);
+      .col-rank, .col-name { color: #cd7f32; }
+    }
+  }
+
+  .col-rank {
+    width: 40px;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+  }
+
+  .col-name {
+    flex: 1.5;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .status-badge-inline {
+      font-size: 0.6rem;
+      padding: 1px 4px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+      flex-shrink: 0;
+
+      &.inactive {
+        background: rgba(244, 67, 54, 0.15);
+        color: #ef5350;
+        border: 1px solid rgba(244, 67, 54, 0.3);
+      }
+    }
+  }
+
+  .col-role {
+    width: 70px;
+    flex-shrink: 0;
+    text-align: center;
+
+    .role-badge-sm {
+      font-size: 0.6rem;
+      padding: 1px 5px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+
+      &.leader {
+        background: rgba(255, 167, 38, 0.15);
+        color: #ffa726;
+      }
+
+      &.officer {
+        background: rgba(102, 187, 106, 0.15);
+        color: #66bb6a;
+      }
+
+      &.member {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+
+  .col-value {
+    flex: 1.2;
+    min-width: 0;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    .prior-circle-marker {
+      color: #ffa726;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: help;
+      flex-shrink: 0;
+    }
+  }
+
+  .col-total {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .col-daily, .col-weekly, .col-avg {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .col-date {
+    width: 55px;
+    flex-shrink: 0;
+    text-align: left;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .gain {
+    color: rgba(255, 255, 255, 0.3);
+    &.positive { color: #81c784; }
+  }
+}
+
+// ========== MOBILE RESPONSIVE ==========
+@media (max-width: 768px) {
+  .circle-details-page {
+    padding-bottom: 1rem;
+  }
+
+  .page-header {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .header-content {
+    padding: 0 1rem;
+    gap: 0.75rem;
+
+    .header-top {
+      flex-wrap: wrap;
+
+      h1 {
+        font-size: 1.25rem;
+      }
+
+      .header-rank-icon {
+        width: 44px;
+        height: 44px;
+        margin: -10px 0;
+      }
+
+      .badges {
+        flex-wrap: wrap;
+
+        .badge {
+          padding: 2px 8px;
+          height: 24px;
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    .header-actions {
+      width: 100%;
+      justify-content: space-between;
+      height: auto;
+      gap: 0.5rem;
+
+      .month-nav {
+        height: 36px;
+        flex: 1;
+
+        button {
+          height: 28px !important;
+          width: 28px !important;
+        }
+
+        .current-month {
+          font-size: 0.85rem;
+          padding: 0 0.5rem;
+          min-width: 80px;
+        }
+      }
+
+      .export-wrap {
+        .export-btn {
+          height: 36px;
+          font-size: 0.8rem;
+          padding: 0 10px;
+
+          span { display: none; }  // icon-only on mobile
+        }
+
+        .export-dropdown {
+          right: 0;
+          left: auto;
+        }
+      }
+    }
+  }
+
+  .content-container {
+    padding: 0 0.75rem;
+    gap: 1rem;
+  }
+
+  .details-card {
+    border-radius: 8px;
+
+    .card-header {
+      padding: 0.75rem 1rem;
+
+      h2 {
+        font-size: 0.95rem;
+      }
+    }
+
+    .card-content {
+      padding: 0 1rem 0.75rem;
+    }
+  }
+
+  .info-card .card-content {
+    .club-rank-row {
+      padding: 0.5rem 0.25rem;
+      overflow: hidden;
+      max-width: 100%;
+
+      .tier-side {
+        gap: 3px;
+        min-width: 0;
+        overflow: hidden;
+
+        .tier-icon {
+          width: 22px;
+          height: 22px;
+          flex-shrink: 0;
+        }
+
+        .tier-arrow {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+        }
+
+        .tier-info {
+          min-width: 0;
+          overflow: hidden;
+
+          .tier-gap-label {
+            font-size: 0.5rem;
+          }
+
+          .tier-gap-value {
+            font-size: 0.7rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .tier-delta {
+            font-size: 0.55rem;
+          }
+        }
+      }
+
+      .rank-center {
+        padding: 0 0.3rem;
+        flex-shrink: 0;
+
+        .club-rank-icon {
+          width: 30px;
+          height: 30px;
+        }
+
+        .rank-label {
+          font-size: 0.55rem;
+        }
+      }
+    }
+
+    .info-row {
+      .label {
+        font-size: 0.8rem;
+      }
+
+      .value {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  // Calendar mobile: scale down to fit
+  .calendar-view {
+    padding: 0 0.25rem 0.75rem !important;
+
+    .calendar-day {
+      padding: 4px 5px;
+      min-height: 64px;
+      border-radius: 6px;
+
+      &.no-data {
+        min-height: 36px;
+      }
+
+      .day-popover {
+        min-width: 180px;
+        max-width: 220px;
+        // Default: anchor left
+        left: 0;
+        right: auto;
+        transform: none;
+      }
+    }
+
+    // Right-edge columns (6th and 7th): anchor popover to the right
+    .calendar-week .calendar-day:nth-child(6),
+    .calendar-week .calendar-day:nth-child(7) {
+      .day-popover {
+        left: auto;
+        right: 0;
+      }
+    }
+  }
+
+  // Chart area
+  .full-width-chart .chart-wrapper {
+    min-height: 400px;
+
+    .chart-area {
+      min-height: 280px;
+    }
+
+    .chart-legend {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 0.25rem;
+
+      .legend-item {
+        padding: 3px 6px;
+
+        .name {
+          font-size: 0.75rem;
+        }
+
+        .color-indicator {
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+  }
+
+  // Members section
+  .members-section-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .prior-club-badge {
+    padding: 5px 10px;
+    gap: 5px;
+    font-size: 12px;
+
+    .badge-label {
+      display: none;
+    }
+  }
+
+  .members-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  // Row view mobile
+  .members-row-list {
+    .member-row-header,
+    .member-row {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .col-rank { width: 28px; font-size: 0.75rem; }
+    .col-name { font-size: 0.8rem; flex: 1.5; }
+    .col-value { flex: 1; font-size: 0.75rem; }
+    .col-total { display: none; }
+    .col-daily, .col-weekly, .col-avg { flex: 0.8; font-size: 0.7rem; }
+    .col-date { display: none; }
+    .col-role { display: none; }
+  }
+}
+
+// Extra small screens (< 480px)
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0 0.75rem;
+
+    .header-top {
+      gap: 0.5rem;
+
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      .header-rank-icon {
+        width: 38px;
+        height: 38px;
+        margin: -8px 0;
+      }
+
+      .badges {
+        gap: 0.25rem;
+
+        .badge {
+          font-size: 0.6rem;
+          padding: 0 5px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .content-container {
+    padding: 0 0.5rem;
+  }
+
+  .info-card .card-content {
+    .club-rank-row {
+      .tier-side {
+        .tier-icon {
+          display: none;
+        }
+
+        .tier-arrow {
+          display: none;
+        }
+      }
     }
   }
 }

@@ -10,33 +10,25 @@ import { Observable, throwError } from 'rxjs';
 import { switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { TurnstileService } from '../services/turnstile.service';
 import { environment } from '../../environments/environment';
-
 @Injectable()
 export class TurnstileInterceptor implements HttpInterceptor {
   
   constructor(private turnstileService: TurnstileService) {}
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Only add Turnstile token to POST requests to our API
     if (req.method !== 'POST' || !this.isApiRequest(req.url)) {
       return next.handle(req);
     }
-
     if (!environment.production) {
-      console.log('Adding Turnstile token to POST request:', req.url);
     }
-
     // Generate Turnstile token and add to request headers
     return this.turnstileService.generateTokenWithRetry().pipe(
       switchMap(token => {
         const authenticatedReq = req.clone({
           headers: req.headers.set('CF-Turnstile-Token', token)
         });
-
         if (!environment.production) {
-          console.log('Turnstile token added to request headers');
         }
-
         return next.handle(authenticatedReq);
       }),
       retryWhen((errors: Observable<any>) => 
@@ -62,7 +54,6 @@ export class TurnstileInterceptor implements HttpInterceptor {
       })
     );
   }
-
   private isApiRequest(url: string): boolean {
     // Check if the request is to our API endpoints
     return url.includes('/api/') && (

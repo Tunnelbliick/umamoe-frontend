@@ -1,31 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import factorsData from '../../data/factors.json';
-
 export interface Factor {
   id: string;
   text: string;
   type: number; // 0=blue, 1=pink, 2,3=white, 4=white scenario, 5=green/unique
 }
-
 export interface SparkInfo {
   factorId: string;
   level: number;
   name: string;
   type: number;
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class FactorService {
   private factors$ = new BehaviorSubject<Factor[]>([]);
   private factorsMap = new Map<string, Factor>();
-
   constructor() {
     this.loadFactors();
   }
-
   private loadFactors(): void {
     
     let factors: Factor[];
@@ -42,7 +37,6 @@ export class FactorService {
       this.factorsMap.set(factor.id, factor);
     });
   }
-
   /**
    * Resolve a spark ID (factor ID + level) to meaningful information
    * @param sparkId - The spark ID (e.g., "101" for "Speed level 1")
@@ -75,7 +69,6 @@ export class FactorService {
       };
     }
   }
-
   /**
    * Resolve multiple spark IDs
    * @param sparkIds - Array of spark IDs
@@ -88,10 +81,8 @@ export class FactorService {
       const levelB = this.extractLevel(b);
       return levelB - levelA;
     });
-
     return sortedIds.map(sparkId => this.resolveSpark(sparkId));
   }
-
   /**
    * Extract the level from a spark ID
    * @param sparkId - The spark ID
@@ -118,14 +109,12 @@ export class FactorService {
     
     return level;
   }
-
   /**
    * Get all factors (for development/debugging)
    */
   getFactors(): Observable<Factor[]> {
     return this.factors$.asObservable();
   }
-
   /**
    * Check if factors are loaded
    */

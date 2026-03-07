@@ -1,5 +1,4 @@
 import { Scenario } from './inheritance.model';
-
 export interface SupportCard {
   id: string;
   name: string;
@@ -7,24 +6,20 @@ export interface SupportCard {
   type: SupportCardType;
   rarity: Rarity;
   limitBreak: number;
-
   // Training stats
   trainingBonus: number;
   motivationBonus: number;
   friendshipBonus: number;
   raceBonus: number;
   statBonuses: StatBonuses;
-
   // Special properties
   specialtyRate: number;
   uniqueSpecialty: number;
   friendshipSpecialty: number;
   startingBond: number;
-
   // Display
   imageUrl: string;
 }
-
 export interface SupportCardShort {
   id: string;
   name: string;
@@ -32,31 +27,26 @@ export interface SupportCardShort {
   rarity: Rarity;
   limitBreak: number;
   release_date: string;
-
   // Display
   imageUrl: string;
 }
-
 export interface SupportCardRecord {
   id: string;
   trainer_id: string;
   card_id: string;
   limit_break: number;
   rarity: Rarity;
-
   // Meta info
   submitted_at: Date;
   verified?: boolean;
   upvotes?: number;
   downvotes?: number;
 }
-
 export interface SupportCardRecordEnriched extends SupportCardRecord {
   cardName: string;
   cardType: SupportCardType;
   cardImageUrl: string;
 }
-
 // V2 API Response format
 export interface SupportCardRecordV2 {
   account_id: string;
@@ -67,7 +57,6 @@ export interface SupportCardRecordV2 {
   follower_num?: number;
   last_updated: string;
 }
-
 export interface SupportCardRecordV2Enriched extends SupportCardRecordV2 {
   cardName: string;
   cardType: SupportCardType;
@@ -94,7 +83,6 @@ export interface SupportCardRecordV2Enriched extends SupportCardRecordV2 {
     main_white_count: number;
   };
 }
-
 export interface SupportCardSearchFilters {
   trainerId?: string; // Direct trainer lookup
   cardId?: string;
@@ -107,7 +95,6 @@ export interface SupportCardSearchFilters {
   sortBy?: 'submittedAt' | 'experience' | 'limitBreak' | 'followerNum'; // V2 API expanded options
   sortOrder?: 'asc' | 'desc';
 }
-
 export interface SupportCardSubmission {
   userId: string;
   cardId: string;
@@ -115,7 +102,6 @@ export interface SupportCardSubmission {
   rarity: Rarity;
   limitBreak: number;
 }
-
 export interface StatBonuses {
   speed: number;
   stamina: number;
@@ -124,7 +110,6 @@ export interface StatBonuses {
   wisdom: number;
   skill: number;
 }
-
 export enum SupportCardType {
   SPEED = 0,
   STAMINA = 1,
@@ -133,13 +118,11 @@ export enum SupportCardType {
   WISDOM = 4,
   FRIEND = 6
 }
-
 export enum Rarity {
   R = 1,
   SR = 2,
   SSR = 3
 }
-
 export interface TierlistRating {
   cardId: string;
   limitBreak: number;
@@ -147,7 +130,6 @@ export interface TierlistRating {
   tier: TierRank;
   position: number;
 }
-
 export enum TierRank {
   S = 'S',
   A = 'A',
@@ -157,7 +139,6 @@ export enum TierRank {
   E = 'E',
   F = 'F'
 }
-
 export interface CalculationWeights {
   scenario: ScenarioType;
   stats: StatBonuses;
@@ -169,7 +150,6 @@ export interface CalculationWeights {
   umaBonus: number[];
   bonusSpec: number;
 }
-
 export enum ScenarioType {
   URA = 'URA',
   AOHARU = 'AOHARU',
@@ -177,7 +157,6 @@ export enum ScenarioType {
   GRAND_MASTERS = 'GM',
   GRAND_LIVE = 'GL'
 }
-
 export interface OptimalDeck {
   scenario: ScenarioType;
   cards: SupportCard[];

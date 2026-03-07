@@ -1,7 +1,392 @@
 [
   {
+    "id": "30291",
+    "name": "Victoire Pisa",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "30290",
+    "name": "Casino Drive",
+    "rarity": 3,
+    "type": "friend",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "30289",
+    "name": "Forever Young",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "20096",
+    "name": "Taiki Shuttle",
+    "rarity": 2,
+    "type": "guts",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "20095",
+    "name": "Red Desire",
+    "rarity": 2,
+    "type": "guts",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "10143",
+    "name": "Victoire Pisa",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "10142",
+    "name": "Red Desire",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "10141",
+    "name": "Casino Drive",
+    "rarity": 1,
+    "type": "friend",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "10140",
+    "name": "Forever Young",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2026-02-24"
+  },
+  {
+    "id": "30288",
+    "name": "Silence Suzuka",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2026-01-30"
+  },
+  {
+    "id": "30287",
+    "name": "Neo Universe",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2026-01-30"
+  },
+  {
+    "id": "30286",
+    "name": "Matikanefukukitaru",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2026-01-30"
+  },
+  {
+    "id": "30285",
+    "name": "King Halo",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2026-01-08"
+  },
+  {
+    "id": "20094",
+    "name": "Satono Diamond",
+    "rarity": 2,
+    "type": "stamina",
+    "release_date": "2026-01-08"
+  },
+  {
+    "id": "30284",
+    "name": "Bubble Gum Fellow",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2025-12-26"
+  },
+  {
+    "id": "30283",
+    "name": "Fine Motion",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2025-12-26"
+  },
+  {
+    "id": "30282",
+    "name": "Air Groove",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-12-26"
+  },
+  {
+    "id": "30281",
+    "name": "Inari One",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-12-11"
+  },
+  {
+    "id": "20093",
+    "name": "Mejiro Dober",
+    "rarity": 2,
+    "type": "speed",
+    "release_date": "2025-12-11"
+  },
+  {
+    "id": "30280",
+    "name": "Orfevre",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-11-28"
+  },
+  {
+    "id": "30279",
+    "name": "Fenomeno",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-11-28"
+  },
+  {
+    "id": "30278",
+    "name": "Gold Ship",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-11-28"
+  },
+  {
+    "id": "10139",
+    "name": "Fenomeno",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2025-11-28"
+  },
+  {
+    "id": "30277",
+    "name": "Mihono Bourbon",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2025-11-10"
+  },
+  {
+    "id": "20092",
+    "name": "Hokko Tarumae",
+    "rarity": 2,
+    "type": "power",
+    "release_date": "2025-11-10"
+  },
+  {
+    "id": "30276",
+    "name": "Kenko Hoshina",
+    "rarity": 3,
+    "type": "friend",
+    "release_date": "2025-10-29"
+  },
+  {
+    "id": "30275",
+    "name": "Tokai Teio",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-10-29"
+  },
+  {
+    "id": "10138",
+    "name": "Kenko Hoshina",
+    "rarity": 1,
+    "type": "friend",
+    "release_date": "2025-10-29"
+  },
+  {
+    "id": "30274",
+    "name": "Curren Bouquetd'or",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-10-10"
+  },
+  {
+    "id": "20091",
+    "name": "Sakura Chitose O",
+    "rarity": 2,
+    "type": "speed",
+    "release_date": "2025-10-10"
+  },
+  {
+    "id": "10137",
+    "name": "Sakura Chitose O",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2025-10-10"
+  },
+  {
+    "id": "30273",
+    "name": "Tosen Jordan",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2025-09-29"
+  },
+  {
+    "id": "30272",
+    "name": "Eishin Flash",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-09-29"
+  },
+  {
+    "id": "30271",
+    "name": "Fuji Kiseki",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2025-09-29"
+  },
+  {
+    "id": "30270",
+    "name": "Daiichi Ruby",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2025-09-09"
+  },
+  {
+    "id": "20090",
+    "name": "Biko Pegasus",
+    "rarity": 2,
+    "type": "intelligence",
+    "release_date": "2025-09-09"
+  },
+  {
+    "id": "30269",
+    "name": "Dantsu Flame",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-08-29"
+  },
+  {
+    "id": "30268",
+    "name": "Durandal",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2025-08-29"
+  },
+  {
+    "id": "30267",
+    "name": "Calstone Light O",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-08-29"
+  },
+  {
+    "id": "10136",
+    "name": "Durandal",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2025-08-29"
+  },
+  {
+    "id": "10135",
+    "name": "Calstone Light O",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2025-08-29"
+  },
+  {
+    "id": "30266",
+    "name": "Chrono Genesis",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "30265",
+    "name": "Admire Groove",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "30264",
+    "name": "Stay Gold",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "10134",
+    "name": "Chrono Genesis",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "10133",
+    "name": "Admire Groove",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "10132",
+    "name": "Stay Gold",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2025-08-24"
+  },
+  {
+    "id": "30263",
+    "name": "Vivlos",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2025-07-31"
+  },
+  {
+    "id": "30262",
+    "name": "Duramente",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-07-31"
+  },
+  {
+    "id": "30261",
+    "name": "Win Variation",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2025-07-31"
+  },
+  {
+    "id": "10131",
+    "name": "Win Variation",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2025-07-31"
+  },
+  {
+    "id": "30259",
+    "name": "Fusaichi Pandora",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2025-07-22"
+  },
+  {
+    "id": "10129",
+    "name": "Fusaichi Pandora",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2025-07-22"
+  },
+  {
+    "id": "30258",
+    "name": "Mejiro Ryan",
+    "rarity": 3,
+    "type": "stamina",
+    "release_date": "2025-07-11"
+  },
+  {
+    "id": "20089",
+    "name": "Kawakami Princess",
+    "rarity": 2,
+    "type": "guts",
+    "release_date": "2025-07-11"
+  },
+  {
     "id": "30257",
-    "name": "Tucker Bryne",
+    "name": "Tucker Brine",
     "rarity": 3,
     "type": "friend",
     "release_date": "2025-06-27"
@@ -15,7 +400,7 @@
   },
   {
     "id": "10128",
-    "name": "Tucker Bryne",
+    "name": "Tucker Brine",
     "rarity": 1,
     "type": "friend",
     "release_date": "2025-06-27"
@@ -190,7 +575,7 @@
   },
   {
     "id": "30241",
-    "name": "Embodiment of Legends",
+    "name": "Speed Symboli",
     "rarity": 3,
     "type": "group",
     "release_date": "2025-02-24"
@@ -235,7 +620,7 @@
     "name": "Jungle Pocket",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2025-02-14"
+    "release_date": "2025-02-17"
   },
   {
     "id": "30239",
@@ -295,7 +680,7 @@
   },
   {
     "id": "30232",
-    "name": "Blast Onepiece",
+    "name": "Blast One Piece",
     "rarity": 3,
     "type": "guts",
     "release_date": "2024-12-10"
@@ -309,7 +694,7 @@
   },
   {
     "id": "10116",
-    "name": "Blast Onepiece",
+    "name": "Blast One Piece",
     "rarity": 1,
     "type": "guts",
     "release_date": "2024-12-10"
@@ -448,6 +833,13 @@
     "release_date": "2024-08-30"
   },
   {
+    "id": "30213",
+    "name": "Tokai Teio",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2024-08-29"
+  },
+  {
     "id": "30221",
     "name": "Satono Diamond",
     "rarity": 3,
@@ -464,13 +856,6 @@
   {
     "id": "30215",
     "name": "Still in Love",
-    "rarity": 3,
-    "type": "speed",
-    "release_date": "2024-08-24"
-  },
-  {
-    "id": "30213",
-    "name": "Tokai Teio",
     "rarity": 3,
     "type": "speed",
     "release_date": "2024-08-24"
@@ -592,7 +977,7 @@
     "name": "Jungle Pocket",
     "rarity": 3,
     "type": "power",
-    "release_date": "2024-05-20"
+    "release_date": "2024-05-23"
   },
   {
     "id": "30202",
@@ -651,17 +1036,17 @@
     "release_date": "2024-04-30"
   },
   {
-    "id": "30198",
-    "name": "Neo Universe",
-    "rarity": 3,
-    "type": "intelligence",
-    "release_date": "2024-04-09"
-  },
-  {
     "id": "30192",
     "name": "Vivlos",
     "rarity": 3,
     "type": "speed",
+    "release_date": "2024-04-15"
+  },
+  {
+    "id": "30198",
+    "name": "Neo Universe",
+    "rarity": 3,
+    "type": "intelligence",
     "release_date": "2024-04-09"
   },
   {
@@ -739,7 +1124,7 @@
     "name": "Sounds of Earth",
     "rarity": 3,
     "type": "power",
-    "release_date": "2024-03-12"
+    "release_date": "2024-03-18"
   },
   {
     "id": "30188",
@@ -802,7 +1187,7 @@
     "name": "Duramente",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2024-02-14"
+    "release_date": "2024-02-19"
   },
   {
     "id": "30185",
@@ -837,7 +1222,7 @@
     "name": "Kitasan Black",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2024-01-19"
+    "release_date": "2024-01-29"
   },
   {
     "id": "30182",
@@ -869,7 +1254,7 @@
   },
   {
     "id": "30180",
-    "name": "Carvers of History",
+    "name": "Kitasan Black",
     "rarity": 3,
     "type": "group",
     "release_date": "2023-12-28"
@@ -1093,14 +1478,14 @@
   },
   {
     "id": "30160",
-    "name": "Mei Satake",
+    "name": "Mei Sadake",
     "rarity": 3,
     "type": "friend",
     "release_date": "2023-08-24"
   },
   {
     "id": "10094",
-    "name": "Mei Satake",
+    "name": "Mei Sadake",
     "rarity": 1,
     "type": "friend",
     "release_date": "2023-08-24"
@@ -1236,7 +1621,7 @@
     "name": "Maruzensky",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2023-05-19"
+    "release_date": "2023-05-18"
   },
   {
     "id": "30143",
@@ -1264,14 +1649,14 @@
     "name": "Symboli Rudolf",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2023-04-19"
+    "release_date": "2023-04-18"
   },
   {
     "id": "20061",
     "name": "Gold Ship",
     "rarity": 2,
     "type": "stamina",
-    "release_date": "2023-04-19"
+    "release_date": "2023-04-18"
   },
   {
     "id": "30140",
@@ -1296,7 +1681,7 @@
   },
   {
     "id": "30137",
-    "name": "Ancestors & Guides",
+    "name": "Darley Arabian",
     "rarity": 3,
     "type": "group",
     "release_date": "2023-03-20"
@@ -1376,13 +1761,6 @@
     "name": "Mejiro Ramonu",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2023-02-24"
-  },
-  {
-    "id": "10082",
-    "name": "Symboli Kris S",
-    "rarity": 1,
-    "type": "stamina",
     "release_date": "2023-02-24"
   },
   {
@@ -1547,6 +1925,13 @@
     "release_date": "2022-10-19"
   },
   {
+    "id": "10082",
+    "name": "Symboli Kris S",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2022-10-19"
+  },
+  {
     "id": "30145",
     "name": "Tanino Gimlet",
     "rarity": 3,
@@ -1702,7 +2087,7 @@
   },
   {
     "id": "30067",
-    "name": "The Throne's Assemblage",
+    "name": "Symboli Rudolf",
     "rarity": 3,
     "type": "group",
     "release_date": "2022-07-20"
@@ -1877,7 +2262,7 @@
   },
   {
     "id": "30081",
-    "name": "Team Sirius",
+    "name": "Special Week",
     "rarity": 3,
     "type": "group",
     "release_date": "2022-03-18"
@@ -1946,20 +2331,6 @@
     "release_date": "2022-02-24"
   },
   {
-    "id": "10077",
-    "name": "Narita Top Road",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2022-02-24"
-  },
-  {
-    "id": "10076",
-    "name": "Mejiro Bright",
-    "rarity": 1,
-    "type": "stamina",
-    "release_date": "2022-02-24"
-  },
-  {
     "id": "30085",
     "name": "Agnes Digital",
     "rarity": 3,
@@ -2002,13 +2373,6 @@
     "release_date": "2022-01-11"
   },
   {
-    "id": "20022",
-    "name": "Tamamo Cross",
-    "rarity": 2,
-    "type": "guts",
-    "release_date": "2022-01-11"
-  },
-  {
     "id": "10074",
     "name": "Sasami Anshinzawa",
     "rarity": 1,
@@ -2020,28 +2384,28 @@
     "name": "Meisho Doto",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-12-31"
+    "release_date": "2021-12-29"
   },
   {
     "id": "30078",
     "name": "Matikanefukukitaru",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-12-31"
+    "release_date": "2021-12-29"
   },
   {
     "id": "30077",
     "name": "Admire Vega",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-12-31"
+    "release_date": "2021-12-29"
   },
   {
     "id": "10075",
     "name": "Admire Vega",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-12-31"
+    "release_date": "2021-12-29"
   },
   {
     "id": "30076",
@@ -2251,7 +2615,7 @@
     "name": "Biwa Hayahide",
     "rarity": 3,
     "type": "intelligence",
-    "release_date": "2021-08-18"
+    "release_date": "2021-08-16"
   },
   {
     "id": "30047",
@@ -2275,13 +2639,6 @@
     "release_date": "2021-07-29"
   },
   {
-    "id": "30060",
-    "name": "Twin Turbo",
-    "rarity": 3,
-    "type": "guts",
-    "release_date": "2021-07-21"
-  },
-  {
     "id": "30044",
     "name": "Narita Brian",
     "rarity": 3,
@@ -2296,25 +2653,11 @@
     "release_date": "2021-07-20"
   },
   {
-    "id": "30048",
-    "name": "Mejiro Ryan",
+    "id": "30060",
+    "name": "Twin Turbo",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-07-12"
-  },
-  {
-    "id": "20034",
-    "name": "Mejiro Ardan",
-    "rarity": 2,
-    "type": "intelligence",
-    "release_date": "2021-07-12"
-  },
-  {
-    "id": "10069",
-    "name": "Mejiro Ardan",
-    "rarity": 1,
-    "type": "intelligence",
-    "release_date": "2021-07-12"
+    "release_date": "2021-07-19"
   },
   {
     "id": "30057",
@@ -2338,941 +2681,983 @@
     "release_date": "2021-06-29"
   },
   {
+    "id": "10077",
+    "name": "Narita Top Road",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-24"
+  },
+  {
+    "id": "10076",
+    "name": "Mejiro Bright",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2021-02-24"
+  },
+  {
     "id": "30059",
     "name": "Mihono Bourbon",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-06-23"
-  },
-  {
-    "id": "30042",
-    "name": "Bamboo Memory",
-    "rarity": 3,
-    "type": "power",
-    "release_date": "2021-06-21"
-  },
-  {
-    "id": "20031",
-    "name": "Shinko Windy",
-    "rarity": 2,
-    "type": "speed",
-    "release_date": "2021-06-21"
-  },
-  {
-    "id": "10066",
-    "name": "Shinko Windy",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2021-06-21"
-  },
-  {
-    "id": "10065",
-    "name": "Bamboo Memory",
-    "rarity": 1,
-    "type": "power",
-    "release_date": "2021-06-21"
-  },
-  {
-    "id": "30041",
-    "name": "Mejiro Dober",
-    "rarity": 3,
-    "type": "intelligence",
-    "release_date": "2021-05-28"
-  },
-  {
-    "id": "30040",
-    "name": "Hishi Akebono",
-    "rarity": 3,
-    "type": "guts",
-    "release_date": "2021-05-28"
-  },
-  {
-    "id": "30039",
-    "name": "Kawakami Princess",
-    "rarity": 3,
-    "type": "speed",
-    "release_date": "2021-05-28"
-  },
-  {
-    "id": "10064",
-    "name": "Hishi Akebono",
-    "rarity": 1,
-    "type": "guts",
-    "release_date": "2021-05-28"
-  },
-  {
-    "id": "10063",
-    "name": "Kawakami Princess",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2021-05-28"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30058",
     "name": "Tokai Teio",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-05-26"
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "30048",
+    "name": "Mejiro Ryan",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "30042",
+    "name": "Bamboo Memory",
+    "rarity": 3,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "30041",
+    "name": "Mejiro Dober",
+    "rarity": 3,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "30040",
+    "name": "Hishi Akebono",
+    "rarity": 3,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "30039",
+    "name": "Kawakami Princess",
+    "rarity": 3,
+    "type": "speed",
+    "release_date": "2021-02-23"
   },
   {
     "id": "30038",
     "name": "Sakura Chiyono O",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-05-17"
-  },
-  {
-    "id": "20029",
-    "name": "Seeking the Pearl",
-    "rarity": 2,
-    "type": "guts",
-    "release_date": "2021-05-17"
-  },
-  {
-    "id": "10062",
-    "name": "Sakura Chiyono O",
-    "rarity": 1,
-    "type": "stamina",
-    "release_date": "2021-05-17"
-  },
-  {
-    "id": "10061",
-    "name": "Seeking the Pearl",
-    "rarity": 1,
-    "type": "guts",
-    "release_date": "2021-05-17"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30033",
     "name": "Winning Ticket",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-04-26"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30032",
     "name": "Yaeno Muteki",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-04-26"
-  },
-  {
-    "id": "20028",
-    "name": "Zenno Rob Roy",
-    "rarity": 2,
-    "type": "stamina",
-    "release_date": "2021-04-26"
-  },
-  {
-    "id": "10059",
-    "name": "Zenno Rob Roy",
-    "rarity": 1,
-    "type": "stamina",
-    "release_date": "2021-04-26"
-  },
-  {
-    "id": "10058",
-    "name": "Yaeno Muteki",
-    "rarity": 1,
-    "type": "power",
-    "release_date": "2021-04-26"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30031",
     "name": "Yukino Bijin",
     "rarity": 3,
     "type": "intelligence",
-    "release_date": "2021-04-15"
-  },
-  {
-    "id": "20027",
-    "name": "Nishino Flower",
-    "rarity": 2,
-    "type": "power",
-    "release_date": "2021-04-15"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30030",
     "name": "Matikanetannhauser",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-03-30"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30029",
     "name": "Satono Diamond",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-03-30"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30028",
     "name": "Kitasan Black",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-03-30"
-  },
-  {
-    "id": "20026",
-    "name": "Nice Nature",
-    "rarity": 2,
-    "type": "intelligence",
-    "release_date": "2021-03-30"
-  },
-  {
-    "id": "10057",
-    "name": "Matikanetannhauser",
-    "rarity": 1,
-    "type": "guts",
-    "release_date": "2021-03-30"
-  },
-  {
-    "id": "10056",
-    "name": "Satono Diamond",
-    "rarity": 1,
-    "type": "stamina",
-    "release_date": "2021-03-30"
-  },
-  {
-    "id": "10055",
-    "name": "Kitasan Black",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2021-03-30"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30027",
     "name": "Mejiro Palmer",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-03-18"
-  },
-  {
-    "id": "20025",
-    "name": "Ikuno Dictus",
-    "rarity": 2,
-    "type": "intelligence",
-    "release_date": "2021-03-18"
-  },
-  {
-    "id": "10054",
-    "name": "Mejiro Palmer",
-    "rarity": 1,
-    "type": "guts",
-    "release_date": "2021-03-18"
-  },
-  {
-    "id": "10053",
-    "name": "Ikuno Dictus",
-    "rarity": 1,
-    "type": "intelligence",
-    "release_date": "2021-03-18"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30026",
     "name": "Twin Turbo",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-03-09"
-  },
-  {
-    "id": "20024",
-    "name": "Daitaku Helios",
-    "rarity": 2,
-    "type": "power",
-    "release_date": "2021-03-09"
-  },
-  {
-    "id": "10052",
-    "name": "Daitaku Helios",
-    "rarity": 1,
-    "type": "power",
-    "release_date": "2021-03-09"
-  },
-  {
-    "id": "10051",
-    "name": "Twin Turbo",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2021-03-09"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30025",
     "name": "Special Week",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-03-02"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30024",
     "name": "Oguri Cap",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-03-02"
-  },
-  {
-    "id": "20023",
-    "name": "Sweep Tosho",
-    "rarity": 2,
-    "type": "speed",
-    "release_date": "2021-03-02"
-  },
-  {
-    "id": "10050",
-    "name": "Sweep Tosho",
-    "rarity": 1,
-    "type": "speed",
-    "release_date": "2021-03-02"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30023",
     "name": "Rice Shower",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30022",
     "name": "Mejiro McQueen",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30021",
     "name": "Tazuna Hayakawa",
     "rarity": 3,
     "type": "friend",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30020",
     "name": "Biko Pegasus",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30019",
     "name": "Haru Urara",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30018",
     "name": "Nishino Flower",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30017",
     "name": "Smart Falcon",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30016",
     "name": "Super Creek",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30015",
     "name": "Sakura Bakushin O",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30014",
     "name": "Gold City",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30013",
     "name": "Air Shakur",
     "rarity": 3,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30012",
     "name": "Winning Ticket",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30011",
     "name": "Ines Fujin",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30010",
     "name": "Fine Motion",
     "rarity": 3,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30009",
     "name": "Tamamo Cross",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30008",
     "name": "Seiun Sky",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30007",
     "name": "El Condor Pasa",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30006",
     "name": "Grass Wonder",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30005",
     "name": "Vodka",
     "rarity": 3,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30004",
     "name": "Gold Ship",
     "rarity": 3,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30003",
     "name": "Tokai Teio",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30002",
     "name": "Silence Suzuka",
     "rarity": 3,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "30001",
     "name": "Special Week",
     "rarity": 3,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20034",
+    "name": "Mejiro Ardan",
+    "rarity": 2,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20031",
+    "name": "Shinko Windy",
+    "rarity": 2,
+    "type": "speed",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20029",
+    "name": "Seeking the Pearl",
+    "rarity": 2,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20028",
+    "name": "Zenno Rob Roy",
+    "rarity": 2,
+    "type": "stamina",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20027",
+    "name": "Nishino Flower",
+    "rarity": 2,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20026",
+    "name": "Nice Nature",
+    "rarity": 2,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20025",
+    "name": "Ikuno Dictus",
+    "rarity": 2,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20024",
+    "name": "Daitaku Helios",
+    "rarity": 2,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20023",
+    "name": "Sweep Tosho",
+    "rarity": 2,
+    "type": "speed",
+    "release_date": "2021-02-23"
   },
   {
     "id": "20021",
     "name": "Aoi Kiryuin",
     "rarity": 2,
     "type": "friend",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20020",
     "name": "King Halo",
     "rarity": 2,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20019",
     "name": "Nice Nature",
     "rarity": 2,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20018",
     "name": "Mejiro Dober",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20017",
     "name": "Meisho Doto",
     "rarity": 2,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20016",
     "name": "Matikanefukukitaru",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20015",
     "name": "Marvelous Sunday",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20014",
     "name": "Narita Taishin",
     "rarity": 2,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20013",
     "name": "Eishin Flash",
     "rarity": 2,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20012",
     "name": "Agnes Tachyon",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20011",
     "name": "Yukino Bijin",
     "rarity": 2,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20010",
     "name": "Mejiro Ryan",
     "rarity": 2,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20009",
     "name": "Mihono Bourbon",
     "rarity": 2,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20008",
     "name": "Manhattan Cafe",
     "rarity": 2,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20007",
     "name": "Mayano Top Gun",
     "rarity": 2,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20006",
     "name": "Biwa Hayahide",
     "rarity": 2,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20005",
     "name": "Agnes Digital",
     "rarity": 2,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20004",
     "name": "Air Groove",
     "rarity": 2,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20003",
     "name": "Hishi Amazon",
     "rarity": 2,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20002",
     "name": "Daiwa Scarlet",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "20001",
     "name": "Fuji Kiseki",
     "rarity": 2,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10069",
+    "name": "Mejiro Ardan",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10066",
+    "name": "Shinko Windy",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10065",
+    "name": "Bamboo Memory",
+    "rarity": 1,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10064",
+    "name": "Hishi Akebono",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10063",
+    "name": "Kawakami Princess",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10062",
+    "name": "Sakura Chiyono O",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10061",
+    "name": "Seeking the Pearl",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10059",
+    "name": "Zenno Rob Roy",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10058",
+    "name": "Yaeno Muteki",
+    "rarity": 1,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10057",
+    "name": "Matikanetannhauser",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10056",
+    "name": "Satono Diamond",
+    "rarity": 1,
+    "type": "stamina",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10055",
+    "name": "Kitasan Black",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10054",
+    "name": "Mejiro Palmer",
+    "rarity": 1,
+    "type": "guts",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10053",
+    "name": "Ikuno Dictus",
+    "rarity": 1,
+    "type": "intelligence",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10052",
+    "name": "Daitaku Helios",
+    "rarity": 1,
+    "type": "power",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10051",
+    "name": "Twin Turbo",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "10050",
+    "name": "Sweep Tosho",
+    "rarity": 1,
+    "type": "speed",
+    "release_date": "2021-02-23"
   },
   {
     "id": "10049",
     "name": "Fuji Kiseki",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10048",
     "name": "King Halo",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10047",
     "name": "Nice Nature",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10046",
     "name": "Mejiro Dober",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10045",
     "name": "Meisho Doto",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10044",
     "name": "Matikanefukukitaru",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10043",
     "name": "Marvelous Sunday",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10042",
     "name": "Biko Pegasus",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10041",
     "name": "Nishino Flower",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10040",
     "name": "Narita Taishin",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10039",
     "name": "Smart Falcon",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10038",
     "name": "Eishin Flash",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10037",
     "name": "Air Shakur",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10036",
     "name": "Agnes Tachyon",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10035",
     "name": "Ines Fujin",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10034",
     "name": "Yukino Bijin",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10033",
     "name": "Mejiro Ryan",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10032",
     "name": "Mihono Bourbon",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10031",
     "name": "Manhattan Cafe",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10030",
     "name": "Mayano Top Gun",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10029",
     "name": "Biwa Hayahide",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10028",
     "name": "Fine Motion",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10027",
     "name": "Tamamo Cross",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10026",
     "name": "Agnes Digital",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10025",
     "name": "Air Groove",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10024",
     "name": "Hishi Amazon",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10023",
     "name": "Daiwa Scarlet",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10022",
     "name": "Aoi Kiryuin",
     "rarity": 1,
     "type": "friend",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10021",
     "name": "Tazuna Hayakawa",
     "rarity": 1,
     "type": "friend",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10020",
     "name": "Haru Urara",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10019",
     "name": "Super Creek",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10018",
     "name": "Sakura Bakushin O",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10017",
     "name": "Gold City",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10016",
     "name": "Winning Ticket",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10015",
     "name": "Rice Shower",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10014",
     "name": "Seiun Sky",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10013",
     "name": "Symboli Rudolf",
     "rarity": 1,
     "type": "intelligence",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10012",
     "name": "TM Opera O",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10011",
     "name": "El Condor Pasa",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10010",
     "name": "Mejiro McQueen",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10009",
     "name": "Grass Wonder",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10008",
     "name": "Taiki Shuttle",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10007",
     "name": "Vodka",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10006",
     "name": "Gold Ship",
     "rarity": 1,
     "type": "stamina",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10005",
     "name": "Oguri Cap",
     "rarity": 1,
     "type": "power",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10004",
     "name": "Maruzensky",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10003",
     "name": "Tokai Teio",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10002",
     "name": "Silence Suzuka",
     "rarity": 1,
     "type": "speed",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
   },
   {
     "id": "10001",
     "name": "Special Week",
     "rarity": 1,
     "type": "guts",
-    "release_date": "2021-02-24"
+    "release_date": "2021-02-23"
+  },
+  {
+    "id": "20022",
+    "name": "Tamamo Cross",
+    "rarity": 2,
+    "type": "guts",
+    "release_date": "2021-01-11"
   }
 ]

@@ -4,7 +4,6 @@ import { Observable, of, delay, map, tap } from 'rxjs';
 import { Circle, CircleListEntry, CircleMember, CircleHistoryPoint, CircleSearchFilters, CircleDetailsResponse } from '../models/circle.model';
 import { SearchResult } from '../models/common.model';
 import { environment } from '../../environments/environment';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,20 +14,53 @@ export class CircleService {
   private searchCache = new Map<string, { data: SearchResult<Circle>, timestamp: number }>();
   private detailsCache = new Map<string, { data: CircleDetailsResponse, timestamp: number }>();
   private CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+  private LIVE_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes for top-100 live data
   
   // State
   public listScrollPosition = 0;
-
   constructor(private http: HttpClient) { }
-
+  invalidateSearchCache(filters: CircleSearchFilters): void {
+    const cacheKey = JSON.stringify(filters);
+    this.searchCache.delete(cacheKey);
+  }
+  invalidateDetailsCache(id: string, year?: number, month?: number): void {
+    const cacheKey = `${id}-${year || ''}-${month || ''}`;
+    this.detailsCache.delete(cacheKey);
+  }
+  /** Seconds remaining until the top-100 list cache expires and should be re-fetched. */
+  getListRemainingSeconds(): number {
+    for (const [key, entry] of this.searchCache) {
+      try {
+        const filters = JSON.parse(key) as CircleSearchFilters;
+        if (this.isTop100Request(filters)) {
+          const elapsed = (Date.now() - entry.timestamp) / 1000;
+          return Math.max(0, this.LIVE_CACHE_DURATION / 1000 - elapsed);
+        }
+      } catch { /* ignore */ }
+    }
+    return this.LIVE_CACHE_DURATION / 1000;
+  }
+  /** Seconds remaining until the given circle details should be re-fetched for live circles. */
+  getDetailsRemainingSeconds(id: string, year: number, month: number): number {
+    const cacheKey = `${id}-${year}-${month}`;
+    const cached = this.detailsCache.get(cacheKey);
+    if (!cached) return this.LIVE_CACHE_DURATION / 1000;
+    const elapsed = (Date.now() - cached.timestamp) / 1000;
+    return Math.max(0, this.LIVE_CACHE_DURATION / 1000 - elapsed);
+  }
+  private isTop100Request(filters: CircleSearchFilters): boolean {
+    return !filters.query && !filters.name &&
+      (!filters.sortBy || filters.sortBy === 'rank') &&
+      (filters.page === 0 || filters.page === undefined) &&
+      (filters.pageSize === 100 || filters.pageSize === undefined);
+  }
   searchCircles(filters: CircleSearchFilters): Observable<SearchResult<Circle>> {
     const cacheKey = JSON.stringify(filters);
     const cached = this.searchCache.get(cacheKey);
-    
-    if (cached && (Date.now() - cached.timestamp < this.CACHE_DURATION)) {
+    const cacheDuration = this.isTop100Request(filters) ? this.LIVE_CACHE_DURATION : this.CACHE_DURATION;
+    if (cached && (Date.now() - cached.timestamp < cacheDuration)) {
       return of(cached.data);
     }
-
     let params = new HttpParams();
     
     if (filters.page !== undefined) {
@@ -42,13 +74,11 @@ export class CircleService {
     if (filters.query) params = params.set('query', filters.query);
     if (filters.sortBy) params = params.set('sort_by', filters.sortBy);
     if (filters.sortOrder) params = params.set('sort_dir', filters.sortOrder);
-
     return this.http.get<any>(`${this.apiUrl}/list`, { params }).pipe(
       map(response => {
         // Handle response whether it's an array or an object with a list property
         const items = Array.isArray(response) ? response : (response.circles || response.list || []);
         const total = response.total || response.total_count || (Array.isArray(response) ? response.length : items.length);
-
         return {
           items: items,
           total: total,
@@ -62,7 +92,6 @@ export class CircleService {
       })
     );
   }
-
   getCircleDetails(id: string, year?: number, month?: number): Observable<CircleDetailsResponse> {
     const cacheKey = `${id}-${year || ''}-${month || ''}`;
     const cached = this.detailsCache.get(cacheKey);
@@ -70,35 +99,30 @@ export class CircleService {
     if (cached && (Date.now() - cached.timestamp < this.CACHE_DURATION)) {
       return of(cached.data);
     }
-
     let params = new HttpParams().set('circle_id', id);
     if (year) params = params.set('year', year);
     if (month) params = params.set('month', month);
-
     return this.http.get<CircleDetailsResponse>(this.apiUrl, { params }).pipe(
       tap(data => {
         this.detailsCache.set(cacheKey, { data, timestamp: Date.now() });
       })
     );
   }
-
   // Deprecated: Use getCircleDetails instead
   getCircleById(id: string): Observable<Circle | undefined> {
     return this.getCircleDetails(id).pipe(
       map(response => response.circle)
     );
   }
-
   getCircleMembers(circleId: string): Observable<CircleMember[]> {
     return of(Array.from({ length: 25 }, (_, i) => ({
       trainer_id: `${100000 + i}`,
       name: `Member ${i + 1}`,
       fan_count: Math.floor(Math.random() * 10000000),
       last_updated: new Date(Date.now() - Math.random() * 86400000 * 3).toISOString(),
-      role: (i === 0 ? 'leader' : (i < 3 ? 'sub-leader' : 'member')) as 'leader' | 'sub-leader' | 'member'
+      role: (i === 0 ? 'leader' : (i < 3 ? 'officer' : 'member')) as 'leader' | 'officer' | 'member'
     }))).pipe(delay(400));
   }
-
   getCircleHistory(circleId: string): Observable<CircleHistoryPoint[]> {
     const history: CircleHistoryPoint[] = [];
     const now = new Date();

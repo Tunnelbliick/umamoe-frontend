@@ -1,6 +1,5 @@
 import { Character } from "./character.model";
 import { Skill } from "./skill.model";
-
 // Backend API compatible interfaces
 export interface BackendInheritanceRecord {
   id: string;
@@ -14,23 +13,19 @@ export interface BackendInheritanceRecord {
   downvotes: number;
   notes?: string;
 }
-
 export interface BackendInheritanceRecordWithFactors extends BackendInheritanceRecord {
   blue_factors: BackendFactor[];
   pink_factors: BackendFactor[];
   unique_skills: BackendSkillFactor[];
 }
-
 export interface BackendFactor {
   type: string;
   level: number;
 }
-
 export interface BackendSkillFactor {
   skillId: number;
   level: number;
 }
-
 export interface BackendCreateInheritanceRecord {
   trainerId: string;
   mainCharacterId: number;
@@ -41,7 +36,6 @@ export interface BackendCreateInheritanceRecord {
   uniqueSkills: BackendSkillFactor[];
   notes?: string;
 }
-
 export interface InheritanceRecord {
   id: number | string; // Support both v1 (string) and v2 (number) IDs
   account_id?: string; // V2 API field
@@ -101,12 +95,10 @@ export interface InheritanceRecord {
   character_name?: string;
   character_image_url?: string;
 }
-
 export interface SkillFactor {
   skill: Skill;
   level: number;
 }
-
 export interface InheritanceSearchFilters {
   // Trainer ID for direct trainer lookup
   trainerId?: string;
@@ -115,22 +107,23 @@ export interface InheritanceSearchFilters {
   // Character search
   characterId?: string;
   umaName?: string;
-  umaId?: number; // For v2 API main_parent_id filter
+  umaId?: number; // For v2 API main_parent_id filter (single, legacy)
+  mainParentIds?: number[]; // For v2 API main_parent_id filter (multi-select)
   playerCharaId?: number; // For v2 API player_chara_id filter
-
   // Parent filters for v2 API
   parentLeftId?: number;
   parentRightId?: number;
+  parentId?: number[];           // Matches against both left and right parent positions
+  excludeParentId?: number[];    // Excludes from both left and right parent positions
+  excludeMainParentId?: number[]; // Excludes main parent IDs
   minParentRank?: number;
   minParentRarity?: number;
-
   // Blue Sparks (Main Stats) - 1-9 levels
   speedSpark?: number;
   staminaSpark?: number;
   powerSpark?: number;
   gutsSpark?: number;
   witSpark?: number;
-
   // Pink Sparks (Track/Strategy Aptitude) - 1-9 levels
   turfSpark?: number;
   dirtSpark?: number;
@@ -142,24 +135,20 @@ export interface InheritanceSearchFilters {
   paceChaserSpark?: number;
   lateSurgerSpark?: number;
   endSpark?: number;
-
   // Green Sparks (Unique Skills) - 1-9 levels
   uniqueSkills?: number[]; // Array of skill IDs
   skillLevels?: { [skillId: number]: number }; // Map of skill ID to level (1-9)
   skillFilters?: Array<{ skillId: number | undefined; level: number | undefined }>; // Alternative format for skill filters
-
   // V2 API factor-based filters
   blueSparkFactors?: number[]; // Array of blue factor IDs
   pinkSparkFactors?: number[]; // Array of pink factor IDs  
   greenSparkFactors?: number[]; // Array of green factor IDs
   whiteSparkFactors?: number[]; // Array of white factor IDs
-
   // V2 API factor-based filters (AND logic groups)
   blueSparkGroups?: number[][];
   pinkSparkGroups?: number[][];
   greenSparkGroups?: number[][];
   whiteSparkGroups?: number[][];
-
   // Main Parent Factors
   mainParentBlueSparks?: number[];
   mainParentPinkSparks?: number[];
@@ -174,26 +163,21 @@ export interface InheritanceSearchFilters {
   minMainPinkFactors?: number;
   minMainGreenFactors?: number;
   minMainWhiteCount?: number;
-
   // V2 API minimum requirements
   minWinCount?: number;
   minWhiteCount?: number;
   maxFollowerNum?: number;
-
   // Support Card Filters
   supportCardId?: number;
   minLimitBreak?: number;
-
   // Star Sum Filters (min only)
   minBlueStarsSum?: number;
   minPinkStarsSum?: number;
   minGreenStarsSum?: number;
   minWhiteStarsSum?: number;
-
   // Pagination
   page?: number;
   pageSize?: number;
-
   // Legacy stat filters
   minSpeed?: number;
   maxSpeed?: number;
@@ -217,7 +201,6 @@ export interface InheritanceSearchFilters {
   sortBy?: 'submitted_at' | 'upvotes' | 'downvotes' | 'trainer_id' | 'verified' | 'submittedAt' | 'createdAt' | 'rating' | 'votes' | 'views' | 'totalStats' | 'speed' | 'stamina' | 'power' | 'guts' | 'wisdom' | 'win_count' | 'white_count' | 'score' | 'affinity_score';
   sortOrder?: 'asc' | 'desc';
 }
-
 export interface InheritanceSubmission {
   trainerId: string;
   mainCharacterId: number;  // Changed from number to ensure it matches
@@ -228,7 +211,6 @@ export interface InheritanceSubmission {
   uniqueSkills: Array<{ skillId: number; level: number }>;
   notes?: string;
 }
-
 export enum AptitudeGrade {
   G = 'G',
   F = 'F',
@@ -239,26 +221,22 @@ export enum AptitudeGrade {
   A = 'A',
   S = 'S'
 }
-
 export enum DistanceAptitude {
   SHORT = 'Short',
   MILE = 'Mile',
   MIDDLE = 'Middle',
   LONG = 'Long'
 }
-
 export enum SurfaceAptitude {
   TURF = 'Turf',
   DIRT = 'Dirt'
 }
-
 export enum RunningStyleAptitude {
   RUNNER = 'Runner',
   LEADER = 'Leader',
   BETWEENER = 'Betweener',
   CHASER = 'Chaser'
 }
-
 export enum Scenario {
   URA = 'URA',
   AOHARU = 'Aoharu',
@@ -266,7 +244,6 @@ export enum Scenario {
   GRAND_MASTERS = 'Grand Masters',
   UAF = 'UAF'
 }
-
 export interface UmaMusumeCharacter {
   id: string;
   name: string;

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 export const routes: Routes = [
   {
     path: '',
@@ -26,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'circles/:id',
     loadComponent: () => import('./pages/circles/circle-details/circle-details.component').then(m => m.CircleDetailsComponent)
+  },
+  {
+    path: 'rankings',
+    loadComponent: () => import('./pages/rankings/rankings.component').then(m => m.RankingsComponent)
   },
   {
     path: 'timeline',

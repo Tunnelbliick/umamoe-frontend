@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { TimelineService } from '../../services/timeline.service';
 import { TimelineEvent, EventType } from '../../models/timeline.model';
 import { Subscription } from 'rxjs';
-
 interface MobileTimelineItem {
     date: Date;
     label: string;
@@ -23,7 +22,6 @@ interface MobileTimelineItem {
     daysSinceStart: number;
     daysFromToday: number;
 }
-
 interface EventFilters {
     showCharacters: boolean;
     showSupports: boolean;
@@ -31,9 +29,9 @@ interface EventFilters {
     showChampionsMeetings: boolean;
     showLegendRaces: boolean;
     showPaidBanners: boolean;
+    showCampaigns: boolean;
     searchQuery: string;
 }
-
 @Component({
     selector: 'app-mobile-timeline',
     standalone: true,
@@ -58,7 +56,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
     globalReleaseDate = new Date(Date.UTC(2025, 5, 26, 22, 0, 0)); // June 26, 2025, 22:00 UTC
     timelineItems: MobileTimelineItem[] = [];
     timelineEvents: TimelineEvent[] = [];
-
     // Event filtering
     eventFilters: EventFilters = {
         showCharacters: true,
@@ -67,32 +64,27 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
         showChampionsMeetings: true,
         showLegendRaces: true,
         showPaidBanners: true,
+        showCampaigns: true,
         searchQuery: ''
     };
-
     // UI state
     isFilterPanelExpanded = false;
-
     // Subscriptions
     private eventsSubscription?: Subscription;
     private todayUpdateInterval?: number;
-
     constructor(
         private timelineService: TimelineService,
         private cdr: ChangeDetectorRef
     ) { }
-
     ngOnInit(): void {
         this.eventsSubscription = this.timelineService.events$.subscribe(events => {
             this.timelineEvents = events;
             this.generateTimelineItems();
             this.cdr.detectChanges();
         });
-
         // Set up periodic updates for the today marker (every 5 minutes)
         this.setupTodayMarkerUpdate();
     }
-
     ngOnDestroy(): void {
         if (this.eventsSubscription) {
             this.eventsSubscription.unsubscribe();
@@ -101,7 +93,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             clearInterval(this.todayUpdateInterval);
         }
     }
-
     private setupTodayMarkerUpdate(): void {
         // Update the today marker every 5 minutes
         this.todayUpdateInterval = window.setInterval(() => {
@@ -112,10 +103,8 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             }
         }, 5 * 60 * 1000); // 5 minutes in milliseconds
     }
-
     private generateTimelineItems(): void {
         this.timelineItems = [];
-
         // Calculate end date based on last event
         let actualEndDate = new Date(this.globalReleaseDate);
         if (this.timelineEvents.length > 0) {
@@ -123,11 +112,9 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
                 const eventDate = event.globalReleaseDate || event.jpReleaseDate;
                 return eventDate > latest ? eventDate : latest;
             }, new Date(this.globalReleaseDate));
-
             actualEndDate = new Date(latestEventDate);
             actualEndDate.setUTCDate(actualEndDate.getUTCDate() + 14);
         }
-
         // Add milestone markers
         this.timelineItems.push({
             date: new Date(this.globalReleaseDate),
@@ -136,7 +123,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             daysSinceStart: 0,
             daysFromToday: this.calculateDaysFromTodayUTC(new Date(this.globalReleaseDate))
         });
-
         // Add today marker if within range (with UTC handling)
         const today = new Date();
         if (today >= this.globalReleaseDate && today <= actualEndDate) {
@@ -149,30 +135,24 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
                 daysFromToday: 0 // Today is always 0 days from today
             });
         }
-
         // Generate anniversary markers
         this.generateAnniversaryMarkers(actualEndDate);
-
         // Process events with filtering
         const filteredEvents = this.timelineEvents.filter(event => this.shouldShowEvent(event));
-
         // Group events by date (using UTC date strings)
         const eventsByDate = new Map<string, TimelineEvent[]>();
         filteredEvents.forEach(event => {
             const eventDate = event.globalReleaseDate || event.jpReleaseDate;
             const dateKey = this.getUTCDateString(eventDate);
-
             if (!eventsByDate.has(dateKey)) {
                 eventsByDate.set(dateKey, []);
             }
             eventsByDate.get(dateKey)!.push(event);
         });
-
         // Add grouped events to timeline
         eventsByDate.forEach((events, dateKey) => {
             const eventDate = new Date(dateKey);
             const daysSinceStart = this.calculateDaysSinceStartUTC(eventDate);
-
             if (events.length === 1) {
                 // Single event
                 this.timelineItems.push({
@@ -197,14 +177,11 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
                 });
             }
         });
-
         // Add year markers
         this.generateYearMarkers(actualEndDate);
-
         // Sort by date
         this.timelineItems.sort((a, b) => a.date.getTime() - b.date.getTime());
     }
-
     private shouldShowEvent(event: TimelineEvent): boolean {
         // Apply event type filters
         if (event.type === EventType.CHARACTER_BANNER && !this.eventFilters.showCharacters) return false;
@@ -213,7 +190,7 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
         if (event.type === EventType.STORY_EVENT && !this.eventFilters.showStoryEvents) return false;
         if (event.type === EventType.CHAMPIONS_MEETING && !this.eventFilters.showChampionsMeetings) return false;
         if (event.type === EventType.LEGEND_RACE && !this.eventFilters.showLegendRaces) return false;
-
+        if (event.type === EventType.CAMPAIGN && !this.eventFilters.showCampaigns) return false;
         // Handle other event types under story events
         if (event.type !== EventType.CHARACTER_BANNER &&
             event.type !== EventType.SUPPORT_CARD_BANNER &&
@@ -221,8 +198,8 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             event.type !== EventType.STORY_EVENT &&
             event.type !== EventType.CHAMPIONS_MEETING &&
             event.type !== EventType.LEGEND_RACE &&
+            event.type !== EventType.CAMPAIGN &&
             !this.eventFilters.showStoryEvents) return false;
-
         // Apply search filter
         if (this.eventFilters.searchQuery.trim()) {
             const searchTerm = this.eventFilters.searchQuery.toLowerCase().trim();
@@ -230,51 +207,59 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
                 char.toLowerCase().includes(searchTerm));
             const supportsMatch = event.relatedSupportCards?.some(support =>
                 support.toLowerCase().includes(searchTerm));
-
             if (!charactersMatch && !supportsMatch) {
                 return false;
             }
         }
-
         const eventDate = event.globalReleaseDate || event.jpReleaseDate;
         return eventDate >= this.globalReleaseDate;
     }
-
     private generateAnniversaryMarkers(endDate: Date): void {
-        // Confirmed Global Anniversaries (matching desktop timeline)
-        const CONFIRMED_GLOBAL_ANNIVERSARIES = [
-            { date: new Date(Date.UTC(2025, 9, 26, 22, 0, 0)), label: '0.5 Year Anniversary' }, // Oct 26, 2025 - Half Anniversary
-            // Future anniversaries can be added here as they're announced
-        ];
-
-        CONFIRMED_GLOBAL_ANNIVERSARIES.forEach(anniversary => {
-            if (anniversary.date <= endDate && anniversary.date >= this.globalReleaseDate) {
-                const daysSinceStart = this.calculateDaysSinceStartUTC(anniversary.date);
-                this.timelineItems.push({
-                    date: new Date(anniversary.date),
-                    label: anniversary.label,
-                    type: 'anniversary',
-                    daysSinceStart,
-                    daysFromToday: this.calculateDaysFromTodayUTC(anniversary.date)
-                });
+        const jpLaunchDate = new Date(Date.UTC(2021, 1, 24)); // February 24, 2021
+        const CONFIRMED_GLOBAL_ANNIVERSARIES = new Map<number, Date>([
+            [1, new Date(Date.UTC(2025, 9, 26, 22, 0, 0))]
+        ]);
+        let anniversaryCount = 0;
+        while (true) {
+            anniversaryCount++;
+            const monthsToAdd = anniversaryCount * 6;
+            const jpAnniversaryYear = jpLaunchDate.getUTCFullYear() + Math.floor(monthsToAdd / 12);
+            const jpAnniversaryMonth = jpLaunchDate.getUTCMonth() + (monthsToAdd % 12);
+            const finalYear = jpAnniversaryYear + Math.floor(jpAnniversaryMonth / 12);
+            const finalMonth = jpAnniversaryMonth % 12;
+            const jpAnniversaryDate = new Date(Date.UTC(finalYear, finalMonth, jpLaunchDate.getUTCDate()));
+            let globalAnniversaryDate: Date;
+            const confirmedAnniversaryDate = CONFIRMED_GLOBAL_ANNIVERSARIES.get(anniversaryCount);
+            if (confirmedAnniversaryDate) {
+                globalAnniversaryDate = new Date(confirmedAnniversaryDate);
+            } else {
+                globalAnniversaryDate = this.timelineService.calculateGlobalDate(jpAnniversaryDate);
             }
-        });
-
-        // If we want to extrapolate future anniversaries after the last confirmed one
-        // We can use a pattern, but for now we'll only show confirmed anniversaries
-        // to match the desktop timeline behavior
+            if (globalAnniversaryDate > endDate) {
+                break;
+            }
+            const daysSinceStart = this.calculateDaysSinceStartUTC(globalAnniversaryDate);
+            const isFullYear = anniversaryCount % 2 === 0;
+            const anniversaryLabel = isFullYear
+                ? `${anniversaryCount / 2} Year Anniversary`
+                : `${Math.floor(anniversaryCount / 2)}.5 Year Anniversary`;
+            this.timelineItems.push({
+                date: new Date(globalAnniversaryDate),
+                label: anniversaryLabel,
+                type: 'anniversary',
+                daysSinceStart,
+                daysFromToday: this.calculateDaysFromTodayUTC(globalAnniversaryDate)
+            });
+        }
     }
-
     private generateYearMarkers(endDate: Date): void {
         const currentDate = new Date(this.globalReleaseDate);
         const yearMarkerEndDate = new Date(Math.min(endDate.getTime(), 
             Date.UTC(this.globalReleaseDate.getUTCFullYear() + 10, 0, 1)));
-
         while (currentDate <= yearMarkerEndDate) {
             if (currentDate.getUTCMonth() === 0 && currentDate.getUTCDate() === 1 && 
                 currentDate.getUTCFullYear() >= this.globalReleaseDate.getUTCFullYear()) {
                 const daysSinceStart = this.calculateDaysSinceStartUTC(currentDate);
-
                 this.timelineItems.push({
                     date: new Date(currentDate),
                     label: currentDate.getUTCFullYear().toString(),
@@ -287,7 +272,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             currentDate.setUTCDate(1);
         }
     }
-
     // Helper method to calculate days from today using UTC
     private calculateDaysFromTodayUTC(date: Date): number {
         const today = new Date();
@@ -314,7 +298,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
         
         return Math.floor((eventDateTime.getTime() - referenceTime.getTime()) / (1000 * 60 * 60 * 24));
     }
-
     // Helper method to calculate days since start using UTC
     private calculateDaysSinceStartUTC(date: Date): number {
         // Global release at 22:00 UTC
@@ -335,7 +318,6 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
         
         return Math.floor((dateUTC.getTime() - startUTC.getTime()) / (1000 * 60 * 60 * 24));
     }
-
     // Helper method to get UTC date string for grouping
     private getUTCDateString(date: Date): string {
         // Group by the event date at 22:00 UTC
@@ -346,80 +328,70 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             22, 0, 0, 0
         )).toISOString();
     }
-
     // Filter methods
     onSearchChange(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     toggleCharacterFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     toggleSupportFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     toggleStoryEventsFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     toggleChampionsMeetingsFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     toggleLegendRacesFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
     togglePaidBannersFilter(): void {
         this.generateTimelineItems();
         this.cdr.detectChanges();
     }
-
+    toggleCampaignsFilter(): void {
+        this.generateTimelineItems();
+        this.cdr.detectChanges();
+    }
     getFilteredEventCount(): number {
         return this.timelineEvents.filter(event => this.shouldShowEvent(event)).length;
     }
-
     getTotalEventCount(): number {
         return this.timelineEvents.length;
     }
-
     // Helper methods for filtering event counts in template
     getCharacterBannerCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.CHARACTER_BANNER).length;
     }
-
     getSupportCardBannerCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.SUPPORT_CARD_BANNER).length;
     }
-
     getStoryEventCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.STORY_EVENT).length;
     }
-
     getChampionsMeetingCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.CHAMPIONS_MEETING).length;
     }
-
     getLegendRaceCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.LEGEND_RACE).length;
     }
-
     getPaidBannerCount(): number {
         return this.timelineEvents.filter(e => e.type === EventType.PAID_BANNER).length;
     }
-
+    getCampaignCount(): number {
+        return this.timelineEvents.filter(e => e.type === EventType.CAMPAIGN).length;
+    }
     onImageError(event: any): void {
         (event.target as HTMLImageElement).style.display = 'none';
     }
-
     scrollToToday(): void {
         const todayItem = this.timelineItems.find(item => item.type === 'today');
         if (todayItem) {
@@ -429,65 +401,51 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             }
         }
     }
-
     toggleFilterPanel(): void {
         this.isFilterPanelExpanded = !this.isFilterPanelExpanded;
         this.cdr.detectChanges();
     }
-
     trackByItemDate(index: number, item: MobileTimelineItem): string {
         return `${item.date.getTime()}-${item.type}-${item.isGrouped ? 'grouped' : 'single'}`;
     }
-
     // Helper methods for event type checking
     isCharacterBanner(eventType?: EventType): boolean {
         return eventType === EventType.CHARACTER_BANNER;
     }
-
     isSupportCardBanner(eventType?: EventType): boolean {
         return eventType === EventType.SUPPORT_CARD_BANNER;
     }
-
     isStoryEvent(eventType?: EventType): boolean {
         return eventType === EventType.STORY_EVENT;
     }
-
     isChampionsMeeting(eventType?: EventType): boolean {
         return eventType === EventType.CHAMPIONS_MEETING;
     }
-
     isLegendRace(eventType?: EventType): boolean {
         return eventType === EventType.LEGEND_RACE;
     }
-
     isPaidBanner(eventType?: EventType): boolean {
         return eventType === EventType.PAID_BANNER;
     }
-
     // Helper method to get event image URL
     getEventImageUrl(event?: TimelineEvent): string | undefined {
         return event?.imagePath;
     }
-
     // Helper method to safely get event title
     getEventTitle(event?: TimelineEvent): string {
         return event?.title || '';
     }
-
     // Format date for mobile timeline items
     formatDateForItem(item: MobileTimelineItem): string {
         if (!item.date) return '';
-
         const dateOptions: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
         };
-
         const formatSingleDate = (date: Date): string => {
             return date.toLocaleDateString('en-US', dateOptions);
         };
-
         // Check confirmation status from event data or grouped events
         let isConfirmed = true;
         if (item.eventData) {
@@ -496,31 +454,66 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
             // For grouped events, show ~ if any event is unconfirmed
             isConfirmed = item.groupedEvents.every(event => event.isConfirmed !== false);
         }
-
         const prefix = isConfirmed ? '' : '~';
         return `${prefix}${formatSingleDate(item.date)}`;
     }
-
     // Format date to ensure consistent display (same as desktop timeline)
     formatDate(event: TimelineEvent): string {
         const eventDate = event.globalReleaseDate || event.jpReleaseDate;
         if (!eventDate) return '';
-
         const dateOptions: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
         };
-
         const formatSingleDate = (date: Date): string => {
             return date.toLocaleDateString('en-US', dateOptions);
         };
-
         // Simple date formatting with confirmation indicator
         const isConfirmed = event.isConfirmed;
         const prefix = isConfirmed ? '' : '~';
         
         return `${prefix}${formatSingleDate(eventDate)}`;
+    }
+    // Helper methods for template display
+    getEventTypeIcon(type?: EventType): string {
+        switch (type) {
+            case EventType.CHARACTER_BANNER:    return 'person';
+            case EventType.SUPPORT_CARD_BANNER: return 'style';
+            case EventType.STORY_EVENT:         return 'auto_stories';
+            case EventType.CHAMPIONS_MEETING:   return 'emoji_events';
+            case EventType.LEGEND_RACE:         return 'sports_motorsports';
+            case EventType.PAID_BANNER:         return 'payments';
+            case EventType.CAMPAIGN:            return 'assignment';
+            default:                            return 'event';
+        }
+    }
+
+    getEventTypeLabel(type?: EventType): string {
+        switch (type) {
+            case EventType.CHARACTER_BANNER:    return 'Character Banner';
+            case EventType.SUPPORT_CARD_BANNER: return 'Support Banner';
+            case EventType.STORY_EVENT:         return 'Story Event';
+            case EventType.CHAMPIONS_MEETING:   return 'Champions Meeting';
+            case EventType.LEGEND_RACE:         return 'Legend Race';
+            case EventType.PAID_BANNER:         return 'Paid Banner';
+            case EventType.CAMPAIGN:            return 'Mission Campaign';
+            default:                            return 'Event';
+        }
+    }
+
+    getLegendRaceTitle(title?: string): string {
+        return (title || '').replace(/ Legend Race$/i, '').trim();
+    }
+
+    getLegendCourseChips(description?: string): { icon: string; label: string }[] {
+        if (!description) return [];
+        const parts = description.split(' - ').map(p => p.trim());
+        const icons: Record<string, string> = {
+            'Turf': 'grass', 'Dirt': 'landscape',
+            'Short': 'bolt', 'Mile': 'straighten', 'Medium': 'straighten', 'Long': 'route', 'Extended': 'route'
+        };
+        return parts.map(p => ({ icon: icons[p] || 'sports_score', label: p }));
     }
 
     // Open gametora URL if available
@@ -535,3 +528,4 @@ export class MobileTimelineComponent implements OnInit, OnDestroy {
         return !!(event?.gametoraURL);
     }
 }
+

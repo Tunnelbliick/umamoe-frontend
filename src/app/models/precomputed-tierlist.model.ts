@@ -12,7 +12,6 @@ export interface PrecomputedCardData {
     tierProgression: any; // Can be null
   };
 }
-
 export interface PrecomputedTierlistData {
   metadata: {
     generatedAt: string;
@@ -32,7 +31,6 @@ export interface PrecomputedTierlistData {
     };
   };
 }
-
 export interface PrecomputedProcessedCard {
   id: number;
   lb: number;

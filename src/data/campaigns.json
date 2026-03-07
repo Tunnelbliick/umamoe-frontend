@@ -1,0 +1,464 @@
+[
+  {
+    "campaign_id": 50,
+    "image": "50.png",
+    "start_date": "2021-03-11T03:00:00",
+    "end_date": "2021-03-11T19:59:59"
+  },
+  {
+    "campaign_id": 3,
+    "image": "3.png",
+    "start_date": "2021-03-22T03:00:00",
+    "end_date": "2021-03-31T02:59:59"
+  },
+  {
+    "campaign_id": 13,
+    "image": "13.png",
+    "start_date": "2021-04-06T03:00:00",
+    "end_date": "2021-04-11T19:59:59"
+  },
+  {
+    "campaign_id": 17,
+    "image": "17.png",
+    "start_date": "2021-04-30T03:00:00",
+    "end_date": "2021-05-14T19:59:59"
+  },
+  {
+    "campaign_id": 11,
+    "image": "11.png",
+    "start_date": "2021-05-03T03:00:00",
+    "end_date": "2021-05-09T19:59:59"
+  },
+  {
+    "campaign_id": 90,
+    "image": "90.png",
+    "start_date": "2021-07-20T03:00:00",
+    "end_date": "2021-07-29T19:59:59"
+  },
+  {
+    "campaign_id": 100,
+    "image": "100.png",
+    "start_date": "2021-08-16T03:00:00",
+    "end_date": "2021-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 101,
+    "image": "101.png",
+    "start_date": "2021-08-24T03:00:00",
+    "end_date": "2021-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 102,
+    "image": "102.png",
+    "start_date": "2021-08-30T03:00:00",
+    "end_date": "2021-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 105,
+    "image": "105.png",
+    "start_date": "2021-09-27T03:00:00",
+    "end_date": "2021-10-03T19:59:59"
+  },
+  {
+    "campaign_id": 106,
+    "image": "106.png",
+    "start_date": "2021-10-11T03:00:00",
+    "end_date": "2021-10-17T19:59:59"
+  },
+  {
+    "campaign_id": 109,
+    "image": "109.png",
+    "start_date": "2021-11-08T03:00:00",
+    "end_date": "2021-11-14T19:59:59"
+  },
+  {
+    "campaign_id": 137,
+    "image": "137.png",
+    "start_date": "2022-02-14T03:00:00",
+    "end_date": "2022-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 134,
+    "image": "134.png",
+    "start_date": "2022-02-14T03:00:00",
+    "end_date": "2022-02-20T19:59:59"
+  },
+  {
+    "campaign_id": 138,
+    "image": "138.png",
+    "start_date": "2022-02-24T03:00:00",
+    "end_date": "2022-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 139,
+    "image": "139.png",
+    "start_date": "2022-03-07T03:00:00",
+    "end_date": "2022-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 146,
+    "image": "146.png",
+    "start_date": "2022-03-20T20:00:00",
+    "end_date": "2022-03-27T19:59:59"
+  },
+  {
+    "campaign_id": 155,
+    "image": "155.png",
+    "start_date": "2022-04-25T03:00:00",
+    "end_date": "2022-05-01T19:59:59"
+  },
+  {
+    "campaign_id": 180,
+    "image": "180.png",
+    "start_date": "2022-06-23T03:00:00",
+    "end_date": "2022-06-29T19:59:59"
+  },
+  {
+    "campaign_id": 217,
+    "image": "217.png",
+    "start_date": "2022-08-16T03:00:00",
+    "end_date": "2022-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 218,
+    "image": "218.png",
+    "start_date": "2022-08-24T03:00:00",
+    "end_date": "2022-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 194,
+    "image": "194.png",
+    "start_date": "2022-09-26T03:00:00",
+    "end_date": "2022-10-02T19:59:59"
+  },
+  {
+    "campaign_id": 195,
+    "image": "195.png",
+    "start_date": "2022-10-03T20:00:00",
+    "end_date": "2022-10-10T19:59:59"
+  },
+  {
+    "campaign_id": 198,
+    "image": "198.png",
+    "start_date": "2022-10-24T03:00:00",
+    "end_date": "2022-10-30T19:59:59"
+  },
+  {
+    "campaign_id": 204,
+    "image": "204.png",
+    "start_date": "2022-12-05T03:00:00",
+    "end_date": "2022-12-11T19:59:59"
+  },
+  {
+    "campaign_id": 207,
+    "image": "207.png",
+    "start_date": "2022-12-18T20:00:00",
+    "end_date": "2022-12-25T19:59:59"
+  },
+  {
+    "campaign_id": 277,
+    "image": "277.png",
+    "start_date": "2023-01-26T03:00:00",
+    "end_date": "2023-02-01T19:59:59"
+  },
+  {
+    "campaign_id": 301,
+    "image": "301.png",
+    "start_date": "2023-02-14T03:00:00",
+    "end_date": "2023-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 302,
+    "image": "302.png",
+    "start_date": "2023-02-24T03:00:00",
+    "end_date": "2023-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 303,
+    "image": "303.png",
+    "start_date": "2023-03-10T03:00:00",
+    "end_date": "2023-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 304,
+    "image": "304.png",
+    "start_date": "2023-03-20T03:00:00",
+    "end_date": "2023-03-26T19:59:59"
+  },
+  {
+    "campaign_id": 308,
+    "image": "308.png",
+    "start_date": "2023-04-24T03:00:00",
+    "end_date": "2023-04-30T19:59:59"
+  },
+  {
+    "campaign_id": 360,
+    "image": "360.png",
+    "start_date": "2023-06-22T03:00:00",
+    "end_date": "2023-06-28T19:59:59"
+  },
+  {
+    "campaign_id": 372,
+    "image": "372.png",
+    "start_date": "2023-08-14T03:00:00",
+    "end_date": "2023-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 373,
+    "image": "373.png",
+    "start_date": "2023-08-24T03:00:00",
+    "end_date": "2023-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 374,
+    "image": "374.png",
+    "start_date": "2023-09-04T03:00:00",
+    "end_date": "2023-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 466,
+    "image": "466.png",
+    "start_date": "2023-09-25T03:00:00",
+    "end_date": "2023-10-01T19:59:59"
+  },
+  {
+    "campaign_id": 467,
+    "image": "467.png",
+    "start_date": "2023-10-02T20:00:00",
+    "end_date": "2023-10-09T19:59:59"
+  },
+  {
+    "campaign_id": 470,
+    "image": "470.png",
+    "start_date": "2023-10-23T03:00:00",
+    "end_date": "2023-10-29T19:59:59"
+  },
+  {
+    "campaign_id": 476,
+    "image": "476.png",
+    "start_date": "2023-12-04T03:00:00",
+    "end_date": "2023-12-10T19:59:59"
+  },
+  {
+    "campaign_id": 479,
+    "image": "479.png",
+    "start_date": "2023-12-17T20:00:00",
+    "end_date": "2023-12-24T19:59:59"
+  },
+  {
+    "campaign_id": 531,
+    "image": "531.png",
+    "start_date": "2024-02-12T03:00:00",
+    "end_date": "2024-02-18T19:59:59"
+  },
+  {
+    "campaign_id": 631,
+    "image": "631.png",
+    "start_date": "2024-02-14T03:00:00",
+    "end_date": "2024-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 632,
+    "image": "632.png",
+    "start_date": "2024-02-24T03:00:00",
+    "end_date": "2024-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 633,
+    "image": "633.png",
+    "start_date": "2024-03-12T03:00:00",
+    "end_date": "2024-03-29T19:59:59"
+  },
+  {
+    "campaign_id": 545,
+    "image": "545.png",
+    "start_date": "2024-03-18T03:00:00",
+    "end_date": "2024-03-24T19:59:59"
+  },
+  {
+    "campaign_id": 551,
+    "image": "551.png",
+    "start_date": "2024-04-25T03:00:00",
+    "end_date": "2024-05-01T19:59:59"
+  },
+  {
+    "campaign_id": 556,
+    "image": "556.png",
+    "start_date": "2024-05-27T03:00:00",
+    "end_date": "2024-06-02T19:59:59"
+  },
+  {
+    "campaign_id": 665,
+    "image": "665.png",
+    "start_date": "2024-06-26T03:00:00",
+    "end_date": "2024-07-29T19:59:59"
+  },
+  {
+    "campaign_id": 675,
+    "image": "675.png",
+    "start_date": "2024-08-14T03:00:00",
+    "end_date": "2024-09-30T19:59:59"
+  },
+  {
+    "campaign_id": 676,
+    "image": "676.png",
+    "start_date": "2024-08-24T03:00:00",
+    "end_date": "2024-09-30T19:59:59"
+  },
+  {
+    "campaign_id": 677,
+    "image": "677.png",
+    "start_date": "2024-09-10T03:00:00",
+    "end_date": "2024-09-30T19:59:59"
+  },
+  {
+    "campaign_id": 678,
+    "image": "678.png",
+    "start_date": "2024-09-23T03:00:00",
+    "end_date": "2024-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 679,
+    "image": "679.png",
+    "start_date": "2024-09-25T20:00:00",
+    "end_date": "2024-10-02T19:59:59"
+  },
+  {
+    "campaign_id": 683,
+    "image": "683.png",
+    "start_date": "2024-10-21T03:00:00",
+    "end_date": "2024-10-27T19:59:59"
+  },
+  {
+    "campaign_id": 738,
+    "image": "738.png",
+    "start_date": "2024-10-29T03:00:00",
+    "end_date": "2024-11-28T19:59:59"
+  },
+  {
+    "campaign_id": 689,
+    "image": "689.png",
+    "start_date": "2024-12-02T03:00:00",
+    "end_date": "2024-12-08T19:59:59"
+  },
+  {
+    "campaign_id": 692,
+    "image": "692.png",
+    "start_date": "2024-12-15T20:00:00",
+    "end_date": "2024-12-22T19:59:59"
+  },
+  {
+    "campaign_id": 808,
+    "image": "808.png",
+    "start_date": "2025-02-14T03:00:00",
+    "end_date": "2025-03-31T19:59:59"
+  },
+  {
+    "campaign_id": 790,
+    "image": "790.png",
+    "start_date": "2025-02-17T03:00:00",
+    "end_date": "2025-02-23T19:59:59"
+  },
+  {
+    "campaign_id": 809,
+    "image": "809.png",
+    "start_date": "2025-02-24T03:00:00",
+    "end_date": "2025-03-31T19:59:59"
+  },
+  {
+    "campaign_id": 810,
+    "image": "810.png",
+    "start_date": "2025-03-11T03:00:00",
+    "end_date": "2025-03-31T19:59:59"
+  },
+  {
+    "campaign_id": 816,
+    "image": "816.png",
+    "start_date": "2025-03-24T03:00:00",
+    "end_date": "2025-03-30T19:59:59"
+  },
+  {
+    "campaign_id": 821,
+    "image": "821.png",
+    "start_date": "2025-04-28T03:00:00",
+    "end_date": "2025-05-04T19:59:59"
+  },
+  {
+    "campaign_id": 826,
+    "image": "826.png",
+    "start_date": "2025-05-26T03:00:00",
+    "end_date": "2025-06-01T19:59:59"
+  },
+  {
+    "campaign_id": 868,
+    "image": "868.png",
+    "start_date": "2025-06-27T03:00:00",
+    "end_date": "2025-07-30T19:59:59"
+  },
+  {
+    "campaign_id": 864,
+    "image": "864.png",
+    "start_date": "2025-08-14T03:00:00",
+    "end_date": "2025-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 865,
+    "image": "865.png",
+    "start_date": "2025-08-24T03:00:00",
+    "end_date": "2025-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 866,
+    "image": "866.png",
+    "start_date": "2025-09-09T03:00:00",
+    "end_date": "2025-09-29T19:59:59"
+  },
+  {
+    "campaign_id": 910,
+    "image": "910.png",
+    "start_date": "2025-09-22T03:00:00",
+    "end_date": "2025-09-28T19:59:59"
+  },
+  {
+    "campaign_id": 912,
+    "image": "912.png",
+    "start_date": "2025-10-06T20:00:00",
+    "end_date": "2025-10-13T19:59:59"
+  },
+  {
+    "campaign_id": 915,
+    "image": "915.png",
+    "start_date": "2025-10-27T03:00:00",
+    "end_date": "2025-11-02T19:59:59"
+  },
+  {
+    "campaign_id": 946,
+    "image": "946.png",
+    "start_date": "2025-10-29T03:00:00",
+    "end_date": "2025-11-27T19:59:59"
+  },
+  {
+    "campaign_id": 920,
+    "image": "920.png",
+    "start_date": "2025-12-01T03:00:00",
+    "end_date": "2025-12-07T19:59:59"
+  },
+  {
+    "campaign_id": 921,
+    "image": "921.png",
+    "start_date": "2025-12-07T20:00:00",
+    "end_date": "2025-12-14T19:59:59"
+  },
+  {
+    "campaign_id": 1006,
+    "image": "1006.png",
+    "start_date": "2026-02-14T03:00:00",
+    "end_date": "2026-03-30T19:59:59"
+  },
+  {
+    "campaign_id": 975,
+    "image": "975.png",
+    "start_date": "2026-02-16T03:00:00",
+    "end_date": "2026-02-22T19:59:59"
+  }
+]

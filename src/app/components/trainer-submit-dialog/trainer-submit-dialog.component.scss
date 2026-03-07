@@ -1,273 +1,285 @@
-// Modern dark theme dialog styling matching the website design
-.submit-dialog-container {
-  width: 100%;
-  max-width: 480px;
-  background: #121212; // Darker background
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+// Trainer Submit Dialog — matches character/support card selector style
+.select-dialog {
+  display: flex;
+  flex-direction: column;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
   color: #e0e0e0;
+  width: 420px;
+  max-width: 90vw;
+}
 
-  .dialog-header {
-    position: relative;
+.select-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #1a1a1a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+
+  .select-header-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #64b5f6;
+  }
+
+  .select-header-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 24px;
-    background: #1e1e1e; // Slightly lighter header
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
 
-    // Gradient top border
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #2196f3, #81c784);
+    ::ng-deep .mat-mdc-button-touch-target {
+      width: 32px;
+      height: 32px;
     }
 
-    .header-icon-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #2196f3, #81c784);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
 
-      .header-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-        color: white;
+    &:hover {
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+}
+
+.select-body {
+  padding: 18px 18px 10px !important;
+  margin: 0;
+  background: #141414;
+  overflow-y: auto;
+  flex: 1;
+  max-height: none;
+}
+
+.trainer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .input-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .digit-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.25);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.2s;
+
+    &.complete {
+      color: #66bb6a;
+    }
+  }
+
+  .custom-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: all 0.2s;
+
+    &:focus-within {
+      border-color: rgba(100, 181, 246, 0.5);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.08);
+    }
+
+    &.has-error {
+      border-color: rgba(244, 67, 54, 0.4);
+
+      &:focus-within {
+        border-color: rgba(244, 67, 54, 0.6);
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.08);
       }
     }
 
-    .header-text {
+    .input-prefix-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .custom-input {
       flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      padding: 0;
+      font-family: 'Roboto Mono', 'Consolas', monospace;
 
-      h2 {
-        margin: 0 0 4px 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: #ffffff;
-      }
-
-      p {
-        margin: 0;
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.6);
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.15);
+        letter-spacing: 2px;
       }
     }
   }
 
-  .dialog-content {
-    padding: 24px !important;
-    background: #121212;
+  .input-help {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
 
-    .trainer-form {
+    .help-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      color: rgba(100, 181, 246, 0.5);
+    }
+  }
+
+  .validation-messages {
+    .validation-error {
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(244, 67, 54, 0.06);
+      border: 1px solid rgba(244, 67, 54, 0.15);
+      border-radius: 8px;
+      color: #ef9a9a;
+      font-size: 12px;
 
-      .form-group {
+      mat-icon {
+        font-size: 15px;
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+.dialog-actions {
+  padding: 12px 18px 16px;
+  background: #141414;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+
+  button {
+    height: 36px;
+    padding: 0 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: none;
+    font-size: 13px;
+
+    &.cancel-btn {
+      color: rgba(255, 255, 255, 0.5);
+      border-color: rgba(255, 255, 255, 0.1);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    &.submit-btn {
+      background: #1976d2;
+      color: white;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      &:hover:not(:disabled) {
+        background: #1565c0;
+        box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35);
+      }
+
+      &:disabled {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.25);
+        box-shadow: none;
+      }
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
         margin: 0;
       }
 
-      // Customizing MatFormField to look like the design
-      .trainer-input {
-        width: 100%;
-        
-        ::ng-deep .mat-mdc-text-field-wrapper {
-          background-color: #1e1e1e !important;
-          border-radius: 4px;
-          padding: 0 12px;
-        }
-
-        ::ng-deep .mat-mdc-form-field-flex {
-          align-items: center;
-          padding: 0 12px;
-        }
-
-        ::ng-deep .mat-mdc-form-field-underline {
-          display: none;
-        }
-        
-        ::ng-deep .mdc-line-ripple {
-          display: none;
-        }
-
-        .input-icon {
-          color: rgba(255, 255, 255, 0.5);
-        }
-      }
-
-      .input-help {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        background: rgba(33, 150, 243, 0.1);
-        border: 1px solid rgba(33, 150, 243, 0.3);
-        border-radius: 8px;
-        color: #90caf9;
-        font-size: 14px;
-
-        .help-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-          flex-shrink: 0;
-        }
-      }
-
-      .validation-messages {
-        .validation-error {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 16px;
-          background: rgba(244, 67, 54, 0.1);
-          border: 1px solid rgba(244, 67, 54, 0.3);
-          border-radius: 8px;
-          color: #ef9a9a;
-          font-size: 14px;
-          margin-top: 8px;
-
-          mat-icon {
-            font-size: 20px;
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-          }
+      .submit-spinner {
+        ::ng-deep circle {
+          stroke: white;
         }
       }
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .select-dialog {
+    width: calc(100vw - 8px) !important;
+    max-width: calc(100vw - 8px);
+  }
+
+  .select-body {
+    padding: 12px 14px 8px !important;
   }
 
   .dialog-actions {
-    padding: 16px 24px 24px;
-    background: #121212;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin: 0;
+    padding: 10px 14px 14px;
+    flex-direction: column;
 
     button {
-      height: 40px;
-      padding: 0 24px;
-      border-radius: 8px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: none;
-      font-size: 14px;
-
-      &.cancel-btn {
-        color: rgba(255, 255, 255, 0.7);
-        border-color: rgba(255, 255, 255, 0.2);
-        
-        &:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: #ffffff;
-        }
-      }
-
-      &.submit-btn {
-        background: #1976d2; // Blue button
-        color: white;
-        box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
-
-        &:hover:not(:disabled) {
-          background: #1565c0;
-          box-shadow: 0 6px 16px rgba(25, 118, 210, 0.4);
-        }
-
-        &:disabled {
-          background: rgba(255, 255, 255, 0.12);
-          color: rgba(255, 255, 255, 0.3);
-          box-shadow: none;
-        }
-
-        mat-icon {
-          margin-right: 8px;
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-        }
-      }
-    }
-  }
-}
-
-// Animations
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Mobile responsive design
-@media (max-width: 600px) {
-  .submit-dialog-container {
-    max-width: calc(100vw - 32px);
-    margin: 16px;
-
-    .dialog-header {
-      padding: 20px 24px 16px;
-
-      .header-icon-wrapper {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-
-        .header-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-        }
-      }
-
-      .header-text {
-        h2 {
-          font-size: 18px;
-        }
-
-        p {
-          font-size: 13px;
-        }
-      }
-    }
-
-    .dialog-content {
-      padding: 24px !important;
-
-      .trainer-form .form-group .trainer-input {
-        ::ng-deep .mat-mdc-form-field-infix {
-          padding: 14px 12px 14px 14px;
-          min-height: 52px;
-        }
-      }
-    }
-
-    .dialog-actions {
-      padding: 16px 24px 24px !important;
-      flex-direction: column;
-
-      .cancel-btn,
-      .report-btn,
-      .submit-btn {
-        width: 100%;
-        justify-content: center;
-      }
+      width: 100%;
+      justify-content: center;
     }
   }
 }

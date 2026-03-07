@@ -640,6 +640,13 @@ body.christmas-theme {
     }
   }
 }
+
+@media (max-width: 600px) {
+  .modern-dialog-panel {
+    max-width: calc(100vw - 16px) !important;
+    width: calc(100vw - 16px) !important;
+  }
+}
 .transparent-dialog-panel {
   .mat-mdc-dialog-container {
     --mdc-dialog-container-color: transparent;
@@ -667,5 +674,26 @@ body.christmas-theme {
     max-width: 100vw !important;
     border-radius: 0 !important;
     overflow: visible !important;
+  }
+}
+
+// Rate Limit & Update Notification Dialog Panels
+.rate-limit-dialog,
+.update-notification-dialog {
+  max-width: 100vw !important;
+  overflow: hidden !important;
+
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    .mat-mdc-dialog-surface {
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: hidden !important;
+    }
   }
 }

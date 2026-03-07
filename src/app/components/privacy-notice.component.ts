@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
 @Component({
   selector: 'app-privacy-notice',
   standalone: true,
@@ -36,41 +35,34 @@ import { MatIconModule } from '@angular/material/icon';
       z-index: 1000;
       animation: slideIn 0.3s ease-out;
     }
-
     .notice-content {
       display: flex;
       align-items: center;
       gap: 16px;
       padding: 16px 20px;
     }
-
     mat-icon {
       color: #4CAF50;
       font-size: 24px;
       width: 24px;
       height: 24px;
     }
-
     p {
       flex: 1;
       margin: 0;
       font-size: 14px;
       line-height: 1.4;
     }
-
     a {
       color: #81C784;
       text-decoration: none;
     }
-
     a:hover {
       text-decoration: underline;
     }
-
     button {
       white-space: nowrap;
     }
-
     @keyframes slideIn {
       from {
         transform: translateY(100%);
@@ -81,20 +73,17 @@ import { MatIconModule } from '@angular/material/icon';
         opacity: 1;
       }
     }
-
     @media (max-width: 768px) {
       .privacy-notice {
         left: 10px;
         right: 10px;
         bottom: 10px;
       }
-
       .notice-content {
         flex-direction: column;
         text-align: center;
         gap: 12px;
       }
-
       p {
         font-size: 13px;
       }
@@ -103,12 +92,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PrivacyNoticeComponent {
   isAccepted: boolean = false;
-
   constructor() {
     // Check if user has already accepted
     this.isAccepted = localStorage.getItem('privacy-notice-accepted') === 'true';
   }
-
   accept(): void {
     this.isAccepted = true;
     localStorage.setItem('privacy-notice-accepted', 'true');

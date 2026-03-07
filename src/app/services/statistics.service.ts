@@ -10,8 +10,8 @@ import {
   CharacterStatistics 
 } from '../models/statistics.model';
 import * as characterData from '../../data/character.json';
+import characterNamesData from '../../data/character_names.json';
 import { getAllSupportCards } from '../data/support-cards.data';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,25 +22,20 @@ export class StatisticsService {
   private supportCardNameToIdMap: Map<string, string> = new Map();
   private characterDataLoaded = false;
   private supportCardDataLoaded = false;
-
   constructor(private http: HttpClient) {
     this.loadAvailableDatasets();
     this.loadCharacterNameMapping();
     this.loadSupportCardNameMapping();
   }
-
   getAvailableDatasets(): Observable<StatisticsDataset[]> {
     return this.availableDatasets$.asObservable();
   }
-
   getSelectedDataset(): Observable<StatisticsDataset | null> {
     return this.selectedDataset$.asObservable();
   }
-
   selectDataset(dataset: StatisticsDataset): void {
     this.selectedDataset$.next(dataset);
   }
-
   private loadAvailableDatasets(): void {
     // Load the master datasets.json which contains all available datasets
     this.http.get<{ datasets: StatisticsDataset[], last_updated: string }>('assets/statistics/datasets.json')
@@ -68,13 +63,11 @@ export class StatisticsService {
         }
       });
   }
-
   getGlobalStatistics(dataset?: StatisticsDataset): Observable<GlobalStatistics> {
     const datasetToUse = dataset || this.selectedDataset$.value;
     if (!datasetToUse) {
       throw new Error('No dataset selected');
     }
-
     const url = `${datasetToUse.basePath}/global/global.json`;
     
     
@@ -85,55 +78,50 @@ export class StatisticsService {
       })
     );
   }
-
   getDistanceStatistics(distance: string, dataset?: StatisticsDataset): Observable<DistanceStatistics> {
     const datasetToUse = dataset || this.selectedDataset$.value;
     if (!datasetToUse) {
       throw new Error('No dataset selected');
     }
-
     return this.http.get<DistanceStatistics>(
       `${datasetToUse.basePath}/distance/${distance.toLowerCase()}.json`
     );
   }
-
   private loadCharacterNameMapping(): void {
-    // Use imported character data to create name-to-ID mapping
+    // Use character_names.json as name source, character.json for 6-digit card IDs
     
     try {
-      // Handle different ways TypeScript might import the JSON
+      const names = characterNamesData as Record<string, { name: string; skins: Record<string, string> }>;
+      
+      // Handle different ways TypeScript might import character.json
       let characters: any[] = [];
       if (Array.isArray(characterData)) {
         characters = characterData as any[];
-        
       } else if ((characterData as any).default && Array.isArray((characterData as any).default)) {
         characters = (characterData as any).default;
-        
       } else {
         console.error('❌ Character data is not in expected format:', typeof characterData, Object.keys(characterData || {}));
         this.characterDataLoaded = false;
         return;
       }
-
-      
-
       this.characterNameToIdMap.clear();
-      characters.forEach((character, index) => {
-        if (character.name && character.id) {
-          this.characterNameToIdMap.set(character.name, character.id);
-        } else {
-          console.warn(`⚠️ Character ${index} missing name or id:`, { name: character.name, id: character.id });
+      characters.forEach((character) => {
+        if (character.id) {
+          const charaId = Math.floor(parseInt(character.id, 10) / 100).toString();
+          const nameEntry = names[charaId];
+          const name = nameEntry?.name || character.name;
+          if (name) {
+            this.characterNameToIdMap.set(name, character.id);
+          }
         }
       });
       this.characterDataLoaded = true;
-      
       
     } catch (error) {
       console.error('❌ Failed to load character data:', error);
       this.characterDataLoaded = false;
     }
   }
-
   private loadSupportCardNameMapping(): void {
     try {
       const supportCards = getAllSupportCards();
@@ -152,15 +140,12 @@ export class StatisticsService {
       this.supportCardDataLoaded = false;
     }
   }
-
   getCharacterStatistics(characterNameOrId: string, dataset?: StatisticsDataset): Observable<CharacterStatistics> {
     const datasetToUse = dataset || this.selectedDataset$.value;
     if (!datasetToUse) {
       throw new Error('No dataset selected');
     }
-
     let characterId: string;
-
     // Check if the input is already a character ID (numeric)
     if (/^\d+$/.test(characterNameOrId)) {
       characterId = characterNameOrId;
@@ -173,15 +158,12 @@ export class StatisticsService {
       }
       characterId = mappedId;
     }
-
     // Check if character ID exists in statistics dataset
     if (!datasetToUse.index.character_ids?.includes(characterId)) {
       console.error(`❌ Character statistics not available for: ${characterNameOrId} (${characterId})`);
       throw new Error(`Character statistics not available for: ${characterNameOrId} (${characterId})`);
     }
-
     const url = `${datasetToUse.basePath}/characters/${characterId}.json`;
-
     return this.http.get<CharacterStatistics>(url).pipe(
       catchError(error => {
         console.error(`❌ Failed to load character statistics for ${characterNameOrId} (${characterId}):`, error);
@@ -189,38 +171,30 @@ export class StatisticsService {
       })
     );
   }
-
   isCharacterDataLoaded(): boolean {
     return this.characterDataLoaded;
   }
-
   isCharacterStatisticsAvailable(characterName: string, dataset?: StatisticsDataset): boolean {
     const datasetToUse = dataset || this.selectedDataset$.value;
     if (!datasetToUse || !this.characterDataLoaded) {
       return false;
     }
-
     const characterId = this.characterNameToIdMap.get(characterName);
     if (!characterId) {
       return false;
     }
-
     return datasetToUse.index.character_ids?.includes(characterId) || false;
   }
-
   getCharacterIdFromName(characterName: string): string | null {
     return this.characterNameToIdMap.get(characterName) || null;
   }
-
   getSupportCardIdFromName(supportCardName: string): string | null {
     return this.supportCardNameToIdMap.get(supportCardName) || null;
   }
-
   getAvailableCharacters(dataset?: StatisticsDataset): string[] {
     const datasetToUse = dataset || this.selectedDataset$.value;
     return datasetToUse?.index.character_ids || [];
   }
-
   getAvailableDistances(dataset?: StatisticsDataset): string[] {
     const datasetToUse = dataset || this.selectedDataset$.value;
     return datasetToUse?.index.distances || [];

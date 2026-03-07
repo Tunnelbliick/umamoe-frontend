@@ -15,7 +15,6 @@ export interface TimelineEvent {
   imagePath?: string; // Path to banner image
   gametoraURL?: string;
 }
-
 export enum EventType {
   CHARACTER_BANNER = 'character_banner',
   SUPPORT_CARD_BANNER = 'support_card_banner',
@@ -31,7 +30,6 @@ export enum EventType {
   LEGEND_RACE = 'legend_race',
   EVENT = 'event' // General event type for backward compatibility
 }
-
 export interface TimelineFilters {
   eventTypes?: EventType[];
   showEstimated?: boolean;
@@ -42,7 +40,6 @@ export interface TimelineFilters {
   };
   searchTerm?: string;
 }
-
 export interface ReleaseCalculation {
   jpLaunchDate: Date;
   globalLaunchDate: Date;
@@ -50,45 +47,42 @@ export interface ReleaseCalculation {
   catchupRate: number; // Rate at which Global is catching up (0.5 = half the delay each period)
   accelerationStart: Date; // When the accelerated schedule started
 }
-
 export interface CharacterBanner {
+  gacha_id?: number;
   year: number;
   image: string;
   image_url: string;
   start_date: string;
   end_date: string;
-  pickup_characters: string[];
+  pickup_card_ids: number[];
   image_path: string;
   start_date_string: string;
   end_date_string: string;
 }
-
 export interface SupportBanner {
+  gacha_id?: number;
   year: number;
   image: string;
   image_url: string;
   start_date: string;
   end_date: string;
-  pickup_characters: string[];
+  pickup_card_ids: number[];
 }
-
 export interface PaidBanner {
-  year?: number;
+  gacha_id: number;
+  gacha_type: number;
+  card_type: string;
+  year: number;
   image: string;
-  start_date?: string;
-  end_date?: string;
-  pickup_characters?: string[];
-  image_path?: string;
-  start_date_string?: string;
-  end_date_string?: string;
+  start_date: string;
+  end_date: string;
+  pickup_card_ids: number[];
 }
-
 export interface TimelineConfig {
   calculation: ReleaseCalculation;
   confirmedEvents: TimelineEvent[];
   lastUpdated: Date;
 }
-
 // New event interfaces
 export interface StoryEvent {
   event_name: string;
@@ -97,7 +91,6 @@ export interface StoryEvent {
   start_date: string;
   end_date: string;
 }
-
 export interface ChampionsMeeting {
   name: string;
   start_date: string;
@@ -106,7 +99,6 @@ export interface ChampionsMeeting {
   distance?: string;
   conditions?: string;
 }
-
 export interface LegendRace {
   race_name: string;
   start_date: string;
@@ -126,4 +118,10 @@ export interface LegendRace {
       Wisdom: number;
     };
   }[];
+}
+export interface Campaign {
+  campaign_id: number;
+  image: string;
+  start_date: string;
+  end_date: string;
 }

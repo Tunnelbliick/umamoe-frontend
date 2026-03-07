@@ -13,7 +13,6 @@ import {
   PrecomputedTierlistData,
   PrecomputedCardData
 } from '../models/precomputed-tierlist.model';
-
 interface ExtendedSupportCard {
   id: number;
   type: number;
@@ -26,18 +25,15 @@ interface ExtendedSupportCard {
   cardType?: number;
   index?: number;
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class TierlistCalculationService {
   private precomputedData: PrecomputedTierlistData | null = null;
-
   constructor(
     private http: HttpClient,
     private supportCardService: SupportCardService
   ) {}
-
   /**
    * Load precomputed tierlist data from assets
    */
@@ -45,7 +41,6 @@ export class TierlistCalculationService {
     if (this.precomputedData) {
       return of(this.precomputedData);
     }
-
     return this.http.get<PrecomputedTierlistData>('/assets/data/precomputed-tierlist.json').pipe(
       map(data => {
         this.precomputedData = data;
@@ -53,7 +48,6 @@ export class TierlistCalculationService {
       })
     );
   }
-
   /**
    * Calculate tierlist for all released support cards with selected cards context
    */
@@ -64,7 +58,6 @@ export class TierlistCalculationService {
     return this.loadPrecomputedData().pipe(
       map(data => {
         const processedCards: ProcessedCard[] = [];
-
         // Convert precomputed data to ProcessedCard format
         Object.values(data.cards).forEach((cardData: PrecomputedCardData) => {
           // Process all limit break levels (0-4)
@@ -105,17 +98,14 @@ export class TierlistCalculationService {
                 }
               }
             };
-
             processedCards.push(processedCard);
           }
         });
-
         // Sort by score descending
         return processedCards.sort((a, b) => b.score - a.score);
       })
     );
   }
-
   /**
    * Calculate tierlist for specific card type
    */
@@ -131,7 +121,6 @@ export class TierlistCalculationService {
       })
     );
   }
-
   /**
    * Calculate meta deck score using precomputed data
    */
@@ -143,7 +132,6 @@ export class TierlistCalculationService {
       map(data => {
         const cards: ProcessedCard[] = [];
         let totalScore = 0;
-
         deckCardIds.forEach(cardId => {
           const cardData = data.cards[cardId];
           if (cardData) {
@@ -151,7 +139,6 @@ export class TierlistCalculationService {
             const lb = 4;
             const score = cardData.scores[lb];
             totalScore += score;
-
             const processedCard: ProcessedCard = {
               id: cardData.id.toString(),
               lb: lb,
@@ -168,16 +155,13 @@ export class TierlistCalculationService {
               },
               char_name: cardData.name
             };
-
             cards.push(processedCard);
           }
         });
-
         return { totalScore, cards };
       })
     );
   }
-
   /**
    * Calculate power progression analysis for support cards
    */
@@ -188,7 +172,6 @@ export class TierlistCalculationService {
     return this.loadPrecomputedData().pipe(
       map(data => {
         const progressionData: any[] = [];
-
         Object.values(data.cards).forEach((cardData: PrecomputedCardData) => {
           const progression = {
             id: cardData.id,
@@ -199,15 +182,12 @@ export class TierlistCalculationService {
             tiers: cardData.tiers,
             powerProgression: cardData.powerProgression
           };
-
           progressionData.push(progression);
         });
-
         return progressionData.sort((a, b) => b.scores[4] - a.scores[4]);
       })
     );
   }
-
   /**
    * Get tier percentile from tier name
    */
@@ -215,7 +195,6 @@ export class TierlistCalculationService {
     const tierInfo = TIER_PERCENTILES[tier as keyof typeof TIER_PERCENTILES];
     return tierInfo ? (tierInfo.min + tierInfo.max) / 2 : 0;
   }
-
   /**
    * Get metadata about the precomputed data
    */
@@ -224,7 +203,6 @@ export class TierlistCalculationService {
       map(data => data.metadata)
     );
   }
-
   /**
    * Get type distribution data
    */
@@ -233,7 +211,6 @@ export class TierlistCalculationService {
       map(data => data.typeData)
     );
   }
-
   /**
    * Get specific card data by ID
    */
@@ -242,7 +219,6 @@ export class TierlistCalculationService {
       map(data => data.cards[cardId.toString()] || null)
     );
   }
-
   /**
    * Search cards by name
    */
@@ -251,18 +227,15 @@ export class TierlistCalculationService {
       map(data => {
         const results: PrecomputedCardData[] = [];
         const lowerSearchTerm = searchTerm.toLowerCase();
-
         Object.values(data.cards).forEach(card => {
           if (card.name.toLowerCase().includes(lowerSearchTerm)) {
             results.push(card);
           }
         });
-
         return results.sort((a, b) => b.scores[4] - a.scores[4]); // Sort by LB4 score
       })
     );
   }
-
   /**
    * Get tierlist with only the highest limit break for each card
    */
@@ -270,7 +243,6 @@ export class TierlistCalculationService {
     return this.loadPrecomputedData().pipe(
       map(data => {
         const processedCards: ProcessedCard[] = [];
-
         Object.values(data.cards).forEach((cardData: PrecomputedCardData) => {
           // Use LB4 (highest limit break)
           const lb = 4;
@@ -310,15 +282,12 @@ export class TierlistCalculationService {
               }
             }
           };
-
           processedCards.push(processedCard);
         });
-
         return processedCards.sort((a, b) => b.score - a.score);
       })
     );
   }
-
   /**
    * Get cards for a specific limit break level
    */
@@ -326,7 +295,6 @@ export class TierlistCalculationService {
     return this.loadPrecomputedData().pipe(
       map(data => {
         const processedCards: ProcessedCard[] = [];
-
         Object.values(data.cards).forEach((cardData: PrecomputedCardData) => {
           if (limitBreak >= 0 && limitBreak <= 4) {
             const processedCard: ProcessedCard = {
@@ -365,11 +333,9 @@ export class TierlistCalculationService {
                 }
               }
             };
-
             processedCards.push(processedCard);
           }
         });
-
         return processedCards.sort((a, b) => b.score - a.score);
       })
     );

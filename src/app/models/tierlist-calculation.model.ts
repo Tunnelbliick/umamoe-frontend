@@ -6,12 +6,10 @@ export interface SupportCard {
     type: number; // 0=Speed, 1=Stamina, 2=Power, 3=Guts, 4=Intelligence, 6=Friend
     rarity: number;
     limit_break: number;
-
     // Training bonuses
     tb: number; // training bonus
     mb: number; // motivation bonus
     sb: number; // starting bond
-
     // Friendship system
     specialty_rate: number;
     unique_specialty: number;
@@ -23,18 +21,15 @@ export interface SupportCard {
     fs_stats: number[];
     fs_energy: number;
     fs_ramp: number[];
-
     // Stats
     starting_stats: number[];
     stat_bonus: number[];
     type_stats: number;
-
     // Energy and race
     energy_up: number;
     energy_discount: number;
     wisdom_recovery: number;
     race_bonus: number;
-
     // Additional bonuses
     crowd_bonus: number;
     fan_bonus: number;
@@ -46,11 +41,9 @@ export interface SupportCard {
     hint_rate?: number; // Hint rate for skills^
     fail_rate_down?: number; // Failure rate down for skills
 }
-
 export interface CardEvent {
     [cardId: string]: number[]; // [speed, stamina, power, guts, intelligence, skillPt, energy, bond]
 }
-
 export interface TierlistWeights {
     type: number; // Card type being evaluated (-1 for all types)
     stats: number[]; // Weight for each stat [speed, stamina, power, guts, intelligence, skillPt, energy]
@@ -71,7 +64,6 @@ export interface TierlistWeights {
     prioritize: boolean;
     onlySummer: boolean;
 }
-
 export interface PowerProgression {
     limitBreakProgression: Array<{
         limitBreak: number;
@@ -113,7 +105,6 @@ export interface PowerProgression {
         }>;
     };
 }
-
 export interface ProcessedCard {
     id: string;
     lb: number;
@@ -122,7 +113,6 @@ export interface ProcessedCard {
     char_name: string;
     powerProgression?: PowerProgression;
 }
-
 export interface CardInfo {
     starting_stats: number[];
     event_stats: number[];
@@ -133,7 +123,6 @@ export interface CardInfo {
     linked_training_gains: number[]; // Gains from linked training sessions
     debug?: CardDebugInfo; // Detailed debug information
 }
-
 export interface CardDebugInfo {
     originalCard: {
         id: string;
@@ -212,19 +201,16 @@ export interface CardDebugInfo {
         energyGains: number;
     };
 }
-
 export interface SkillEvaluation {
     hinted_skills_value: number;
     event_skills_value: number;
     total_skills_score: number;
 }
-
 export interface MetaDeck {
     name: string;
     description: string;
     cardIds: string[]; // Array of 6 card IDs
 }
-
 export interface UpcomingCard {
     id: string;
     name: string;
@@ -241,7 +227,6 @@ export interface UpcomingCard {
         image?: string;
     };
 }
-
 export interface ChartDataPoint {
     x: number; // score
     y: number; // position for stacking
@@ -251,9 +236,7 @@ export interface ChartDataPoint {
     tier: string;
     isUpcoming?: boolean;
 }
-
 export const TIER_NAMES = ['S+', 'S', 'A', 'B', 'C', 'D'];
-
 export const TIER_PERCENTILES = {
     'S+': { min: 99, max: 100 },  // Top 1%
     'S': { min: 95, max: 98.99 }, // Top 5%
@@ -262,18 +245,14 @@ export const TIER_PERCENTILES = {
     'C': { min: 30, max: 59.99 }, // Top 70%
     'D': { min: 0, max: 29.99 }   // Bottom 30%
 };
-
 export const TYPE_NAMES = ["Speed", "Stamina", "Power", "Guts", "Intelligence", "", "Friend"];
-
 export const ORDINAL = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th"];
-
 export const RACE_REWARDS = [
     [2, 2, 2, 2, 2, 35],      // Race type 0
     [1.6, 1.6, 1.6, 1.6, 1.6, 25], // Race type 1
     [1, 1, 1, 1, 1, 20],      // Race type 2
     [13.5, 13.5, 13.5, 13.5, 13.5, 50] // Race type 3
 ];
-
 export const DEFAULT_URA_WEIGHTS: TierlistWeights = {
     type: -1,
     stats: [1.8, 1.2, 1.65, 1.2, 1.2, 1, 3],
@@ -313,7 +292,6 @@ export const DEFAULT_URA_WEIGHTS: TierlistWeights = {
     onlySummer: false,
     // Linked training configuration
 };
-
 export const DEFAULT_META_DECKS: MetaDeck[] = [
     {
         name: "Each Meta",

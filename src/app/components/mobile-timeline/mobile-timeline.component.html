@@ -1,499 +1,201 @@
-<div class="mobile-timeline-container">
-  <!-- Header with basic info -->
-  <div class="timeline-header">
-    <h2>Timeline</h2>
+<div class="mobile-timeline">
 
-    <!-- Event count -->
-    <div class="header-info">
-      <span class="event-count">
-        Showing {{ getFilteredEventCount() }} of
-        {{ getTotalEventCount() }} events
-      </span>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="scrollToToday()"
-        class="scroll-today-btn"
-      >
-        <mat-icon>today</mat-icon>
-        Go to Today
-      </button>
-    </div>
-  </div>
-
-  <!-- Timeline content -->
-  <div class="timeline-content">
-    <div class="timeline-track"></div>
-
-    <div class="timeline-items">
-      <div
-        *ngFor="let item of timelineItems; trackBy: trackByItemDate"
-        [id]="'timeline-item-' + item.daysSinceStart"
-        class="timeline-item"
-        [ngClass]="{
-          milestone: item.type === 'milestone',
-          anniversary: item.type === 'anniversary',
-          'today-marker': item.type === 'today',
-          'year-marker': item.type === 'year',
-          'event-item': item.type === 'event',
-          'grouped-events': item.isGrouped
-        }"
-      >
-        <!-- Timeline marker -->
-        <div
-          class="timeline-marker"
-          [ngClass]="{
-            'milestone-marker': item.type === 'milestone',
-            'anniversary-marker': item.type === 'anniversary',
-            'today-marker': item.type === 'today',
-            'year-marker': item.type === 'year',
-            'event-marker': item.type === 'event' && !item.isGrouped,
-            'grouped-marker': item.isGrouped,
-            'character-marker': item.eventData?.type === 'character_banner',
-            'support-marker': item.eventData?.type === 'support_card_banner',
-            'story-event-marker': item.eventData?.type === 'story_event',
-            'champions-meeting-marker':
-              item.eventData?.type === 'champions_meeting',
-            'legend-race-marker': item.eventData?.type === 'legend_race',
-            'paid-banner-marker': isPaidBanner(item.eventData?.type)
-          }"
+  <!-- Event card template (shared between single and grouped events) -->
+  <ng-template #eventCard let-event let-dateLabel="dateLabel" let-dateDelta="dateDelta">
+    <div class="ev-card" [ngClass]="'ev-type-' + event?.type">
+      <div class="ev-date-row" *ngIf="dateLabel">
+        <span class="ev-date-label">{{ dateLabel }}</span>
+        <span class="ev-date-delta" *ngIf="dateDelta !== 0">{{ dateDelta > 0 ? '+' + dateDelta + 'd' : dateDelta + 'd' }}</span>
+      </div>
+      <div class="ev-head">
+        <span class="ev-badge">
+          <mat-icon>{{ getEventTypeIcon(event?.type) }}</mat-icon>
+          {{ getEventTypeLabel(event?.type) }}
+        </span>
+        <button
+          *ngIf="hasGametoraLink(event)"
+          mat-icon-button
+          (click)="openGametoraLink(event)"
+          matTooltip="View on Gametora"
+          class="ev-ext-btn"
         >
-          <!-- Icon for special markers -->
-          <mat-icon *ngIf="item.type === 'milestone'">flag</mat-icon>
-          <mat-icon *ngIf="item.type === 'anniversary'">cake</mat-icon>
-          <mat-icon *ngIf="item.type === 'year'">calendar_today</mat-icon>
-        </div>
-
-        <!-- Content area -->
-        <div class="timeline-content-area">
-          <!-- Date -->
-          <div class="timeline-date">
-            <span class="primary-date">{{ formatDateForItem(item) }}</span>
-            <span class="days-from-today" *ngIf="item.daysFromToday !== 0">
-              <ng-container *ngIf="item.daysFromToday > 0"
-                >+{{ item.daysFromToday }}d</ng-container
-              >
-              <ng-container *ngIf="item.daysFromToday < 0"
-                >{{ item.daysFromToday }}d</ng-container
-              >
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </div>
+      <div class="ev-body">
+        <div class="ev-info">
+          <!-- Legend Race: race name + course chips -->
+          <ng-container *ngIf="event?.type === 'legend_race'; else defaultDesc">
+            <p class="ev-race-title">{{ getLegendRaceTitle(event?.title) }}</p>
+            <div class="ev-course-chips">
+              <span *ngFor="let chip of getLegendCourseChips(event?.description)" class="ev-course-chip">
+                <mat-icon>{{ chip.icon }}</mat-icon>{{ chip.label }}
+              </span>
+            </div>
+          </ng-container>
+          <!-- Description (for events without character/support chips) -->
+          <ng-template #defaultDesc>
+            <p
+              class="ev-desc"
+              *ngIf="event?.relatedSupportCards?.length == undefined && event?.description"
+              [innerHTML]="event?.description"
+            ></p>
+          </ng-template>
+          <!-- Campaign duration info -->
+          <div *ngIf="event?.type === 'campaign'" class="ev-campaign-info">
+            <span *ngIf="event?.bannerDuration" class="ev-info-chip">
+              <mat-icon>schedule</mat-icon>{{ event?.bannerDuration }}d
+            </span>
+            <span *ngIf="event?.estimatedEndDate" class="ev-info-chip">
+              <mat-icon>event</mat-icon>Until {{ event?.estimatedEndDate | date:'MMM d' }}
             </span>
           </div>
-
-          <!-- Special markers (milestone, anniversary, etc.) -->
-          <div *ngIf="item.type !== 'event'" class="special-marker-content">
-            <h3 class="marker-title">{{ item.label }}</h3>
-            <p *ngIf="item.type === 'today'" class="today-description">
-              Current date in the timeline
-            </p>
-          </div>
-
-          <!-- Single event -->
-          <mat-card
-            *ngIf="item.type === 'event' && !item.isGrouped"
-            class="event-card"
-            [ngClass]="{
-              'event-type-character_banner':
-                item.eventData?.type === 'character_banner',
-              'event-type-support_card_banner':
-                item.eventData?.type === 'support_card_banner',
-              'event-type-story_event': item.eventData?.type === 'story_event',
-              'event-type-champions_meeting':
-                item.eventData?.type === 'champions_meeting',
-              'event-type-legend_race': item.eventData?.type === 'legend_race',
-              'event-type-paid_banner': item.eventData?.type === 'paid_banner'
-            }"
+          <!-- Character tags -->
+          <div
+            *ngIf="event?.relatedCharacters?.length && event?.type !== 'legend_race'"
+            class="ev-tags char-tags"
           >
-            <mat-card-content>
-              <!-- Gametora link button in top right -->
-              <button
-                *ngIf="hasGametoraLink(item.eventData)"
-                mat-icon-button
-                color="primary"
-                (click)="openGametoraLink(item.eventData)"
-                matTooltip="View on Gametora"
-                class="gametora-link-btn-header"
-              >
-                <mat-icon>open_in_new</mat-icon>
-              </button>
-              
-              <div class="event-content">
-                <div class="event-header">
-                  <div class="event-title">
-                    <mat-icon>
-                      <ng-container [ngSwitch]="item.eventData?.type">
-                        <span *ngSwitchCase="'character_banner'">person</span>
-                        <span *ngSwitchCase="'support_card_banner'">style</span>
-                        <span *ngSwitchCase="'story_event'">auto_stories</span>
-                        <span *ngSwitchCase="'champions_meeting'"
-                          >emoji_events</span
-                        >
-                        <span *ngSwitchCase="'legend_race'"
-                          >sports_motorsports</span
-                        >
-                        <span *ngSwitchCase="'paid_banner'">payments</span>
-                      </ng-container>
-                    </mat-icon>
-                    <ng-container [ngSwitch]="item.eventData?.type">
-                      <span *ngSwitchCase="'character_banner'">Character</span>
-                      <span *ngSwitchCase="'support_card_banner'">Support</span>
-                      <span *ngSwitchCase="'story_event'">Story Event</span>
-                      <span *ngSwitchCase="'champions_meeting'"
-                        >Champions Meeting</span
-                      >
-                      <span *ngSwitchCase="'legend_race'">Legend Race</span>
-                      <span *ngSwitchCase="'paid_banner'">Paid Banner</span>
-                    </ng-container>
-                  </div>
-                  <ng-container
-                    *ngIf="
-                      item.eventData?.relatedSupportCards?.length == undefined
-                    "
-                  >
-                    <div
-                      class="event-description"
-                      [innerHTML]="item.eventData?.description"
-                    ></div>
-                  </ng-container>
-                  <!-- Related characters -->
-                  <ng-container
-                    *ngIf="
-                      item.eventData?.relatedCharacters?.length != undefined ||
-                      item.eventData?.relatedSupportCards?.length != undefined
-                    "
-                  >
-                    <div
-                      *ngIf="
-                        item.eventData?.relatedCharacters?.length &&
-                        item.eventData?.type !== 'legend_race'
-                      "
-                      class="related-items"
-                    >
-                      <p class="related-label">Characters:</p>
-                      <div class="character-chips">
-                        <mat-chip
-                          *ngFor="
-                            let character of item.eventData?.relatedCharacters
-                          "
-                          class="character-chip"
-                        >
-                          {{ character }}
-                        </mat-chip>
-                      </div>
-                    </div>
-
-                    <!-- Related support cards -->
-                    <div
-                      *ngIf="item.eventData?.relatedSupportCards?.length"
-                      class="related-items"
-                    >
-                      <p class="related-label">Support Cards:</p>
-                      <div class="support-chips">
-                        <mat-chip
-                          *ngFor="
-                            let support of item.eventData?.relatedSupportCards
-                          "
-                          class="support-chip"
-                        >
-                          {{ support }}
-                        </mat-chip>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-
-                <!-- Remove the old action buttons section -->
-              </div>
-              <div
-                class="event-image-container"
-                *ngIf="item.eventData?.imagePath"
-              >
-                <ng-container *ngIf="item.eventData?.type === 'legend_race'">
-                  <div class="legend-race-images">
-                    <img
-                      *ngFor="
-                        let img of item.eventData?.relatedCharacters;
-                        let i = index
-                      "
-                      [src]="img"
-                      [alt]="img || 'Event'"
-                      [style.z-index]="
-                        (item.eventData?.relatedCharacters?.length || 0) - i
-                      "
-                      [style.left.px]="
-                        (270 /
-                          (item.eventData?.relatedCharacters?.length || 0)) *
-                          i -
-                        40
-                      "
-                      (error)="onImageError($event)"
-                      class="legend-race-image"
-                    />
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="item.eventData?.type !== 'legend_race'">
-                  <img
-                    [src]="item.eventData?.imagePath"
-                    [alt]="item.eventData?.title || 'Event'"
-                    (error)="onImageError($event)"
-                  />
-                </ng-container>
-              </div>
-
-              <!-- Event image -->
-
-              <!-- Placeholder for events without images -->
-              <div
-                *ngIf="!item.eventData?.imagePath"
-                class="event-placeholder"
-                [ngClass]="{
-                  'character-placeholder':
-                    item.eventData?.type === 'character_banner',
-                  'support-placeholder':
-                    item.eventData?.type === 'support_card_banner',
-                  'story-event-placeholder':
-                    item.eventData?.type === 'story_event',
-                  'champions-meeting-placeholder':
-                    item.eventData?.type === 'champions_meeting',
-                  'legend-race-placeholder':
-                    item.eventData?.type === 'legend_race',
-                  'paid-banner-placeholder':
-                    item.eventData?.type === 'paid_banner'
-                }"
-              >
-                <mat-icon class="placeholder-icon">
-                  <ng-container [ngSwitch]="item.eventData?.type">
-                    <span *ngSwitchCase="'character_banner'">person</span>
-                    <span *ngSwitchCase="'support_card_banner'">support</span>
-                    <span *ngSwitchCase="'story_event'">auto_stories</span>
-                    <span *ngSwitchCase="'champions_meeting'"
-                      >emoji_events</span
-                    >
-                    <span *ngSwitchCase="'legend_race'">stars</span>
-                    <span *ngSwitchCase="'paid_banner'">payments</span>
-                  </ng-container>
-                </mat-icon>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-          <!-- Grouped events - flex row layout -->
-          <div *ngIf="item.isGrouped" class="grouped-events-wrapper">
-            <div class="grouped-events-header">
-              <span class="grouped-count"
-                >{{ item.groupedEvents?.length }} events</span
-              >
-            </div>
-            <div class="grouped-events-row">
-              <mat-card
-                *ngFor="let groupedEvent of item.groupedEvents"
-                class="event-card"
-                [ngClass]="{
-                  'event-type-character_banner':
-                    groupedEvent?.type === 'character_banner',
-                  'event-type-support_card_banner':
-                    groupedEvent?.type === 'support_card_banner',
-                  'event-type-story_event':
-                    groupedEvent?.type === 'story_event',
-                  'event-type-champions_meeting':
-                    groupedEvent?.type === 'champions_meeting',
-                  'event-type-legend_race':
-                    groupedEvent?.type === 'legend_race',
-                  'event-type-paid_banner': groupedEvent?.type === 'paid_banner'
-                }"
-              >
-                <!-- Gametora link button in top right for grouped events -->
-                <button
-                  *ngIf="hasGametoraLink(groupedEvent)"
-                  mat-icon-button
-                  color="primary"
-                  (click)="openGametoraLink(groupedEvent)"
-                  matTooltip="View on Gametora"
-                  class="gametora-link-btn-header"
-                >
-                  <mat-icon>open_in_new</mat-icon>
-                </button>
-
-                <mat-card-content>
-                  <div class="event-content">
-                    <div class="event-header">
-                      <div class="event-title">
-                        <mat-icon>
-                          <ng-container [ngSwitch]="groupedEvent.type">
-                            <span *ngSwitchCase="'character_banner'"
-                              >person</span
-                            >
-                            <span *ngSwitchCase="'support_card_banner'"
-                              >style</span
-                            >
-                            <span *ngSwitchCase="'story_event'"
-                              >auto_stories</span
-                            >
-                            <span *ngSwitchCase="'champions_meeting'"
-                              >emoji_events</span
-                            >
-                            <span *ngSwitchCase="'legend_race'"
-                              >sports_motorsports</span
-                            >
-                            <span *ngSwitchCase="'paid_banner'">payments</span>
-                          </ng-container>
-                        </mat-icon>
-                        <ng-container [ngSwitch]="groupedEvent.type">
-                          <span *ngSwitchCase="'character_banner'"
-                            >Character</span
-                          >
-                          <span *ngSwitchCase="'support_card_banner'"
-                            >Support</span
-                          >
-                          <span *ngSwitchCase="'story_event'">Story Event</span>
-                          <span *ngSwitchCase="'champions_meeting'"
-                            >Champions Meeting</span
-                          >
-                          <span *ngSwitchCase="'legend_race'">Legend Race</span>
-                          <span *ngSwitchCase="'paid_banner'">Paid Banner</span>
-                        </ng-container>
-                      </div>
-
-                      <!-- Event description for events without related items -->
-                      <ng-container
-                        *ngIf="
-                          groupedEvent.relatedSupportCards?.length == undefined
-                        "
-                      >
-                        <div
-                          class="event-description"
-                          [innerHTML]="groupedEvent.description"
-                        ></div>
-                      </ng-container>
-
-                      <!-- Related items for events with characters/supports -->
-                      <ng-container
-                        *ngIf="
-                          groupedEvent.relatedCharacters?.length != undefined ||
-                          groupedEvent.relatedSupportCards?.length != undefined
-                        "
-                      >
-                        <div
-                          *ngIf="
-                            groupedEvent.relatedCharacters?.length &&
-                            groupedEvent.type !== 'legend_race'
-                          "
-                          class="related-items"
-                        >
-                          <p class="related-label">Characters:</p>
-                          <div class="character-chips">
-                            <mat-chip
-                              *ngFor="
-                                let character of groupedEvent.relatedCharacters
-                              "
-                              class="character-chip"
-                            >
-                              {{ character }}
-                            </mat-chip>
-                          </div>
-                        </div>
-
-                        <!-- Related support cards -->
-                        <div
-                          *ngIf="groupedEvent.relatedSupportCards?.length"
-                          class="related-items"
-                        >
-                          <p class="related-label">Support Cards:</p>
-                          <div class="support-chips">
-                            <mat-chip
-                              *ngFor="
-                                let support of groupedEvent.relatedSupportCards
-                              "
-                              class="support-chip"
-                            >
-                              {{ support }}
-                            </mat-chip>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </div>
-
-                    <!-- Remove the old action buttons for grouped events -->
-                  </div>
-
-                  <!-- Event image -->
-                  <div
-                    class="event-image-container"
-                    *ngIf="groupedEvent.imagePath"
-                  >
-                    <ng-container *ngIf="groupedEvent.type === 'legend_race'">
-                      <div class="legend-race-images">
-                        <img
-                          *ngFor="
-                            let img of groupedEvent.relatedCharacters;
-                            let i = index
-                          "
-                          [src]="img"
-                          [alt]="img || 'Event'"
-                          [style.z-index]="
-                            (groupedEvent.relatedCharacters?.length || 0) - i
-                          "
-                          [style.left.px]="
-                            (270 /
-                              (groupedEvent.relatedCharacters?.length || 0)) *
-                              i -
-                            40
-                          "
-                          (error)="onImageError($event)"
-                          class="legend-race-image"
-                        />
-                      </div>
-                    </ng-container>
-                    <ng-container *ngIf="groupedEvent.type !== 'legend_race'">
-                      <img
-                        [src]="groupedEvent.imagePath"
-                        [alt]="groupedEvent.title || 'Event'"
-                        (error)="onImageError($event)"
-                      />
-                    </ng-container>
-                  </div>
-
-                  <!-- Placeholder for events without images -->
-                  <div
-                    *ngIf="!groupedEvent.imagePath"
-                    class="event-placeholder"
-                    [ngClass]="{
-                      'character-placeholder':
-                        groupedEvent.type === 'character_banner',
-                      'support-placeholder':
-                        groupedEvent.type === 'support_card_banner',
-                      'story-event-placeholder':
-                        groupedEvent.type === 'story_event',
-                      'champions-meeting-placeholder':
-                        groupedEvent.type === 'champions_meeting',
-                      'legend-race-placeholder':
-                        groupedEvent.type === 'legend_race',
-                      'paid-banner-placeholder':
-                        groupedEvent.type === 'paid_banner'
-                    }"
-                  >
-                    <mat-icon class="placeholder-icon">
-                      <ng-container [ngSwitch]="groupedEvent.type">
-                        <span *ngSwitchCase="'character_banner'">person</span>
-                        <span *ngSwitchCase="'support_card_banner'"
-                          >support</span
-                        >
-                        <span *ngSwitchCase="'story_event'">auto_stories</span>
-                        <span *ngSwitchCase="'champions_meeting'"
-                          >emoji_events</span
-                        >
-                        <span *ngSwitchCase="'legend_race'">stars</span>
-                        <span *ngSwitchCase="'paid_banner'">payments</span>
-                      </ng-container>
-                    </mat-icon>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
+            <span
+              *ngFor="let char of event?.relatedCharacters | slice:0:5"
+              class="ev-tag ev-tag-char"
+            >{{ char }}</span>
+            <span
+              *ngIf="(event?.relatedCharacters?.length || 0) > 5"
+              class="ev-tag-more"
+            >+{{ (event?.relatedCharacters?.length || 0) - 5 }}</span>
           </div>
+          <!-- Support card tags -->
+          <div *ngIf="event?.relatedSupportCards?.length" class="ev-tags support-tags">
+            <span
+              *ngFor="let card of event?.relatedSupportCards | slice:0:5"
+              class="ev-tag ev-tag-support"
+            >{{ card }}</span>
+            <span
+              *ngIf="(event?.relatedSupportCards?.length || 0) > 5"
+              class="ev-tag-more"
+            >+{{ (event?.relatedSupportCards?.length || 0) - 5 }}</span>
+          </div>
+        </div>
+        <!-- Banner image -->
+        <div class="ev-media" *ngIf="event?.imagePath || event?.type === 'legend_race'">
+          <div *ngIf="event?.type === 'legend_race'" class="ev-legend-avatars">
+            <img
+              *ngFor="let img of event?.relatedCharacters"
+              [src]="img"
+              alt=""
+              (error)="onImageError($event)"
+              class="ev-legend-avatar"
+            />
+          </div>
+          <img
+            *ngIf="event?.type !== 'legend_race'"
+            [src]="event?.imagePath"
+            [alt]="event?.title || 'Event'"
+            (error)="onImageError($event)"
+            class="ev-banner"
+          />
+        </div>
+        <!-- Placeholder when no image -->
+        <div class="ev-placeholder" *ngIf="!event?.imagePath">
+          <mat-icon>{{ getEventTypeIcon(event?.type) }}</mat-icon>
         </div>
       </div>
     </div>
+  </ng-template>
+
+  <!-- Header -->
+  <div class="tl-header">
+    <div class="tl-header-left">
+      <mat-icon class="tl-header-icon">timeline</mat-icon>
+      <div class="tl-header-text">
+        <h2>Timeline</h2>
+
+        <span class="tl-event-count">{{ getFilteredEventCount() }} / {{ getTotalEventCount() }} events</span>
+      </div>
+    </div>
+    <button
+      mat-icon-button
+      (click)="scrollToToday()"
+      matTooltip="Jump to today"
+      class="tl-today-btn"
+    >
+      <mat-icon>today</mat-icon>
+    </button>
   </div>
+
+  <!-- Timeline feed -->
+  <div class="tl-feed">
+    <div class="tl-spine"></div>
+
+    <div
+      *ngFor="let item of timelineItems; trackBy: trackByItemDate"
+      [id]="'timeline-item-' + item.daysSinceStart"
+      class="tl-item"
+      >
+      <!-- Spine dot -->
+      <div class="tl-dot" [ngClass]="{
+        'dot-milestone':  item.type === 'milestone',
+        'dot-anniversary': item.type === 'anniversary',
+        'dot-today':      item.type === 'today',
+        'dot-year':       item.type === 'year',
+        'dot-grouped':    item.isGrouped === true,
+        'dot-char':       item.eventData?.type === 'character_banner',
+        'dot-support':    item.eventData?.type === 'support_card_banner',
+        'dot-story':      item.eventData?.type === 'story_event',
+        'dot-champs':     item.eventData?.type === 'champions_meeting',
+        'dot-legend':     item.eventData?.type === 'legend_race',
+        'dot-paid':       isPaidBanner(item.eventData?.type),
+        'dot-campaign':   item.eventData?.type === 'campaign'
+      }"></div>
+
+      <!-- Content -->
+      <div class="tl-content">
+        <!-- Date row (all items) -->
+        <div class="tl-date" *ngIf="!item.isGrouped">
+          <span class="tl-date-label">{{ formatDateForItem(item) }}</span>
+          <span class="tl-date-delta" *ngIf="item.daysFromToday !== 0">
+            <ng-container *ngIf="item.daysFromToday > 0">+{{ item.daysFromToday }}d</ng-container>
+            <ng-container *ngIf="item.daysFromToday < 0">{{ item.daysFromToday }}d</ng-container>
+          </span>
+        </div>
+
+        <!-- Special markers -->
+        <div
+          *ngIf="item.type !== 'event'"
+          class="tl-marker"
+          [ngClass]="'tl-marker-' + item.type"
+        >
+          <span class="tl-marker-label">{{ item.label }}</span>
+          <p *ngIf="item.type === 'today'" class="tl-marker-sub">Current date in the timeline</p>
+          </div>
+
+
+        <!-- Single event -->
+        <ng-container *ngIf="item.type === 'event' && !item.isGrouped">
+          <ng-container *ngTemplateOutlet="eventCard; context: { $implicit: item.eventData }"></ng-container>
+        </ng-container>
+
+
+        <!-- Grouped events -->
+        <ng-container *ngIf="item.isGrouped">
+          <div class="tl-date">
+            <span class="tl-date-label">{{ formatDateForItem(item) }}</span>
+            <span class="tl-date-delta" *ngIf="item.daysFromToday !== 0">
+              <ng-container *ngIf="item.daysFromToday > 0">+{{ item.daysFromToday }}d</ng-container>
+              <ng-container *ngIf="item.daysFromToday < 0">{{ item.daysFromToday }}d</ng-container>
+            </span>
+            <span class="tl-group-badge">{{ item.groupedEvents?.length }} events</span>
+          </div>
+          <div class="tl-grouped">
+            <ng-container *ngFor="let evt of item.groupedEvents">
+              <ng-container *ngTemplateOutlet="eventCard; context: { $implicit: evt }"></ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Fixed Bottom Filter Panel -->
   <div class="bottom-filter-panel" [class.expanded]="isFilterPanelExpanded">
@@ -574,6 +276,14 @@
           class="filter-toggle paid-toggle"
         >
           Paid Banners ({{ getPaidBannerCount() }})
+        </mat-checkbox>
+
+        <mat-checkbox
+          [(ngModel)]="eventFilters.showCampaigns"
+          (change)="toggleCampaignsFilter()"
+          class="filter-toggle campaign-toggle"
+        >
+          Mission Campaigns ({{ getCampaignCount() }})
         </mat-checkbox>
       </div>
     </div>

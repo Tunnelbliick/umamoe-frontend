@@ -7,7 +7,6 @@ import {
   SupportCardSearchResult,
   SupportCardTypeString 
 } from '../models/support-card-simple.model';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +14,9 @@ export class SupportCardDatabaseService {
   private readonly dataUrl = '/assets/data/support-cards-db.json';
   private supportCards$ = new BehaviorSubject<SupportCardSimple[]>([]);
   private cachedCards$: Observable<SupportCardSimple[]> | null = null;
-
   constructor(private http: HttpClient) {
     this.loadSupportCards();
   }
-
   /**
    * Load all support cards from the JSON database
    */
@@ -42,19 +39,16 @@ export class SupportCardDatabaseService {
           shareReplay(1) // Cache the result
         );
     }
-
     this.cachedCards$.subscribe(cards => {
       this.supportCards$.next(cards);
     });
   }
-
   /**
    * Get all support cards
    */
   getAllSupportCards(): Observable<SupportCardSimple[]> {
     return this.supportCards$.asObservable();
   }
-
   /**
    * Search support cards with filters
    */
@@ -62,7 +56,6 @@ export class SupportCardDatabaseService {
     return this.supportCards$.pipe(
       map(cards => {
         let filteredCards = [...cards];
-
         // Apply filters
         if (filters.name) {
           const searchTerm = filters.name.toLowerCase().trim();
@@ -70,33 +63,28 @@ export class SupportCardDatabaseService {
             card.name.toLowerCase().includes(searchTerm)
           );
         }
-
         if (filters.type) {
           filteredCards = filteredCards.filter(card => 
             card.type === filters.type
           );
         }
-
         if (filters.rarity !== undefined) {
           filteredCards = filteredCards.filter(card => 
             card.rarity === filters.rarity
           );
         }
-
         if (filters.minReleaseDate) {
           const minDate = new Date(filters.minReleaseDate);
           filteredCards = filteredCards.filter(card => 
             new Date(card.release_date) >= minDate
           );
         }
-
         if (filters.maxReleaseDate) {
           const maxDate = new Date(filters.maxReleaseDate);
           filteredCards = filteredCards.filter(card => 
             new Date(card.release_date) <= maxDate
           );
         }
-
         return {
           cards: filteredCards,
           total: filteredCards.length,
@@ -105,7 +93,6 @@ export class SupportCardDatabaseService {
       })
     );
   }
-
   /**
    * Get support card by ID
    */
@@ -114,7 +101,6 @@ export class SupportCardDatabaseService {
       map(cards => cards.find(card => card.id === id))
     );
   }
-
   /**
    * Get support cards by type
    */
@@ -123,7 +109,6 @@ export class SupportCardDatabaseService {
       map(cards => cards.filter(card => card.type === type))
     );
   }
-
   /**
    * Get support cards by rarity
    */
@@ -132,7 +117,6 @@ export class SupportCardDatabaseService {
       map(cards => cards.filter(card => card.rarity === rarity))
     );
   }
-
   /**
    * Get unique types available in the database
    */
@@ -145,7 +129,6 @@ export class SupportCardDatabaseService {
       })
     );
   }
-
   /**
    * Get unique rarities available in the database
    */
@@ -158,7 +141,6 @@ export class SupportCardDatabaseService {
       })
     );
   }
-
   /**
    * Get statistics about the support card database
    */
@@ -179,16 +161,13 @@ export class SupportCardDatabaseService {
           intelligence: 0,
           friend: 0
         };
-
         const cardsByRarity: Record<number, number> = {
           1: 0,
           2: 0,
           3: 0
         };
-
         let latestDate = '';
         let oldestDate = '';
-
         cards.forEach((card, index) => {
           // Count by type
           cardsByType[card.type]++;
@@ -197,7 +176,6 @@ export class SupportCardDatabaseService {
           if (cardsByRarity[card.rarity] !== undefined) {
             cardsByRarity[card.rarity]++;
           }
-
           // Track date range
           if (index === 0 || card.release_date > latestDate) {
             latestDate = card.release_date;
@@ -206,7 +184,6 @@ export class SupportCardDatabaseService {
             oldestDate = card.release_date;
           }
         });
-
         return {
           totalCards: cards.length,
           cardsByType,
@@ -217,7 +194,6 @@ export class SupportCardDatabaseService {
       })
     );
   }
-
   /**
    * Refresh the support cards data
    */

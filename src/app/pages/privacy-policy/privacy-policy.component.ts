@@ -4,7 +4,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
-
 @Component({
   selector: 'app-privacy-policy',
   standalone: true,
@@ -35,7 +34,6 @@ export class PrivacyPolicyComponent {
       { name: 'twitter:image', content: 'https://honsemoe.com/assets/og-image.png' }
     ]);
   }
-
   scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     if (element) {

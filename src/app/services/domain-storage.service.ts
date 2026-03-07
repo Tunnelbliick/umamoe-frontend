@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-
 @Injectable({
   providedIn: 'root'
 })
 export class DomainStorageService {
   private readonly MIGRATION_KEY = 'domain-migration-complete';
-
   constructor() {
     this.checkAndMigrateDomain();
   }
-
   /**
    * Check if we're on www.honse.moe and redirect to honse.moe for localStorage consistency
    * Updated to support both domains without forced redirects
@@ -17,7 +14,6 @@ export class DomainStorageService {
   private checkAndMigrateDomain(): void {
     // Only run this in browser environment
     if (typeof window === 'undefined') return;
-
     const currentHost = window.location.hostname;
     
     // Support both www.honse.moe and honse.moe without redirecting
@@ -26,7 +22,6 @@ export class DomainStorageService {
       localStorage.setItem(this.MIGRATION_KEY, 'true');
     }
   }
-
   /**
    * Get a localStorage item with fallback for cross-domain compatibility
    */
@@ -38,7 +33,6 @@ export class DomainStorageService {
       return null;
     }
   }
-
   /**
    * Set a localStorage item with error handling
    */
@@ -49,7 +43,6 @@ export class DomainStorageService {
       console.warn('Failed to set localStorage item:', error);
     }
   }
-
   /**
    * Remove a localStorage item with error handling
    */
@@ -60,7 +53,6 @@ export class DomainStorageService {
       console.warn('Failed to remove localStorage item:', error);
     }
   }
-
   /**
    * Check if localStorage is available
    */
@@ -74,7 +66,6 @@ export class DomainStorageService {
       return false;
     }
   }
-
   /**
    * Get the canonical domain (without www)
    */

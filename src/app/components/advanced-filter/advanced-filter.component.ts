@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,7 +20,7 @@ import { SupportCardService } from '../../services/support-card.service';
 import { SupportCard, SupportCardShort, SupportCardType, Rarity } from '../../models/support-card.model';
 import factorsData from '../../../data/factors.json';
 import characterData from '../../../data/character.json';
-
+import characterNamesData from '../../../data/character_names.json';
 export interface ActiveFilterChip {
   id: string;
   label: string;
@@ -29,11 +29,10 @@ export interface ActiveFilterChip {
   showStar?: boolean;
   rankIcon?: string; // Path to rank icon image
   range?: string; // Star range like "1-9", "5+", etc.
-  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other' | 'blueStarSum' | 'pinkStarSum' | 'greenStarSum' | 'whiteStarSum';
+  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other' | 'blueStarSum' | 'pinkStarSum' | 'greenStarSum' | 'whiteStarSum' | 'includeMainParent' | 'includeParent' | 'excludeParent' | 'excludeMainParent';
   filterIndex?: number;
   filterList?: FactorFilter[];
 }
-
 interface CompressedState {
   b?: (number|null)[][]; // blue factors [id, min]
   p?: (number|null)[][]; // pink factors [id, min]
@@ -42,7 +41,6 @@ interface CompressedState {
   
   ow?: number[]; // optional white factors [id]
   omw?: number[]; // optional main white factors [id]
-
   mb?: (number|null)[][]; // main blue
   mp?: (number|null)[][]; // main pink
   mg?: (number|null)[][]; // main green
@@ -69,8 +67,13 @@ interface CompressedState {
   wss?: number; // white stars sum min
   
   mmwc?: number; // main parent min white count
+  
+  // Parent include/exclude (arrays of character IDs)
+  imp?: number[]; // include main parent IDs
+  ip?: number[];  // include parent IDs
+  ep?: number[];  // exclude parent IDs
+  emp?: number[]; // exclude main parent IDs
 }
-
 export interface TreeNode {
   id: string;
   name: string;
@@ -79,15 +82,13 @@ export interface TreeNode {
   layer: number;
   children?: TreeNode[];
 }
-
 export interface UnifiedSearchParams {
   page?: number;
   limit?: number;
   search_type?: string;
-
   // Inheritance filtering
   player_chara_id?: number;
-  main_parent_id?: number;
+  main_parent_id?: number[];
   parent_left_id?: number;
   parent_right_id?: number;
   parent_rank?: number;
@@ -100,7 +101,6 @@ export interface UnifiedSearchParams {
   blue_sparks_9star?: boolean;
   pink_sparks_9star?: boolean;
   green_sparks_9star?: boolean;
-
   // Main parent spark filtering
   main_parent_blue_sparks?: number[];
   main_parent_pink_sparks?: number[];
@@ -108,46 +108,42 @@ export interface UnifiedSearchParams {
   main_parent_white_sparks?: number[][];
   min_win_count?: number;
   min_white_count?: number;
-
   // Star sum filtering (min only)
   min_blue_stars_sum?: number;
   min_pink_stars_sum?: number;
   min_green_stars_sum?: number;
   min_white_stars_sum?: number;
-
   // Main inherit filtering
   min_main_blue_factors?: number;
   min_main_pink_factors?: number;
   min_main_green_factors?: number;
   min_main_white_count?: number;
-
   // Optional white sparks (no level requirement, used for sorting by match score)
   optional_white_sparks?: number[];
   optional_main_white_sparks?: number[];
-
   // Support card filtering
   support_card_id?: number;
   min_limit_break?: number;
   max_limit_break?: number;
   min_experience?: number;
-
   // Common filtering
   trainer_id?: string;
   trainer_name?: string;
   max_follower_num?: number;
   sort_by?: string;
-
   player_chara_id_2?: number;
   desired_main_chara_id?: number;
+  // Parent include/exclude filters (multi-select)
+  parent_id?: number[];           // Matches against both left and right parent positions
+  exclude_parent_id?: number[];   // Excludes from both left and right parent positions
+  exclude_main_parent_id?: number[]; // Excludes main parent IDs
 }
-
 export interface FactorFilter {
   uuid: string;
   factorId: number | null;
   min: number;
   max: number;
 }
-
 @Component({
   selector: 'app-advanced-filter',
   standalone: true,
@@ -168,46 +164,71 @@ export interface FactorFilter {
   templateUrl: './advanced-filter.component.html',
   styleUrl: './advanced-filter.component.scss'
 })
-export class AdvancedFilterComponent implements OnInit {
+export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() resultCount: number | null = null;
   @Output() filterChange = new EventEmitter<UnifiedSearchParams>();
+  @Output() maxFollowersToggled = new EventEmitter<boolean>();
   private filterChangeSubject = new Subject<UnifiedSearchParams>();
-
+  // Wrapping detection
+  @ViewChild('mainLayout', { static: false }) mainLayoutRef!: ElementRef<HTMLElement>;
+  legacyWrapped = false;
+  searchWrapped = false;
+  private resizeObserver?: ResizeObserver;
+  private hostResizeObserver?: ResizeObserver;
   isExpanded = false;
   selectedLimitBreak = 0; // Default to LB0+
+  includeMaxFollowers = false; // false = exclude max follower accounts (999), true = include (1000)
   searchUserId = ''; // Search for user ID
   searchUsername = ''; // Search for username
   selectedSupportCard: SupportCardShort | null = null;
   activeFilterChips: ActiveFilterChip[] = [];
-
+  // Collapsible section state
+  collapsedSections = new Set<string>();
+  // Scroll-aware floating button state
+  showFloatingBtn = false;
+  floatingBtnMode: 'results' | 'top' = 'results';
+  private scrollListener?: () => void;
   // Factor Data
   blueFactors = factorsData.filter((f: any) => f.type === 0).map((f: any) => ({...f, id: parseInt(f.id, 10)}));
   pinkFactors = factorsData.filter((f: any) => f.type === 1).map((f: any) => ({...f, id: parseInt(f.id, 10)}));
   greenFactors = factorsData.filter((f: any) => f.type === 5).map((f: any) => ({...f, id: parseInt(f.id, 10)}));
   whiteFactors = factorsData.filter((f: any) => f.type === 2 || f.type === 3 || f.type === 4).map((f: any) => ({...f, id: parseInt(f.id, 10)}));
-
   // Active Factor Filters
   blueFactorFilters: FactorFilter[] = [];
   pinkFactorFilters: FactorFilter[] = [];
   greenFactorFilters: FactorFilter[] = [];
   whiteFactorFilters: FactorFilter[] = [];
-
   mainBlueFactorFilters: FactorFilter[] = [];
   mainPinkFactorFilters: FactorFilter[] = [];
   mainGreenFactorFilters: FactorFilter[] = [];
   mainWhiteFactorFilters: FactorFilter[] = [];
-
   // Optional white factors (no level, just ID - for scoring/sorting)
   optionalWhiteFactorFilters: FactorFilter[] = [];
   optionalMainWhiteFactorFilters: FactorFilter[] = [];
-
+  // Parent include/exclude character selections (multi-select)
+  includeMainParentCharacters: { id: number; name: string; image?: string }[] = [];
+  includeParentCharacters: { id: number; name: string; image?: string }[] = [];
+  excludeParentCharacters: { id: number; name: string; image?: string }[] = [];
+  excludeMainParentCharacters: { id: number; name: string; image?: string }[] = [];
   ngOnInit() {
+    // Default Quick Filters collapsed at all sizes
+    this.collapsedSections.add('quickFilters');
+    // On mobile, default all sections to collapsed
+    if (window.innerWidth <= 600) {
+      this.collapsedSections.add('mLegacyTree');
+      this.collapsedSections.add('mSupportCard');
+      this.collapsedSections.add('mSearchUsers');
+      this.collapsedSections.add('inheritanceFactors');
+      this.collapsedSections.add('mainParentFactors');
+      this.collapsedSections.add('generalCriteria');
+      this.collapsedSections.add('totalStarCount');
+    }
     this.filterChangeSubject.pipe(
-      debounceTime(500)
+      debounceTime(800) // Increased to prevent rate limiting
     ).subscribe(filters => {
       this.filterChange.emit(filters);
     });
   }
-
   // Filter State
   filterState: UnifiedSearchParams = {
     blue_sparks: [],
@@ -218,10 +239,8 @@ export class AdvancedFilterComponent implements OnInit {
     blue_sparks_9star: false,
     pink_sparks_9star: false,
     green_sparks_9star: false,
-
     min_win_count: 0,
     min_white_count: 0,
-
     min_main_blue_factors: undefined,
     min_main_pink_factors: undefined,
     min_main_green_factors: undefined,
@@ -231,14 +250,16 @@ export class AdvancedFilterComponent implements OnInit {
     main_parent_pink_sparks: [],
     main_parent_green_sparks: [],
     main_parent_white_sparks: [],
-
     parent_rank: 1,
     parent_rarity: undefined,
     max_follower_num: 999,
     
+    parent_id: [],
+    exclude_parent_id: [],
+    exclude_main_parent_id: [],
+    
     min_experience: undefined,
   };
-
   // Filtered Options for Autocomplete
   filteredGreenFactorOptions: any[][] = [];
   filteredWhiteFactorOptions: any[][] = [];
@@ -246,25 +267,133 @@ export class AdvancedFilterComponent implements OnInit {
   filteredMainGreenFactorOptions: any[][] = [];
   filteredOptionalWhiteFactorOptions: any[][] = [];
   filteredOptionalMainWhiteFactorOptions: any[][] = [];
-
   private uuidCounter = 0;
-
   constructor(
     private dialog: MatDialog,
-    private supportCardService: SupportCardService
+    private supportCardService: SupportCardService,
+    private elementRef: ElementRef,
+    private ngZone: NgZone
   ) {}
-
+  ngAfterViewInit() {
+    this.setupWrappingDetection();
+    this.setupScrollListener();
+    this.setupHostResizeObserver();
+  }
+  ngOnDestroy() {
+    this.resizeObserver?.disconnect();
+    this.hostResizeObserver?.disconnect();
+    this.teardownScrollListener();
+  }
+  private setupScrollListener() {
+    this.scrollListener = () => {
+      this.ngZone.run(() => this.updateFloatingBtnState());
+    };
+    this.ngZone.runOutsideAngular(() => {
+      window.addEventListener('scroll', this.scrollListener!, { passive: true });
+    });
+  }
+  private teardownScrollListener() {
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
+      this.scrollListener = undefined;
+    }
+  }
+  private setupHostResizeObserver() {
+    const hostEl = this.elementRef.nativeElement as HTMLElement;
+    this.hostResizeObserver = new ResizeObserver(() => {
+      this.ngZone.run(() => this.updateFloatingBtnState());
+    });
+    this.hostResizeObserver.observe(hostEl);
+  }
+  private updateFloatingBtnState() {
+    if (!this.isExpanded) {
+      // When collapsed, show "back to top" if scrolled down past the filter header
+      const hostEl = this.elementRef.nativeElement as HTMLElement;
+      const rect = hostEl.getBoundingClientRect();
+      const pastFilter = rect.bottom < 100;
+      this.showFloatingBtn = pastFilter;
+      this.floatingBtnMode = 'top';
+      return;
+    }
+    // When expanded, determine if user is within filter or past it
+    const hostEl = this.elementRef.nativeElement as HTMLElement;
+    const rect = hostEl.getBoundingClientRect();
+    const filterBottom = rect.bottom;
+    if (filterBottom > window.innerHeight) {
+      // Filter extends below the viewport — user is in the filter, show "Results"
+      this.showFloatingBtn = true;
+      this.floatingBtnMode = 'results';
+    } else {
+      // Filter bottom is visible or above — user can see past it
+      // If scrolled down, show "Back to Top"
+      this.showFloatingBtn = window.scrollY > 200;
+      this.floatingBtnMode = 'top';
+    }
+  }
+  private setupWrappingDetection() {
+    if (!this.mainLayoutRef) return;
+    const el = this.mainLayoutRef.nativeElement;
+    const detect = () => {
+      const legacy = el.querySelector('.legacy-tree-wrapper') as HTMLElement;
+      const supportLb = el.querySelector('.support-lb-group') as HTMLElement;
+      const search = el.querySelector('.search-wrapper') as HTMLElement;
+      if (!legacy || !supportLb || !search) return;
+      // Temporarily remove wrapping classes to measure natural positions
+      legacy.classList.remove('is-wrapped');
+      supportLb.classList.remove('is-wrapped');
+      search.classList.remove('is-wrapped');
+      // Force layout recalc
+      const legacyTop = legacy.offsetTop;
+      const supportTop = supportLb.offsetTop;
+      const searchTop = search.offsetTop;
+      const newLegacyWrapped = supportTop > legacyTop + 10;
+      const newSearchWrapped = searchTop > supportTop + 10;
+      if (newLegacyWrapped !== this.legacyWrapped || newSearchWrapped !== this.searchWrapped) {
+        this.ngZone.run(() => {
+          this.legacyWrapped = newLegacyWrapped;
+          this.searchWrapped = newSearchWrapped;
+        });
+      } else {
+        // Re-apply classes since Angular won't re-render
+        if (this.legacyWrapped) { legacy.classList.add('is-wrapped'); supportLb.classList.add('is-wrapped'); }
+        if (this.searchWrapped) search.classList.add('is-wrapped');
+      }
+    };
+    this.ngZone.runOutsideAngular(() => {
+      this.resizeObserver = new ResizeObserver(() => detect());
+      this.resizeObserver.observe(el);
+    });
+    // Initial check
+    setTimeout(() => detect(), 0);
+  }
+  scrollToResults() {
+    // Scroll past the filter to the results section
+    const hostEl = this.elementRef.nativeElement as HTMLElement;
+    const rect = hostEl.getBoundingClientRect();
+    const scrollTop = window.scrollY + rect.top + rect.height - 60;
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+  }
+  scrollToTop() {
+    const hostEl = this.elementRef.nativeElement as HTMLElement;
+    const rect = hostEl.getBoundingClientRect();
+    const scrollTop = window.scrollY + rect.top - 20;
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+  }
+  onFloatingBtnClick() {
+    if (this.floatingBtnMode === 'results') {
+      this.scrollToResults();
+    } else {
+      this.scrollToTop();
+    }
+  }
   // --- Serialization Logic ---
-
   getSerializedState(): string {
     const state: CompressedState = {};
-
     // Factors
     if (this.blueFactorFilters.length) state.b = this.blueFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.pinkFactorFilters.length) state.p = this.pinkFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.greenFactorFilters.length) state.g = this.greenFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.whiteFactorFilters.length) state.w = this.whiteFactorFilters.map(f => [f.factorId, f.min, f.max]);
-
     if (this.optionalWhiteFactorFilters.length) {
       const ids = this.optionalWhiteFactorFilters.filter(f => f.factorId && f.factorId > 0).map(f => f.factorId!);
       if (ids.length) state.ow = ids;
@@ -273,12 +402,10 @@ export class AdvancedFilterComponent implements OnInit {
       const ids = this.optionalMainWhiteFactorFilters.filter(f => f.factorId && f.factorId > 0).map(f => f.factorId!);
       if (ids.length) state.omw = ids;
     }
-
     if (this.mainBlueFactorFilters.length) state.mb = this.mainBlueFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.mainPinkFactorFilters.length) state.mp = this.mainPinkFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.mainGreenFactorFilters.length) state.mg = this.mainGreenFactorFilters.map(f => [f.factorId, f.min, f.max]);
     if (this.mainWhiteFactorFilters.length) state.mw = this.mainWhiteFactorFilters.map(f => [f.factorId, f.min, f.max]);
-
     // Tree
     const t: (number|null)[] = [
       this.treeData.characterId || null,
@@ -293,7 +420,6 @@ export class AdvancedFilterComponent implements OnInit {
     if (t.some(id => id !== null)) {
       state.t = t;
     }
-
     // Other fields
     if (this.selectedSupportCard) state.sc = this.selectedSupportCard.id;
     if (this.selectedLimitBreak > 0) state.lb = this.selectedLimitBreak;
@@ -302,7 +428,7 @@ export class AdvancedFilterComponent implements OnInit {
     if (this.filterState.min_win_count) state.mwc = this.filterState.min_win_count;
     if (this.filterState.min_white_count) state.mwh = this.filterState.min_white_count;
     if (this.filterState.parent_rank && this.filterState.parent_rank !== 1) state.pr = this.filterState.parent_rank;
-    if (this.filterState.max_follower_num && this.filterState.max_follower_num !== 999) state.mf = this.filterState.max_follower_num;
+    if (this.includeMaxFollowers) state.mf = 1000;
     
     // Star sum filters (min only)
     if (this.filterState.min_blue_stars_sum) state.bss = this.filterState.min_blue_stars_sum;
@@ -312,14 +438,16 @@ export class AdvancedFilterComponent implements OnInit {
     
     // Main parent min white count
     if (this.filterState.min_main_white_count) state.mmwc = this.filterState.min_main_white_count;
-
+    // Parent include/exclude
+    if (this.includeMainParentCharacters.length) state.imp = this.includeMainParentCharacters.map(c => c.id);
+    if (this.includeParentCharacters.length) state.ip = this.includeParentCharacters.map(c => c.id);
+    if (this.excludeParentCharacters.length) state.ep = this.excludeParentCharacters.map(c => c.id);
+    if (this.excludeMainParentCharacters.length) state.emp = this.excludeMainParentCharacters.map(c => c.id);
     return btoa(JSON.stringify(state));
   }
-
   loadSerializedState(stateStr: string) {
     try {
       const state: CompressedState = JSON.parse(atob(stateStr));
-      console.log('Restoring advanced filters from URL:', state);
       
       // Restore Factors
       const restoreFactors = (source: (number|null)[][] | undefined, target: FactorFilter[], type?: 'green' | 'white' | 'mainWhite' | 'mainGreen') => {
@@ -340,7 +468,6 @@ export class AdvancedFilterComponent implements OnInit {
           if (type === 'mainGreen') this.filteredMainGreenFactorOptions.push([...this.greenFactors]);
         });
       };
-
       // Clear existing
       this.blueFactorFilters = [];
       this.pinkFactorFilters = [];
@@ -357,12 +484,10 @@ export class AdvancedFilterComponent implements OnInit {
       this.filteredMainWhiteFactorOptions = [];
       this.filteredOptionalWhiteFactorOptions = [];
       this.filteredOptionalMainWhiteFactorOptions = [];
-
       restoreFactors(state.b, this.blueFactorFilters);
       restoreFactors(state.p, this.pinkFactorFilters);
       restoreFactors(state.g, this.greenFactorFilters, 'green');
       restoreFactors(state.w, this.whiteFactorFilters, 'white');
-
       restoreFactors(state.mb, this.mainBlueFactorFilters);
       restoreFactors(state.mp, this.mainPinkFactorFilters);
       restoreFactors(state.mg, this.mainGreenFactorFilters, 'mainGreen');
@@ -372,7 +497,6 @@ export class AdvancedFilterComponent implements OnInit {
       // Let's assume it works like others.
       
       restoreFactors(state.mw, this.mainWhiteFactorFilters, 'mainWhite');
-
       // Restore Optional Factors
       const restoreOptionalFactors = (source: number[] | undefined, target: FactorFilter[], type: 'optionalWhite' | 'optionalMainWhite') => {
         if (!source) return;
@@ -389,10 +513,8 @@ export class AdvancedFilterComponent implements OnInit {
           if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.push([...this.whiteFactors]);
         });
       };
-
       restoreOptionalFactors(state.ow, this.optionalWhiteFactorFilters, 'optionalWhite');
       restoreOptionalFactors(state.omw, this.optionalMainWhiteFactorFilters, 'optionalMainWhite');
-
       // Restore Tree
       if (state.t) {
         const [target, p1, p1g1, p1g2, p2, p2g1, p2g2] = state.t;
@@ -400,17 +522,18 @@ export class AdvancedFilterComponent implements OnInit {
         const setNode = (node: TreeNode, id: number | null) => {
           if (id) {
             node.characterId = id;
+            const charaId = Math.floor(id / 100).toString();
+            const nameEntry = (characterNamesData as any)[charaId];
             const char = characterData.find((c: any) => parseInt(c.id, 10) === id);
-            if (char) {
-              node.name = char.name;
-              node.image = char.image;
+            if (nameEntry || char) {
+              node.name = nameEntry?.name || char?.name || `ID: ${id}`;
+              node.image = char?.image;
             } else {
               node.name = `ID: ${id}`; 
               node.image = undefined;
             }
           }
         };
-
         setNode(this.treeData, target);
         if (this.treeData.children?.[0]) {
           setNode(this.treeData.children[0], p1);
@@ -425,7 +548,6 @@ export class AdvancedFilterComponent implements OnInit {
         
         this.updateTreeFilters(); // This updates filterState from treeData
       }
-
       // Restore Support Card
       if (state.sc) {
         // Try to fetch card info
@@ -445,7 +567,6 @@ export class AdvancedFilterComponent implements OnInit {
            }
         });
       }
-
       // Restore Scalars
       if (state.lb !== undefined) this.selectedLimitBreak = state.lb;
       if (state.uid) this.searchUserId = state.uid;
@@ -453,7 +574,11 @@ export class AdvancedFilterComponent implements OnInit {
       if (state.mwc !== undefined) this.filterState.min_win_count = state.mwc;
       if (state.mwh !== undefined) this.filterState.min_white_count = state.mwh;
       if (state.pr !== undefined) this.filterState.parent_rank = state.pr;
-      if (state.mf !== undefined) this.filterState.max_follower_num = state.mf;
+      if (state.mf !== undefined) {
+        this.filterState.max_follower_num = state.mf;
+        this.includeMaxFollowers = state.mf >= 1000;
+        this.maxFollowersToggled.emit(this.includeMaxFollowers);
+      }
       
       // Star sum filters (min only, with backwards compatibility for old [min, max] format)
       if (state.bss !== undefined) {
@@ -473,21 +598,38 @@ export class AdvancedFilterComponent implements OnInit {
       if (state.mmwc !== undefined) {
         this.filterState.min_main_white_count = state.mmwc;
       }
-
+      // Restore parent include/exclude
+      this.includeMainParentCharacters = [];
+      this.includeParentCharacters = [];
+      this.excludeParentCharacters = [];
+      this.excludeMainParentCharacters = [];
+      const restoreParentChars = (ids: number[] | undefined, target: { id: number; name: string; image?: string }[]) => {
+        if (!ids) return;
+        ids.forEach(id => {
+          const charaId = Math.floor(id / 100).toString();
+          const nameEntry = (characterNamesData as any)[charaId];
+          const char = characterData.find((c: any) => parseInt(c.id, 10) === id);
+          if (nameEntry || char) {
+            target.push({ id, name: nameEntry?.name || char?.name || `ID: ${id}`, image: char?.image });
+          } else {
+            target.push({ id, name: `ID: ${id}` });
+          }
+        });
+      };
+      restoreParentChars(state.imp, this.includeMainParentCharacters);
+      restoreParentChars(state.ip, this.includeParentCharacters);
+      restoreParentChars(state.ep, this.excludeParentCharacters);
+      restoreParentChars(state.emp, this.excludeMainParentCharacters);
       this.onFilterChange();
-
     } catch (e) {
       console.error('Failed to load filter state', e);
     }
   }
-
   // Helper to generate unique IDs
   private getUuid(): string {
     return `filter_${this.uuidCounter++}`;
   }
-
   // --- Factor Filter Management ---
-
   addFactorFilter(list: FactorFilter[], defaultFactorId: number | null, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite') {
     list.push({
       uuid: this.getUuid(),
@@ -495,27 +637,23 @@ export class AdvancedFilterComponent implements OnInit {
       min: 1,
       max: 9
     });
-
     if (type === 'green') this.filteredGreenFactorOptions.push([...this.greenFactors]);
     if (type === 'white') this.filteredWhiteFactorOptions.push([...this.whiteFactors]);
     if (type === 'mainWhite') this.filteredMainWhiteFactorOptions.push([...this.whiteFactors]);
     if (type === 'mainGreen') this.filteredMainGreenFactorOptions.push([...this.greenFactors]);
     if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions.push([...this.whiteFactors]);
     if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.push([...this.whiteFactors]);
-
     // Enforce single green factor for main parent
     if (type === 'mainGreen' && this.mainGreenFactorFilters.length > 1) {
       // Remove the previous one, keep the new one
       this.removeFactorFilter(this.mainGreenFactorFilters, 0, 'mainGreen');
     }
-
     // Only trigger filter change if a valid factor is already selected
     // For white factors with null default, don't trigger until user selects something
     if (defaultFactorId !== null) {
       this.onFilterChange();
     }
   }
-
   removeFactorFilter(list: FactorFilter[], index: number, type?: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite') {
     // Check if the filter being removed had a valid selection
     const removedFilter = list[index];
@@ -529,13 +667,10 @@ export class AdvancedFilterComponent implements OnInit {
     if (type === 'mainGreen') this.filteredMainGreenFactorOptions.splice(index, 1);
     if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions.splice(index, 1);
     if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions.splice(index, 1);
-
     // Always trigger filter change to update chips and URL
     this.onFilterChange();
   }
-
   // --- Autocomplete Logic ---
-
   filterFactors(value: string | number, type: 'green' | 'white' | 'mainWhite' | 'mainGreen' | 'optionalWhite' | 'optionalMainWhite', index: number) {
     // If value is a number (factor ID selected), don't filter - just return
     if (typeof value === 'number') return;
@@ -545,9 +680,7 @@ export class AdvancedFilterComponent implements OnInit {
     
     if (type === 'green' || type === 'mainGreen') sourceList = this.greenFactors;
     else sourceList = this.whiteFactors; // All white types use whiteFactors
-
     const filtered = sourceList.filter(option => option.text.toLowerCase().includes(filterValue));
-
     if (type === 'green') this.filteredGreenFactorOptions[index] = filtered;
     if (type === 'white') this.filteredWhiteFactorOptions[index] = filtered;
     if (type === 'mainWhite') this.filteredMainWhiteFactorOptions[index] = filtered;
@@ -555,23 +688,20 @@ export class AdvancedFilterComponent implements OnInit {
     if (type === 'optionalWhite') this.filteredOptionalWhiteFactorOptions[index] = filtered;
     if (type === 'optionalMainWhite') this.filteredOptionalMainWhiteFactorOptions[index] = filtered;
   }
-
   getFactorText(id: number | null | undefined, type: 'green' | 'white'): string {
     if (!id || id === 0) return '';
     const list = type === 'green' ? this.greenFactors : this.whiteFactors;
     const found = list.find(f => f.id === id);
     return found ? found.text : '';
   }
-
   onFactorSelected(event: MatAutocompleteSelectedEvent, filter: FactorFilter) {
     filter.factorId = event.option.value;
     this.onFilterChange();
   }
-
   // --- Tree Logic ---
   treeData: TreeNode = {
     id: 'target',
-    name: 'Target Uma',
+    name: 'Target Character',
     layer: 0,
     children: [
       {
@@ -594,17 +724,26 @@ export class AdvancedFilterComponent implements OnInit {
       }
     ]
   };
-
   toggleExpanded() {
     this.isExpanded = !this.isExpanded;
+    // Recalculate floating button state after animation settles
+    setTimeout(() => this.updateFloatingBtnState(), 350);
   }
-
+  toggleSection(section: string) {
+    if (this.collapsedSections.has(section)) {
+      this.collapsedSections.delete(section);
+    } else {
+      this.collapsedSections.add(section);
+    }
+  }
+  isSectionCollapsed(section: string): boolean {
+    return this.collapsedSections.has(section);
+  }
   getCharacterImagePath(imageName: string | undefined): string {
     if (!imageName) return 'assets/images/placeholder-uma.png';
     if (imageName.startsWith('assets/')) return imageName;
     return `assets/images/character_stand/${imageName}`;
   }
-
   selectNode(node: TreeNode) {
     const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
       width: '90%',
@@ -612,13 +751,23 @@ export class AdvancedFilterComponent implements OnInit {
       height: '80vh',
       panelClass: 'modern-dialog-panel'
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Duplicate Detection & Replacement
         const newBaseId = Math.floor(result.id / 100);
-        this.clearDuplicateNode(this.treeData, newBaseId);
-
+        // Layer-aware duplicate removal
+        if (node.layer === 0) {
+          // Adding to Target: conflicts with Main Parent only
+          this.clearFromMainParents(newBaseId);
+        } else if (node.layer === 1) {
+          // Adding to Main Parent: conflicts with Target + Grandparents
+          this.clearFromTarget(newBaseId);
+          this.clearFromGrandparents(newBaseId);
+          this.clearFromMainParentNodes(newBaseId); // same-level dedup
+        } else {
+          // Adding to Grandparent: conflicts with Main Parent only
+          this.clearFromMainParents(newBaseId);
+          this.clearFromGrandparentNodes(newBaseId); // same-level dedup
+        }
         node.name = result.name;
         node.image = result.image;
         node.characterId = result.id;
@@ -627,30 +776,204 @@ export class AdvancedFilterComponent implements OnInit {
       }
     });
   }
-
-  private clearDuplicateNode(node: TreeNode, baseId: number) {
-    if (node.characterId && Math.floor(node.characterId / 100) === baseId) {
-      this.clearNodeRecursive(node);
-    }
-    if (node.children) {
-      node.children.forEach(child => this.clearDuplicateNode(child, baseId));
+  /** Clear character from Target tree node */
+  private clearFromTarget(baseId: number) {
+    if (this.treeData.characterId && Math.floor(this.treeData.characterId / 100) === baseId) {
+      this.treeData.name = 'Target Character';
+      this.treeData.image = undefined;
+      this.treeData.characterId = undefined;
     }
   }
-
+  /** Clear character from Main Parent tree nodes + include main parent list (not excludes) */
+  private clearFromMainParents(baseId: number) {
+    this.clearFromMainParentNodes(baseId);
+    this.includeMainParentCharacters = this.includeMainParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+  }
+  /** Clear character from Main Parent tree nodes only */
+  private clearFromMainParentNodes(baseId: number) {
+    if (this.treeData.children) {
+      for (const child of this.treeData.children) {
+        if (child.characterId && Math.floor(child.characterId / 100) === baseId) {
+          child.name = 'Parent';
+          child.image = undefined;
+          child.characterId = undefined;
+        }
+      }
+    }
+  }
+  /** Clear character from Grandparent tree nodes + include parent list (not excludes) */
+  private clearFromGrandparents(baseId: number) {
+    this.clearFromGrandparentNodes(baseId);
+    this.includeParentCharacters = this.includeParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+  }
+  /** Clear character from Grandparent tree nodes only */
+  private clearFromGrandparentNodes(baseId: number) {
+    if (this.treeData.children) {
+      for (const child of this.treeData.children) {
+        if (child.children) {
+          for (const grandchild of child.children) {
+            if (grandchild.characterId && Math.floor(grandchild.characterId / 100) === baseId) {
+              grandchild.name = 'Grandparent';
+              grandchild.image = undefined;
+              grandchild.characterId = undefined;
+            }
+          }
+        }
+      }
+    }
+  }
   updateTreeFilters() {
     this.filterState.player_chara_id = this.treeData.characterId;
     
+    // Main parent: combine tree selection with include list
+    const mainParentIds: number[] = [];
     const mainParent = this.treeData.children?.[0];
-    this.filterState.main_parent_id = mainParent?.characterId;
-
+    if (mainParent?.characterId) {
+      mainParentIds.push(mainParent.characterId);
+    }
+    this.includeMainParentCharacters.forEach(c => {
+      if (!mainParentIds.includes(c.id)) mainParentIds.push(c.id);
+    });
+    this.filterState.main_parent_id = mainParentIds.length > 0 ? mainParentIds : undefined;
     if (mainParent && mainParent.children) {
       this.filterState.parent_left_id = mainParent.children[0]?.characterId;
       this.filterState.parent_right_id = mainParent.children[1]?.characterId;
     }
+    // Sync parent include/exclude arrays
+    this.filterState.parent_id = this.includeParentCharacters.map(c => c.id);
+    this.filterState.exclude_parent_id = this.excludeParentCharacters.map(c => c.id);
+    this.filterState.exclude_main_parent_id = this.excludeMainParentCharacters.map(c => c.id);
     
     this.onFilterChange();
   }
-
+  // --- Parent Include/Exclude Character Selection ---
+  addIncludeParent() {
+    const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      height: '80vh',
+      panelClass: 'modern-dialog-panel',
+      data: {
+        multiSelect: true,
+        existingIds: this.includeParentCharacters.map(c => c.id),
+        mode: 'include'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && Array.isArray(result)) {
+        result.forEach((char: any) => {
+          if (!this.includeParentCharacters.some(c => c.id === char.id)) {
+            // Grandparent: conflicts with Main Parent only
+            const baseId = Math.floor(char.id / 100);
+            this.clearFromMainParents(baseId);
+            this.clearFromGrandparentNodes(baseId);
+            // Remove from exclude grandparent list (can't include + exclude same role)
+            this.excludeParentCharacters = this.excludeParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+            this.includeParentCharacters.push({ id: char.id, name: char.name, image: char.image });
+          }
+        });
+        this.updateTreeFilters();
+      }
+    });
+  }
+  removeIncludeParent(index: number) {
+    this.includeParentCharacters.splice(index, 1);
+    this.updateTreeFilters();
+  }
+  addExcludeParent() {
+    const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      height: '80vh',
+      panelClass: 'modern-dialog-panel',
+      data: {
+        multiSelect: true,
+        existingIds: this.excludeParentCharacters.map(c => c.id),
+        mode: 'exclude'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && Array.isArray(result)) {
+        result.forEach((char: any) => {
+          if (!this.excludeParentCharacters.some(c => c.id === char.id)) {
+            // Remove from include grandparent list (can't include + exclude same role)
+            const baseId = Math.floor(char.id / 100);
+            this.includeParentCharacters = this.includeParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+            this.excludeParentCharacters.push({ id: char.id, name: char.name, image: char.image });
+          }
+        });
+        this.updateTreeFilters();
+      }
+    });
+  }
+  removeExcludeParent(index: number) {
+    this.excludeParentCharacters.splice(index, 1);
+    this.updateTreeFilters();
+  }
+  addIncludeMainParent() {
+    const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      height: '80vh',
+      panelClass: 'modern-dialog-panel',
+      data: {
+        multiSelect: true,
+        existingIds: this.includeMainParentCharacters.map(c => c.id),
+        mode: 'include'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && Array.isArray(result)) {
+        result.forEach((char: any) => {
+          if (!this.includeMainParentCharacters.some(c => c.id === char.id)) {
+            // Main Parent: conflicts with Target + Grandparents
+            const baseId = Math.floor(char.id / 100);
+            this.clearFromTarget(baseId);
+            this.clearFromGrandparents(baseId);
+            this.clearFromMainParentNodes(baseId);
+            // Remove from exclude main parent list (can't include + exclude same role)
+            this.excludeMainParentCharacters = this.excludeMainParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+            this.includeMainParentCharacters.push({ id: char.id, name: char.name, image: char.image });
+          }
+        });
+        this.updateTreeFilters();
+      }
+    });
+  }
+  removeIncludeMainParent(index: number) {
+    this.includeMainParentCharacters.splice(index, 1);
+    this.updateTreeFilters();
+  }
+  addExcludeMainParent() {
+    const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      height: '80vh',
+      panelClass: 'modern-dialog-panel',
+      data: {
+        multiSelect: true,
+        existingIds: this.excludeMainParentCharacters.map(c => c.id),
+        mode: 'exclude'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && Array.isArray(result)) {
+        result.forEach((char: any) => {
+          if (!this.excludeMainParentCharacters.some(c => c.id === char.id)) {
+            // Remove from include main parent list (can't include + exclude same role)
+            const baseId = Math.floor(char.id / 100);
+            this.includeMainParentCharacters = this.includeMainParentCharacters.filter(c => Math.floor(c.id / 100) !== baseId);
+            this.excludeMainParentCharacters.push({ id: char.id, name: char.name, image: char.image });
+          }
+        });
+        this.updateTreeFilters();
+      }
+    });
+  }
+  removeExcludeMainParent(index: number) {
+    this.excludeMainParentCharacters.splice(index, 1);
+    this.updateTreeFilters();
+  }
   // Helper to generate spark IDs from filters
   private generateSparkIds(filters: FactorFilter[], availableFactors: any[], maxCap: number = 9): number[] {
     const ids: number[] = [];
@@ -677,7 +1000,6 @@ export class AdvancedFilterComponent implements OnInit {
     });
     return [...new Set(ids)];
   }
-
   // Helper to generate spark ID groups from filters (AND logic between groups)
   private generateSparkIdGroups(filters: FactorFilter[], availableFactors: any[], maxCap: number = 9): number[][] {
     const groups: number[][] = [];
@@ -706,7 +1028,6 @@ export class AdvancedFilterComponent implements OnInit {
     });
     return groups;
   }
-
   onFilterChange() {
     // Sanitize star sum filters - convert null to undefined and clamp values
     // Blue, Pink, Green max is 9; White has no max
@@ -743,7 +1064,6 @@ export class AdvancedFilterComponent implements OnInit {
     } else {
       this.filterState.support_card_id = undefined;
     }
-
     // Map Factor Filters to API State
     
     // Global Factors
@@ -757,7 +1077,6 @@ export class AdvancedFilterComponent implements OnInit {
     this.filterState.green_sparks_9star = this.greenFactorFilters.some(f => f.min >= 9);
     
     this.filterState.white_sparks = this.generateSparkIdGroups(this.whiteFactorFilters, this.whiteFactors);
-
     // Main Parent Factors
     this.filterState.main_parent_blue_sparks = this.generateSparkIds(this.mainBlueFactorFilters, this.blueFactors, 3);
     // For min_main_blue_factors, we take the MAX of the mins specified, as a best effort approximation
@@ -770,20 +1089,16 @@ export class AdvancedFilterComponent implements OnInit {
     this.filterState.min_main_blue_factors = this.mainBlueFactorFilters.length > 0 
       ? Math.max(...this.mainBlueFactorFilters.map(f => f.min)) 
       : undefined;
-
     this.filterState.main_parent_pink_sparks = this.generateSparkIds(this.mainPinkFactorFilters, this.pinkFactors, 3);
     this.filterState.min_main_pink_factors = this.mainPinkFactorFilters.length > 0
       ? Math.max(...this.mainPinkFactorFilters.map(f => f.min))
       : undefined;
-
     this.filterState.main_parent_green_sparks = this.generateSparkIds(this.mainGreenFactorFilters, this.greenFactors, 3);
     this.filterState.min_main_green_factors = this.mainGreenFactorFilters.length > 0
       ? Math.max(...this.mainGreenFactorFilters.map(f => f.min))
       : undefined;
-
     this.filterState.main_parent_white_sparks = this.generateSparkIdGroups(this.mainWhiteFactorFilters, this.whiteFactors, 3);
     // min_main_white_count is handled by the input field directly, do not overwrite it here based on specific factor filters.
-
     // Optional White Sparks (just IDs, no levels - for scoring/sorting)
     this.filterState.optional_white_sparks = this.optionalWhiteFactorFilters
       .filter(f => f.factorId && f.factorId > 0)
@@ -792,17 +1107,28 @@ export class AdvancedFilterComponent implements OnInit {
     this.filterState.optional_main_white_sparks = this.optionalMainWhiteFactorFilters
       .filter(f => f.factorId && f.factorId > 0)
       .map(f => f.factorId!);
-
+    // Sync parent include/exclude arrays to filterState
+    // (updateTreeFilters handles main_parent_id merging, but include/exclude need to be synced here too
+    //  so they're always up-to-date even when no tree is set)
+    const includeParentIds = this.includeParentCharacters.map(c => c.id);
+    this.filterState.parent_id = includeParentIds.length > 0 ? includeParentIds : this.filterState.parent_id;
+    this.filterState.exclude_parent_id = this.excludeParentCharacters.map(c => c.id);
+    this.filterState.exclude_main_parent_id = this.excludeMainParentCharacters.map(c => c.id);
+    // Sync include main parent characters into main_parent_id (merge with tree selection)
+    if (this.includeMainParentCharacters.length > 0) {
+      const existingMainIds = this.filterState.main_parent_id || [];
+      this.includeMainParentCharacters.forEach(c => {
+        if (!existingMainIds.includes(c.id)) existingMainIds.push(c.id);
+      });
+      this.filterState.main_parent_id = existingMainIds;
+    }
     // Update active filter chips
     this.updateActiveFilterChips();
-
     // Emit a shallow copy of the filter state to ensure change detection
     this.filterChangeSubject.next({ ...this.filterState });
   }
-
   private updateActiveFilterChips(): void {
     this.activeFilterChips = [];
-
     // Helper to format value part
     const formatValue = (min: number, max: number, maxPossible: number = 9): string => {
       // Clamp max to maxPossible (e.g., main parent factors cap at 3)
@@ -820,7 +1146,6 @@ export class AdvancedFilterComponent implements OnInit {
         return `${min}-${clampedMax}`;
       }
     };
-
     // Helper to add factor chips - always show if filter exists
     const addFactorChips = (
       filters: FactorFilter[], 
@@ -849,7 +1174,6 @@ export class AdvancedFilterComponent implements OnInit {
         });
       });
     };
-
     // Blue Factors (Inheritance)
     addFactorChips(this.blueFactorFilters, this.blueFactors, 'blue', '');
     
@@ -873,7 +1197,6 @@ export class AdvancedFilterComponent implements OnInit {
     
     // Main Parent White Factors
     addFactorChips(this.mainWhiteFactorFilters, this.whiteFactors, 'mainWhite', 'Main: ', 3);
-
     // Optional White Factors (no level, just for scoring)
     this.optionalWhiteFactorFilters.forEach((f, index) => {
       if (f.factorId && f.factorId > 0) {
@@ -890,7 +1213,6 @@ export class AdvancedFilterComponent implements OnInit {
         });
       }
     });
-
     // Optional Main White Factors (no level, just for scoring)
     this.optionalMainWhiteFactorFilters.forEach((f, index) => {
       if (f.factorId && f.factorId > 0) {
@@ -907,7 +1229,6 @@ export class AdvancedFilterComponent implements OnInit {
         });
       }
     });
-
     // Tree Characters
     if (this.treeData.characterId) {
       this.activeFilterChips.push({
@@ -946,7 +1267,50 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'character'
       });
     }
-
+    // Include Main Parent Characters (multi-select)
+    this.includeMainParentCharacters.forEach((char, index) => {
+      this.activeFilterChips.push({
+        id: `include-main-parent-${index}`,
+        label: `Include Main: ${char.name}`,
+        name: 'Inc. Main',
+        value: char.name,
+        type: 'includeMainParent',
+        filterIndex: index
+      });
+    });
+    // Include Parent Characters (multi-select)
+    this.includeParentCharacters.forEach((char, index) => {
+      this.activeFilterChips.push({
+        id: `include-parent-${index}`,
+        label: `Include Parent: ${char.name}`,
+        name: 'Inc. Parent',
+        value: char.name,
+        type: 'includeParent',
+        filterIndex: index
+      });
+    });
+    // Exclude Parent Characters (multi-select)
+    this.excludeParentCharacters.forEach((char, index) => {
+      this.activeFilterChips.push({
+        id: `exclude-parent-${index}`,
+        label: `Exclude Parent: ${char.name}`,
+        name: 'Excl. Parent',
+        value: char.name,
+        type: 'excludeParent',
+        filterIndex: index
+      });
+    });
+    // Exclude Main Parent Characters (multi-select)
+    this.excludeMainParentCharacters.forEach((char, index) => {
+      this.activeFilterChips.push({
+        id: `exclude-main-parent-${index}`,
+        label: `Exclude Main: ${char.name}`,
+        name: 'Excl. Main',
+        value: char.name,
+        type: 'excludeMainParent',
+        filterIndex: index
+      });
+    });
     // Support Card
     if (this.selectedSupportCard) {
       this.activeFilterChips.push({
@@ -957,7 +1321,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'supportCard'
       });
     }
-
     // Limit Break
     if (this.selectedLimitBreak > 0) {
       const lbLabel = this.selectedLimitBreak === 4 ? 'MLB' : `LB${this.selectedLimitBreak}+`;
@@ -968,7 +1331,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Min Win Count
     if (this.filterState.min_win_count && this.filterState.min_win_count > 0) {
       this.activeFilterChips.push({
@@ -979,7 +1341,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Min White Count
     if (this.filterState.min_white_count && this.filterState.min_white_count > 0) {
       this.activeFilterChips.push({
@@ -990,7 +1351,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Main Parent Min White Count
     if (this.filterState.min_main_white_count && this.filterState.min_main_white_count > 0) {
       this.activeFilterChips.push({
@@ -1001,7 +1361,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Parent Rank
     if (this.filterState.parent_rank && this.filterState.parent_rank > 1) {
       this.activeFilterChips.push({
@@ -1013,18 +1372,16 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Max Followers
-    if (this.filterState.max_follower_num && this.filterState.max_follower_num < 999) {
+    if (this.includeMaxFollowers) {
       this.activeFilterChips.push({
         id: 'max-followers',
-        label: `Followers: ≤${this.filterState.max_follower_num}`,
-        name: 'Followers',
-        value: `≤${this.filterState.max_follower_num}`,
+        label: 'Max Followers: Included',
+        name: 'Max Followers',
+        value: 'Included',
         type: 'other'
       });
     }
-
     // Trainer ID Search
     if (this.searchUserId) {
       this.activeFilterChips.push({
@@ -1035,7 +1392,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Username Search
     if (this.searchUsername) {
       this.activeFilterChips.push({
@@ -1046,7 +1402,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'other'
       });
     }
-
     // Star Sum Filters (min only)
     if (this.filterState.min_blue_stars_sum) {
       this.activeFilterChips.push({
@@ -1057,7 +1412,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'blueStarSum'
       });
     }
-
     if (this.filterState.min_pink_stars_sum) {
       this.activeFilterChips.push({
         id: 'pink-stars-sum',
@@ -1067,7 +1421,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'pinkStarSum'
       });
     }
-
     if (this.filterState.min_green_stars_sum) {
       this.activeFilterChips.push({
         id: 'green-stars-sum',
@@ -1077,7 +1430,6 @@ export class AdvancedFilterComponent implements OnInit {
         type: 'greenStarSum'
       });
     }
-
     if (this.filterState.min_white_stars_sum) {
       this.activeFilterChips.push({
         id: 'white-stars-sum',
@@ -1088,7 +1440,6 @@ export class AdvancedFilterComponent implements OnInit {
       });
     }
   }
-
   removeActiveFilter(chip: ActiveFilterChip): void {
     switch (chip.type) {
       case 'blue':
@@ -1157,6 +1508,26 @@ export class AdvancedFilterComponent implements OnInit {
       case 'supportCard':
         this.removeSupportCard();
         break;
+      case 'includeMainParent':
+        if (chip.filterIndex !== undefined) {
+          this.removeIncludeMainParent(chip.filterIndex);
+        }
+        break;
+      case 'includeParent':
+        if (chip.filterIndex !== undefined) {
+          this.removeIncludeParent(chip.filterIndex);
+        }
+        break;
+      case 'excludeParent':
+        if (chip.filterIndex !== undefined) {
+          this.removeExcludeParent(chip.filterIndex);
+        }
+        break;
+      case 'excludeMainParent':
+        if (chip.filterIndex !== undefined) {
+          this.removeExcludeMainParent(chip.filterIndex);
+        }
+        break;
       case 'blueStarSum':
         this.filterState.min_blue_stars_sum = undefined;
         this.onFilterChange();
@@ -1185,7 +1556,9 @@ export class AdvancedFilterComponent implements OnInit {
         } else if (chip.id === 'parent-rank') {
           this.filterState.parent_rank = 1;
         } else if (chip.id === 'max-followers') {
+          this.includeMaxFollowers = false;
           this.filterState.max_follower_num = 999;
+          this.maxFollowersToggled.emit(false);
         } else if (chip.id === 'trainer-id') {
           this.searchUserId = '';
         } else if (chip.id === 'username') {
@@ -1195,7 +1568,6 @@ export class AdvancedFilterComponent implements OnInit {
         break;
     }
   }
-
   getChipColorClass(type: ActiveFilterChip['type']): string {
     switch (type) {
       case 'blue':
@@ -1218,19 +1590,22 @@ export class AdvancedFilterComponent implements OnInit {
       case 'optionalMainWhite':
         return 'chip-optional-white';
       case 'character':
+      case 'includeMainParent':
+      case 'includeParent':
         return 'chip-character';
+      case 'excludeParent':
+      case 'excludeMainParent':
+        return 'chip-exclude';
       case 'supportCard':
         return 'chip-support';
       default:
         return 'chip-default';
     }
   }
-
   setLimitBreak(level: number) {
     this.selectedLimitBreak = level;
     this.onFilterChange();
   }
-
   toggleLimitBreak(level: number) {
     if (this.selectedLimitBreak === level) {
       this.selectedLimitBreak = 0;
@@ -1239,34 +1614,27 @@ export class AdvancedFilterComponent implements OnInit {
     }
     this.onFilterChange();
   }
-
   formatLabel(value: number): string {
     if (value === 4) return 'MLB';
     return 'LB' + value;
   }
-
   onSearchChange() {
     this.onFilterChange();
   }
-
   clearSearchUserId() {
     this.searchUserId = '';
     this.onSearchChange();
   }
-
   clearSearchUsername() {
     this.searchUsername = '';
     this.onFilterChange();
   }
-
   selectSupportCard() {
     const dialogRef = this.dialog.open(SupportCardSelectDialogComponent, {
-      width: '90%',
-      maxWidth: '800px',
-      height: '80vh',
+      width: '700px',
+      maxWidth: '90vw',
       panelClass: 'modern-dialog-panel'
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.selectedSupportCard = result;
@@ -1274,12 +1642,10 @@ export class AdvancedFilterComponent implements OnInit {
       }
     });
   }
-
   removeSupportCard() {
     this.selectedSupportCard = null;
     this.onFilterChange();
   }
-
   getSupportCardTypeDisplay(type: SupportCardType): string {
     const typeMap: Record<number, string> = {
       [SupportCardType.SPEED]: 'Speed',
@@ -1291,7 +1657,6 @@ export class AdvancedFilterComponent implements OnInit {
     };
     return typeMap[type] || 'Unknown';
   }
-
   getSupportCardRarityDisplay(rarity: Rarity): string {
     const rarityMap: Record<number, string> = {
       [Rarity.R]: 'R',
@@ -1300,30 +1665,25 @@ export class AdvancedFilterComponent implements OnInit {
     };
     return rarityMap[rarity] || 'Unknown';
   }
-
   clearNode(node: TreeNode, event: Event) {
     event.stopPropagation(); // Prevent opening the dialog
     this.clearNodeRecursive(node);
     this.updateTreeFilters();
   }
-
   private clearNodeRecursive(node: TreeNode) {
-    node.name = node.layer === 0 ? 'Target Uma' : (node.layer === 1 ? 'Parent' : 'Grandparent');
+    node.name = node.layer === 0 ? 'Target Character' : (node.layer === 1 ? 'Parent' : 'Grandparent');
     node.image = undefined;
     node.characterId = undefined;
-
     // If clearing a parent, recursively clear children
     if (node.children) {
       node.children.forEach(child => this.clearNodeRecursive(child));
     }
   }
-
   increment(field: keyof UnifiedSearchParams) {
     const currentValue = (this.filterState[field] as number) || 0;
     (this.filterState[field] as any) = currentValue + 1;
     this.onFilterChange();
   }
-
   decrement(field: keyof UnifiedSearchParams) {
     const currentValue = (this.filterState[field] as number) || 0;
     if (currentValue > 0) {
@@ -1331,7 +1691,6 @@ export class AdvancedFilterComponent implements OnInit {
       this.onFilterChange();
     }
   }
-
   incrementStarSum(field: keyof UnifiedSearchParams, max?: number) {
     const currentValue = (this.filterState[field] as number) || 0;
     if (max === undefined || currentValue < max) {
@@ -1339,7 +1698,6 @@ export class AdvancedFilterComponent implements OnInit {
       this.onFilterChange();
     }
   }
-
   decrementStarSum(field: keyof UnifiedSearchParams) {
     const currentValue = (this.filterState[field] as number) || 0;
     if (currentValue > 0) {
@@ -1347,19 +1705,21 @@ export class AdvancedFilterComponent implements OnInit {
       this.onFilterChange();
     }
   }
-
   // Rank Options
   rankOptions = Array.from({ length: 20 }, (_, i) => i + 1);
-
+  toggleMaxFollowers(checked: boolean) {
+    this.includeMaxFollowers = checked;
+    this.filterState.max_follower_num = checked ? 1000 : 999;
+    this.maxFollowersToggled.emit(checked);
+    this.onFilterChange();
+  }
   getRankIconPath(rank: number): string {
     const rankId = rank.toString().padStart(2, '0');
     return `assets/images/icon/ranks/utx_txt_rank_${rankId}.png`;
   }
-
   onRankIconError(event: any, rank: number): void {
     event.target.style.display = 'none';
   }
-
   // Star Sum Helpers
   getStarSumValue(type: 'blue' | 'pink' | 'green' | 'white'): number | undefined {
     switch (type) {
@@ -1369,7 +1729,6 @@ export class AdvancedFilterComponent implements OnInit {
       case 'white': return this.filterState.min_white_stars_sum;
     }
   }
-
   onStarSumOpened(opened: boolean): void {
     // Optional: Handle dropdown open state if needed
   }

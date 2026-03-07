@@ -24,7 +24,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Subject, Subscription, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
-
 import { CharacterService } from '../../services/character.service';
 import { FactorService, Factor } from '../../services/factor.service';
 import { Character } from '../../models/character.model';
@@ -33,27 +32,22 @@ import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { environment } from '../../../environments/environment';
-
 export interface MainStatFilter {
   type: string | undefined; // Factor ID instead of text name
   level: number | undefined; // 1-9
 }
-
 export interface AptitudeFilter {
   type: string | undefined; // Factor ID instead of text name
   level: number | undefined; // 1-9
 }
-
 export interface SkillFilter {
   type: string | undefined; // Factor ID instead of text name
   level: number | undefined; // 1-3 for unique skills
 }
-
 export interface WhiteSparkFilter {
   type: string | undefined; // Factor ID for white sparks
   level: number | undefined; // 1-9
 }
-
 export interface InheritanceFilters {
   selectedCharacterId: number | null;
   mainStats: MainStatFilter[];
@@ -65,7 +59,6 @@ export interface InheritanceFilters {
   winCount: number;
   whiteCount: number;
 }
-
 @Component({
   selector: 'app-inheritance-filter',
   standalone: true,
@@ -89,7 +82,6 @@ export interface InheritanceFilters {
     <div class="inheritance-filter">
       <div class="filter-section">
         <h3>Inheritance Filters</h3>
-
         <!-- Selected Character -->
         <div class="character-filter">
           <h4>Inherited Uma</h4>
@@ -121,7 +113,6 @@ export interface InheritanceFilters {
             </div>
           </div>
         </div>
-
         <!-- Main Stats (Blue Sparks) -->
         <div class="main-stats-filter">
           <h4>Main Stats (Blue Sparks)</h4>
@@ -167,7 +158,6 @@ export interface InheritanceFilters {
             </div>
           </div>
         </div>
-
         <!-- Aptitudes (Pink Sparks) -->
         <div class="aptitude-filter">
           <h4>Aptitudes (Pink Sparks)</h4>
@@ -213,7 +203,6 @@ export interface InheritanceFilters {
             </div>
           </div>
         </div>
-
         <!-- Skills (Green Sparks) -->
         <div class="skills-filter">
           <h4>Unique Skills (Green Sparks)</h4>
@@ -267,7 +256,6 @@ export interface InheritanceFilters {
             </div>
           </div>
         </div>
-
         <!-- White Sparks -->
         <div class="white-sparks-filter">
           <h4>White Sparks</h4>
@@ -321,7 +309,6 @@ export interface InheritanceFilters {
             </div>
           </div>
         </div>
-
         <!-- Additional Filters -->
         <div class="additional-filters">
           <h4>Additional Filters</h4>
@@ -370,7 +357,6 @@ export interface InheritanceFilters {
               </mat-option>
             </mat-select>
           </mat-form-field>
-
           <!-- G1 Wins Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Minimum G1 Wins</mat-label>
@@ -381,7 +367,6 @@ export interface InheritanceFilters {
               placeholder="0"
             />
           </mat-form-field>
-
           <!-- White Sparks Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Minimum White Sparks</mat-label>
@@ -408,7 +393,6 @@ export interface InheritanceFilters {
 })
 export class InheritanceFilterComponent implements OnInit, OnDestroy {
   @Output() filtersChanged = new EventEmitter<InheritanceFilters>();
-
   filters: InheritanceFilters = {
     selectedCharacterId: null,
     mainStats: [],
@@ -419,10 +403,8 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
     winCount: 0,
     whiteCount: 0,
   };
-
   // Store the full character object for display purposes
   selectedCharacter: Character | null = null;
-
   sparkLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   uniqueSkillLevels = [1, 2, 3];
   
@@ -434,26 +416,21 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
   pinkFactorOptions: Factor[] = [];
   greenFactorOptions: Factor[] = [];
   whiteSparkOptions: Factor[] = [];
-
   // Filtered skill options for each autocomplete
   filteredSkillOptions: Factor[][] = [];
   filteredWhiteSparkOptions: Factor[][] = [];
-
   // Temporary objects for adding new filters
   newMainStat: Partial<MainStatFilter> = {};
   newAptitude: Partial<AptitudeFilter> = {};
   newSkill: Partial<SkillFilter> = {};
-
   // Debounce subject for auto-apply
   private filterChangeSubject = new Subject<void>();
   private filterChangeSubscription?: Subscription;
-
   constructor(
     private characterService: CharacterService,
     private factorService: FactorService,
     private dialog: MatDialog
   ) { }
-
   ngOnInit() {
     // Load factors from FactorService
     this.factorService.getFactors().subscribe((factors) => {
@@ -466,26 +443,22 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
       this.filteredSkillOptions = this.filters.skills.map(() => [...this.greenFactorOptions]);
       this.filteredWhiteSparkOptions = this.filters.whiteSparks.map(() => [...this.whiteSparkOptions]);
     });
-
     // Set up debounced filter changes with longer delay to prevent excessive emissions
     this.filterChangeSubscription = this.filterChangeSubject
-      .pipe(debounceTime(300)) // Increased from 150ms to 300ms
+      .pipe(debounceTime(800)) // Increased to 800ms to prevent rate limiting
       .subscribe(() => {
         // Emit a deep copy to ensure change detection works
         const filtersCopy = JSON.parse(JSON.stringify(this.filters));
         if (!environment.production) {
-          console.log('Emitting filters to parent:', filtersCopy);
         }
         this.filtersChanged.emit(filtersCopy);
       });
   }
-
   ngOnDestroy() {
     if (this.filterChangeSubscription) {
       this.filterChangeSubscription.unsubscribe();
     }
   }
-
   addMainStatFilter() {
     this.filters.mainStats.push({
       type: undefined,
@@ -494,7 +467,6 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
     this.newMainStat = {};
     // Don't emit immediately for better performance
   }
-
   addAptitudeFilter() {
     this.filters.aptitudes.push({
       type: undefined,
@@ -503,7 +475,6 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
     this.newAptitude = {};
     // Don't emit immediately for better performance
   }
-
   addSkillFilter() {
     this.filters.skills.push({
       type: undefined,
@@ -513,7 +484,6 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
     this.newSkill = {};
     // Don't emit immediately for better performance
   }
-
   onSkillInputChange(event: any, index: number) {
     const value = event.target.value;
     if (!value) {
@@ -524,7 +494,6 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
       );
     }
   }
-
   onWhiteSparkInputChange(event: any, index: number) {
     const value = event.target.value;
     if (!value) {
@@ -535,81 +504,68 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
       );
     }
   }
-
   getFilteredSkillOptions(index: number): Factor[] {
     return this.filteredSkillOptions[index] || this.greenFactorOptions;
   }
-
   getFilteredWhiteSparkOptions(index: number): Factor[] {
     return this.filteredWhiteSparkOptions[index] || this.whiteSparkOptions;
   }
-
   displaySkillFn = (value: string): string => {
     if (!value) return '';
     // Find the skill by ID and return its text
     const skill = this.greenFactorOptions.find(option => option.id === value);
     return skill ? skill.text : value;
   }
-
   displayWhiteSparkFn = (value: string): string => {
     if (!value) return '';
     // Find the white spark by ID and return its text
     const whiteSpark = this.whiteSparkOptions.find(option => option.id === value);
     return whiteSpark ? whiteSpark.text : value;
   }
-
   onSliderChange() {
     // Debounced change for sliders
     this.emitFiltersChanged();
   }
-
   onDropdownChange() {
     // Immediate change for dropdowns since they're less frequent
     this.emitFiltersChanged();
   }
-
   onNumberInputChange() {
     // Debounced change for number inputs
     this.emitFiltersChanged();
   }
-
   trackByIndex(index: number, item: any): number {
     return index;
   }
-
   trackByFactorId(index: number, factor: Factor): string {
     return factor.id;
   }
-
   formatSliderValue = (value: number): string => {
     return `${value}★`;
   }
-
   removeSkill(index: number) {
     this.filters.skills.splice(index, 1);
     this.filteredSkillOptions.splice(index, 1);
     this.emitFiltersChanged();
   }
-
   addWhiteSparkFilter() {
     this.filters.whiteSparks.push({ type: undefined, level: 1 });
     this.filteredWhiteSparkOptions.push([...this.whiteSparkOptions]);
     this.emitFiltersChanged();
   }
-
   removeWhiteSpark(index: number) {
     this.filters.whiteSparks.splice(index, 1);
     this.filteredWhiteSparkOptions.splice(index, 1);
     this.emitFiltersChanged();
   }
-
   openCharacterDialog() {
     const dialogRef = this.dialog.open(CharacterSelectDialogComponent, {
-      maxWidth: '750px',
+      width: '90%',
+      maxWidth: '600px',
+      height: '80vh',
       panelClass: 'modern-dialog-panel',
       data: {},
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.selectedCharacter = result;
@@ -618,38 +574,31 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   removeCharacter() {
     this.selectedCharacter = null;
     this.filters.selectedCharacterId = null;
     this.emitFiltersChanged();
   }
-
   removeMainStat(index: number) {
     this.filters.mainStats.splice(index, 1);
     this.emitFiltersChanged();
   }
-
   removeAptitude(index: number) {
     this.filters.aptitudes.splice(index, 1);
     this.emitFiltersChanged();
   }
-
   getCharacterImagePath(imageName: string): string {
     return `assets/images/character_stand/${imageName}`;
   }
-
   getRankIconPath(rank: number): string {
     // Using rank icons with proper ID formatting (01, 02, etc.)
     const rankId = rank.toString().padStart(2, '0');
     return `assets/images/icon/ranks/utx_txt_rank_${rankId}.png`;
   }
-
   onRankIconError(event: any, rank: number): void {
     // Fallback to hiding the image if rank icon is missing
     event.target.style.display = 'none';
   }
-
   clearAllFilters() {
     this.selectedCharacter = null;
     this.filters = {
@@ -666,34 +615,27 @@ export class InheritanceFilterComponent implements OnInit, OnDestroy {
     this.filteredWhiteSparkOptions = [];
     this.emitFiltersChanged();
   }
-
   emitFiltersChanged() {
     this.filterChangeSubject.next();
     if (!environment.production) {
-      console.log('Filters changed:', this.filters);
     }
   }
-
   // Helper method to get factor text by ID
   getFactorTextById(factorId: string | undefined, factorOptions: Factor[]): string {
     if (!factorId) return '';
     const factor = factorOptions.find(f => f.id === factorId);
     return factor ? factor.text : factorId;
   }
-
   // Helper methods for getting display text
   getMainStatText(factorId: string | undefined): string {
     return this.getFactorTextById(factorId, this.blueFactorOptions);
   }
-
   getAptitudeText(factorId: string | undefined): string {
     return this.getFactorTextById(factorId, this.pinkFactorOptions);
   }
-
   getSkillText(factorId: string | undefined): string {
     return this.getFactorTextById(factorId, this.greenFactorOptions);
   }
-
   getWhiteSparkText(factorId: string | undefined): string {
     return this.getFactorTextById(factorId, this.whiteSparkOptions);
   }

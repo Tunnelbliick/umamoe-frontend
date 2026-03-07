@@ -45,144 +45,391 @@
 
     .filter-inner {
         overflow: hidden;
+        min-width: 0;
+        padding-left: 1px;
     }
 }
 
-// Main horizontal layout - everything in one row
-.main-layout {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
+// =============================================
+// COLLAPSIBLE SECTIONS
+// =============================================
+
+// Prevent scroll interruption on interactive elements on mobile
+:host {
+    button, a, [role="button"], .filter-row, .tree-circle {
+        touch-action: manipulation;
+    }
+}
+
+.collapsible-section {
     margin-bottom: 10px;
-    align-items: stretch;
-    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.02);
-    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 
-    @media (max-width: 1000px) {
-        flex-direction: column;
-        flex-wrap: nowrap;
+    &:hover {
+        border-color: rgba(33, 150, 243, 0.3);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    &:has(> .collapsible-body.collapsed) {
+        .collapsible-header {
+            border-bottom: none;
+            padding-bottom: 10px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        background: none;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+        overflow: visible;
+
+        &:hover {
+            border-color: transparent;
+            background: none;
+        }
     }
 }
 
-.support-lb-group {
+.collapsible-header {
     display: flex;
-    border-right: 1.5px solid rgba(255, 255, 255, 0.1);
-    flex: 0 0 auto;
-    gap: 0; // Remove gap to allow border to work properly
+    align-items: center;
+    gap: 4px;
+    padding: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+    border-bottom: 1px solid rgba(33, 150, 243, 0.2);
 
-    @media (max-width: 1000px) {
-        border-right: none;
+    &:hover {
+        color: #64b5f6;
+    }
+
+    h4 {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: #2196f3;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+        display: none;
+    }
+}
+
+.collapse-chevron {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #2196f3;
+    transition: transform 250ms ease-in-out;
+    flex-shrink: 0;
+
+    &.collapsed {
+        transform: rotate(-90deg);
+    }
+}
+
+.collapsible-body {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 300ms ease-in-out, opacity 200ms ease;
+    opacity: 1;
+
+    > * {
+        overflow: hidden;
+    }
+
+    &.collapsed {
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition: grid-template-rows 300ms ease-in-out, opacity 200ms ease;
+    }
+}
+
+
+
+// On mobile, only the Quick Filters collapsible-body ignores collapsed state (header is hidden)
+.collapsible-section > .collapsible-body.collapsed {
+    @media (max-width: 600px) {
+        grid-template-rows: 1fr !important;
+        opacity: 1;
+    }
+}
+
+.collapsible-group-title {
+    cursor: pointer;
+    user-select: none;
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #64b5f6;
+    }
+
+    .collapse-chevron {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+    }
+}
+
+// Mobile chevron in section headers — hidden on desktop, shown on mobile
+.mobile-chevron {
+    display: none !important;
+}
+
+// Support-lb group header — hidden on desktop, replaces individual headers on mobile
+.support-lb-mobile-header {
+    display: none !important;
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2196f3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .mobile-chevron {
+        display: inline-flex !important;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: #2196f3;
+        transition: transform 250ms ease-in-out;
+        vertical-align: middle;
+        margin-right: 0;
+        flex-shrink: 0;
+
+        &.collapsed {
+            transform: rotate(-90deg);
+        }
+    }
+
+    // Make section headers clickable on mobile
+    .section-header {
+        cursor: pointer;
+        user-select: none;
+        display: flex !important;
+        align-items: center;
+        gap: 4px;
+        padding: 0;
+        margin: 0;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: #64b5f6;
+        }
+    }
+
+    // Show the support-lb group header on mobile
+    .support-lb-mobile-header {
+        display: flex !important;
         flex: 1 1 100%;
-        justify-content: flex-start; // Align start
-        border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 16px;
-        margin-bottom: 16px;
-        gap: 16px;
     }
 
-    // Apply zoom to inner items instead of the group to avoid shrinking headers
-    .filter-item {
-        @media (max-width: 600px) {
-            zoom: 0.8;
-        }
-
-        @media (max-width: 450px) {
-            zoom: 0.65;
-        }
-
-        @media (max-width: 380px) {
-            zoom: 0.55;
-        }
-    }
-}
-
-// Section wrapper with header
-.filter-section-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 0 20px;
-    border-right: 1.5px solid rgba(255, 255, 255, 0.1);
-    gap: 12px;
-    align-items: flex-start;
-    flex: 0 0 auto;
-
-    @media (max-width: 1000px) {
-        flex: 1 1 auto; // Allow expansion on mobile/tablet if needed, or keep auto?
-        // Actually on mobile it's column layout, so width is handled by align-items stretch usually.
-        // But let's keep it flexible on mobile just in case.
-        border-right: none;
-        border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 16px;
-        margin-bottom: 16px;
-        padding-left: 0;
-        padding-right: 0;
+    // Hide individual Support Card / Min LB headers on mobile (group header replaces them)
+    .support-lb-group .filter-section-wrapper > .section-header {
+        display: none !important;
     }
 
-    @media (min-width: 1001px) and (max-width: 1300px) {
-        .main-layout > &:first-child {
-            flex: 0 0 100%;
-            align-items: center;
-            border-right: none;
-            border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 16px;
-            margin-bottom: 16px;
-            padding-right: 0;
+    // Mobile box styling for Quick Filter sub-sections (match .filter-group style)
+    .legacy-tree-wrapper,
+    .support-lb-group,
+    .search-wrapper {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
 
-            .section-header {
-                align-self: center;
-            }
+        &:hover {
+            border-color: rgba(33, 150, 243, 0.3) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        .section-header {
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: #2196f3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px !important;
+            line-height: normal !important;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+            margin-bottom: 8px;
+            width: 100%;
+            align-self: stretch;
         }
     }
 
-    &:first-child {
-        padding-left: 0;
-    }
+    // When mobile sub-sections are collapsed, remove divider and tighten padding
+    .legacy-tree-wrapper:has(> .m-collapse.m-collapsed),
+    .search-wrapper:has(> .m-collapse.m-collapsed) {
+        padding: 12px !important;
 
-    .support-lb-group &:first-child {
-        padding-left: 20px;
-
-        @media (max-width: 1000px) {
-            flex: 0 0 38%; // Force 50% width
+        .section-header {
             border-bottom: none;
             padding-bottom: 0;
             margin-bottom: 0;
-            padding-left: 0;
-            border-right: 1.5px solid rgba(255, 255, 255, 0.1); // Add vertical divider
-            padding-right: 16px;
         }
     }
 
-    .support-lb-group &:last-child {
-        border-right: none;
-        border-bottom: none;
-        padding-bottom: 0;
-        margin-bottom: 0;
-        flex: 1 1 auto; // Take remaining space but respect content
+    .support-lb-group:has(> .m-collapse.m-collapsed) {
+        padding: 12px !important;
+
+        .support-lb-mobile-header {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
     }
 
-    &:last-child,
-    &.search-wrapper {
-        border-right: none;
-        border-bottom: none;
-        padding-bottom: 0;
-        margin-bottom: 0;
-        flex: 1 1 280px;
-        min-width: 280px;
+    // Style the support-lb-mobile-header similarly
+    .support-lb-mobile-header {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px !important;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+        margin-bottom: 8px;
+    }
+}
 
-        @media (max-width: 1000px) {
-            flex: 1 1 auto;
-            min-width: 0;
-            width: 100%;
+// Mobile collapse wrapper — transparent on desktop, grid collapse on mobile
+.m-collapse {
+    display: contents;
+
+    @media (max-width: 600px) {
+        display: grid;
+        width: 100%;
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 250ms ease-in-out, opacity 200ms ease;
+        opacity: 1;
+
+        > * {
+            overflow: hidden;
+            min-height: 0;
         }
+
+        &.m-collapsed {
+            grid-template-rows: 0fr;
+            opacity: 0;
+            pointer-events: none;
+            transition: grid-template-rows 250ms ease-in-out, opacity 150ms ease;
+        }
+    }
+}
+
+// Inline mobile-collapsible for embedded sections (e.g. Total Star Count)
+.mobile-collapsible {
+    .mobile-collapsible-header {
+        display: none;
+    }
+
+    @media (max-width: 600px) {
+        .mobile-collapsible-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 0;
+            cursor: pointer;
+            user-select: none;
+
+            h4 {
+                margin: 0;
+                font-size: 11px;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.85);
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+            }
+
+            .collapse-chevron {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .mobile-collapsible-body {
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.25s ease-out, opacity 0.2s ease-out;
+            opacity: 1;
+
+            > * {
+                overflow: hidden;
+                min-height: 0;
+            }
+
+            &.collapsed {
+                grid-template-rows: 0fr;
+                opacity: 0;
+                transition: grid-template-rows 0.2s ease-in, opacity 0.15s ease-in;
+            }
+        }
+    }
+}
+
+// =============================================
+// MAIN LAYOUT
+// =============================================
+
+// The main container uses a 2-row grid approach:
+// Layout: Single flex row, wraps naturally
+// Wide:    [legacy-tree | support-card | min-lb | search-users]
+// Narrower: items wrap to next row with row-gap spacing
+// ≤700px:  everything stacks
+
+.main-layout {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0;
+    row-gap: 0;
+    margin-bottom: 0;
+    align-items: stretch;
+    padding: 14px;
+
+    @media (max-width: 600px) {
+        padding: 6px 0;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+// =============================================
+// SECTION WRAPPERS
+// =============================================
+
+.filter-section-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 10px;
+    align-items: flex-start;
+    flex: 0 0 auto;
+
+    @media (max-width: 600px) {
+        gap: 0;
     }
 
     .section-header {
         margin: 0;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
-        color: rgba(255, 255, 255, 0.6);
+        color: #2196f3;
         text-transform: uppercase;
         letter-spacing: 0.8px;
         flex-shrink: 0;
@@ -190,220 +437,541 @@
         align-self: flex-start;
     }
 
-    >div {
+    > div:not(.m-collapse),
+    > .m-collapse > div {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         flex: 1;
     }
+
+    @media (max-width: 600px) {
+        padding: 0 8px;
+    }
 }
 
-// Tree section (compact horizontal)
-.tree-section {
-    display: flex;
-    align-items: center;
-    gap: 0;
+// =============================================
+// LEGACY TREE
+// =============================================
 
-    @media (max-width: 1000px) {
-        justify-content: center;
-        width: 100%;
+.legacy-tree-wrapper {
+    flex: 1 1 auto;
+    min-width: 550px;
+    padding-left: 0;
+    padding-right: 16px;
+
+    // Override .filter-section-wrapper > div { align-items: center }
+    // so tree-groups stretch to equal height
+    > .m-collapse > .legacy-tree-section,
+    > .legacy-tree-section {
+        align-items: stretch;
+    }
+
+    // When legacy wraps to its own row — dividers only
+    &.is-wrapped {
+        padding-bottom: 14px;
+        margin-bottom: 14px;
+        border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
     }
 
     @media (max-width: 600px) {
-        // Scale down instead of wrapping
-        zoom: 0.8;
-    }
+        min-width: 0;
+        padding-right: 0;
+        flex: 0 0 auto;
 
-    @media (max-width: 450px) {
-        zoom: 0.65;
-    }
-
-    @media (max-width: 380px) {
-        zoom: 0.55;
+        &.is-wrapped {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
     }
 }
 
-.character-box {
+// =============================================
+// SUPPORT CARD + MIN LB GROUP
+// =============================================
+
+.support-lb-group {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: rgba(33, 150, 243, 0.04);
-    border: 2px solid rgba(33, 150, 243, 0.5);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
+    flex: 0 0 auto;
+    gap: 0;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.1);
+    padding-left: 0;
 
-    &:hover {
-        background: rgba(33, 150, 243, 0.08);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
-    }
-}
-
-.target-box {
-    border-color: rgba(255, 193, 7, 0.5);
-    background: rgba(255, 193, 7, 0.04);
-
-    &:hover {
-        background: rgba(255, 193, 7, 0.08);
-        box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2);
-    }
-}
-
-.parent-box {
-    border-color: rgba(33, 150, 243, 0.5);
-    min-width: 120px;
-}
-
-.grandparent-box {
-    border-color: transparent;
-    background: transparent;
-    min-width: 90px;
-    padding: 4px;
-
-    &:hover {
-        background: transparent;
-        box-shadow: none;
-        transform: none;
-    }
-}
-
-.character-circle {
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #666; // Default grey border
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    width: 80px;
-    height: 80px;
-    transition: border-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
-
-    @media (max-width: 768px) {
-        width: 60px;
-        height: 60px;
-    }
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    mat-icon {
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
-        color: rgba(255, 255, 255, 0.3);
-
-        @media (max-width: 768px) {
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
+    .filter-section-wrapper {
+        &:first-child {
+            border-right: 1.5px solid rgba(255, 255, 255, 0.1);
+            padding-right: 16px;
+        }
+        &:last-child {
+            border-right: none;
+            padding-left: 16px;
         }
     }
 
-    &.empty {
-        border-style: dashed;
-        border-color: rgba(255, 255, 255, 0.2);
+    .filter-item {
+        @media (max-width: 600px) {
+              zoom: 1;
+          }
+          @media (max-width: 450px) {
+              zoom: 0.9;
+          }
+          @media (max-width: 380px) {
+              zoom: 0.8;
+          }
+      }
+
+    // When legacy wrapped, support-lb is first on its row
+    &.is-wrapped {
+        border-left: none;
+
+        .filter-section-wrapper:first-child {
+            padding-left: 0;
+        }
+    }
+
+    @media (max-width: 600px) {
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+        border-left: none;
+        gap: 0;
+
+        .filter-section-wrapper {
+            padding: 0 !important;
+            border: none !important;
+        }
+
+        > .m-collapse:first-of-type {
+            flex: 0 0 auto;
+            width: auto;
+            padding-right: 12px;
+            border-right: 1.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        > .m-collapse:last-of-type {
+            flex: 1 1 0;
+            width: auto;
+            min-width: 0;
+            padding-left: 12px;
+        }
     }
 }
 
-// When character is selected (image is present), use specific colors
-.target-box .character-circle:has(img[src*="character_stand"]) {
-    border-color: rgba(255, 193, 7, 0.8);
-}
+// =============================================
+// SEARCH USERS
+// =============================================
 
-.parent-box .character-circle:has(img[src*="character_stand"]) {
-    border-color: rgba(33, 150, 243, 0.8);
-}
+.search-wrapper {
+    flex: 1 1 200px;
+    min-width: 200px;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.1);
+    padding-left: 16px;
+    padding-right: 0;
 
-.grandparent-box .character-circle:has(img[src*="character_stand"]) {
-    border-color: rgba(156, 39, 176, 0.8);
-}
-
-.character-box.disabled,
-.grandparents-group.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    filter: grayscale(100%);
-}
-
-.character-label {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.9);
-    text-align: center;
-    white-space: nowrap;
-    font-weight: 600;
-}
-
-.clear-node-btn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border-radius: 50%;
-    padding: 0;
-    z-index: 10;
-
-    mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
+    > div:not(.m-collapse),
+    > .m-collapse > div {
+        justify-content: flex-start;
     }
 
-    &:hover {
-        background: rgba(244, 67, 54, 0.8);
+    // When search wraps to its own row — dividers only
+    &.is-wrapped {
+        border-left: none;
+        border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+        padding-left: 0;
+        padding-top: 14px;
+        margin-top: 14px;
+    }
+
+    @media (max-width: 600px) {
+        flex: 0 0 auto;
+        min-width: 0;
+        border-left: none;
+        border-top: none;
+        padding-left: 0;
+        padding-top: 0;
+        margin-top: 0;
+
+        &.is-wrapped {
+            padding-top: 0;
+            margin-top: 0;
+            border-top: none;
+        }
     }
 }
 
-.grandparents-row {
+// =============================================
+// LEGACY TREE INTERNALS
+// =============================================
+
+.legacy-tree-section {
     display: flex;
-    gap: 12px;
+    align-items: stretch;
+    gap: 0;
+    padding: 4px 0;
+    flex: 1;
+
+    // Force all tree-groups (incl. target) to same height via stretch
+    > .tree-group {
+        display: flex;
+        flex-direction: column;
+
+        .tree-box {
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 900px) {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
 }
 
-.grandparents-group {
+.tree-connector {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 20px;
+    font-weight: 300;
+    user-select: none;
+    margin: 0 10px;
+    line-height: 1;
+    flex-shrink: 0;
+    align-self: center;
+    padding-bottom: 18px;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
+}
+
+.tree-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: rgba(156, 39, 176, 0.04);
-    border: 2px solid rgba(156, 39, 176, 0.5);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
+    align-items: stretch;
+    gap: 6px;
+    flex: 1 1 0;
+    min-width: 120px;
 
-    &:hover {
-        background: rgba(156, 39, 176, 0.08);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(156, 39, 176, 0.2);
+    &:first-child {
+        flex: 0 0 auto;
+        min-width: 0;
+        // Keep stretch alignment so target box matches height of siblings
     }
 
-    .grandparent-box {
-        position: relative; // For clear button positioning
+    @media (max-width: 900px) {
+        flex: 1 1 100%;
+
+        &:first-child {
+            flex: 1 1 100%;
+        }
     }
 }
 
-// Connector lines between legacy characters
-.connector-line {
-    width: 32px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.3);
-    margin: 0 8px;
+.tree-group-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    user-select: none;
+    text-align: center;
+    line-height: 1;
+    align-self: center;
+
+    &.target-color { color: rgba(255, 193, 7, 0.55); }
+    &.parent-color { color: rgba(100, 181, 246, 0.55); }
+    &.grandparent-color { color: rgba(186, 104, 200, 0.55); }
+}
+
+// Container box around circle(s)
+.tree-box {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid;
+    min-height: 120px;
+    min-width: 160px;
+    justify-content: center;
+    flex: 1;
+
+    @media (max-width: 600px) {
+        min-width: 0;
+        min-height: 80px;
+    }
+
+    &.target-box {
+        border-color: rgba(255, 193, 7, 0.2);
+        background: rgba(255, 193, 7, 0.02);
+        align-items: center;
+        justify-content: center;
+        padding: 12px 16px;
+
+        .target-character-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+    }
+
+    &.parent-box {
+        border-color: rgba(100, 181, 246, 0.2);
+        background: rgba(100, 181, 246, 0.02);
+    }
+
+    &.grandparent-box {
+        border-color: rgba(186, 104, 200, 0.2);
+        background: rgba(186, 104, 200, 0.02);
+    }
+}
+
+// Filter row: add button + chips
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    cursor: pointer;
+    padding: 4px 6px;
+    margin: -4px -6px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    & + .filter-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 4px;
+        margin-top: 0;
+    }
+}
+
+.filter-row-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    user-select: none;
     flex-shrink: 0;
+
+    &.include-label {
+        color: rgba(129, 199, 132, 0.5);
+    }
+
+    &.exclude-label {
+        color: rgba(239, 83, 80, 0.5);
+    }
+}
+
+.filter-row-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.filter-row-add {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px dashed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    padding: 0;
+    flex-shrink: 0;
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+
+    &.include-btn {
+        border-color: rgba(129, 199, 132, 0.25);
+        color: rgba(129, 199, 132, 0.4);
+
+        &:hover {
+            border-color: rgba(129, 199, 132, 0.6);
+            background: rgba(129, 199, 132, 0.06);
+            color: rgba(129, 199, 132, 0.8);
+        }
+    }
+
+    &.exclude-btn {
+        border-color: rgba(239, 83, 80, 0.25);
+        color: rgba(239, 83, 80, 0.4);
+
+        &:hover {
+            border-color: rgba(239, 83, 80, 0.6);
+            background: rgba(239, 83, 80, 0.06);
+            color: rgba(239, 83, 80, 0.8);
+        }
+    }
+}
+
+// Target circle (single select)
+.tree-circle {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: 2px dashed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    background: transparent;
+    flex-shrink: 0;
+
+    .circle-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .circle-add-icon {
+        font-size: 26px;
+        width: 26px;
+        height: 26px;
+        transition: all 0.2s ease;
+    }
+
+    .circle-remove-btn {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+        box-sizing: border-box;
+        overflow: hidden;
+
+        mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+        }
+
+        &:hover {
+            background: rgba(244, 67, 54, 0.8);
+            color: white;
+        }
+    }
+
+    &.target-circle {
+        border-color: rgba(255, 193, 7, 0.3);
+        color: rgba(255, 193, 7, 0.4);
+
+        &:hover {
+            border-color: rgba(255, 193, 7, 0.6);
+            background: rgba(255, 193, 7, 0.05);
+            color: rgba(255, 193, 7, 0.7);
+        }
+
+        &.has-character {
+            border-style: solid;
+            border-color: rgba(255, 193, 7, 0.5);
+        }
+    }
+}
+
+// Include/Exclude circle buttons (kept for potential reuse)
+.tree-circle-btn {
+    display: none; // Hidden, replaced by filter-row-add
+}
+
+// Filter chips
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 2px;
+    border-radius: 20px;
+    border: 1px solid;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    max-width: 200px;
+    backdrop-filter: blur(4px);
+
+    .filter-chip-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .filter-chip-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+    }
+
+    .filter-chip-remove {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        opacity: 0.4;
+        transition: all 0.15s;
+        flex-shrink: 0;
+        margin-left: 2px;
+
+        &:hover { opacity: 1; color: #ef5350; }
+    }
+
+    &.include {
+        background: rgba(129, 199, 132, 0.1);
+        border-color: rgba(129, 199, 132, 0.25);
+        color: #a5d6a7;
+
+        .filter-chip-img {
+            border-color: rgba(129, 199, 132, 0.3);
+        }
+
+        &:hover { background: rgba(129, 199, 132, 0.18); }
+    }
+
+    &.exclude {
+        background: rgba(244, 67, 54, 0.1);
+        border-color: rgba(244, 67, 54, 0.25);
+        color: #ef9a9a;
+
+        .filter-chip-img {
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+
+        &:hover { background: rgba(244, 67, 54, 0.18); }
+    }
 }
 
 // Filter items (horizontal inline)
@@ -560,6 +1128,13 @@
     gap: 2px;
     min-width: 200px;
     padding: 0 12px; // Add padding to account for slider thumb overhang
+    flex: 1 1 0;
+
+    @media (max-width: 600px) {
+        min-width: 0;
+        width: 100%;
+        padding-right: 24px;
+    }
 }
 
 .lb-diamonds-compact {
@@ -711,11 +1286,26 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    margin: 0 auto; // Center in the wrapper
+    margin: 0;
+
+    .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .input-label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+        margin-left: 2px;
+    }
 }
 
 .custom-search-field {
     width: 100%;
+    flex: 1 1 0;
+    min-width: 0;
     margin: 0;
 
     &.trainer-id-field input.mat-mdc-input-element {
@@ -726,14 +1316,12 @@
 
     ::ng-deep {
         .mat-mdc-text-field-wrapper {
-            background-color: rgba(255, 255, 255, 0.03) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px !important;
+            height: 38px !important;
             padding: 0 12px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 6px !important;
             transition: all 0.2s ease;
-            height: 60px; // Fixed height for consistency
-            display: flex;
-            align-items: center;
         }
 
         .mat-mdc-form-field-focus-overlay {
@@ -748,40 +1336,78 @@
 
         // Hover state
         &:hover .mat-mdc-text-field-wrapper {
-            background-color: rgba(33, 150, 243, 0.05) !important;
-            border-color: rgba(33, 150, 243, 0.4);
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
         }
 
         // Focused state
         &.mat-focused .mat-mdc-text-field-wrapper {
-            background-color: rgba(33, 150, 243, 0.08) !important;
-            border-color: #2196f3;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: #2196f3 !important;
             box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
         }
 
-        .mat-mdc-form-field-icon-suffix {
-            color: rgba(255, 255, 255, 0.4);
+        .mat-mdc-form-field-infix {
+            padding: 0 !important;
+            min-height: 38px !important;
+            display: flex !important;
+            align-items: center !important;
         }
 
-        input.mat-mdc-input-element {
-            color: white !important;
-            font-weight: 500;
-            font-size: 16px;
+        .mat-mdc-form-field-icon-suffix {
+            color: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            height: 100%;
 
-            &::placeholder {
-                color: rgba(255, 255, 255, 0.3) !important;
-                font-size: 16px;
+            .mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+            }
+
+            .mat-mdc-icon-button {
+                width: 28px;
+                height: 28px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .mat-mdc-button-touch-target {
+                    width: 28px;
+                    height: 28px;
+                }
             }
         }
 
         .mat-mdc-floating-label {
-            color: rgba(255, 255, 255, 0.5) !important;
-            top: 24px !important;
-            font-size: 13px !important;
+            display: none !important;
         }
 
-        &.mat-focused .mat-mdc-floating-label {
-            color: #2196f3 !important;
+        input.mat-mdc-input-element {
+            margin-top: 0 !important;
+            position: relative !important;
+            top: 0 !important;
+            height: auto !important;
+            padding: 0 !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            font-size: 13px;
+
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.25) !important;
+                font-size: 13px;
+            }
+        }
+
+        .mdc-line-ripple {
+            display: none;
+        }
+
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
         }
     }
 }
@@ -789,6 +1415,8 @@
 // Property filters (compact single row when possible)
 .property-filters-compact {
     margin-top: 0.5rem;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .filters-header-compact {
@@ -822,11 +1450,56 @@
 .filters-grid-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+// Container for General Criteria + Total Star Count
+.criteria-starcount-group {
+    flex: 1 1 300px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    // Widescreen: stacked vertically, top shrinks, bottom fills
+    > .filter-group:first-child {
+        flex: 0 1 auto;
+    }
+    > .filter-group:last-child {
+        flex: 1 1 auto;
+    }
+
+    // Medium: side by side, equal width
+    @media (max-width: 1200px) and (min-width: 601px) {
+        flex-direction: row;
+        flex: 1 1 100%;
+
+        > .filter-group:first-child,
+        > .filter-group:last-child {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+    }
+
+    // Mobile: stacked full-width
+    @media (max-width: 600px) {
+        flex: 1 1 100%;
+        flex-direction: column;
+
+        > .filter-group:first-child,
+        > .filter-group:last-child {
+            flex: 0 1 auto;
+        }
+    }
 }
 
 .filter-group {
     flex: 1 1 300px;
+    min-width: 0;
+    overflow: hidden;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
@@ -844,17 +1517,29 @@
         border-color: rgba(33, 150, 243, 0.3);
         background: rgba(255, 255, 255, 0.03);
     }
+
+    // When section is collapsed, remove bottom padding and gap
+    &:has(> .collapsible-body.collapsed) {
+        padding: 12px;
+        gap: 0;
+
+        .group-title {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+    }
 }
 
 .group-title {
-    margin: 0 0 4px 0;
+    margin: 0 0 8px 0;
     font-size: 12px;
     font-weight: 600;
     color: #2196f3;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid rgba(33, 150, 243, 0.2);
-    padding-bottom: 6px;
+    padding-bottom: 10px;
 }
 
 .factor-row {
@@ -1177,21 +1862,88 @@
 
 .input-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 8px;
 
     @media (max-width: 768px) {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     &.single-column {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .input-wrapper {
         display: flex;
         flex-direction: column;
         gap: 3px;
+        min-width: 0;
+        overflow: hidden;
+
+        mat-form-field {
+            width: 100%;
+            min-width: 0;
+
+            .mat-mdc-form-field-infix {
+                min-width: 0 !important;
+            }
+        }
+
+        &.toggle-wrapper {
+            justify-content: flex-start;
+
+            .follower-toggle-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                width: 100%;
+                height: 38px;
+                padding: 0 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 13px;
+                font-weight: 500;
+                outline: none;
+                transition: all 0.2s ease;
+
+                .toggle-btn-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+
+                &.excluded {
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: rgba(255, 255, 255, 0.5);
+
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.08);
+                        border-color: rgba(255, 255, 255, 0.2);
+                    }
+
+                    .toggle-btn-icon {
+                        color: rgba(255, 255, 255, 0.4);
+                    }
+                }
+
+                &.included {
+                    background: rgba(76, 175, 80, 0.1);
+                    border: 1px solid rgba(76, 175, 80, 0.3);
+                    color: #81c784;
+
+                    &:hover {
+                        background: rgba(76, 175, 80, 0.16);
+                        border-color: rgba(76, 175, 80, 0.45);
+                    }
+
+                    .toggle-btn-icon {
+                        color: #81c784;
+                    }
+                }
+            }
+        }
     }
 
     .input-label {
@@ -1314,10 +2066,6 @@
 
 // Mobile responsive
 @media (max-width: 768px) {
-    .main-layout {
-        flex-direction: column;
-    }
-
     .filters-panel {
         min-width: 100%;
     }
@@ -1390,6 +2138,8 @@
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+        min-width: 0;
+        overflow: hidden;
 
         @media (max-width: 600px) {
             flex-direction: column;
@@ -1411,6 +2161,8 @@
         align-items: center;
         gap: 8px;
         flex: 1;
+        min-width: 0;
+        overflow: hidden;
     }
 
     .filter-chip {
@@ -1424,6 +2176,8 @@
         cursor: pointer;
         transition: all 0.2s ease;
         border: 1px solid transparent;
+        max-width: 100%;
+        min-width: 0;
         
         &:hover {
             transform: scale(1.02);
@@ -1438,10 +2192,15 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
         }
 
         .chip-name {
             opacity: 0.85;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .separator {
@@ -1537,6 +2296,16 @@
 
             &:hover {
                 background: rgba(255, 193, 7, 0.25);
+            }
+        }
+
+        &.chip-exclude {
+            background: rgba(244, 67, 54, 0.15);
+            color: #ef9a9a;
+            border-color: rgba(244, 67, 54, 0.3);
+
+            &:hover {
+                background: rgba(244, 67, 54, 0.25);
             }
         }
 
@@ -1829,5 +2598,76 @@
  margin-top: 18px; // Align with input field
  color: rgba(255, 255, 255, 0.4);
  }
+}
+
+// Floating scroll-aware button — fixed at bottom-right
+.floating-scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 24px;
+    border: 1.5px solid;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    animation: floatIn 0.25s ease-out;
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+
+    &.results-mode {
+        background: rgba(33, 150, 243, 0.2);
+        border-color: rgba(33, 150, 243, 0.5);
+        color: #64b5f6;
+
+        &:hover {
+            background: rgba(33, 150, 243, 0.35);
+            border-color: rgba(33, 150, 243, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3);
+        }
+    }
+
+    &.top-mode {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.85);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    @media (max-width: 600px) {
+        bottom: 16px;
+        right: 16px;
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 

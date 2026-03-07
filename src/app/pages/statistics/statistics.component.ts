@@ -19,7 +19,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subject, takeUntil, BehaviorSubject, forkJoin, of, combineLatest, take } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, startWith, catchError, filter } from 'rxjs/operators';
-
 import { StatisticsService } from '../../services/statistics.service';
 import { SKILLS } from '../../data/skills.data';
 import { StatisticsChartComponent, ChartDataPoint } from '../../components/statistics-chart/statistics-chart.component';
@@ -27,7 +26,6 @@ import { ClassFilterComponent, ClassFilterState, DistanceChangeEvent } from '../
 import { TeamClassBottomSheetComponent, BottomSheetData } from '../../components/team-class-bottom-sheet/team-class-bottom-sheet.component';
 import { ColorsService } from '../../services/colors.service';
 import { CharacterService } from '../../services/character.service';
-
 @Component({
   selector: 'app-statistics',
   standalone: true,
@@ -58,22 +56,18 @@ import { CharacterService } from '../../services/character.service';
 export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('classFilter') classFilter!: ClassFilterComponent;
   private destroy$ = new Subject<void>();
-
   // Dataset management
   availableDatasets$ = new BehaviorSubject<any[]>([]);
   selectedDataset$ = new BehaviorSubject<any>(null);
-
   // Loading states
   globalLoading = true;
   distanceLoading = false;
   characterLoading = false;
-
   // Data
   globalStats: any = null;
   distanceStats: any = {};
   characterStats: any = {};
   rawData: any = null;
-
   // UI State
   isMobile = false;
   isSmallScreen = false;
@@ -81,11 +75,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedDistance = new BehaviorSubject<string | null>(null);
   selectedCharacterDetail: string | null = null;
   // Distance selector visibility is now determined by selectedCharacterDetail or selectedDistance
-
   // Search
   characterSearchControl = new FormControl('');
   filteredCharacters$ = new BehaviorSubject<{ id: string, name: string }[]>([]);
-
   // Filters
   classFilters: ClassFilterState = {
     '1': true,
@@ -111,10 +103,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     '4': 'Grand Masters',
     '5': 'UAF'
   };
-
   // Available distances
   availableDistances = ['sprint', 'mile', 'medium', 'long', 'dirt'];
-
   // Add debounce timer for character updates to prevent stuttering
   private characterUpdateTimer: any = null;
   private distanceUpdateTimer: any = null;
@@ -122,7 +112,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     distance: null as string | null,
     characterId: null as string | null
   };
-
   // Cache for computed chart data
   private chartDataCache = new Map<string, any>();
   private cacheKeys = {
@@ -131,11 +120,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedDistance: '',
     selectedCharacter: ''
   };
-
   // Performance optimization properties
   private lastActiveClasses: string = '1,2,3,4,5,6'; // Initialize to match the default classFilters state
   private filteredTotalCache: number = 0;
-
   // Scroll tracking properties
   private lastScrollY = 0;
   private headerOriginalTop = 0;
@@ -144,7 +131,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   private classFilterStickyActive = false;
   // Sticky logic for distance selectors removed
   private scrollThrottleTimer: any = null;
-
   // Standard chart configurations for consistency
   readonly CHART_CONFIGS = {
     // Standard single bar chart
@@ -168,12 +154,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Horizontal bar chart with stat symbols for compositions
     STAT_SYMBOL_BAR: { type: 'horizontalBar' as const, title: '', height: 400, showLegend: false, showStatSymbols: true }
   };
-
   // Template compatibility
   get distances() {
     return this.availableDistances;
   }
-
   // Add computed properties for chart data
   teamClassChartData$ = new BehaviorSubject<ChartDataPoint[]>([]);
   totalTrainers$ = new BehaviorSubject<number>(0);
@@ -187,11 +171,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   overallStatComparison$ = new BehaviorSubject<ChartDataPoint[]>([]);
   umaDistributionStackedData$ = new BehaviorSubject<any[]>([]);
   sampleSizeText$ = new BehaviorSubject<string>('');
-
   // New image-based chart data
   topUmasWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
   topSkillsWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Distance-specific observables
   distanceSkillsData$ = new BehaviorSubject<any[]>([]);
   distanceCardTypeDistribution$ = new BehaviorSubject<ChartDataPoint[]>([]);
@@ -204,12 +186,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   distanceStatHistogramStamina$ = new BehaviorSubject<ChartDataPoint[]>([]);
   distanceStatHistogramWiz$ = new BehaviorSubject<ChartDataPoint[]>([]);
   distanceStatHistogramGuts$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Distance-specific image data
   distanceSupportCardsWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
   distanceSkillsWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
   distanceUmasWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Character-specific observables
   characterDistanceData$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterClassData$ = new BehaviorSubject<any[]>([]);
@@ -220,7 +200,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   characterStatHistogramGuts$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterSupportCardCombinationsData$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterOverallCardTypeDistribution$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Character distance-specific data observables
   characterDistanceClassData$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterDistanceStatHistogramSpeed$ = new BehaviorSubject<ChartDataPoint[]>([]);
@@ -230,7 +209,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   characterDistanceStatHistogramGuts$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterDistanceSupportCardData$ = new BehaviorSubject<any[]>([]);
   characterDistanceSupportCardCombinationsData$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Missing observables for character distance analysis
   characterDistanceStatsByClassData$ = new BehaviorSubject<any[]>([]);
   characterDistanceUmasWithImages$ = new BehaviorSubject<ChartDataPoint[]>([]);
@@ -239,10 +217,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   characterDistanceStatDistributionData$ = new BehaviorSubject<any[]>([]);
   characterDistanceCardTypeDistribution$ = new BehaviorSubject<ChartDataPoint[]>([]);
   characterDistanceDeckCompositions$ = new BehaviorSubject<ChartDataPoint[]>([]);
-
   // Selected character distance for distance-specific analysis
   selectedCharacterDistance: string | null = null;
-
   constructor(
     private statisticsService: StatisticsService,
     private meta: Meta,
@@ -254,11 +230,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     // Initialization moved to ngOnInit
   }
-
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.checkScreenSize();
-
     // Recalculate sticky positions if they're active
     if (this.classFilterStickyActive) {
       this.updateClassFilterPosition();
@@ -267,63 +241,50 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateCharacterHeaderPosition();
     }
   }
-
   private updateClassFilterPosition() {
     const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
     const sidebar = document.querySelector('.sidebar') as HTMLElement;
-
     if (sidebarContent && sidebar && this.classFilterStickyActive) {
       const sidebarRect = sidebar.getBoundingClientRect();
       sidebarContent.style.left = `${sidebarRect.left}px`;
       sidebarContent.style.width = `${sidebarRect.width}px`;
     }
   }
-
   private updateCharacterHeaderPosition() {
     const header = document.querySelector('.character-details-header') as HTMLElement;
     const contentArea = document.querySelector('.content-area') as HTMLElement;
-
     if (header && contentArea && this.headerStickyActive) {
       const contentAreaRect = contentArea.getBoundingClientRect();
       header.style.left = `${contentAreaRect.left}px`;
       header.style.width = `${contentAreaRect.width}px`;
     }
   }
-
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     // Use requestAnimationFrame for smoother updates
     if (this.scrollThrottleTimer) {
       return;
     }
-
     this.scrollThrottleTimer = requestAnimationFrame(() => {
       const currentScrollY = window.scrollY;
-
       this.handleClassFilterSticky(currentScrollY);
       this.handleCharacterHeaderSticky(currentScrollY);
-
       this.lastScrollY = currentScrollY;
       this.scrollThrottleTimer = null;
     });
   }
-
   private handleClassFilterSticky(currentScrollY: number) {
     // Don't make class filter sticky on mobile when sidebar is hidden
     if (this.isMobile) return;
-
     const sidebarContent = document.querySelector('.sidebar-content') as HTMLElement;
     const sidebar = document.querySelector('.sidebar') as HTMLElement;
-
     if (!sidebarContent || !sidebar) return;
-
     // Get sidebar's position relative to viewport
     const sidebarRect = sidebar.getBoundingClientRect();
     
     // Make sticky when sidebar top goes above the sticky threshold (80px from top)
     const stickyThreshold = 80;
     const shouldBeSticky = sidebarRect.top < stickyThreshold;
-
     if (shouldBeSticky !== this.classFilterStickyActive) {
       this.classFilterStickyActive = shouldBeSticky;
       
@@ -342,26 +303,20 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       sidebarContent.style.width = `${sidebarRect.width}px`;
     }
   }
-
   private handleCharacterHeaderSticky(currentScrollY: number) {
     const header = document.querySelector('.character-details-header') as HTMLElement;
     const contentArea = document.querySelector('.content-area') as HTMLElement;
-
     if (!header || !this.selectedCharacterDetail || !contentArea) return;
-
     // Get header's original position if not set
     if (this.headerOriginalTop === 0) {
       const rect = header.getBoundingClientRect();
       this.headerOriginalTop = rect.top + currentScrollY;
     }
-
     // Add a buffer to prevent flickering - same hysteresis logic as class filter
     const buffer = 10; // Small buffer to prevent instant snapping
-
     // Character header becomes sticky when past original position + buffer
     // and unsticks when scrolling back above original position - buffer
     let shouldBeSticky: boolean;
-
     if (this.headerStickyActive) {
       // If already sticky, only unstick when we scroll well above the original position
       shouldBeSticky = currentScrollY > (this.headerOriginalTop - buffer);
@@ -369,7 +324,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // If not sticky, become sticky when we scroll past the original position plus buffer
       shouldBeSticky = currentScrollY > (this.headerOriginalTop + buffer);
     }
-
     if (shouldBeSticky !== this.headerStickyActive) {
       this.headerStickyActive = shouldBeSticky;
       if (shouldBeSticky) {
@@ -385,36 +339,27 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-
   // Distance selector sticky methods removed
-
-
   // Distance selector visibility method removed to prevent performance issues
   // Distance selector is now shown by default in relevant sections
-
   ngOnInit() {
     // Initialize screen size detection
     this.checkScreenSize();
-
     this.setupMetaTags();
-
     // Set default distance selection to "short"
     this.selectedDistance.next('sprint');
-
     // Subscribe to available datasets
     this.statisticsService.getAvailableDatasets()
       .pipe(takeUntil(this.destroy$))
       .subscribe(datasets => {
         this.availableDatasets$.next(datasets);
       });
-
     // Subscribe to selected dataset changes
     this.statisticsService.getSelectedDataset()
       .pipe(takeUntil(this.destroy$))
       .subscribe(dataset => {
         this.selectedDataset$.next(dataset);
       });
-
     // Wait for a dataset to be available before loading statistics
     this.statisticsService.getSelectedDataset()
       .pipe(
@@ -425,30 +370,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadGlobalStats();
         this.setupCharacterSearch();
       });
-
     // Set up reactive updates
     this.setupReactiveUpdates();
   }
-
   ngAfterViewInit() {
     // Initialize scroll tracking after view is ready
     setTimeout(() => {
       this.initializeScrollTracking();
     }, 100);
   }
-
   private initializeScrollTracking() {
     // Reset scroll positions for accurate tracking
     this.classFilterOriginalTop = 0;
     this.headerOriginalTop = 0;
     this.lastScrollY = window.scrollY;
   }
-
   ngOnDestroy() {
     // Clear cache and subscriptions
     this.chartDataCache.clear();
     this.filteredTotalCache = 0;
-
     // Clear any pending timers
     if (this.characterUpdateTimer) {
       clearTimeout(this.characterUpdateTimer);
@@ -462,17 +402,14 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       clearTimeout(this.scrollThrottleTimer);
       this.scrollThrottleTimer = null;
     }
-
     this.destroy$.next();
     this.destroy$.complete();
   }
-
   private setupReactiveUpdates() {
     // Only set up reactive updates after global stats are loaded
     if (!this.globalStats) {
       return;
     }
-
     // Update distance-specific data when distance changes
     this.selectedDistance.pipe(
       takeUntil(this.destroy$),
@@ -488,7 +425,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
   private setupMetaTags() {
     this.title.setTitle('Statistics - Umamusume Support Card Tierlist');
     this.meta.updateTag({
@@ -496,19 +432,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       content: 'View comprehensive statistics and analytics for Umamusume training data, including team class distributions, character usage, and support card trends.'
     });
   }
-
   private checkScreenSize() {
     const width = window.innerWidth;
     this.isMobile = width < 768;
     this.isSmallScreen = width < 1200; // For compact distance selector
     this.isBottomSheetMode = width < 1200; // Bottom sheet mode for filters when screen is smaller
   }
-
   // Temp debug method - remove this later
   getWindowWidth(): number {
     return window.innerWidth;
   }
-
   private initializeScenarioFilters() {
     if (this.globalStats?.scenario_distribution) {
       const availableScenarios = Object.keys(this.globalStats.scenario_distribution).sort();
@@ -527,13 +460,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         '6': 'Great Food',
         '7': 'Mecha'
       };
-
       availableScenarios.forEach(id => {
         // Skip total_entries or any non-numeric ID that shouldn't be a filter
         if (id === 'total_entries' || id === 'total' || id === 'unknown') {
           return;
         }
-
         // Enable all by default
         this.scenarioFilters[id] = true;
         
@@ -542,30 +473,23 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
-
   private loadGlobalStats() {
     this.globalLoading = true;
-
     this.statisticsService.getGlobalStatistics()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (globalData) => {
           this.globalStats = globalData;
           this.rawData = globalData;
-
           // Initialize scenario filters based on available data
           this.initializeScenarioFilters();
-
           // Update all chart data once
           this.updateAllChartData();
-
           // Set up reactive updates now that we have data
           this.setupReactiveUpdates();
-
           // Load distance and character stats
           // this.loadDistanceStats(); // Handled by setupReactiveUpdates
           this.loadCharacterStats();
-
           this.globalLoading = false;
         },
         error: (error) => {
@@ -573,24 +497,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
   }
-
   private loadDistanceStats() {
     this.distanceLoading = true;
-
     // Initially only load the default "sprint" distance for better performance
     const currentDistance = this.selectedDistance.value || 'sprint';
     this.loadSingleDistanceStats(currentDistance);
   }
-
   private loadSingleDistanceStats(distance: string) {
     if (this.distanceStats[distance]) {
       // Already loaded, no need to fetch again
       this.distanceLoading = false;
       return;
     }
-
     this.distanceLoading = true;
-
     this.statisticsService.getDistanceStatistics(distance).pipe(
       takeUntil(this.destroy$),
       catchError(error => {
@@ -599,51 +518,41 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(stats => {
       if (stats) {
         this.distanceStats[distance] = stats;
-
         // Update distance chart data now that it's loaded
         this.updateDistanceChartData(distance);
       }
       this.distanceLoading = false;
     });
   }
-
   private loadCharacterStats() {
     this.characterLoading = true;
-
     // Check if statistics data is loaded
     if (!this.statisticsService.isCharacterDataLoaded()) {
       setTimeout(() => this.loadCharacterStats(), 50);
       return;
     }
-
     // Use character IDs from the current dataset index instead of uma_distribution
     this.statisticsService.getSelectedDataset().pipe(take(1)).subscribe(dataset => {
       if (!dataset?.index?.character_ids) {
         this.characterLoading = false;
         return;
       }
-
       // Don't preload any character data - just set up the infrastructure
-
       // Setup character search since we have the character list
       this.setupCharacterSearch();
-
       this.characterLoading = false;
     });
   }
-
   private setupCharacterSearch() {
     // Get character IDs from the dataset index
     this.statisticsService.getSelectedDataset().pipe(take(1)).subscribe(dataset => {
       if (!dataset?.index?.character_ids) {
         return;
       }
-
       // Get character names from the character service using the IDs
       const characters = dataset.index.character_ids.map((characterId: string) => {
         // Get proper character name from character service
         const characterName = this.getCharacterNameById(characterId);
-
         return {
           id: characterId,
           name: characterName || `Character ${characterId}`, // Fallback if name not found
@@ -651,36 +560,29 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           characterId: characterId
         };
       });
-
       // Check for duplicate names and add ID suffixes
       const nameCount = new Map<string, number>();
       const nameToIds = new Map<string, string[]>();
-
       characters.forEach(char => {
         const count = nameCount.get(char.name) || 0;
         nameCount.set(char.name, count + 1);
-
         const ids = nameToIds.get(char.name) || [];
         ids.push(char.id);
         nameToIds.set(char.name, ids);
       });
-
       // Update display names for duplicates
       characters.forEach(char => {
         if (nameCount.get(char.name)! > 1) {
           char.displayName = `${char.name} (${char.characterId})`;
         }
       });
-
       // Sort by display name
       const sortedCharacters = characters
         .sort((a, b) => a.displayName.localeCompare(b.displayName));
-
       this.filteredCharacters$.next(sortedCharacters.map(char => ({
         id: char.id,
         name: char.displayName
       })));
-
       // Setup search filtering
       this.characterSearchControl.valueChanges
         .pipe(
@@ -703,66 +605,51 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     });
   }
-
   // Helper method to get character name by ID from character service
   private getCharacterNameById(characterId: string): string | null {
     // Get character from the character service synchronously
     // Since characters are loaded immediately in the constructor, we can access them directly
     let characterName: string | null = null;
-
     this.characterService.getCharacterById(characterId).pipe(take(1)).subscribe(character => {
       characterName = character?.name || null;
     });
-
     return characterName;
   }
-
   // Filter methods
   onClassFiltersChanged(filters: ClassFilterState): void {
     const startTime = performance.now();
-
     // Create a cache key from the filters
     const activeClasses = Object.keys(filters).filter(key => filters[key as keyof ClassFilterState]).sort();
     const cacheKey = activeClasses.join(',');
-
     // Check if we already processed this combination
     if (cacheKey === this.lastActiveClasses) {
       return;
     }
-
     this.lastActiveClasses = cacheKey;
     this.classFilters = { ...filters };
-
     // Clear filtered total cache
     this.filteredTotalCache = 0;
-
     // Clear cache that depends on class filters
     this.invalidateCache('classFilters');
-
     // Use requestAnimationFrame for smooth UI updates
     requestAnimationFrame(() => {
       this.updateAllChartData();
-
       // Also update distance-specific charts if a distance is selected
       const currentDistance = this.selectedDistance.value;
       if (currentDistance && this.distanceStats[currentDistance]) {
         this.updateDistanceChartData(currentDistance);
       }
-
       // Update character overall distance preference and recalculate default distance if a character is selected
       // This will also trigger updateCharacterDistanceData() through setCharacterDefaultDistance -> selectCharacterDistance
       if (this.selectedCharacterDetail) {
         // Use debounced update for character distance recalculation
         this.debouncedCharacterUpdate(this.selectedCharacterDetail);
-
         // Also update all character-specific charts with new class filter data
         this.updateAllCharacterCharts();
       }
     });
-
     const filterTime = performance.now() - startTime;
   }
-
   // Scenario filter methods
   onScenarioFilterChanged(scenarioId: string): void {
     this.scenarioFilters[scenarioId] = !this.scenarioFilters[scenarioId];
@@ -773,13 +660,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Update all charts with new scenario filter
     requestAnimationFrame(() => {
       this.updateAllChartData();
-
       // Also update distance-specific charts if a distance is selected
       const currentDistance = this.selectedDistance.value;
       if (currentDistance && this.distanceStats[currentDistance]) {
         this.updateDistanceChartData(currentDistance);
       }
-
       // Update character charts if a character is selected
       if (this.selectedCharacterDetail) {
         this.debouncedCharacterUpdate(this.selectedCharacterDetail);
@@ -798,11 +683,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     
     this.onScenarioFilterChanged(''); // Trigger update
   }
-
   areAllScenariosSelected(): boolean {
     return Object.values(this.scenarioFilters).length > 0 && Object.values(this.scenarioFilters).every(v => v);
   }
-
   isScenarioIndeterminate(): boolean {
     const values = Object.values(this.scenarioFilters);
     if (values.length === 0) return false;
@@ -814,24 +697,20 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   getActiveScenarios(): string[] {
     return Object.keys(this.scenarioFilters).filter(key => this.scenarioFilters[key]);
   }
-
   // Distance event handler from class-filter component
   onDistanceChanged(event: DistanceChangeEvent): void {
     if (event.distance) {
       this.onDistanceSelect(event.distance);
     }
   }
-
   // Distance methods
   onDistanceSelect(distance: string) {
     this.selectedDistance.next(distance);
-
     // If a character is currently selected, also update the character distance
     if (this.selectedCharacterDetail) {
       this.selectedCharacterDistance = distance;
       this.updateCharacterDistanceData();
     }
-
     // Update distance-specific chart data if available, otherwise load first
     if (this.distanceStats[distance]) {
       this.updateDistanceChartData(distance);
@@ -840,7 +719,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadSingleDistanceStats(distance);
     }
   }
-
   // Dataset selection method
   onDatasetChange(datasetId: string): void {
     const datasets = this.availableDatasets$.value;
@@ -864,31 +742,24 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadGlobalStats();
     }
   }
-
   // Character methods
   onCharacterSelect(characterId: string) {
     this.selectedCharacterDetail = characterId;
-
     // Find the character from the filtered characters list
     const currentCharacters = this.filteredCharacters$.value;
     const selectedCharacter = currentCharacters.find(char => char.id === characterId);
-
     if (!selectedCharacter) {
       return;
     }
-
     // Extract the character name (removing ID suffix if present)
     const displayName = selectedCharacter.name;
     const characterName = displayName.includes(' (')
       ? displayName.substring(0, displayName.lastIndexOf(' ('))
       : displayName;
-
     // Invalidate character-specific cache
     this.invalidateCache('selectedCharacter');
-
     // Store pending update
     this.pendingCharacterUpdates.characterId = characterId;
-
     // Load character statistics using the character ID (not name)
     if (!this.characterStats[characterId]) {
       this.loadSingleCharacterStats(characterId);
@@ -896,18 +767,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Use debounced update instead of direct call
       this.debouncedCharacterUpdate(characterId);
     }
-
     // Reset scroll tracking when selecting a new character
     this.resetHeaderScrollTracking();
   }
-
   private resetHeaderScrollTracking() {
     this.headerOriginalTop = 0;
     this.headerStickyActive = false;
     this.classFilterOriginalTop = 0;
     this.classFilterStickyActive = false;
     this.lastScrollY = window.scrollY;
-
     // Remove sticky class from header and reset positioning
     const header = document.querySelector('.character-details-header') as HTMLElement;
     if (header) {
@@ -915,7 +783,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       header.style.left = '';
       header.style.width = '';
     }
-
     // Reset class filter positioning
     const classFilter = document.querySelector('app-class-filter') as HTMLElement;
     if (classFilter) {
@@ -924,49 +791,40 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       classFilter.style.width = '';
     }
   }
-
   // New debounced update method to prevent stuttering
   private debouncedCharacterUpdate(characterId: string): void {
     // Clear any pending timer
     if (this.characterUpdateTimer) {
       clearTimeout(this.characterUpdateTimer);
     }
-
     // Set a new timer to batch updates
     this.characterUpdateTimer = setTimeout(() => {
       // Update character overall data first (distance preferences and card type distribution)
       this.updateCharacterOverallData();
-
       // Update all character charts with current class filters
       this.updateAllCharacterCharts();
-
       // Set character default distance (this will trigger global distance chart updates)
       this.setCharacterDefaultDistance(characterId);
-
       // Clear pending updates
       this.pendingCharacterUpdates.characterId = null;
       this.pendingCharacterUpdates.distance = null;
       this.characterUpdateTimer = null;
     }, 50); // 50ms debounce
   }
-
   // Debounced distance update to prevent duplicate calls
   private debouncedDistanceUpdate(distance: string): void {
     // Clear any existing distance update timer
     if (this.distanceUpdateTimer) {
       clearTimeout(this.distanceUpdateTimer);
     }
-
     // Set a new timer for distance updates
     this.distanceUpdateTimer = setTimeout(() => {
       this.selectCharacterDistance(distance);
       this.distanceUpdateTimer = null;
     }, 30); // Shorter delay for distance updates
   }
-
   // New method to load single character stats
   private loadSingleCharacterStats(characterId: string) {
-
     // Use the character ID to load statistics directly
     this.statisticsService.getCharacterStatistics(characterId).pipe(
       takeUntil(this.destroy$),
@@ -977,7 +835,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((stats: any) => {
       if (stats) {
         this.characterStats[characterId] = stats;
-
         // Use debounced update instead of direct call
         this.debouncedCharacterUpdate(characterId);
       } else {
@@ -985,35 +842,28 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
   // Character helper methods
   selectCharacter(characterId: string) {
     this.onCharacterSelect(characterId);
   }
-
   backToCharacterSelection() {
     this.selectedCharacterDetail = null;
     this.selectedCharacterDistance = null;
     this.invalidateCache('selectedCharacter');
     // Clear character distance preference data and card type distribution
     this.updateCharacterOverallData();
-
     // Reset scroll tracking
     this.resetHeaderScrollTracking();
   }
-
   hasCharacterStats(): boolean {
     return this.selectedCharacterDetail !== null &&
       this.characterStats[this.selectedCharacterDetail] !== undefined;
   }
-
   shouldShowDistanceSelector(): boolean {
     return this.selectedCharacterDetail !== null;
   }
-
   getSelectedCharacterName(): string | null {
     if (!this.selectedCharacterDetail) return null;
-
     const currentCharacters = this.filteredCharacters$.value;
     const selectedCharacter = currentCharacters.find(char => char.id === this.selectedCharacterDetail);
     if (selectedCharacter) {
@@ -1025,49 +875,38 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return this.selectedCharacterDetail;
   }
-
   // Character distance selection
   selectCharacterDistance(distance: string): void {
     // Prevent duplicate updates if the distance is already selected
     if (this.selectedCharacterDistance === distance) {
       return;
     }
-
     // Store the pending distance update
     this.pendingCharacterUpdates.distance = distance;
-
     // Clear any pending timer to prevent duplicate updates
     if (this.characterUpdateTimer) {
       clearTimeout(this.characterUpdateTimer);
     }
-
     // Use requestAnimationFrame for smooth update
     requestAnimationFrame(() => {
       this.selectedCharacterDistance = distance;
-
       // Batch both updates together
       this.updateCharacterDistanceData();
       this.updateCharacterOverallData();
-
       // Clear pending updates
       this.pendingCharacterUpdates.distance = null;
     });
   }
-
   // Character default distance setter
   setCharacterDefaultDistance(characterId: string): void {
     if (!this.characterStats[characterId]?.by_distance) return;
-
     const characterData = this.characterStats[characterId];
     const activeClasses = this.getActiveClassIds();
-
     let mostPopularDistance = '';
     let maxCount = 0;
-
     // Calculate aggregated counts for each distance based on active class filters
     Object.entries(characterData.by_distance).forEach(([distance, distanceInfo]: [string, any]) => {
       let totalCount = 0;
-
       if (distanceInfo.by_team_class) {
         // Sum counts from all active team classes for this distance
         activeClasses.forEach(classId => {
@@ -1081,25 +920,20 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Fallback to direct count if no by_team_class structure
         totalCount = distanceInfo.total || distanceInfo.count || 0;
       }
-
       if (totalCount > maxCount) {
         maxCount = totalCount;
         mostPopularDistance = distance;
       }
     });
-
     if (mostPopularDistance) {
       // Try to find a match in availableDistances for consistency
       const availableMatch = this.availableDistances.find(availDist =>
         availDist.toLowerCase() === mostPopularDistance.toLowerCase()
       );
-
       // Use the available distance format if found, otherwise use the character data format
       const distanceToSelect = availableMatch || mostPopularDistance;
-
       // Update both the main selectedDistance and the character distance to keep them in sync
       this.selectedDistance.next(distanceToSelect);
-
       // Use debounced distance update to prevent duplicate calls
       this.debouncedDistanceUpdate(distanceToSelect);
     } else {
@@ -1107,7 +941,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateCharacterOverallData();
     }
   }
-
   // Calculate character distance preference data
   private updateCharacterOverallData(): void {
     if (!this.selectedCharacterDetail) {
@@ -1116,23 +949,18 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateCharacterOverallCardTypeDistribution();
       return;
     }
-
     const characterData = this.characterStats[this.selectedCharacterDetail];
     if (!characterData?.by_distance) {
       this.characterDistanceData$.next([]);
       return;
     }
-
     // Get active class IDs to merge data from selected team classes
     const activeClasses = this.getActiveClassIds();
-
     // Calculate distance preference data by merging active team classes
     const distanceData: ChartDataPoint[] = [];
-
     Object.entries(characterData.by_distance).forEach(([distance, distanceInfo]: [string, any]) => {
       // Sum counts from all active team classes for this distance
       let totalCount = 0;
-
       if (distanceInfo.by_team_class) {
         activeClasses.forEach(classId => {
           const dataList = this.getMetricData('', classId, distanceInfo);
@@ -1145,19 +973,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Fallback to direct count if no by_team_class structure
         totalCount = distanceInfo.total || distanceInfo.count || 0;
       }
-
       if (totalCount > 0) {
         // Normalize distance name to match our available distances
         let normalizedDistance = distance.toLowerCase();
-
         // Handle any aliases (e.g., 'short' -> 'sprint')
         if (normalizedDistance === 'short') {
           normalizedDistance = 'sprint';
         }
-
         const distanceLabel = this.getDistanceLabel(normalizedDistance);
         const distanceColor = this.getDistanceColor(normalizedDistance);
-
         distanceData.push({
           label: distanceLabel,
           value: totalCount,
@@ -1165,34 +989,26 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     });
-
     // Sort by usage count (descending)
     distanceData.sort((a, b) => b.value - a.value);
-
     this.characterDistanceData$.next(distanceData);
-
     // Also update character overall support card type distribution
     this.updateCharacterOverallCardTypeDistribution();
   }
-
   // Calculate character overall support card type distribution
   private updateCharacterOverallCardTypeDistribution(): void {
     if (!this.selectedCharacterDetail) {
       this.characterOverallCardTypeDistribution$.next([]);
       return;
     }
-
     const characterData = this.characterStats[this.selectedCharacterDetail];
     if (!characterData?.by_distance) {
       this.characterOverallCardTypeDistribution$.next([]);
       return;
     }
-
     // Get active class IDs to merge data from selected team classes
     const activeClasses = this.getActiveClassIds();
-
     const cardTypes = new Map<string, number>();
-
     // Aggregate card type data across all distances and active team classes
     Object.values(characterData.by_distance).forEach((distanceData: any) => {
       if (distanceData.by_team_class) {
@@ -1202,7 +1018,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (classData?.common_support_cards) {
               Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
                 let cardType = 'Other';
-
               if (data.type) {
                 cardType = data.type;
                 if (cardType.toLowerCase() === 'intelligence') {
@@ -1215,7 +1030,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                   cardType = cardType.charAt(0).toUpperCase() + cardType.slice(1).toLowerCase();
                 }
               }
-
               const current = cardTypes.get(cardType) || 0;
               const count = typeof data === 'number' ? data : data.total || data.count || 0;
               cardTypes.set(cardType, current + count);
@@ -1225,7 +1039,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     });
-
     const cardTypeData = Array.from(cardTypes.entries())
       .map(([type, count]) => ({
         label: type,
@@ -1234,32 +1047,24 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }))
       .filter(item => item.value > 0)
       .sort((a, b) => b.value - a.value);
-
     this.characterOverallCardTypeDistribution$.next(cardTypeData);
   }
-
   // Update all character charts when class filters change
   private updateAllCharacterCharts(): void {
     if (!this.selectedCharacterDetail) return;
-
     // Update character overall data (distance preferences)
     this.updateCharacterOverallData();
-
     // Update character overall card type distribution
     this.updateCharacterOverallCardTypeDistribution();
-
     // Update character distance data if a distance is selected
     if (this.selectedCharacterDistance) {
       this.updateCharacterDistanceData();
     }
-
     // Invalidate character-specific cache to force recalculation
     this.invalidateCache('selectedCharacter');
-
     // Trigger change detection to update template methods
     this.cdr.markForCheck();
   }
-
   // Character data update methods
   private updateCharacterDistanceData(): void {
     if (!this.selectedCharacterDetail || !this.selectedCharacterDistance) {
@@ -1282,7 +1087,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.characterDistanceDeckCompositions$.next([]);
       return;
     }
-
     // Use character ID instead of name
     const characterId = this.selectedCharacterDetail;
     if (!this.characterStats[characterId]) {
@@ -1290,61 +1094,48 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadSingleCharacterStats(characterId);
       return;
     }
-
     const characterData = this.characterStats[characterId];
-
     // Find the correct distance key (case-insensitive)
     let actualDistanceKey = this.selectedCharacterDistance;
     if (!characterData.by_distance || !characterData.by_distance[this.selectedCharacterDistance]) {
       // Try to find a case-insensitive match
       const availableDistances = characterData.by_distance ? Object.keys(characterData.by_distance) : [];
       const selectedDistanceLower = this.selectedCharacterDistance?.toLowerCase();
-
       const foundDistance = availableDistances.find(dist =>
         dist.toLowerCase() === selectedDistanceLower
       );
-
       if (!foundDistance) {
         return;
       } else {
         actualDistanceKey = foundDistance;
       }
     }
-
     const distanceData = characterData.by_distance[actualDistanceKey];
-
     // Update stat histograms for this character at this distance
     this.updateCharacterDistanceStatHistograms(distanceData);
-
     // Update support card data for this character at this distance
     this.updateCharacterDistanceSupportCardData(distanceData);
-
     // Update team class data for this character at this distance
     if (distanceData.by_team_class) {
       this.updateCharacterDistanceClassData(distanceData);
     }
-
     // Update the missing observables for character distance analysis
     this.updateCharacterDistanceMissingObservables(distanceData);
   }
-
   private updateCharacterDistanceStatHistograms(distanceData: any): void {
     // Get active class IDs to merge data from all selected team classes
     const activeClasses = this.getActiveClassIds();
     const stats = ['speed', 'power', 'stamina', 'wiz', 'guts'];
-
     stats.forEach(stat => {
       // Merge histogram data from all active team classes
       const aggregatedHistogram = new Map<string, number>();
       let totalCount = 0;
       let classesProcessed = 0;
-
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
         
         dataList.forEach(classData => {
           const statData = classData?.stat_averages?.[stat];
-
           if (statData?.histogram) {
             classesProcessed++;
             Object.entries(statData.histogram).forEach(([bucket, count]: [string, any]) => {
@@ -1356,9 +1147,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       let chartData: ChartDataPoint[] = [];
-
       if (aggregatedHistogram.size > 0 && totalCount > 0) {
         // Convert aggregated data to simple ChartDataPoint format
         chartData = Array.from(aggregatedHistogram.entries())
@@ -1369,7 +1158,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }))
           .sort((a, b) => this.extractBucketValue(a.label) - this.extractBucketValue(b.label));
       }
-
       // Update the appropriate observable
       switch (stat) {
         case 'speed':
@@ -1390,15 +1178,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
   private updateCharacterDistanceSupportCardData(distanceData: any): void {
     // Get active class IDs to merge data from all selected team classes
     const activeClasses = this.getActiveClassIds();
-
     // Merge support card data from all active team classes with full metadata - BY ID
     const mergedSupportCards = new Map<string, any>();
     let totalEntries = 0;
-
     activeClasses.forEach(classId => {
       const dataList = this.getMetricData('', classId, distanceData);
       
@@ -1407,11 +1192,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           totalEntries += classData.total_entries || 0;
           Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
             const count = typeof data === 'number' ? data : data.total || data.count || 0;
-
             // Backend now uses card IDs as keys directly
             const cardKey = cardId.toString();
             const existing = mergedSupportCards.get(cardKey);
-
             if (existing) {
               // Add to existing count, preserve metadata
               mergedSupportCards.set(cardKey, {
@@ -1433,12 +1216,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (mergedSupportCards.size === 0) {
       this.characterDistanceSupportCardData$.next([]);
       return;
     }
-
     const supportCardData = Array.from(mergedSupportCards.entries())
       .map(([cardKey, data]) => ({
         label: data.name || cardKey,
@@ -1451,13 +1232,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 50);
-
     this.characterDistanceSupportCardData$.next(supportCardData);
   }
-
   private updateCharacterDistanceClassData(distanceData: any): void {
     const activeClasses = this.getActiveClassIds();
-
     // Create team class distribution chart data (usage counts per class) - ONLY for active classes
     const chartData = activeClasses
       .map(classId => {
@@ -1471,7 +1249,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             count += (data.total_trained_umas || data.count || data.total_entries || 0);
           }
         });
-
         return {
           label: `Class ${classId}`,
           value: count,
@@ -1480,25 +1257,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .sort((a, b) => parseInt(a.label.split(' ')[1]) - parseInt(b.label.split(' ')[1]))
       .filter(item => item.value > 0); // Only include classes with data
-
     // Calculate total for center text
     const totalTrainers = chartData.reduce((sum, item) => sum + item.value, 0);
-
     // Add center text to the chart data format expected by the chart component
     const chartDataWithCenter: any[] = chartData.map(item => ({
       ...item,
       centerText: this.formatTotalTrainers(totalTrainers)
     }));
-
     this.characterDistanceClassData$.next(chartDataWithCenter);
-
     // Create stats by class data for the right-side chart - now handled in updateCharacterDistanceMissingObservables
   }
-
   private updateCharacterDistanceMissingObservables(distanceData: any): void {
     // Get active class IDs to merge data from all selected team classes
     const activeClasses = this.getActiveClassIds();
-
     // Update stats by class data - format to match global statistics
     if (distanceData.by_team_class) {
       const stats = [
@@ -1508,7 +1279,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         { key: 'guts', name: 'Guts' },
         { key: 'wiz', name: 'Wit' }
       ];
-
       // OPTION 1: Each STAT as a series (same as global) - this is what the image shows
       const statsByClassData = stats.map(stat => {
         const data = activeClasses.map(classId => {
@@ -1520,7 +1290,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           dataList.forEach(classData => {
             // Try multiple possible locations for stat data
             let statValue = 0;
-
             // Check if stat_averages exists and has our stat
             if (classData?.stat_averages?.[stat.key]) {
               const statData = classData.stat_averages[stat.key];
@@ -1563,13 +1332,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           });
           
           const finalStatValue = totalCount > 0 ? Math.round(weightedSum / totalCount) : 0;
-
           return {
             x: `Class ${classId}`,
             y: finalStatValue
           };
         });
-
         return {
           name: stat.name,
           data,
@@ -1584,7 +1351,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.characterDistanceStatsByClassData$.next([]);
     }
-
     // Merge uma distribution data from all active team classes
     const mergedUmaDistribution = new Map<string, number>();
     activeClasses.forEach(classId => {
@@ -1600,7 +1366,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (mergedUmaDistribution.size > 0) {
       const umasWithImages = Array.from(mergedUmaDistribution.entries())
         .sort((a, b) => b[1] - a[1])
@@ -1614,7 +1379,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.characterDistanceUmasWithImages$.next([]);
     }
-
     // Merge support cards data from all active team classes - BY ID
     const mergedSupportCards = new Map<string, any>();
     activeClasses.forEach(classId => {
@@ -1624,11 +1388,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (classData?.common_support_cards) {
           Object.entries(classData.common_support_cards).forEach(([cardId, data]: [string, any]) => {
             const count = typeof data === 'number' ? data : data.total || data.count || 0;
-
             // Backend now uses card IDs as keys directly
             const cardKey = cardId.toString();
             const existing = mergedSupportCards.get(cardKey);
-
             if (existing) {
               // Add to existing count, preserve metadata
               mergedSupportCards.set(cardKey, {
@@ -1650,7 +1412,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (mergedSupportCards.size > 0) {
       // Calculate total trained Uma Musume for this character/distance combination
       let totalTrainedUmas = 0;
@@ -1662,7 +1423,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const topSupportCards = Array.from(mergedSupportCards.entries())
         .sort((a, b) => b[1].count - a[1].count)
         .slice(0, 50)
@@ -1672,11 +1432,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           const cardName = data.name || cardKey;
           const imageUrl = cardId ? this.getSupportCardImageUrl(cardId) : `/assets/images/cards/${cardName.toLowerCase().replace(/\s+/g, '_')}.webp`;
           const percentage = totalTrainedUmas > 0 ? (data.count / totalTrainedUmas) * 100 : 0;
-
           // Get proper color based on support card type
           const cardType = data.type;
           const color = cardType ? this.colorsService.getStatColor(cardType.toLowerCase()) : '#666666';
-
           return {
             label: cardName,
             value: data.count,
@@ -1691,7 +1449,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.characterDistanceTopSupportCards$.next([]);
     }
-
     // Merge skills data from all active team classes
     const mergedSkills = new Map<string, any>();
     activeClasses.forEach(classId => {
@@ -1703,7 +1460,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             const count = typeof data === 'number' ? data : data.total || data.count || 0;
             const skillKey = skillId.toString();
             const existing = mergedSkills.get(skillKey);
-
             if (existing) {
               // Add to existing count, preserve metadata
               mergedSkills.set(skillKey, {
@@ -1725,7 +1481,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (mergedSkills.size > 0) {
       // Calculate total trained Uma Musume for this character/distance combination
       let totalTrainedUmas = 0;
@@ -1737,7 +1492,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const skillsWithImages = Array.from(mergedSkills.entries())
         .sort((a, b) => b[1].count - a[1].count)
         .slice(0, 50)
@@ -1746,7 +1500,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           const skillName = data.name || `Skill ${skillKey}`;
           const imageUrl = data.icon ? `/assets/images/skills/${data.icon}` : this.getSkillIconUrl(skillName);
           const percentage = totalTrainedUmas > 0 ? (data.count / totalTrainedUmas) * 100 : 0;
-
           return {
             label: skillName,
             value: data.count,
@@ -1760,7 +1513,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.characterDistanceSkillsWithImages$.next([]);
     }
-
     const stats = [
       { key: 'speed', name: 'Speed' },
       { key: 'stamina', name: 'Stamina' },
@@ -1768,7 +1520,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       { key: 'guts', name: 'Guts' },
       { key: 'wiz', name: 'Wit' }
     ];
-
     const statDistributionData = stats.map(stat => {
       let totalValue = 0;
       let classCount = 0;
@@ -1782,7 +1533,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       return {
         label: stat.name,
         value: Math.round(classCount > 0 ? totalValue / classCount : 0),
@@ -1790,7 +1540,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
     this.characterDistanceStatDistributionData$.next(statDistributionData);
-
     // Merge card type distribution from all active team classes
     const mergedCardTypes = new Map<string, number>();
     activeClasses.forEach(classId => {
@@ -1806,7 +1555,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (mergedCardTypes.size > 0) {
       const cardTypeData = Array.from(mergedCardTypes.entries()).map(([type, count]) => ({
         label: type,
@@ -1816,7 +1564,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.characterDistanceCardTypeDistribution$.next([]);
     }
-
     // Merge deck compositions from all active team classes
     const mergedDeckCompositions = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
     activeClasses.forEach(classId => {
@@ -1828,18 +1575,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             const count = typeof data === 'number' ? data : data.count || 0;
             const existing = mergedDeckCompositions.get(compositionKey) || { count: 0 };
             existing.count += count;
-
             // Store composition data if available
             if (data.composition) {
               existing.composition = data.composition;
             }
-
             mergedDeckCompositions.set(compositionKey, existing);
           });
         }
       });
     });
-
     if (mergedDeckCompositions.size > 0) {
       const deckCompositions = Array.from(mergedDeckCompositions.entries())
         .sort((a, b) => b[1].count - a[1].count)
@@ -1858,32 +1602,26 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.characterDistanceSupportCardCombinationsData$.next([]);
     }
   }
-
   // Cache management methods
   private generateCacheKey(baseKey: string, ...params: any[]): string {
     const paramsStr = params.map(p => JSON.stringify(p)).join('|');
     return `${baseKey}|${paramsStr}`;
   }
-
   private getCachedData<T>(cacheKey: string, computeFn: () => T): T {
     if (this.chartDataCache.has(cacheKey)) {
       return this.chartDataCache.get(cacheKey);
     }
-
     const startTime = performance.now();
     const data = computeFn();
     const computeTime = performance.now() - startTime;
-
     this.chartDataCache.set(cacheKey, data);
     return data;
   }
-
   private invalidateCache(type: 'globalStats' | 'classFilters' | 'scenarioFilters' | 'selectedDistance' | 'selectedCharacter' | 'all') {
     if (type === 'all') {
       this.chartDataCache.clear();
       return;
     }
-
     // Remove cache entries that depend on the changed data
     const keysToRemove = Array.from(this.chartDataCache.keys()).filter(key => {
       switch (type) {
@@ -1901,10 +1639,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           return false;
       }
     });
-
     keysToRemove.forEach(key => this.chartDataCache.delete(key));
   }
-
   openMobileFilters() {
     // Open the Material bottom sheet for mobile filters
     if (this.isBottomSheetMode) {
@@ -1913,7 +1649,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       const currentDistance = this.selectedCharacterDetail && this.selectedCharacterDistance
         ? this.selectedCharacterDistance
         : this.selectedDistance.value;
-
       const bottomSheetRef = this.bottomSheet.open(TeamClassBottomSheetComponent, {
         data: {
           selectedClasses: this.classFilters,
@@ -1926,7 +1661,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         panelClass: 'team-class-bottom-sheet-panel'
       });
-
       bottomSheetRef.afterDismissed().subscribe((result) => {
         if (result) {
           let changed = false;
@@ -1949,14 +1683,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (currentDistance && this.distanceStats[currentDistance]) {
               this.updateDistanceChartData(currentDistance);
             }
-
             // Update character charts if a character is selected
             if (this.selectedCharacterDetail) {
               this.debouncedCharacterUpdate(this.selectedCharacterDetail);
               this.updateAllCharacterCharts();
             }
           }
-
           if (result.distance) {
             this.onDistanceSelect(result.distance);
           }
@@ -1964,7 +1696,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
-
   // Chart data methods
   // Helper to handle new data format (overall/by_scenario) vs old format
   private getMetricData(metric: string, classId: string, sourceData: any = null): any[] {
@@ -1977,9 +1708,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // For global stats
       classData = this.globalStats?.[metric]?.by_team_class?.[classId];
     }
-
     if (!classData) return [];
-
     // Check if it's the new format (has 'overall' key)
     if (classData.overall) {
       const activeScenarios = this.getActiveScenarioIds();
@@ -1999,18 +1728,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Old format - return the classData itself as the only item
     return [classData];
   }
-
   private computeTeamClassChartData(): ChartDataPoint[] {
     if (!this.globalStats?.team_class_distribution) {
       return [];
     }
-
     // Use ALL active classes (merge all)
     const activeClasses = this.getActiveClassIds();
     const activeScenarios = this.getActiveScenarioIds();
     const allScenarioCount = Object.keys(this.scenarioFilters).length;
     const isAllScenariosActive = activeScenarios.length === allScenarioCount;
-
     // If filtering by scenario, we need to aggregate data from active scenarios
     if (!isAllScenariosActive && this.globalStats.team_class_distribution.by_scenario) {
       const aggregatedData = new Map<string, number>();
@@ -2035,11 +1761,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         color: this.colorsService.getClassColor(classId)
       })).filter(item => item.value > 0);
     }
-
     const result = activeClasses
       .map((classId: string) => {
         const data = this.globalStats!.team_class_distribution[classId];
-
         // Try multiple possible field names for the count
         let value = 0;
         if (typeof data === 'number') {
@@ -2047,7 +1771,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (data && typeof data === 'object') {
           value = data.count || data.total || data.value || data.percentage || data.trainer_count || 0;
         }
-
         return {
           label: `Class ${classId}`,
           value: value,
@@ -2055,13 +1778,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         };
       })
       .filter(item => item.value > 0); // Filter out zero values
-
     return result;
   }
-
   private computeSupportCardCombinationsData(): ChartDataPoint[] {
     if (!this.globalStats?.support_card_combinations?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
     const allClassCount = Object.keys(this.classFilters).length;
     const isAllClassesActive = activeClasses.length === allClassCount;
@@ -2069,12 +1789,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     const activeScenarios = this.getActiveScenarioIds();
     const allScenarioCount = Object.keys(this.scenarioFilters).length;
     const isAllScenariosActive = activeScenarios.length === allScenarioCount;
-
     const combinations = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
-
     // Determine if we should use scenario data
     const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_card_combinations?.by_scenario;
-
     if (useScenarioData) {
       activeScenarios.forEach(scenarioId => {
         const scenarioData = this.globalStats!.support_card_combinations.by_scenario[scenarioId];
@@ -2108,7 +1825,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     const result = Array.from(combinations.entries())
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 50)
@@ -2118,13 +1834,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         color: this.getStableColor(combination),
         composition: data.composition // Add composition data for stat symbols
       }));
-
     return result;
   }
-
   private computeStatAveragesByClassData(): any[] {
     if (!this.globalStats?.stat_averages?.by_team_class) return [];
-
     // Use correct stat order: Speed, Stamina, Power, Guts, Wit
     const stats = [
       { key: 'speed', name: 'Speed' },
@@ -2135,7 +1848,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
     // Use ALL active classes (merge all)
     const activeClasses = this.getActiveClassIds();
-
     return stats.map(stat => {
       const data = activeClasses.map((classId: string) => {
         const dataList = this.getMetricData('stat_averages', classId);
@@ -2153,13 +1865,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         
         const mean = totalCount > 0 ? weightedSum / totalCount : 0;
-
         return {
           x: `Class ${classId}`,
           y: Math.round(mean)
         };
       });
-
       return {
         name: stat.name,
         data,
@@ -2171,12 +1881,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   private computeSupportCardUsageData(): any[] {
     if (!this.globalStats?.support_cards?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
-
     // Get all support cards from ACTIVE classes only and find top cards - BY ID
     const allCards = new Map<string, { count: number, name: string, id?: string | number }>();
     activeClasses.forEach(classId => {
@@ -2189,7 +1896,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             const cardKey = (data.id || cardName).toString();
             const current = allCards.get(cardKey);
             const count = data.total || data.count || 0;
-
             if (current) {
               current.count += count;
             } else {
@@ -2203,15 +1909,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     const topCards = Array.from(allCards.entries())
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 50)
       .map(([cardKey, cardData]) => ({ key: cardKey, name: cardData.name, id: cardData.id }));
-
     // Create stacked data for each active class
     // Use ALL active classes (merge all)
-
     return activeClasses.map((classId: string) => {
       const dataList = this.getMetricData('support_cards', classId);
       
@@ -2231,13 +1934,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
-
       const data = topCards.map(cardInfo => {
         // Find the card data by looking for matching ID or name
         let foundCardData: any = null;
         const cardKey = cardInfo.key;
         let cardName = cardInfo.name || `Card ${cardKey}`;
-
         // Try to find by ID first, then by name
         if (cardInfo.id) {
           foundCardData = Object.values(classData || {}).find((data: any) => data.id === cardInfo.id);
@@ -2250,13 +1951,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (foundCardData?.name) {
           cardName = foundCardData.name;
         }
-
         const truncatedName = cardName.length > 20 ? cardName.substring(0, 17) + '...' : cardName;
-
         // Use support card ID from the data object
         const cardId = cardInfo.id || foundCardData?.id;
         const imageUrl = cardId ? this.getSupportCardImageUrl(cardId) : undefined;
-
         return {
           x: truncatedName,
           y: foundCardData?.total || foundCardData?.count || 0,
@@ -2266,7 +1964,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           type: foundCardData?.type
         };
       });
-
       return {
         name: `Class ${classId}`,
         data,
@@ -2278,10 +1975,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   private computeSupportCardTypeDistribution(): ChartDataPoint[] {
     if (!this.globalStats?.support_cards?.by_team_class) return [];
-
     const cardTypes = new Map<string, number>();
     
     const activeClasses = this.getActiveClassIds();
@@ -2291,10 +1986,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     const activeScenarios = this.getActiveScenarioIds();
     const allScenarioCount = Object.keys(this.scenarioFilters).length;
     const isAllScenariosActive = activeScenarios.length === allScenarioCount;
-
     // Determine if we should use scenario data
     const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_card_type_distribution?.by_scenario;
-
     if (useScenarioData) {
       activeScenarios.forEach(scenarioId => {
         const scenarioData = this.globalStats!.support_card_type_distribution.by_scenario[scenarioId];
@@ -2328,7 +2021,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             Object.entries(classData).forEach(([cardId, data]: [string, any]) => {
               // Use the new "type" field from the data, fallback to name-based detection
               let cardType = 'Other';
-
               if (data.type) {
                 // Use the type from the JSON data
                 cardType = data.type;
@@ -2347,7 +2039,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Fallback to name-based detection for older data
                 const cardName = data.name || `Card ${cardId}`;
                 const lowerCardName = cardName.toLowerCase();
-
                 if (lowerCardName.includes('スピード') || lowerCardName.includes('speed')) {
                   cardType = 'Speed';
                 } else if (lowerCardName.includes('パワー') || lowerCardName.includes('power')) {
@@ -2364,7 +2055,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                   cardType = 'Group';
                 }
               }
-
               const current = cardTypes.get(cardType) || 0;
               const count = data.usage_count || data.total || data.count || 0;
               cardTypes.set(cardType, current + count);
@@ -2373,11 +2063,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     if (cardTypes.size === 0) {
       return [];
     }
-
     return Array.from(cardTypes.entries())
       .map(([type, count]) => ({
         label: type,
@@ -2388,12 +2076,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(item => item.value > 0)
       .sort((a, b) => b.value - a.value);
   }
-
   private computeSkillsUsageData(): any[] {
     if (!this.globalStats?.skills?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
-
     // Get top 15 skills from ACTIVE classes only
     const allSkills = new Map<string, number>();
     activeClasses.forEach(classId => {
@@ -2408,15 +2093,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     const topSkills = Array.from(allSkills.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 50)
       .map(([name]) => name);
-
     // Create stacked data for each active class
     // Use ALL active classes (merge all)
-
     return activeClasses.map((classId: string) => {
       const dataList = this.getMetricData('skills', classId);
       
@@ -2436,7 +2118,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
-
       const data = topSkills.map(skillName => {
         const skillData = classData?.[skillName];
         return {
@@ -2444,7 +2125,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           y: skillData?.total || skillData?.count || 0
         };
       });
-
       return {
         name: `Class ${classId}`,
         data,
@@ -2456,12 +2136,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   private computeOverallStatComparison(): ChartDataPoint[] {
     if (!this.globalStats?.stat_averages?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
-
     // Use correct stat order: Speed, Stamina, Power, Guts, Wit
     const stats = [
       { key: 'speed', name: 'Speed' },
@@ -2470,12 +2147,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       { key: 'guts', name: 'Guts' },
       { key: 'wiz', name: 'Wit' }
     ];
-
     return stats.map(stat => {
       // Calculate weighted average from active classes
       let totalWeightedValue = 0;
       let totalWeight = 0;
-
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('stat_averages', classId);
         
@@ -2487,9 +2162,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const averageValue = totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
-
       return {
         label: stat.name,
         value: Math.round(averageValue),
@@ -2497,16 +2170,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   private computeUmaDistributionStackedData(): any[] {
     if (!this.globalStats?.uma_distribution) return [];
-
     // Get top 15 uma musume from global distribution
     const topUmas = Object.entries(this.globalStats.uma_distribution)
       .sort((a: any, b: any) => b[1].count - a[1].count)
       .slice(0, 15)
       .map(([name]) => name);
-
     // Create stacked data for each class
     // Use ALL active classes (merge all)
     const classIds = this.getActiveClassIds();
@@ -2517,7 +2187,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         const id = umaData?.id || this.statisticsService.getCharacterIdFromName(umaName);
         
         let classCount = 0;
-
         // Check if we have granular data (new format)
         if (this.globalStats!.uma_distribution.by_team_class) {
           const dataList = this.getMetricData('uma_distribution', classId);
@@ -2533,10 +2202,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           const totalCount = umaData?.count || 0;
           classCount = Math.round(totalCount * (classPercentage / 100));
         }
-
         // Get character ID for image URL
         const imageUrl = id ? this.getCharacterImageUrl(id) : undefined;
-
         return {
           x: umaName,
           y: classCount,
@@ -2545,7 +2212,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           originalName: umaName
         };
       });
-
       return {
         name: `Class ${classId}`,
         data,
@@ -2556,38 +2222,29 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         borderSkipped: false
       };
     });
-
     return series;
   }
-
   private updateAllChartData() {
     if (!this.globalStats) return;
-
     const activeClasses = this.getActiveClassIds();
     const activeScenarios = this.getActiveScenarioIds();
     const cacheKey = `global_${activeClasses.join('_')}_${activeScenarios.join('_')}`;
-
     // Check cache first
     if (this.chartDataCache.has(cacheKey)) {
       const cached = this.chartDataCache.get(cacheKey);
       this.applyChartData(cached);
       return;
     }
-
     // Calculate new data
     const chartData = this.calculateChartData();
-
     // Cache the results
     this.chartDataCache.set(cacheKey, chartData);
-
     // Apply the data
     this.applyChartData(chartData);
   }
-
   private calculateChartData(): any {
     // Calculate filtered total for percentage calculations
     const filteredTotal = this.calculateFilteredTotal();
-
     return {
       teamClass: this.computeTeamClassChartData(),
       totalTrainers: this.calculateTotalTrainers(),
@@ -2606,7 +2263,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       filteredTotal: filteredTotal
     };
   }
-
   private applyChartData(data: any): void {
     // Update all observables at once
     this.teamClassChartData$.next(data.teamClass);
@@ -2623,11 +2279,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.topUmasWithImages$.next(data.topUmas);
     this.topSkillsWithImages$.next(data.topSkills);
     this.statDistributionData$.next(data.statDistribution);
-
     // Update the filtered total for charts
     this.filteredTotalCache = data.filteredTotal;
   }
-
   private calculateStatDistribution(): { [key: string]: any[] } {
     const statDistData: { [key: string]: any[] } = {};
     ['speed', 'stamina', 'power', 'guts', 'wiz'].forEach(stat => {
@@ -2635,19 +2289,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     return statDistData;
   }
-
   private calculateFilteredTotal(): number {
     if (this.filteredTotalCache > 0) {
       return this.filteredTotalCache;
     }
-
     const activeClasses = this.getActiveClassIds();
-
     // For support cards, we need to count the total NUMBER OF TEAMS/ENTRIES
     // not the sum of all card usages
     // Each team has 6 support cards, so we need to get the total team count
     let totalTeams = 0;
-
     activeClasses.forEach(classId => {
       const classDistribution = this.globalStats?.team_class_distribution?.[classId];
       if (classDistribution) {
@@ -2661,35 +2311,29 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         totalTeams += teamCount;
       }
     });
-
     // Each team has 6 support cards, so total support card slots = teams * 6
     const totalSupportCardSlots = totalTeams * 6;
     this.filteredTotalCache = totalSupportCardSlots;
     return totalSupportCardSlots;
   }
-
   // Multi-series stat distribution showing aggregated data from all selected classes
   getStatDistributionMultiSeries(statName: string): any[] {
     const cacheKey = this.generateCacheKey('statDistribution', statName, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       if (!this.globalStats?.stat_averages?.by_team_class) {
         return [];
       }
-
       // Get ALL active classes (merge all)
       const activeClasses = this.getActiveClassIds();
       const aggregatedHistogram = new Map<string, number>();
       let totalCount = 0;
       let classesProcessed = 0;
-
       // Aggregate histogram data from ALL selected classes
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('stat_averages', classId);
         
         dataList.forEach(classData => {
           const statData = classData?.[statName];
-
           if (statData?.histogram) {
             classesProcessed++;
             Object.entries(statData.histogram).forEach(([bucket, count]) => {
@@ -2704,7 +2348,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (aggregatedHistogram.size === 0) {
         return [];
       }
-
       // Convert aggregated data to raw counts
       const histogramData = Array.from(aggregatedHistogram.entries())
         .map(([bucket, count]) => ({
@@ -2712,7 +2355,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           y: count // Use raw count instead of percentage
         }))
         .sort((a, b) => this.extractBucketValue(a.x) - this.extractBucketValue(b.x));
-
       const statColor = this.colorsService.getStatColor(statName);
       const series = [{
         name: `${this.formatStatName(statName)} Distribution (All Classes)`,
@@ -2726,14 +2368,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       return series;
     });
   }
-
   private updateDistanceChartData(distance: string) {
     if (!this.distanceStats[distance]) {
       // Load data if not cached
       this.loadSingleDistanceStats(distance);
       return;
     }
-
     // Update distance-specific chart data
     this.distanceSkillsData$.next(this.computeDistanceSkillsData(distance));
     this.distanceCardTypeDistribution$.next(this.computeDistanceCardTypeDistribution(distance));
@@ -2741,12 +2381,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.distanceStatDistributionData$.next(this.computeDistanceStatDistributionData(distance));
     this.distanceSupportCardData$.next(this.computeDistanceSupportCardData(distance));
     this.distanceSupportCardCombinationsData$.next(this.getDistanceSupportCardCombinations(distance));
-
     // Update distance-specific image data
     this.distanceSupportCardsWithImages$.next(this.computeDistanceSupportCardsWithImages(distance));
     this.distanceSkillsWithImages$.next(this.computeDistanceSkillsWithImages(distance));
     this.distanceUmasWithImages$.next(this.computeDistanceUmasWithImages(distance));
-
     // Update histogram data for each stat
     this.distanceStatHistogramSpeed$.next(this.getDistanceStatHistogramData(distance, 'speed'));
     this.distanceStatHistogramPower$.next(this.getDistanceStatHistogramData(distance, 'power'));
@@ -2754,17 +2392,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.distanceStatHistogramWiz$.next(this.getDistanceStatHistogramData(distance, 'wiz'));
     this.distanceStatHistogramGuts$.next(this.getDistanceStatHistogramData(distance, 'guts'));
   }
-
   // Convert existing methods to compute methods (rename with "compute" prefix)
   private computeDistanceSkillsData(distance: string): any[] {
     const cacheKey = this.generateCacheKey('distanceSkills', distance, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) return [];
-
       const activeClasses = this.getActiveClassIds().filter((id: string) => id !== 'overall');
-
       // Get top 15 skills for this distance from ACTIVE classes only
       const allSkills = new Map<string, number>();
       activeClasses.forEach(classId => {
@@ -2779,14 +2413,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const topSkills = Array.from(allSkills.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 50)
         .map(([skillKey]) => skillKey);
-
       // Create stacked data for each active class
-
       const result = activeClasses.map((classId: string) => {
         const dataList = this.getMetricData('', classId, distanceData);
         
@@ -2801,7 +2432,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
           }
         });
-
         const data = topSkills.map(skillKey => {
           const skillData = aggregatedSkills.get(skillKey);
           const skillName = skillData?.name || `Skill ${skillKey}`;
@@ -2810,7 +2440,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             y: skillData?.count || 0
           };
         });
-
         return {
           name: `Class ${classId}`,
           data,
@@ -2824,14 +2453,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       return result;
     });
   }
-
   private computeDistanceCardTypeDistribution(distance: string): ChartDataPoint[] {
     const distanceData = this.distanceStats[distance];
     if (!distanceData?.by_team_class) return [];
-
     const cardTypes = new Map<string, number>();
     const activeClasses = this.getActiveClassIds().filter((id: string) => id !== 'overall');
-
     activeClasses.forEach(classId => {
       if ((this.classFilters as any)[classId]) {
         const dataList = this.getMetricData('', classId, distanceData);
@@ -2840,7 +2466,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
               // Use the new "type" field from the data, fallback to name-based detection
               let cardType = 'Other';
-
             if (data.type) {
               // Use the type from the JSON data
               cardType = data.type;
@@ -2865,7 +2490,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               else if (cardName.includes('Guts')) cardType = 'Guts';
               else if (cardName.includes('Friend')) cardType = 'Friend';
             }
-
             const current = cardTypes.get(cardType) || 0;
             cardTypes.set(cardType, current + (data.total || data.count || 0));
           });
@@ -2873,7 +2497,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     });
-
     return Array.from(cardTypes.entries())
       .map(([type, count]) => ({
         label: type,
@@ -2883,13 +2506,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(item => item.value > 0)
       .sort((a, b) => b.value - a.value);
   }
-
   private computeDistanceUmaStackedData(distance: string): any[] {
     const distanceData = this.distanceStats[distance];
     if (!distanceData?.by_team_class) return [];
-
     const classIds = this.getActiveClassIds();
-
     // Get top 10 umas for this distance based on total count from ACTIVE classes only
     const allUmas = new Map<string, number>();
     classIds.forEach(classId => {
@@ -2904,12 +2524,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     const topUmas = Array.from(allUmas.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([name]) => name);
-
     // Create stacked data for each class
     // Use ALL active classes (merge all)
     const series = classIds.map((classId: string) => {
@@ -2927,7 +2545,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           y: count  // Use actual count
         };
       });
-
       return {
         name: `Class ${classId}`,
         data,
@@ -2936,14 +2553,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         borderWidth: 1
       };
     });
-
     return series;
   }
-
   private computeDistanceStatDistributionData(distance: string): ChartDataPoint[] {
     const distanceData = this.distanceStats[distance];
     if (!distanceData?.by_team_class) return [];
-
     // Use correct stat order: Speed, Stamina, Power, Guts, Wit
     const stats = [
       { key: 'speed', name: 'Speed' },
@@ -2952,30 +2566,25 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       { key: 'guts', name: 'Guts' },
       { key: 'wiz', name: 'Wit' }
     ];
-
     // Get ALL active classes (merge all)
     const activeClasses = this.getActiveClassIds();
     // Calculate average stats across all selected classes for this distance
     return stats.map(stat => {
       let totalMean = 0;
       let classesWithData = 0;
-
       // Aggregate mean values from ALL selected classes for this distance
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
         
         dataList.forEach(classData => {
           const statData = classData?.stat_averages?.[stat.key];
-
           if (statData?.mean !== undefined) {
             totalMean += statData.mean;
             classesWithData++;
           }
         });
       });
-
       const averageMean = classesWithData > 0 ? totalMean / classesWithData : 0;
-
       return {
         label: stat.name,
         value: Math.round(averageMean),
@@ -2983,13 +2592,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   private computeDistanceSupportCardData(distance: string): any[] {
     const distanceData = this.distanceStats[distance];
     if (!distanceData?.by_team_class) return [];
-
     const classIds = this.getActiveClassIds();
-
     // Get top 12 support cards for this distance based on count from ACTIVE classes only
     const allCards = new Map<string, { count: number, name: string, data: any }>();
     classIds.forEach(classId => {
@@ -3002,7 +2608,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               console.warn(`Support card '${cardId}' missing ID in distance card data, skipping`);
               return;
             }
-
             const cardName = data.name || `Card ${cardId}`;
             const current = allCards.get(actualCardId) || { count: 0, name: cardName, data: data };
             // Support both count and total properties
@@ -3015,14 +2620,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     });
-
     if (allCards.size === 0) return [];
-
     const topCards = Array.from(allCards.entries())
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 50)
       .map(([cardId, data]) => ({ cardId, name: data.name }));
-
     // Create stacked data for each active class
     // Use ALL active classes (merge all)
     const series = classIds.map((classId: string) => {
@@ -3034,7 +2636,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           y: cardData?.count || cardData?.total || 0
         };
       });
-
       return {
         name: `Class ${classId}`,
         data,
@@ -3045,21 +2646,16 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         borderSkipped: false
       };
     });
-
     return series;
   }
-
   // Distance-specific support cards with images (for image list display)
   private computeDistanceSupportCardsWithImages(distance: string): ChartDataPoint[] {
     const cacheKey = this.generateCacheKey('distanceSupportCardsWithImages', distance, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) return [];
-
       // Get all support cards from active classes and aggregate by ID
       const allCards = new Map<string, { total: number, cardData: any, name: string }>();
-
       // Use the new total_trained_umas from distance data if available
       let totalUmasTrained = 0;
       this.getActiveClassIds().forEach(classId => {
@@ -3074,7 +2670,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       this.getActiveClassIds().forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
         dataList.forEach(classData => {
@@ -3082,12 +2677,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
               const count = data.total || data.count || 0;
               const actualCardId = data.id || cardId;
-
               if (!actualCardId) {
                 console.warn(`Support card '${cardId}' missing ID in distance data, skipping`);
                 return;
               }
-
               if (allCards.has(actualCardId)) {
                 const existing = allCards.get(actualCardId)!;
                 existing.total += count;
@@ -3109,21 +2702,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   });
-
     // Sort and slice to get top 50
     const sortedCards = Array.from(allCards.entries())
       .sort((a, b) => b[1].total - a[1].total)
       .slice(0, 50);
-
     const result = sortedCards.map(([cardId, data]) => {
       // Card ID is now the key, name is stored in data
       const cardName = data.name || 'Unknown Card';
       const imageUrl = cardId ? this.getSupportCardImageUrl(cardId) : undefined;
-
       // Get stat color based on support card type (same as global method)
       const cardType = data.cardData?.type;
       const statColor = cardType ? this.colorsService.getStatColor(cardType.toLowerCase()) : undefined;
-
       // Calculate percentage based on total number of Uma Musume trained
       const percentage = totalUmasTrained > 0 ? (data.total / totalUmasTrained) * 100 : 0;
       return {
@@ -3139,15 +2728,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     return result;
     });
   }
-
   // Character-specific chart data methods
   private computeCharacterStatComparisonData(characterId: string): ChartDataPoint[] {
     const character = this.characterStats[characterId];
     if (!character?.by_distance) return [];
-
     const distances = Object.keys(character.by_distance);
     if (distances.length === 0) return [];
-
     // Use correct stat order: Speed, Stamina, Power, Guts, Wit
     const stats = [
       { key: 'speed', name: 'Speed' },
@@ -3156,12 +2742,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       { key: 'guts', name: 'Guts' },
       { key: 'wiz', name: 'Wit' }
     ];
-
     // Aggregate stats across all distances for this character from ACTIVE classes only
     return stats.map(stat => {
       let totalStat = 0;
       let count = 0;
-
       const activeClasses = this.getActiveClassIds();
       distances.forEach(distance => {
         const distanceData = character.by_distance![distance];
@@ -3175,7 +2759,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         });
       });
-
       return {
         label: stat.name,
         value: Math.round(count > 0 ? totalStat / count : 0),
@@ -3183,26 +2766,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   // Individual stat distribution methods for distance with histogram data
   getDistanceStatHistogramData(distance: string, stat: string): ChartDataPoint[] {
     const cacheKey = this.generateCacheKey('distanceStatHistogram', distance, stat, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) {
         return [];
       }
-
       // Use ALL active classes (merge all)
       const activeClasses = this.getActiveClassIds();
       const histogramCombined = new Map<string, number>();
-
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
         dataList.forEach(classData => {
           const statData = classData?.stat_averages?.[stat];
-
           if (statData?.histogram) {
             Object.entries(statData.histogram).forEach(([bucket, count]) => {
               const current = histogramCombined.get(bucket) || 0;
@@ -3211,7 +2789,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const result = Array.from(histogramCombined.entries())
         .map(([bucket, count]) => ({
           label: this.formatStatBucketLabel(bucket),
@@ -3222,19 +2799,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       return result;
     });
   }
-
   // Distance support card combinations with icon formatting
   getDistanceSupportCardCombinations(distance: string): ChartDataPoint[] {
     const cacheKey = this.generateCacheKey('distanceSupportCardCombinations', distance, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) return [];
-
       const combinations = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
       // Use ALL active classes (merge all)
       const activeClasses = this.getActiveClassIds();
-
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
         
@@ -3250,7 +2823,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       const result = Array.from(combinations.entries())
         .sort((a, b) => b[1].count - a[1].count)
         .slice(0, 50)
@@ -3263,15 +2835,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       return result;
     });
   }
-
   // Character stat histogram methods
   getCharacterStatHistogramData(stat: string): ChartDataPoint[] {
     if (!this.selectedCharacterDetail || !this.characterStats[this.selectedCharacterDetail]) return [];
-
     const character = this.characterStats[this.selectedCharacterDetail];
     const histogramCombined = new Map<string, number>();
     const activeClasses = this.getActiveClassIds();
-
     // Aggregate histogram data across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
@@ -3289,7 +2858,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     return Array.from(histogramCombined.entries())
       .map(([bucket, count]) => ({
         label: bucket,
@@ -3298,15 +2866,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }))
       .sort((a, b) => parseInt(a.label) - parseInt(b.label));
   }
-
   // Character support card combinations
   getCharacterSupportCardCombinations(): ChartDataPoint[] {
     if (!this.selectedCharacterDetail || !this.characterStats[this.selectedCharacterDetail]) return [];
-
     const character = this.characterStats[this.selectedCharacterDetail];
     const combinations = new Map<string, { count: number; composition?: { [cardType: string]: number } }>();
     const activeClasses = this.getActiveClassIds();
-
     // Aggregate combinations across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
@@ -3326,7 +2891,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     return Array.from(combinations.entries())
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 50)
@@ -3337,7 +2901,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         composition: data.composition // Add composition data for stat symbols
       }));
   }
-
   // Utility methods
   getActiveClassIds(): string[] {
     const activeIds = Object.keys(this.classFilters).filter((classId: string) =>
@@ -3352,7 +2915,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     return activeIds;
   }
-
   private getCardTypeColor(cardType: string): string {
     // Use proper stat colors from colors service
     const typeMap: { [key: string]: string } = {
@@ -3367,24 +2929,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       'Group': '#34495e',      // Dark gray for group cards
       'Other': '#7f8c8d'       // Gray for other
     };
-
     const statName = typeMap[cardType];
     if (statName && ['speed', 'power', 'stamina', 'wiz', 'guts'].includes(statName)) {
       return this.colorsService.getStatColor(statName);
     }
-
     // For non-stat types, return the color directly
     return typeMap[cardType] || typeMap['Other'];
   }
-
   private getClassColor(classId: string): string {
     return this.colorsService.getClassColor(classId);
   }
-
   private getStatColor(stat: string): string {
     return this.colorsService.getStatColor(stat);
   }
-
   private getDistanceColor(distance: string): string {
     const colors: { [key: string]: string } = {
       'sprint': '#e74c3c', // Red
@@ -3395,33 +2952,26 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     return colors[distance] || '#7f8c8d';
   }
-
   getSupportCardValue(data: any, prop: 'total' | 'count' | 'percentage' | 'avg_level'): number {
     if (!data) return 0;
-
     if (typeof data === 'number') {
       return prop === 'total' || prop === 'count' ? data : 0;
     }
-
     return data[prop] || 0;
   }
-
   // UI Utility methods
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString();
   }
-
   getSampleSizeText(): string {
     if (!this.globalStats?.metadata?.total_entries) return 'Loading...';
     return `${this.globalStats.metadata.total_entries.toLocaleString()} training samples`;
   }
-
   getCharacterImageUrl(characterNameOrId: string): string {
     // If it's already a numeric ID, use it directly
     if (/^\d+$/.test(characterNameOrId)) {
       return `/assets/images/character_stand/chara_stand_${characterNameOrId}.png`;
     }
-
     // If it's a name, try to get the character ID from statistics data first
     if (this.globalStats?.uma_distribution) {
       const umaData = Object.values(this.globalStats.uma_distribution).find((data: any) =>
@@ -3431,12 +2981,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         return `/assets/images/character_stand/chara_stand_${(umaData as any).character_id}.png`;
       }
     }
-
     // Otherwise, get character ID from the service mapping
     const characterId = this.statisticsService.getCharacterIdFromName(characterNameOrId) || characterNameOrId;
     return `/assets/images/character_stand/chara_stand_${characterId}.png`;
   }
-
   // Helper method for template to check if character has image
   hasCharacterImage(characterNameOrId: string): boolean {
     if (!characterNameOrId) return false;
@@ -3445,7 +2993,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (/^\d+$/.test(characterNameOrId)) {
         return true;
       }
-
       // Try to get from statistics data first
       if (this.globalStats?.uma_distribution) {
         const hasInUmaDistribution = Object.values(this.globalStats.uma_distribution).some((data: any) =>
@@ -3453,7 +3000,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         if (hasInUmaDistribution) return true;
       }
-
       // Fall back to service mapping
       const characterId = this.statisticsService.getCharacterIdFromName(characterNameOrId);
       return characterId !== null && characterId !== undefined && characterId !== '';
@@ -3462,12 +3008,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
   }
-
   // TrackBy function for character list performance
   trackByCharacter(index: number, character: { id: string, name: string }): string {
     return character.id;
   }
-
   // Handle image loading errors
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
@@ -3475,11 +3019,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       img.style.display = 'none';
     }
   }
-
   getSupportCardImageUrl(cardId: string | number): string {
     return `/assets/images/support_card/half/support_card_s_${cardId}.png`;
   }
-
   getStatIconUrl(statName: string): string {
     // Normalize stat name to match file names
     const statMap: { [key: string]: string } = {
@@ -3493,15 +3035,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       'intelligence': 'wit',
       'rank_score': 'speed' // Use speed icon as fallback for rank score
     };
-
     const fileName = statMap[statName.toLowerCase()] || 'speed';
     return `/assets/images/icon/stats/${fileName}.png`;
   }
-
   handleImageError(event: any): void {
     event.target.style.display = 'none';
   }
-
   // Missing methods that need to be added for template compatibility
   getDistanceIcon(distance: string): string {
     const icons: { [key: string]: string } = {
@@ -3513,7 +3052,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     return icons[distance] || 'track_changes';
   }
-
   getDistanceLabel(distance: string): string {
     const labels: { [key: string]: string } = {
       'sprint': 'Sprint',
@@ -3524,52 +3062,40 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     return labels[distance] || distance;
   }
-
   // Temporary methods - these will be replaced by observables
   getStatAveragesByClassData(): any[] {
     return [];
   }
-
   getUmaDistributionStackedChartData(): any[] {
     return [];
   }
-
   getSupportCardTypeDistribution(): ChartDataPoint[] {
     return [];
   }
-
   getSupportCardUsageData(): any[] {
     return [];
   }
-
   getSkillsUsageData(): any[] {
     return [];
   }
-
   getOverallStatComparison(): ChartDataPoint[] {
     return [];
   }
-
   getDistanceUmaStackedData(distance: string): any[] {
     return [];
   }
-
   getDistanceSupportCardData(distance: string): any[] {
     return [];
   }
-
   getDistanceSkillsData(distance: string): any[] {
     return [];
   }
-
   getDistanceStatDistributionData(distance: string): any[] {
     return [];
   }
-
   getDistanceCardTypeDistribution(distance: string): ChartDataPoint[] {
     return [];
   }
-
   // Helper method to format stat names
   private formatStatName(statName: string): string {
     const statNames: { [key: string]: string } = {
@@ -3583,7 +3109,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     return statNames[statName.toLowerCase()] || statName;
   }
-
   // Calculate total trainers for donut chart center
   private calculateTotalTrainers(): number {
     if (!this.globalStats?.team_class_distribution) return 0;
@@ -3592,23 +3117,19 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     const total = activeClasses.reduce((total, classId) => {
       const data = this.globalStats!.team_class_distribution[classId];
       let value = 0;
-
       if (typeof data === 'number') {
         value = data;
       } else if (data && typeof data === 'object') {
         value = data.count || data.total || data.value || data.percentage || data.trainer_count || 0;
       } else {
       }
-
       return total + value;
     }, 0);
     return total;
   }
-
   // Format total trainers for display with dynamic abbreviations (always one decimal place)
   formatTotalTrainers(total: number | null): string {
     if (!total) return '';
-
     if (total >= 1000000) {
       // For millions, always show one decimal place
       const millions = total / 1000000;
@@ -3620,7 +3141,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return total.toString();
   }
-
   // Helper methods for chart configurations
   getTeamClassDoughnutConfig() {
     return {
@@ -3628,63 +3148,51 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       centerText: this.formatTotalTrainers(this.totalTrainers$.value)
     };
   }
-
   getTeamClassDoughnutConfigWithTotal(total: number | null) {
     return {
       ...this.CHART_CONFIGS.DOUGHNUT_STANDARD,
       centerText: this.formatTotalTrainers(total)
     };
   }
-
   getStandardBarConfig() {
     return this.CHART_CONFIGS.BAR_STANDARD;
   }
-
   getBarWithLegendConfig() {
     return this.CHART_CONFIGS.BAR_WITH_LEGEND;
   }
-
   getStackedBarConfig() {
     return this.CHART_CONFIGS.BAR_STACKED;
   }
-
   getLargeStackedBarConfig() {
     return this.CHART_CONFIGS.BAR_STACKED_LARGE;
   }
-
   getHorizontalBarConfig() {
     return this.CHART_CONFIGS.BAR_HORIZONTAL;
   }
-
   getDoughnutConfig(data?: ChartDataPoint[]) {
     // Calculate total from data if provided
     const total = data ? data.reduce((sum, item) => sum + (item.value || 0), 0) : 0;
     const centerText = total > 0 ? this.formatTotalTrainers(total) : '';
-
     return {
       ...this.CHART_CONFIGS.DOUGHNUT_STANDARD,
       centerText
     };
   }
-
   getImageListConfig() {
     return {
       ...this.CHART_CONFIGS.IMAGE_LIST
     };
   }
-
   getVerticalImageBarConfig() {
     return {
       ...this.CHART_CONFIGS.VERTICAL_IMAGE_BAR
     };
   }
-
   getStatSymbolBarConfig() {
     return {
       ...this.CHART_CONFIGS.STAT_SYMBOL_BAR
     };
   }
-
   // Helper method to enhance chart data with stat icons
   addStatIconsToChartData(data: ChartDataPoint[]): ChartDataPoint[] {
     return data.map(item => ({
@@ -3692,11 +3200,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       imageUrl: this.getStatIconUrl(item.label)
     }));
   }
-
   // ...existing code...
   private computeTopSupportCardsWithImages(): ChartDataPoint[] {
     if (!this.globalStats?.support_cards?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
     const allClassCount = Object.keys(this.classFilters).length;
     const isAllClassesActive = activeClasses.length === allClassCount;
@@ -3706,13 +3212,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     const isAllScenariosActive = activeScenarios.length === allScenarioCount;
     
     const aggregatedCards = new Map<string, any>();
-
     // Calculate total Uma Musume trained
     let totalUmasTrained = 0;
-
     // Determine if we should use scenario data (when all classes are active and scenario filter is used)
     const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.support_cards?.by_scenario;
-
     if (useScenarioData) {
       // Use scenario distribution to get trained_umas from active scenarios
       activeScenarios.forEach(scenarioId => {
@@ -3729,9 +3232,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           Object.entries(scenarioData).forEach(([cardId, cardData]: [string, any]) => {
             const count = cardData.total || cardData.count || 0;
             const actualCardId = cardData.id || cardId;
-
             if (!actualCardId) return;
-
             if (aggregatedCards.has(actualCardId)) {
               const existing = aggregatedCards.get(actualCardId);
               existing.total += count;
@@ -3760,7 +3261,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           totalUmasTrained += classData.trained_umas;
         }
       });
-
       // If no trained_umas data available, fallback to uma_distribution approach
       if (totalUmasTrained === 0) {
         if (this.globalStats?.uma_distribution) {
@@ -3780,12 +3280,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             Object.entries(classData).forEach(([cardId, cardData]: [string, any]) => {
               const count = cardData.total || cardData.count || 0;
               const actualCardId = cardData.id || cardId; // Use the ID from the data, fallback to key
-
               if (!actualCardId) {
                 console.warn(`Support card '${cardId}' missing ID, skipping`);
                 return;
               }
-
               if (aggregatedCards.has(actualCardId)) {
                 const existing = aggregatedCards.get(actualCardId);
                 existing.total += count;
@@ -3808,7 +3306,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     // Sort and slice to get top 50
     const sortedCards = Array.from(aggregatedCards.entries())
       .sort((a, b) => b[1].total - a[1].total)
@@ -3817,11 +3314,9 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Card ID is now the key, name is stored in data
       const name = data.name || 'Unknown Card';
       const imageUrl = cardId ? this.getSupportCardImageUrl(cardId) : undefined;
-
       // Get stat color based on support card type
       const cardType = data?.type;
       const statColor = cardType ? this.colorsService.getStatColor(cardType.toLowerCase()) : undefined;
-
       // Calculate percentage: what percentage of trained Uma Musume used this card
       // data.total = number of times this card was used
       // totalUmasTrained = total number of Uma Musume trained
@@ -3839,15 +3334,12 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     return result;
   }
-
   // Generate single-series Uma Musume data with images (for image list display)
   private computeTopUmasWithImages(): ChartDataPoint[] {
     if (!this.globalStats?.uma_distribution) return [];
-
     // Calculate total Uma Musume trained only from selected/active classes
     const activeClasses = this.getActiveClassIds();
     let totalUmasTrained = 0;
-
     // Use team_class_distribution to get trained_umas only from active classes
     activeClasses.forEach(classId => {
       const classData = this.globalStats?.team_class_distribution?.[classId];
@@ -3855,7 +3347,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         totalUmasTrained += classData.trained_umas;
       }
     });
-
     // If no trained_umas data available, fallback to uma_distribution approach
     if (totalUmasTrained === 0) {
       if (this.globalStats?.uma_distribution) {
@@ -3865,10 +3356,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     }
-
     // Aggregate uma distribution data
     const allUmas = new Map<string, any>();
-
     // Check if per-class uma distribution data is available
     if (this.globalStats?.uma_distribution?.by_team_class) {
       // Aggregate from per-class data (only from active classes)
@@ -3900,16 +3389,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     // Convert to ChartDataPoint with images and sort to get top 20
     const result = Array.from(allUmas.entries())
       .map(([umaName, data]) => {
         // Use the existing method which handles name to ID mapping
         const imageUrl = this.getCharacterImageUrl(data.character_id || umaName);
-
         // Calculate percentage: what percentage of trained Uma Musume were this character
         const percentage = totalUmasTrained > 0 ? (data.count / totalUmasTrained) * 100 : 0;
-
         return {
           label: this.getCharacterNameById(data.character_id || umaName) || umaName,
           value: data.count,
@@ -3921,14 +3407,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .sort((a, b) => b.value - a.value)
       .slice(0, 20);
-
     return result;
   }
-
   // Generate single-series Skills data with images (for image list display)
   private computeTopSkillsWithImages(): ChartDataPoint[] {
     if (!this.globalStats?.skills?.by_team_class) return [];
-
     const activeClasses = this.getActiveClassIds();
     const allClassCount = Object.keys(this.classFilters).length;
     const isAllClassesActive = activeClasses.length === allClassCount;
@@ -3938,13 +3421,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     const isAllScenariosActive = activeScenarios.length === allScenarioCount;
     
     const aggregatedSkills = new Map<string, any>();
-
     // Calculate total Uma Musume trained
     let totalUmasTrained = 0;
-
     // Determine if we should use scenario data
     const useScenarioData = isAllClassesActive && !isAllScenariosActive && this.globalStats?.skills?.by_scenario;
-
     if (useScenarioData) {
       // Use scenario distribution to get trained_umas from active scenarios
       activeScenarios.forEach(scenarioId => {
@@ -3960,7 +3440,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (scenarioData) {
           Object.entries(scenarioData).forEach(([skillId, skillData]: [string, any]) => {
             const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
-
             if (aggregatedSkills.has(skillId)) {
               const existing = aggregatedSkills.get(skillId);
               existing.total += count;
@@ -3985,7 +3464,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           totalUmasTrained += classData.trained_umas;
         }
       });
-
       // If no trained_umas data available, fallback to uma_distribution approach
       if (totalUmasTrained === 0) {
         if (this.globalStats?.uma_distribution) {
@@ -4004,7 +3482,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (classData) {
             Object.entries(classData).forEach(([skillId, skillData]: [string, any]) => {
               const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
-
               if (aggregatedSkills.has(skillId)) {
                 const existing = aggregatedSkills.get(skillId);
                 existing.total += count;
@@ -4023,7 +3500,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     // Sort and slice to get top 50
     const sortedSkills = Array.from(aggregatedSkills.entries())
       .sort((a, b) => b[1].total - a[1].total)
@@ -4032,10 +3508,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Use the name from data, fallback to skill key
       const skillName = data.name || `Skill ${skillKey}`;
       const skillIcon = data?.icon ? `/assets/images/skills/${data.icon}` : this.getSkillIconUrl(skillName);
-
       // Calculate percentage: what percentage of trained Uma Musume used this skill
       const percentage = totalUmasTrained > 0 ? (data.total / totalUmasTrained) * 100 : 0;
-
       return {
         label: skillName,
         value: data.total,
@@ -4046,7 +3520,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
   }
-
   // Helper method to get skill icon URL
   private getSkillIconUrl(skillName: string): string {
     // Try to find the skill by name in the SKILLS data
@@ -4054,7 +3527,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (exactMatch?.icon) {
       return `/assets/images/skills/${exactMatch.icon}`;
     }
-
     // Handle inherited skills by stripping "(Inherited)" suffix and looking for base skill
     if (skillName.includes('(Inherited)')) {
       const baseSkillName = skillName.replace(/\s*\(Inherited\)$/, '').trim();
@@ -4063,58 +3535,45 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         return `/assets/images/skills/${baseSkillMatch.icon}`;
       }
     }
-
     // Fallback approach: use normalized name-based pattern
     const normalizedName = skillName.toLowerCase()
       .replace(/\s+/g, '_')
       .replace(/[^a-z0-9_]/g, '_')
       .replace(/_+/g, '_')
       .replace(/^_|_$/g, '');
-
     return `/assets/images/skills/${normalizedName}.png`;
   }
-
   private getSkillIconFromName(skillName: string): string {
     return this.getSkillIconUrl(skillName);
   }
-
   // Utility methods for missing functionality
   private getRandomColor(): string {
     const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'];
     return colors[Math.floor(Math.random() * colors.length)];
   }
-
   private getStableColor(input: string, index?: number): string {
     const color = this.colorsService.getHashBasedColor(input);
-
     return color || this.getRandomColor();
   }
-
   private formatStatBucketLabel(bucket: string): string {
     // Format stat bucket labels (e.g., "500-600" -> "500-600")
     return bucket;
   }
-
   private extractBucketValue(label: string): number {
     // Extract numeric value from bucket label for sorting
     const match = label.match(/(\d+)/);
     return match ? parseInt(match[1], 10) : 0;
   }
-
   // Template methods for character charts
   getCharacterClassStackedData(): any[] {
     if (!this.selectedCharacterDetail || !this.characterStats[this.selectedCharacterDetail]) {
       return [];
     }
-
     const character = this.characterStats[this.selectedCharacterDetail];
     if (!character.by_distance) return [];
-
     const activeClasses = this.getActiveClassIds();
-
     // Aggregate class data across all distances for this character - ONLY for active classes
     const classData = new Map<string, number>();
-
     Object.values(character.by_distance).forEach((distanceData: any) => {
       if (distanceData.by_team_class) {
         activeClasses.forEach(classId => {
@@ -4131,9 +3590,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
     });
-
     if (classData.size === 0) return [];
-
     // Create separate series for each class with proper colors
     return Array.from(classData.entries())
       .map(([classId, count]) => ({
@@ -4150,23 +3607,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       }))
       .sort((a, b) => parseInt(a.name.split(' ')[1]) - parseInt(b.name.split(' ')[1]));
   }
-
   getCharacterStatComparisonData(): any[] {
     if (!this.selectedCharacterDetail) return [];
-
     const ret = this.computeCharacterStatComparisonData(this.selectedCharacterDetail);
-
     return ret;
   }
-
   // Character-specific methods for template
   getCharacterCardTypeDistribution(): ChartDataPoint[] {
     if (!this.selectedCharacterDetail || !this.characterStats[this.selectedCharacterDetail]) return [];
-
     const character = this.characterStats[this.selectedCharacterDetail];
     const cardTypes = new Map<string, number>();
     const activeClasses = this.getActiveClassIds();
-
     // Aggregate card type data across all distances for this character from ACTIVE classes only
     if (character.by_distance) {
       Object.values(character.by_distance).forEach((distanceData: any) => {
@@ -4176,7 +3627,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (classData?.support_cards) {
               Object.entries(classData.support_cards).forEach(([cardId, data]: [string, any]) => {
                 let cardType = 'Other';
-
                 if (data.type) {
                   cardType = data.type;
                   if (cardType.toLowerCase() === 'intelligence') {
@@ -4189,7 +3639,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                     cardType = cardType.charAt(0).toUpperCase() + cardType.slice(1).toLowerCase();
                   }
                 }
-
                 const current = cardTypes.get(cardType) || 0;
                 cardTypes.set(cardType, current + (data.total || data.count || 0));
               });
@@ -4198,7 +3647,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     }
-
     return Array.from(cardTypes.entries())
       .map(([type, count]) => ({
         label: type,
@@ -4208,19 +3656,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(item => item.value > 0)
       .sort((a, b) => b.value - a.value);
   }
-
   // Distance-specific image list methods
   private computeDistanceUmasWithImages(distance: string): ChartDataPoint[] {
     const cacheKey = this.generateCacheKey('distanceUmasWithImages', distance, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) return [];
-
       // Calculate total Uma Musume trained only from selected/active classes for this distance
       const activeClasses = this.getActiveClassIds();
       let totalUmasTrained = 0;
-
       // Use the correct field names from distance data structure (same as support cards method)
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
@@ -4235,10 +3679,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       // Aggregate Uma data from distance classes
       const allUmas = new Map<string, any>();
-
       // Aggregate Uma data from active classes in by_team_class structure
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
@@ -4257,16 +3699,13 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         });
       });
-
       // Convert to ChartDataPoint with images and sort to get top 20
       const result = Array.from(allUmas.entries())
         .map(([umaName, data]) => {
           // Use the existing method which handles name to ID mapping
           const imageUrl = this.getCharacterImageUrl(data.character_id || umaName);
-
           // Calculate percentage: what percentage of trained Uma Musume were this character
           const percentage = totalUmasTrained > 0 ? (data.count / totalUmasTrained) * 100 : 0;
-
           return {
             label: umaName,
             value: data.count,
@@ -4278,24 +3717,18 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         })
         .sort((a, b) => b.value - a.value)
         .slice(0, 20);
-
       return result;
     }); // Close the getCachedData callback
   }
-
   private computeDistanceSkillsWithImages(distance: string): ChartDataPoint[] {
     const cacheKey = this.generateCacheKey('distanceSkillsWithImages', distance, this.classFilters, this.scenarioFilters);
-
     return this.getCachedData(cacheKey, () => {
       const distanceData = this.distanceStats[distance];
       if (!distanceData?.by_team_class) return [];
-
       const activeClasses = this.getActiveClassIds();
       const aggregatedSkills = new Map<string, any>();
-
       // Calculate total Uma Musume trained only from selected/active classes for this distance
       let totalUmasTrained = 0;
-
       // Use the correct field names from distance data structure (same as support cards method)
       activeClasses.forEach(classId => {
         const dataList = this.getMetricData('', classId, distanceData);
@@ -4318,7 +3751,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (classData?.skills) {
             Object.entries(classData.skills).forEach(([skillId, skillData]: [string, any]) => {
             const count = typeof skillData === 'number' ? skillData : (skillData.total || skillData.count || 0);
-
             if (aggregatedSkills.has(skillId)) {
               const existing = aggregatedSkills.get(skillId);
               existing.total += count;
@@ -4335,7 +3767,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
       });
-
       // Sort and slice to get top 50
       const sortedSkills = Array.from(aggregatedSkills.entries())
         .sort((a, b) => b[1].total - a[1].total)
@@ -4344,10 +3775,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Use the icon and id from the actual skill data
         const skillName = data?.name || `Skill ${skillKey}`;
         const skillIcon = data?.icon ? `/assets/images/skills/${data.icon}` : this.getSkillIconUrl(skillName);
-
         // Calculate percentage: what percentage of trained Uma Musume used this skill
         const percentage = totalUmasTrained > 0 ? (data.total / totalUmasTrained) * 100 : 0;
-
         return {
           label: skillName,
           value: data.total,
@@ -4359,7 +3788,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }); // Close the getCachedData callback
   }
-
   scrollToSection(sectionId: string) {
     const element = document.getElementById(sectionId);
     if (element) {

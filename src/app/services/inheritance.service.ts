@@ -9,7 +9,6 @@ import {
 } from '../models/inheritance.model';
 import { PaginatedResponse, SearchResult } from '../models/common.model';
 import { TurnstileService } from './turnstile.service';
-
 // V3 API interfaces
 interface V3SearchResult {
   items: V3UnifiedAccountRecord[];
@@ -18,7 +17,6 @@ interface V3SearchResult {
   limit: number;
   total_pages: number;
 }
-
 interface V3UnifiedAccountRecord {
   account_id: string;
   trainer_name: string;
@@ -27,7 +25,6 @@ interface V3UnifiedAccountRecord {
   inheritance: V3InheritanceRecord | null;
   support_card: V3SupportCardRecord | null;
 }
-
 interface V3InheritanceRecord {
   inheritance_id: number;
   account_id: string;
@@ -49,23 +46,19 @@ interface V3InheritanceRecord {
   main_white_factors: number[];
   main_white_count: number;
 }
-
 interface V3SupportCardRecord {
   account_id: string;
   support_card_id: number;
   limit_break_count: number | null;
   experience: number;
 }
-
 interface VoteRequest {
   vote: number; // 1 for upvote, -1 for downvote
 }
-
 interface VoteResponse {
   upvotes: number;
   downvotes: number;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -73,11 +66,9 @@ export class InheritanceService {
   private readonly apiUrl = '/api/v3'; // Updated to use v3 unified API
   private searchResults$ = new BehaviorSubject<SearchResult<InheritanceRecord> | null>(null);
   private characters$ = new BehaviorSubject<UmaMusumeCharacter[]>([]);
-
   constructor(private http: HttpClient, private turnstileService: TurnstileService) {
     this.loadCharacters();
   }
-
   // Health check endpoint
   checkHealth(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`)
@@ -88,26 +79,24 @@ export class InheritanceService {
         })
       );
   }
-
   // Search inheritance records with V3 unified API
   searchInheritance(filters: InheritanceSearchFilters = {}, page: number = 0, pageSize: number = 20): Observable<SearchResult<InheritanceRecord>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', pageSize.toString())
       .set('search_type', 'inheritance');
-
     // Add trainer_id filter for direct trainer lookup
     if (filters.trainerId) {
       params = params.set('trainer_id', filters.trainerId);
     }
-
     // Add trainer_name filter for username search
     if (filters.trainerName) {
       params = params.set('trainer_name', filters.trainerName);
     }
-
     // Add character filter - support both character ID and character name
-    if (filters.umaId) {
+    if (filters.mainParentIds && filters.mainParentIds.length > 0) {
+      params = params.set('main_parent_id', filters.mainParentIds.join(','));
+    } else if (filters.umaId) {
       params = params.set('main_parent_id', filters.umaId.toString());
     } else if (filters.characterId) {
       // Convert string character ID to number if needed
@@ -116,30 +105,34 @@ export class InheritanceService {
         params = params.set('main_parent_id', charId.toString());
       }
     }
-
     // Add player character filter
     if (filters.playerCharaId) {
       params = params.set('player_chara_id', filters.playerCharaId.toString());
     }
-
     // Add parent filters
     if (filters.parentLeftId) {
       params = params.set('parent_left_id', filters.parentLeftId.toString());
     }
-
     if (filters.parentRightId) {
       params = params.set('parent_right_id', filters.parentRightId.toString());
     }
-
+    // Parent include/exclude filters (multi-select, comma-separated)
+    if (filters.parentId && filters.parentId.length > 0) {
+      params = params.set('parent_id', filters.parentId.join(','));
+    }
+    if (filters.excludeParentId && filters.excludeParentId.length > 0) {
+      params = params.set('exclude_parent_id', filters.excludeParentId.join(','));
+    }
+    if (filters.excludeMainParentId && filters.excludeMainParentId.length > 0) {
+      params = params.set('exclude_main_parent_id', filters.excludeMainParentId.join(','));
+    }
     // Add rank and rarity filters
     if (filters.minParentRank !== undefined) {
       params = params.set('parent_rank', filters.minParentRank.toString());
     }
-
     if (filters.minParentRarity !== undefined) {
       params = params.set('parent_rarity', filters.minParentRarity.toString());
     }
-
     // Map individual spark filters to backend spark IDs (factorId + level)
     const blueSparkValues: number[] = [];
     const pinkSparkValues: number[] = [];
@@ -177,7 +170,6 @@ export class InheritanceService {
         greenSparkValues.push(...filters.uniqueSkills);
       }
     }
-
     // Apply spark filters to params if any are selected
     if (blueSparkValues.length > 0) {
       params = params.append('blue_sparks', blueSparkValues.join(','));
@@ -190,116 +182,93 @@ export class InheritanceService {
     if (greenSparkValues.length > 0) {
       params = params.append('green_sparks', greenSparkValues.join(','));
     }
-
     // Also support the array-based filters for backward compatibility
     if (filters.blueSparkFactors && filters.blueSparkFactors.length > 0) {
       const blueFactors = filters.blueSparkFactors.join(',');
       params = params.append('blue_sparks', blueFactors);
     }
-
     if (filters.pinkSparkFactors && filters.pinkSparkFactors.length > 0) {
       const pinkFactors = filters.pinkSparkFactors.join(',');
       params = params.append('pink_sparks', pinkFactors);
     }
-
     if (filters.greenSparkFactors && filters.greenSparkFactors.length > 0) {
       const greenFactors = filters.greenSparkFactors.join(',');
       params = params.append('green_sparks', greenFactors);
     }
-
     if (filters.whiteSparkFactors && filters.whiteSparkFactors.length > 0) {
       const whiteFactors = filters.whiteSparkFactors.join(',');
       params = params.append('white_sparks', whiteFactors);
     }
-
     // Support for AND logic groups (multiple filters of same type)
     if (filters.blueSparkGroups && filters.blueSparkGroups.length > 0) {
       filters.blueSparkGroups.forEach(group => {
         params = params.append('blue_sparks', group.join(','));
       });
     }
-
     if (filters.pinkSparkGroups && filters.pinkSparkGroups.length > 0) {
       filters.pinkSparkGroups.forEach(group => {
         params = params.append('pink_sparks', group.join(','));
       });
     }
-
     if (filters.greenSparkGroups && filters.greenSparkGroups.length > 0) {
       filters.greenSparkGroups.forEach(group => {
         params = params.append('green_sparks', group.join(','));
       });
     }
-
     if (filters.whiteSparkGroups && filters.whiteSparkGroups.length > 0) {
       filters.whiteSparkGroups.forEach(group => {
         params = params.append('white_sparks', group.join(','));
       });
     }
-
     // Main Parent Factors
     if (filters.mainParentBlueSparks && filters.mainParentBlueSparks.length > 0) {
       params = params.set('main_parent_blue_sparks', filters.mainParentBlueSparks.join(','));
     }
-
     if (filters.mainParentPinkSparks && filters.mainParentPinkSparks.length > 0) {
       params = params.set('main_parent_pink_sparks', filters.mainParentPinkSparks.join(','));
     }
-
     if (filters.mainParentGreenSparks && filters.mainParentGreenSparks.length > 0) {
       params = params.set('main_parent_green_sparks', filters.mainParentGreenSparks.join(','));
     }
-
     if (filters.mainParentWhiteSparks && filters.mainParentWhiteSparks.length > 0) {
       // Send as multiple groups for AND logic (same as white_sparks)
       filters.mainParentWhiteSparks.forEach(group => {
         params = params.append('main_parent_white_sparks', group.join(','));
       });
     }
-
     // Optional White Factors (for scoring/sorting, no level required)
     if (filters.optionalWhiteSparks && filters.optionalWhiteSparks.length > 0) {
       params = params.set('optional_white_sparks', filters.optionalWhiteSparks.join(','));
     }
-
     if (filters.optionalMainWhiteSparks && filters.optionalMainWhiteSparks.length > 0) {
       params = params.set('optional_main_white_sparks', filters.optionalMainWhiteSparks.join(','));
     }
-
     if (filters.minMainBlueFactors !== undefined) {
       params = params.set('min_main_blue_factors', filters.minMainBlueFactors.toString());
     }
-
     if (filters.minMainPinkFactors !== undefined) {
       params = params.set('min_main_pink_factors', filters.minMainPinkFactors.toString());
     }
-
     if (filters.minMainGreenFactors !== undefined) {
       params = params.set('min_main_green_factors', filters.minMainGreenFactors.toString());
     }
-
     if (filters.minMainWhiteCount !== undefined) {
       params = params.set('min_main_white_count', filters.minMainWhiteCount.toString());
     }
-
     // Add minimum filters
     if (filters.minWinCount !== undefined) {
       params = params.set('min_win_count', filters.minWinCount.toString());
     }
-
     if (filters.minWhiteCount !== undefined) {
       params = params.set('min_white_count', filters.minWhiteCount.toString());
     }
-
     // Support Card Filters
     if (filters.supportCardId !== undefined) {
       params = params.set('support_card_id', filters.supportCardId.toString());
     }
-
     if (filters.minLimitBreak !== undefined) {
       params = params.set('min_limit_break', filters.minLimitBreak.toString());
     }
-
     // Star Sum Filters (min only) - check for both undefined and null, and validate max values
     if (filters.minBlueStarsSum != null && filters.minBlueStarsSum > 0) {
       // Blue stars max is 9 (5 stats × 3 max level, but capped at 9)
@@ -320,23 +289,19 @@ export class InheritanceService {
       // White stars have no max limit
       params = params.set('min_white_stars_sum', filters.minWhiteStarsSum.toString());
     }
-
     // Add sorting parameters
     if (filters.sortBy) {
       params = params.set('sort_by', this.mapSortByToBackend(filters.sortBy));
     }
-
     if (filters.sortOrder) {
       params = params.set('sort_order', filters.sortOrder);
     }
-
     // Add follower limit for active users (default to 1000 to get active users)
     if (filters.maxFollowerNum !== undefined) {
       params = params.set('max_follower_num', filters.maxFollowerNum.toString());
     } else {
-      params = params.set('max_follower_num', '1000');
+      params = params.set('max_follower_num', '999');
     }
-
     return this.http.get<V3SearchResult>(`${this.apiUrl}/search`, { params })
       .pipe(
         map(response => {
@@ -352,7 +317,6 @@ export class InheritanceService {
             page: response.page,
             pageSize: response.limit
           };
-
           this.searchResults$.next(searchResult);
           return searchResult;
         }),
@@ -370,14 +334,11 @@ export class InheritanceService {
         })
       );
   }
-
   // Map V3 backend record to frontend format
   private mapV3BackendToFrontend(v3Record: V3UnifiedAccountRecord): InheritanceRecord {
     const inheritance = v3Record.inheritance!; // We filter for non-null inheritance above
     
     // Debug log to check affinity_score
-    // console.log('Mapping record', v3Record.account_id, 'Affinity:', inheritance.affinity_score);
-
     return {
       id: inheritance.inheritance_id,
       account_id: v3Record.account_id,
@@ -413,7 +374,6 @@ export class InheritanceService {
       character_image_url: ''
     };
   }
-
   // Submit new inheritance record
   submitInheritance(submission: InheritanceSubmission): Observable<any> {
     // Generate Turnstile token first, then submit with the token
@@ -431,7 +391,6 @@ export class InheritanceService {
       })
     );
   }
-
   // Get inheritance record by ID - V2 API uses numeric IDs
   getInheritanceById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/inheritance/${id}`)
@@ -442,13 +401,11 @@ export class InheritanceService {
         })
       );
   }
-
   // Vote on inheritance record - V2 API uses numeric IDs
   voteOnInheritance(recordId: string, voteType: 'up' | 'down'): Observable<{ upvotes: number; downvotes: number }> {
     const voteRequest: VoteRequest = {
       vote: voteType === 'up' ? 1 : -1
     };
-
     // Generate Turnstile token first, then vote with the token
     return this.turnstileService.generateTokenWithRetry().pipe(
       switchMap(token => {
@@ -468,7 +425,6 @@ export class InheritanceService {
       })
     );
   }
-
   // Report trainer friend list as full - now creates a task immediately
   reportUserUnavailable(trainerId: string): Observable<{ success: boolean; report_count: number; task_created: boolean; message: string }> {
     // Generate Turnstile token first, then report with the token
@@ -490,7 +446,6 @@ export class InheritanceService {
       })
     );
   }
-
   // Track when a trainer ID is copied
   trackTrainerCopy(trainerId: string): Observable<{ success: boolean; copy_count: number; task_created: boolean }> {
     return this.http.post<{ success: boolean; copy_count: number; task_created: boolean }>(
@@ -504,7 +459,6 @@ export class InheritanceService {
       })
     );
   }
-
   // Get trainer availability status
   getTrainerStatus(trainerId: string): Observable<{
     trainer_id: string;
@@ -528,14 +482,12 @@ export class InheritanceService {
         })
       );
   }
-
   // Get user's inheritance records
   // Note: This endpoint doesn't exist in the current backend API
   getUserInheritanceRecords(userId: string): Observable<InheritanceRecord[]> {
     // TODO: Implement this endpoint in the backend if needed
     console.warn('getUserInheritanceRecords endpoint not implemented in backend');
     return of([]);
-
     // When implemented in backend, use:
     // return this.http.get<InheritanceRecord[]>(`${this.apiUrl}/inheritance/user/${userId}`)
     //   .pipe(
@@ -545,12 +497,10 @@ export class InheritanceService {
     //     })
     //   );
   }
-
   // Get all Umamusume characters
   getCharacters(): Observable<UmaMusumeCharacter[]> {
     return this.characters$.asObservable();
   }
-
   // Load characters (would typically come from API)
   private loadCharacters(): void {
     // For now, load from local data
@@ -560,20 +510,16 @@ export class InheritanceService {
     ];
     this.characters$.next(mockCharacters);
   }
-
   // Get current search results
   getCurrentSearchResults(): Observable<SearchResult<InheritanceRecord> | null> {
     return this.searchResults$.asObservable();
   }
-
   // Clear search results
   clearSearchResults(): void {
     this.searchResults$.next(null);
   }
-
   // Map frontend sort options to backend sort fields
   private mapSortByToBackend(sortBy: string): string {
-    console.log('Mapping sortBy:', sortBy); 
     const sortMapping: { [key: string]: string } = {
       'win_count': 'win_count',
       'white_count': 'white_count', 

@@ -2,21 +2,24 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
-
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
   private isChristmasSubject = new BehaviorSubject<boolean>(false);
   isChristmas$ = this.isChristmasSubject.asObservable();
-
+  // Set to true to enable the Christmas theme (e.g. during December)
+  private readonly CHRISTMAS_THEME_ENABLED = false;
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.initTheme();
   }
-
   private initTheme() {
     if (!isPlatformBrowser(this.platformId)) return;
-
+    // Hard override: if Christmas theme is disabled, force it off
+    if (!this.CHRISTMAS_THEME_ENABLED) {
+      this.setChristmasTheme(false);
+      return;
+    }
     // Check environment flag first
     const envChristmas = (environment as any).christmasTheme;
     
@@ -30,14 +33,11 @@ export class ThemeService {
       // Default to environment setting if no user preference
       shouldEnable = !!envChristmas;
     }
-
     this.setChristmasTheme(shouldEnable);
   }
-
   toggleChristmasTheme() {
     this.setChristmasTheme(!this.isChristmasSubject.value);
   }
-
   setChristmasTheme(enable: boolean) {
     this.isChristmasSubject.next(enable);
     
