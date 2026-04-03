@@ -1,0 +1,457 @@
+<div class="record-card">
+  <!-- Record Header -->
+  <div class="record-header">
+    <div class="record-main-info">
+      <!-- Performance metrics -->
+      <div class="performance-section">
+        <div class="main-stats">
+          <span *ngIf="record.affinity_score !== undefined" class="affinity-stat">
+            <span class="stat-number">{{ record.affinity_score }}</span>
+            <span class="stat-label">Affinity</span>
+          </span>
+          <span *ngIf="record.win_count !== undefined" class="wins-stat">
+            <span class="stat-number">{{ record.win_count }}</span>
+            <span class="stat-label">G1 Wins</span>
+          </span>
+          <span *ngIf="record.white_count !== undefined" class="white-stat">
+            <span class="stat-number">{{ record.white_count }}</span>
+            <span class="stat-label">White Skills</span>
+          </span>
+        </div>
+        <div *ngIf="isV2Record() && (record.parent_rank || record.parent_rarity)" class="rank-score-section">
+          <span *ngIf="record.parent_rarity" class="rank-stat">
+            <app-rank-badge [rarity]="record.parent_rarity" size="md"></app-rank-badge>
+            <span class="stat-label">Rank</span>
+          </span>
+          <span *ngIf="record.parent_rank" class="score-stat">
+            <span class="stat-number">{{ record.parent_rank }}</span>
+            <span class="stat-label">Score</span>
+          </span>
+        </div>
+        <div *ngIf="showDatabaseHeader && isV2Record()" class="verification-badge verified" matTooltip="Verified record">
+          <mat-icon>verified</mat-icon>
+          <span class="badge-date">{{ record.last_updated || record.submitted_at | date: "MMM d, y 'at' h:mm a" }}</span>
+        </div>
+      </div>
+
+      <!-- Database-specific: trainer, actions -->
+      <ng-container *ngIf="showDatabaseHeader">
+        <div *ngIf="isMaxFollowers" class="max-followers-card-badge" matTooltip="This account has 1000 followers (max cap). May be difficult to add as a friend.">
+          <mat-icon>warning</mat-icon>
+          <span>Max Followers</span>
+        </div>
+
+        <div class="trainer-section">
+          <div class="trainer-info">
+            <span class="trainer-label">Trainer:</span>
+            <span *ngIf="record.trainer_name" class="trainer-name">{{ record.trainer_name }}</span>
+            <button mat-button class="user-id-copy-btn"
+                    (click)="onCopyTrainerId($event)"
+                    [matTooltip]="'Click to copy: ' + (record.account_id || record.trainer_id)">
+              <mat-icon>content_copy</mat-icon>
+              <span class="user-id">{{ (record.account_id! | trainerIdFormat) || 'N/A' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Desktop: standalone Outdated button (badge is in performance-section) -->
+        <div class="header-actions desktop-only">
+          <button *ngIf="record.race_results?.length" mat-raised-button class="race-results-btn"
+                  (click)="openRaceResults('main', $event)"
+                  matTooltip="View race results for main parent">
+            <mat-icon>emoji_events</mat-icon>
+            <span class="btn-text">Race Results</span>
+          </button>
+          <button *ngIf="isV2Record()" mat-raised-button class="unavailable-btn"
+                  (click)="onReportUnavailable($event)"
+                  [disabled]="!record.account_id && !record.trainer_id"
+                  matTooltip="Report this user as unavailable or friend list full">
+            <mat-icon>person_off</mat-icon>
+            <span class="btn-text">Outdated</span>
+          </button>
+        </div>
+
+        <!-- Mobile: badge + Outdated button together in status row -->
+        <div class="status-row mobile-only">
+          <div *ngIf="isV2Record()" class="verification-badge verified" matTooltip="Verified record">
+            <mat-icon>verified</mat-icon>
+            <span class="badge-date">{{ record.last_updated || record.submitted_at | date: "MMM d, y 'at' h:mm a" }}</span>
+          </div>
+          <button *ngIf="record.race_results?.length" mat-raised-button class="race-results-btn"
+                  (click)="openRaceResults('main', $event)"
+                  matTooltip="View race results for main parent">
+            <mat-icon>emoji_events</mat-icon>
+            <span class="btn-text">Race Results</span>
+          </button>
+          <button *ngIf="isV2Record()" mat-raised-button class="unavailable-btn"
+                  (click)="onReportUnavailable($event)"
+                  [disabled]="!record.account_id && !record.trainer_id"
+                  matTooltip="Report this user as unavailable or friend list full">
+            <mat-icon>person_off</mat-icon>
+            <span class="btn-text">Outdated</span>
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Profile-only: Race Results button when not in database mode -->
+      <button *ngIf="!showDatabaseHeader && record.race_results?.length" mat-raised-button class="race-results-btn"
+              (click)="openRaceResults('main', $event)"
+              matTooltip="View race results for main parent">
+        <mat-icon>emoji_events</mat-icon>
+        <span class="btn-text">Race Results</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Inheritance Body -->
+  <div class="inheritance-body">
+    <!-- V1 API: Character images -->
+    <div *ngIf="record.main && record.parent1 && record.parent2" class="parents">
+      <img [src]="'/assets/images/character_stand/' + record.main.image"
+           [alt]="record.main.name + ' Image'"
+           class="parent-image main-parent" loading="lazy">
+      <div class="sub-parents">
+        <img [src]="'/assets/images/character_stand/' + record.parent1.image"
+             [alt]="record.parent1.name + ' Image'"
+             class="parent-image secondary-parent" loading="lazy">
+        <img [src]="'/assets/images/character_stand/' + record.parent2.image"
+             [alt]="record.parent2.name + ' Image'"
+             class="parent-image secondary-parent" loading="lazy">
+      </div>
+    </div>
+
+    <!-- V2 API: Character images + Support Card -->
+    <div *ngIf="record.main_parent_id && record.parent_left_id && record.parent_right_id" class="character-images">
+      <div class="main-character">
+        <div class="portrait-wrapper"
+             [class.portrait-selected-main]="selectedParent === 'main'"
+             (click)="selectParent('main', $event)">
+          <img [src]="'/assets/images/character_stand/chara_stand_' + record.main_parent_id + '.png'"
+               [alt]="'Main Character ' + record.main_parent_id"
+               class="character-image main-character-img" loading="lazy">
+        </div>
+      </div>
+      <div class="parent-characters">
+        <div class="portrait-wrapper"
+             [class.portrait-selected-left]="selectedParent === 'left'"
+             (click)="selectParent('left', $event)">
+          <img [src]="'/assets/images/character_stand/chara_stand_' + record.parent_left_id + '.png'"
+               [alt]="'Parent Left ' + record.parent_left_id"
+               class="character-image parent-character-img" loading="lazy">
+        </div>
+        <div class="portrait-wrapper"
+             [class.portrait-selected-right]="selectedParent === 'right'"
+             (click)="selectParent('right', $event)">
+          <img [src]="'/assets/images/character_stand/chara_stand_' + record.parent_right_id + '.png'"
+               [alt]="'Parent Right ' + record.parent_right_id"
+               class="character-image parent-character-img" loading="lazy">
+        </div>
+      </div>
+
+      <!-- Support Card (from record) -->
+      <div *ngIf="record.support_card_id" class="support-card-section">
+          <img [src]="getSupportCardImageUrl(record.support_card_id)"
+               [alt]="'Support Card ' + record.support_card_id"
+               class="support-card-image"
+               (error)="handleSupportCardImageError($event)">
+          <div class="card-limit-break" *ngIf="record.limit_break_count !== undefined">
+            <ng-container *ngFor="let icon of getLimitBreakArray(record.limit_break_count)">
+              <span class="limit-break-icon" *ngIf="!icon.filled">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                  <path d="M480-64 224-480l256-416 256 416L480-64Zm0-139 170-277-170-278-169 278 169 277Zm0-277Z"/>
+                </svg>
+              </span>
+              <span class="limit-break-icon" *ngIf="icon.filled">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2196F3">
+                  <path d="M480-64 224-480l256-416 256 416L480-64Z"/>
+                </svg>
+              </span>
+            </ng-container>
+          </div>
+      </div>
+
+      <!-- Support Card (from external input, e.g. profile) -->
+      <div *ngIf="!record.support_card_id && supportCardImageUrl" class="support-card-section">
+          <img [src]="supportCardImageUrl" alt="Support Card" class="support-card-image">
+          <div class="card-limit-break" *ngIf="supportCardLimitBreak != null">
+            <ng-container *ngFor="let icon of getLimitBreakArray(supportCardLimitBreak!)">
+              <span class="limit-break-icon" *ngIf="!icon.filled">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px">
+                  <path d="M480-64 224-480l256-416 256 416L480-64Zm0-139 170-277-170-278-169 278 169 277Zm0-277Z"/>
+                </svg>
+              </span>
+              <span class="limit-break-icon" *ngIf="icon.filled">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#2196F3">
+                  <path d="M480-64 224-480l256-416 256 416L480-64Z"/>
+                </svg>
+              </span>
+            </ng-container>
+          </div>
+      </div>
+    </div>
+
+    <!-- V1 API: Factor objects -->
+    <div *ngIf="record.blue_factors || record.pink_factors || record.unique_skills" class="factors">
+      <div class="blue-factors" *ngIf="record.blue_factors">
+        <div class="blue-factor factor" *ngFor="let factor of record.blue_factors">
+          <span>{{ factor.level }}</span>
+          <mat-icon>star</mat-icon>
+          <span>{{ factor.type }}</span>
+        </div>
+      </div>
+      <div class="pink-factors" *ngIf="record.pink_factors">
+        <div class="pink-factor factor" *ngFor="let factor of record.pink_factors">
+          <span>{{ factor.level }}</span>
+          <mat-icon>star</mat-icon>
+          <span>{{ factor.type }}</span>
+        </div>
+      </div>
+      <div class="unique-skill-factors" *ngIf="record.unique_skills">
+        <div class="unique-skill-factor factor" *ngFor="let factor of record.unique_skills">
+          <span>{{ factor.level }}</span>
+          <mat-icon>star</mat-icon>
+          <span>{{ factor.skill.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- V2 API: Spark arrays -->
+    <div *ngIf="record.blue_sparks || record.pink_sparks || record.green_sparks || record.white_sparks" class="spark-arrays">
+
+      <!-- ── Merged view ── -->
+      <div *ngIf="sparkViewMode === 'merged' && !selectedParent" class="spark-container">
+        <div class="spark-row" *ngIf="record.blue_sparks && record.blue_sparks.length > 0">
+          <div class="spark-type-indicator blue"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of record.blue_sparks | resolveSparks"
+                  class="spark-item blue-spark"
+                  [class.matched-filter]="isSparkMatched(sparkInfo)"
+                  [class.from-main-parent]="getLevelFromMainParent(sparkInfo)">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+              <mat-icon *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-icon">person</mat-icon>
+              <span *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-contribution">
+                {{ getLevelFromMainParent(sparkInfo) }}<mat-icon class="spark-star">star</mat-icon>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="spark-row" *ngIf="record.pink_sparks && record.pink_sparks.length > 0">
+          <div class="spark-type-indicator pink"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of record.pink_sparks | resolveSparks"
+                  class="spark-item pink-spark"
+                  [class.matched-filter]="isSparkMatched(sparkInfo)"
+                  [class.from-main-parent]="getLevelFromMainParent(sparkInfo)">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+              <mat-icon *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-icon">person</mat-icon>
+              <span *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-contribution">
+                {{ getLevelFromMainParent(sparkInfo) }}<mat-icon class="spark-star">star</mat-icon>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="spark-row" *ngIf="record.green_sparks && record.green_sparks.length > 0">
+          <div class="spark-type-indicator green"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of record.green_sparks | resolveSparks"
+                  class="spark-item green-spark"
+                  [class.matched-filter]="isSparkMatched(sparkInfo)"
+                  [class.from-main-parent]="getLevelFromMainParent(sparkInfo)">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+              <mat-icon *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-icon">person</mat-icon>
+              <span *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-contribution">
+                {{ getLevelFromMainParent(sparkInfo) }}<mat-icon class="spark-star">star</mat-icon>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="spark-row" *ngIf="record.white_sparks && record.white_sparks.length > 0">
+          <div class="spark-type-indicator white"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of record.white_sparks | resolveSparks"
+                  class="spark-item white-spark"
+                  [class.matched-filter]="isSparkMatched(sparkInfo)"
+                  [class.from-main-parent]="getLevelFromMainParent(sparkInfo)">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+              <mat-icon *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-icon">person</mat-icon>
+              <span *ngIf="getLevelFromMainParent(sparkInfo)" class="parent-contribution">
+                {{ getLevelFromMainParent(sparkInfo) }}<mat-icon class="spark-star">star</mat-icon>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Split view: all parents inline per row ── -->
+      <div *ngIf="sparkViewMode === 'split' && !selectedParent" class="spark-container">
+        <!-- Blue: main + left + right inline -->
+        <div class="spark-row" *ngIf="record.main_blue_factors || record.left_blue_factors || record.right_blue_factors">
+          <div class="spark-type-indicator blue"></div>
+          <div class="spark-list">
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.main_blue_factors) | resolveSparks">
+              <span class="spark-item blue-spark from-parent-main">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.left_blue_factors) | resolveSparks">
+              <span class="spark-item blue-spark from-parent-left">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.right_blue_factors) | resolveSparks">
+              <span class="spark-item blue-spark from-parent-right">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <!-- Pink: main + left + right inline -->
+        <div class="spark-row" *ngIf="record.main_pink_factors || record.left_pink_factors || record.right_pink_factors">
+          <div class="spark-type-indicator pink"></div>
+          <div class="spark-list">
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.main_pink_factors) | resolveSparks">
+              <span class="spark-item pink-spark from-parent-main">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.left_pink_factors) | resolveSparks">
+              <span class="spark-item pink-spark from-parent-left">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.right_pink_factors) | resolveSparks">
+              <span class="spark-item pink-spark from-parent-right">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <!-- Green: main + left + right inline -->
+        <div class="spark-row" *ngIf="record.main_green_factors || record.left_green_factors || record.right_green_factors">
+          <div class="spark-type-indicator green"></div>
+          <div class="spark-list">
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.main_green_factors) | resolveSparks">
+              <span class="spark-item green-spark from-parent-main">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.left_green_factors) | resolveSparks">
+              <span class="spark-item green-spark from-parent-left">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of getParentSingleSpark(record.right_green_factors) | resolveSparks">
+              <span class="spark-item green-spark from-parent-right">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <!-- White: main + left + right inline -->
+        <div class="spark-row" *ngIf="record.main_white_factors?.length || record.left_white_factors?.length || record.right_white_factors?.length">
+          <div class="spark-type-indicator white"></div>
+          <div class="spark-list">
+            <ng-container *ngFor="let sparkInfo of record.main_white_factors | resolveSparks">
+              <span class="spark-item white-spark from-parent-main">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of record.left_white_factors | resolveSparks">
+              <span class="spark-item white-spark from-parent-left">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+            <ng-container *ngFor="let sparkInfo of record.right_white_factors | resolveSparks">
+              <span class="spark-item white-spark from-parent-right">
+                <span class="spark-level">{{ sparkInfo.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ sparkInfo.name }}</span>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Single-parent focused view (portrait click) ── -->
+      <div *ngIf="selectedParent !== null" class="spark-container">
+        <div class="spark-row" *ngIf="getSelectedBlueFactor().length">
+          <div class="spark-type-indicator blue"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of getSelectedBlueFactor() | resolveSparks"
+                  class="spark-item blue-spark parent-own-spark">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+            </span>
+          </div>
+        </div>
+        <div class="spark-row" *ngIf="getSelectedPinkFactor().length">
+          <div class="spark-type-indicator pink"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of getSelectedPinkFactor() | resolveSparks"
+                  class="spark-item pink-spark parent-own-spark">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+            </span>
+          </div>
+        </div>
+        <div class="spark-row" *ngIf="getSelectedGreenFactor().length">
+          <div class="spark-type-indicator green"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of getSelectedGreenFactor() | resolveSparks"
+                  class="spark-item green-spark parent-own-spark">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+            </span>
+          </div>
+        </div>
+        <div class="spark-row" *ngIf="getSelectedWhiteFactors().length">
+          <div class="spark-type-indicator white"></div>
+          <div class="spark-list">
+            <span *ngFor="let sparkInfo of getSelectedWhiteFactors() | resolveSparks"
+                  class="spark-item white-spark parent-own-spark">
+              <span class="spark-level">{{ sparkInfo.level }}</span>
+              <mat-icon class="spark-star">star</mat-icon>
+              <span class="spark-name">{{ sparkInfo.name }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

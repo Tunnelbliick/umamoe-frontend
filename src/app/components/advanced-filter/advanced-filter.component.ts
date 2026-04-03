@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild, NgZone } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,7 @@ import { SupportCard, SupportCardShort, SupportCardType, Rarity } from '../../mo
 import factorsData from '../../../data/factors.json';
 import characterData from '../../../data/character.json';
 import characterNamesData from '../../../data/character_names.json';
+import { RaceSchedulerComponent } from '../race-scheduler/race-scheduler.component';
 export interface ActiveFilterChip {
   id: string;
   label: string;
@@ -29,7 +30,7 @@ export interface ActiveFilterChip {
   showStar?: boolean;
   rankIcon?: string; // Path to rank icon image
   range?: string; // Star range like "1-9", "5+", etc.
-  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other' | 'blueStarSum' | 'pinkStarSum' | 'greenStarSum' | 'whiteStarSum' | 'includeMainParent' | 'includeParent' | 'excludeParent' | 'excludeMainParent';
+  type: 'blue' | 'pink' | 'green' | 'white' | 'optionalWhite' | 'optionalMainWhite' | 'mainBlue' | 'mainPink' | 'mainGreen' | 'mainWhite' | 'character' | 'supportCard' | 'other' | 'blueStarSum' | 'pinkStarSum' | 'greenStarSum' | 'whiteStarSum' | 'includeMainParent' | 'includeParent' | 'excludeParent' | 'excludeMainParent' | 'raceSchedule';
   filterIndex?: number;
   filterList?: FactorFilter[];
 }
@@ -73,6 +74,8 @@ interface CompressedState {
   ip?: number[];  // include parent IDs
   ep?: number[];  // exclude parent IDs
   emp?: number[]; // exclude main parent IDs
+  // Race schedule: [yearIdx, month, half, raceInstanceId][]
+  rs?: [number, number, number, number][];
 }
 export interface TreeNode {
   id: string;
@@ -133,6 +136,7 @@ export interface UnifiedSearchParams {
   sort_by?: string;
   player_chara_id_2?: number;
   desired_main_chara_id?: number;
+  main_win_saddle?: number[];
   // Parent include/exclude filters (multi-select)
   parent_id?: number[];           // Matches against both left and right parent positions
   exclude_parent_id?: number[];   // Excludes from both left and right parent positions
@@ -159,7 +163,8 @@ export interface FactorFilter {
     MatCheckboxModule,
     MatAutocompleteModule,
     MatChipsModule,
-    FormsModule
+    FormsModule,
+    RaceSchedulerComponent
   ],
   templateUrl: './advanced-filter.component.html',
   styleUrl: './advanced-filter.component.scss'
@@ -169,6 +174,7 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
   @Output() filterChange = new EventEmitter<UnifiedSearchParams>();
   @Output() maxFollowersToggled = new EventEmitter<boolean>();
   private filterChangeSubject = new Subject<UnifiedSearchParams>();
+  @ViewChild(RaceSchedulerComponent) raceScheduler!: RaceSchedulerComponent;
   // Wrapping detection
   @ViewChild('mainLayout', { static: false }) mainLayoutRef!: ElementRef<HTMLElement>;
   legacyWrapped = false;
@@ -210,6 +216,8 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
   includeParentCharacters: { id: number; name: string; image?: string }[] = [];
   excludeParentCharacters: { id: number; name: string; image?: string }[] = [];
   excludeMainParentCharacters: { id: number; name: string; image?: string }[] = [];
+  // Race schedule
+  raceScheduleRaceCount = 0;
   ngOnInit() {
     // Default Quick Filters collapsed at all sizes
     this.collapsedSections.add('quickFilters');
@@ -222,6 +230,7 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
       this.collapsedSections.add('mainParentFactors');
       this.collapsedSections.add('generalCriteria');
       this.collapsedSections.add('totalStarCount');
+      this.collapsedSections.add('raceSchedule');
     }
     this.filterChangeSubject.pipe(
       debounceTime(800) // Increased to prevent rate limiting
@@ -272,7 +281,8 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
     private dialog: MatDialog,
     private supportCardService: SupportCardService,
     private elementRef: ElementRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit() {
     this.setupWrappingDetection();
@@ -286,7 +296,7 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
   }
   private setupScrollListener() {
     this.scrollListener = () => {
-      this.ngZone.run(() => this.updateFloatingBtnState());
+      requestAnimationFrame(() => this.updateFloatingBtnState());
     };
     this.ngZone.runOutsideAngular(() => {
       window.addEventListener('scroll', this.scrollListener!, { passive: true });
@@ -301,33 +311,37 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
   private setupHostResizeObserver() {
     const hostEl = this.elementRef.nativeElement as HTMLElement;
     this.hostResizeObserver = new ResizeObserver(() => {
-      this.ngZone.run(() => this.updateFloatingBtnState());
+      this.updateFloatingBtnState();
     });
     this.hostResizeObserver.observe(hostEl);
   }
   private updateFloatingBtnState() {
+    let newShow: boolean;
+    let newMode: 'results' | 'top';
+
     if (!this.isExpanded) {
-      // When collapsed, show "back to top" if scrolled down past the filter header
       const hostEl = this.elementRef.nativeElement as HTMLElement;
       const rect = hostEl.getBoundingClientRect();
-      const pastFilter = rect.bottom < 100;
-      this.showFloatingBtn = pastFilter;
-      this.floatingBtnMode = 'top';
-      return;
-    }
-    // When expanded, determine if user is within filter or past it
-    const hostEl = this.elementRef.nativeElement as HTMLElement;
-    const rect = hostEl.getBoundingClientRect();
-    const filterBottom = rect.bottom;
-    if (filterBottom > window.innerHeight) {
-      // Filter extends below the viewport — user is in the filter, show "Results"
-      this.showFloatingBtn = true;
-      this.floatingBtnMode = 'results';
+      newShow = rect.bottom < 100;
+      newMode = 'top';
     } else {
-      // Filter bottom is visible or above — user can see past it
-      // If scrolled down, show "Back to Top"
-      this.showFloatingBtn = window.scrollY > 200;
-      this.floatingBtnMode = 'top';
+      const hostEl = this.elementRef.nativeElement as HTMLElement;
+      const rect = hostEl.getBoundingClientRect();
+      const filterBottom = rect.bottom;
+      if (filterBottom > window.innerHeight) {
+        newShow = true;
+        newMode = 'results';
+      } else {
+        newShow = window.scrollY > 200;
+        newMode = 'top';
+      }
+    }
+
+    if (newShow !== this.showFloatingBtn || newMode !== this.floatingBtnMode) {
+      this.ngZone.run(() => {
+        this.showFloatingBtn = newShow;
+        this.floatingBtnMode = newMode;
+      });
     }
   }
   private setupWrappingDetection() {
@@ -443,6 +457,10 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.includeParentCharacters.length) state.ip = this.includeParentCharacters.map(c => c.id);
     if (this.excludeParentCharacters.length) state.ep = this.excludeParentCharacters.map(c => c.id);
     if (this.excludeMainParentCharacters.length) state.emp = this.excludeMainParentCharacters.map(c => c.id);
+    if (this.raceScheduler) {
+      const encoded = this.raceScheduler.getEncodedSelection();
+      if (encoded.length) state.rs = encoded;
+    }
     return btoa(JSON.stringify(state));
   }
   loadSerializedState(stateStr: string) {
@@ -620,6 +638,14 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
       restoreParentChars(state.ip, this.includeParentCharacters);
       restoreParentChars(state.ep, this.excludeParentCharacters);
       restoreParentChars(state.emp, this.excludeMainParentCharacters);
+      // Restore race schedule
+      if (state.rs && this.raceScheduler) {
+        this.raceScheduler.setEncodedSelection(state.rs as [number, number, number, number][]);
+        this.raceScheduleRaceCount = this.raceScheduler.selectedRaceIds.size;
+        this.filterState.main_win_saddle = this.raceScheduleRaceCount > 0
+          ? this.raceScheduler.getSelectedSaddleIds()
+          : undefined;
+      }
       this.onFilterChange();
     } catch (e) {
       console.error('Failed to load filter state', e);
@@ -1107,6 +1133,10 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
     this.filterState.optional_main_white_sparks = this.optionalMainWhiteFactorFilters
       .filter(f => f.factorId && f.factorId > 0)
       .map(f => f.factorId!);
+    // Race schedule saddle IDs
+    if (!this.filterState.main_win_saddle?.length) {
+      this.filterState.main_win_saddle = undefined;
+    }
     // Sync parent include/exclude arrays to filterState
     // (updateTreeFilters handles main_parent_id merging, but include/exclude need to be synced here too
     //  so they're always up-to-date even when no tree is set)
@@ -1127,6 +1157,14 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
     // Emit a shallow copy of the filter state to ensure change detection
     this.filterChangeSubject.next({ ...this.filterState });
   }
+  onRaceSelectionChanged(raceIds: number[]): void {
+    this.raceScheduleRaceCount = raceIds.length;
+    this.filterState.main_win_saddle = raceIds.length > 0
+      ? this.raceScheduler.getSelectedSaddleIds()
+      : undefined;
+    this.onFilterChange();
+  }
+
   private updateActiveFilterChips(): void {
     this.activeFilterChips = [];
     // Helper to format value part
@@ -1439,6 +1477,16 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
         type: 'whiteStarSum'
       });
     }
+    // Race Schedule
+    if (this.raceScheduleRaceCount > 0) {
+      this.activeFilterChips.push({
+        id: 'race-schedule',
+        label: `Race Schedule: ${this.raceScheduleRaceCount} race${this.raceScheduleRaceCount !== 1 ? 's' : ''}`,
+        name: 'Race Schedule',
+        value: `${this.raceScheduleRaceCount}`,
+        type: 'raceSchedule'
+      });
+    }
   }
   removeActiveFilter(chip: ActiveFilterChip): void {
     switch (chip.type) {
@@ -1544,6 +1592,14 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
         this.filterState.min_white_stars_sum = undefined;
         this.onFilterChange();
         break;
+      case 'raceSchedule':
+        if (this.raceScheduler) {
+          this.raceScheduler.cellSelection.clear();
+        }
+        this.raceScheduleRaceCount = 0;
+        this.filterState.main_win_saddle = undefined;
+        this.onFilterChange();
+        break;
       case 'other':
         if (chip.id === 'limit-break') {
           this.selectedLimitBreak = 0;
@@ -1598,6 +1654,8 @@ export class AdvancedFilterComponent implements OnInit, AfterViewInit, OnDestroy
         return 'chip-exclude';
       case 'supportCard':
         return 'chip-support';
+      case 'raceSchedule':
+        return 'chip-green';
       default:
         return 'chip-default';
     }

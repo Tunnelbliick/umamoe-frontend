@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -29,6 +29,8 @@ import { SearchResult } from '../../models/common.model';
 import { SupportCardShort } from '../../models/support-card.model';
 import { environment } from '../../../environments/environment';
 import { AdvancedFilterComponent, UnifiedSearchParams } from '../../components/advanced-filter/advanced-filter.component';
+import { InheritanceEntryComponent } from '../../components/inheritance-entry/inheritance-entry.component';
+import { getCharacterById } from '../../data/character.data';
 @Component({
   selector: 'app-inheritance-database',
   standalone: true,
@@ -47,7 +49,8 @@ import { AdvancedFilterComponent, UnifiedSearchParams } from '../../components/a
     InheritanceFilterComponent,
     TrainerIdFormatPipe,
     ResolveSparksPipe,
-    AdvancedFilterComponent
+    AdvancedFilterComponent,
+    InheritanceEntryComponent
   ],
   templateUrl: './inheritance-database.component.html',
   styleUrl: './inheritance-database.component.scss'
@@ -55,6 +58,8 @@ import { AdvancedFilterComponent, UnifiedSearchParams } from '../../components/a
 export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private searchSubscription?: Subscription;
+  private scrollListener!: () => void;
+  private scrollThrottled = false;
   environment = environment;
   isMobile = false;
   mobileBreakpoint = 1000; // Adjust as needed for your design
@@ -72,6 +77,7 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
   currentSortBy = 'affinity_score';
   currentSortOrder: 'asc' | 'desc' = 'desc';
   includeMaxFollowers = false;
+  splitSparksMode = false;
   sortOptions = [
     { value: 'affinity_score', label: 'Affinity' },
     { value: 'win_count', label: 'G1 Wins' },
@@ -84,6 +90,11 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
   @ViewChild(AdvancedFilterComponent) advancedFilter!: AdvancedFilterComponent;
   // Trainer ID filter from URL parameters
   trainerIdFilter: string | null = null;
+
+  // Bound method references for child component inputs
+  boundIsSparkMatched = this.isSparkMatched.bind(this);
+  boundGetLevelFromMainParent = this.getLevelFromMainParent.bind(this);
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -94,7 +105,8 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private meta: Meta,
-    private title: Title
+    private title: Title,
+    private ngZone: NgZone
   ) {
     this.title.setTitle('Database | honse.moe');
     this.meta.addTags([
@@ -150,7 +162,25 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
     if (!this.trainerIdFilter && !hasFilters) {
       this.searchRecords();
     }
+    this.ngZone.runOutsideAngular(() => this.initScrollListener());
   }
+  private initScrollListener() {
+    this.scrollListener = () => {
+      if (this.scrollThrottled) return;
+      this.scrollThrottled = true;
+      requestAnimationFrame(() => {
+        const threshold = 300;
+        const position = window.pageYOffset + window.innerHeight;
+        const height = document.documentElement.scrollHeight;
+        if (position > height - threshold && this.hasMoreRecords && !this.loading && !this.loadingMore) {
+          this.ngZone.run(() => this.loadMoreRecords());
+        }
+        this.scrollThrottled = false;
+      });
+    };
+    window.addEventListener('scroll', this.scrollListener, { passive: true });
+  }
+
   ngAfterViewInit() {
     // Check for filters URL parameter
     const filters = this.route.snapshot.queryParams['filters'];
@@ -184,6 +214,9 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
+    }
   }
   onFiltersChanged(filters: InheritanceFilters) {
     if (!environment.production) {
@@ -270,6 +303,7 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
         minPinkStarsSum: af.min_pink_stars_sum,
         minGreenStarsSum: af.min_green_stars_sum,
         minWhiteStarsSum: af.min_white_stars_sum,
+        mainWinSaddle: af.main_win_saddle,
         
         page: this.currentPage,
         pageSize: this.pageSize,
@@ -435,6 +469,9 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
     }
     this.currentPage++;
     this.searchRecords();
+  }
+  trackByRecordId(index: number, record: InheritanceRecord): number | string {
+    return record.id;
   }
   private getStatLevel(statType: string): number | undefined {
     if (!this.currentFilters?.mainStats) return undefined;
@@ -720,16 +757,7 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
       }
     });
   }
-  // Scroll detection for infinite scroll
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    const threshold = 300; // Load more when 300px from bottom
-    const position = window.pageYOffset + window.innerHeight;
-    const height = document.documentElement.scrollHeight;
-    if (position > height - threshold && this.hasMoreRecords && !this.loading && !this.loadingMore) {
-      this.loadMoreRecords();
-    }
-  }
+  // Scroll detection is handled via passive event listener registered in initScrollListener()
   // Copy trainer ID to clipboard
   async copyTrainerId(trainerId: string, event?: Event) {
     if (event) {
@@ -974,6 +1002,75 @@ export class InheritanceDatabaseComponent implements OnInit, OnDestroy, AfterVie
       this.snackBar.open('Trainer ID copied to clipboard', 'Close', { duration: 2000 });
     }).catch(() => {
       this.snackBar.open('Failed to copy Trainer ID', 'Close', { duration: 2000 });
+    });
+  }
+
+  /** Wrapper for the child component's copyInfo event (no native Event needed) */
+  onEntryCopyInfo(record: InheritanceRecord): void {
+    this.copyRecordInfo(record, new Event('click'));
+  }
+
+  copyRecordInfo(record: InheritanceRecord, event: Event) {
+    event.stopPropagation();
+    const lines: string[] = [];
+
+    // Trainer info
+    const trainerId = record.account_id || record.trainer_id || '';
+    if (record.trainer_name) {
+      lines.push(`Trainer: ${record.trainer_name} (${trainerId})`);
+    } else if (trainerId) {
+      lines.push(`Trainer ID: ${trainerId}`);
+    }
+
+    // Character names
+    if (record.main_parent_id && record.parent_left_id && record.parent_right_id) {
+      const main = getCharacterById(record.main_parent_id);
+      const left = getCharacterById(record.parent_left_id);
+      const right = getCharacterById(record.parent_right_id);
+      lines.push(`Main: ${main?.name || record.main_parent_id}`);
+      lines.push(`Parents: ${left?.name || record.parent_left_id} / ${right?.name || record.parent_right_id}`);
+    } else if (record.main && record.parent1 && record.parent2) {
+      lines.push(`Main: ${record.main.name}`);
+      lines.push(`Parents: ${record.parent1.name} / ${record.parent2.name}`);
+    }
+
+    // Stats
+    const stats: string[] = [];
+    if (record.affinity_score !== undefined) stats.push(`Affinity: ${record.affinity_score}`);
+    if (record.win_count !== undefined) stats.push(`G1 Wins: ${record.win_count}`);
+    if (record.white_count !== undefined) stats.push(`White Skills: ${record.white_count}`);
+    if (stats.length) lines.push(stats.join(' | '));
+
+    // Factors
+    const formatSparks = (sparks: number[], label: string) => {
+      if (!sparks?.length) return;
+      const resolved = this.factorService.resolveSparks(sparks);
+      const items = resolved.map(s => `${s.level}★ ${s.name}`);
+      lines.push(`${label}: ${items.join(', ')}`);
+    };
+
+    if (record.blue_sparks || record.pink_sparks || record.green_sparks || record.white_sparks) {
+      formatSparks(record.blue_sparks || [], 'Blue');
+      formatSparks(record.pink_sparks || [], 'Pink');
+      formatSparks(record.green_sparks || [], 'Green');
+      formatSparks(record.white_sparks || [], 'White');
+    } else {
+      if (record.blue_factors?.length) {
+        lines.push(`Blue: ${record.blue_factors.map(f => `${f.level}★ ${f.type}`).join(', ')}`);
+      }
+      if (record.pink_factors?.length) {
+        lines.push(`Pink: ${record.pink_factors.map(f => `${f.level}★ ${f.type}`).join(', ')}`);
+      }
+      if (record.unique_skills?.length) {
+        lines.push(`Unique: ${record.unique_skills.map(f => `${f.level}★ ${f.skill.name}`).join(', ')}`);
+      }
+    }
+
+    const text = lines.join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      this.snackBar.open('Inheritance info copied to clipboard', 'Close', { duration: 2000 });
+    }).catch(() => {
+      this.fallbackCopyToClipboard(text);
     });
   }
 }

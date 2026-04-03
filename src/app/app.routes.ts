@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -53,6 +55,42 @@ export const routes: Routes = [
   {
     path: 'privacy-policy',
     loadComponent: () => import('./pages/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent)
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'signin',
+    loadComponent: () => import('./pages/auth-callback/auth-callback.component').then(m => m.AuthCallbackComponent)
+  },
+  {
+    path: 'profile/:accountId',
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
+    children: [
+      {
+        path: 'veterans',
+        loadComponent: () => import('./pages/profile/veterans/veterans.component').then(m => m.VeteransComponent)
+      },
+      {
+        path: 'cm',
+        loadComponent: () => import('./pages/profile/cm/cm.component').then(m => m.CmComponent)
+      },
+      {
+        path: 'achievements',
+        loadComponent: () => import('./pages/profile/achievements/achievements.component').then(m => m.AchievementsComponent)
+      },
+      {
+        path: 'titles',
+        loadComponent: () => import('./pages/profile/titles/titles.component').then(m => m.TitlesComponent)
+      }
+    ]
+  },
+  // Example guarded route — add canActivate: [authGuard] to any route that needs authentication
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
+    canActivate: [authGuard]
   },
   {
     path: '**',

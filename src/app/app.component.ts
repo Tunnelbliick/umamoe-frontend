@@ -1,19 +1,21 @@
 import { Component, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { SnowComponent } from './components/snow/snow.component';
+import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 import { StatsService } from './services/stats.service';
 import { ThemeService } from './services/theme.service';
 import { UpdateNotificationService } from './services/update-notification.service';
 import { RateLimitService } from './services/rate-limit.service';
+import { AuthService } from './services/auth.service';
 import { environment } from '../environments/environment';
 import { filter, throttleTime } from 'rxjs';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavigationComponent, SnowComponent, MatDialogModule],
+  imports: [CommonModule, RouterOutlet, NavigationComponent, SnowComponent, CookieConsentComponent, MatDialogModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -27,6 +29,8 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private updateNotificationService: UpdateNotificationService,
     private rateLimitService: RateLimitService,
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
   // Debug shortcut: Ctrl+Shift+L to test rate limit popup (dev only)
@@ -38,6 +42,16 @@ export class AppComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    // Handle OAuth token from any URL (backend redirects to /?token=...)
+    if (isPlatformBrowser(this.platformId)) {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      if (token) {
+        this.authService.handleCallback(token);
+        return;
+      }
+    }
+
     // Check for update notification
     if (isPlatformBrowser(this.platformId)) {
       // Small delay to let the app settle before showing popup

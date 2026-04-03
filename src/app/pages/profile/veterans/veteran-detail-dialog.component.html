@@ -1,0 +1,141 @@
+<div class="veteran-detail-dialog">
+  <div class="select-header">
+    <img *ngIf="v.card_id && getCardImage(v.card_id)" [src]="getCardImage(v.card_id)" class="header-avatar">
+    <div class="header-info">
+      <span class="select-header-title">
+        {{ getCharacterName(v.card_id) }}
+        <span class="sm-stars" *ngIf="v.rarity">
+          <ng-container *ngFor="let s of getStarDisplay(v.rarity)">
+            <mat-icon [class.star-filled]="s.filled" [class.star-empty]="!s.filled">{{ s.filled ? 'star' : 'star_border' }}</mat-icon>
+          </ng-container>
+        </span>
+      </span>
+      <div class="header-meta">
+        <span class="sm-tag scenario" *ngIf="v.scenario_id">{{ getScenarioName(v.scenario_id) }}</span>
+      </div>
+    </div>
+    <div class="header-rank" *ngIf="v.rank_score">
+      <app-rank-badge [score]="v.rank_score" size="md"></app-rank-badge>
+      <span class="sm-score-value mono">{{ v.rank_score | number }}</span>
+    </div>
+    <button mat-icon-button class="close-btn" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="select-body">
+    <!-- Stats -->
+    <div class="sm-stats">
+      <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span class="sm-stat-value mono">{{ v.speed || 0 }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span class="sm-stat-value mono">{{ v.stamina || 0 }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span class="sm-stat-value mono">{{ v.power || 0 }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span class="sm-stat-value mono">{{ v.guts || 0 }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span class="sm-stat-value mono">{{ v.wiz || 0 }}</span></div>
+      <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{ getTotalStats(v) }}</span></div>
+    </div>
+
+    <!-- Aptitudes -->
+    <div class="content-section">
+      <span class="section-title">Aptitudes</span>
+      <div class="sm-aptitudes">
+        <span class="apt-row-label">TRACK</span>
+        <span class="apt-item"><span class="apt-key">Turf</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_ground_turf)">{{ getAptGrade(v.proper_ground_turf) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Dirt</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_ground_dirt)">{{ getAptGrade(v.proper_ground_dirt) }}</span></span>
+        <span></span><span></span>
+        <span class="apt-row-label">DIST</span>
+        <span class="apt-item"><span class="apt-key">Sprint</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_distance_short)">{{ getAptGrade(v.proper_distance_short) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Mile</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_distance_mile)">{{ getAptGrade(v.proper_distance_mile) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Medium</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_distance_middle)">{{ getAptGrade(v.proper_distance_middle) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Long</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_distance_long)">{{ getAptGrade(v.proper_distance_long) }}</span></span>
+        <span class="apt-row-label">STYLE</span>
+        <span class="apt-item"><span class="apt-key">Front</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_running_style_nige)">{{ getAptGrade(v.proper_running_style_nige) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Pace</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_running_style_senko)">{{ getAptGrade(v.proper_running_style_senko) }}</span></span>
+        <span class="apt-item"><span class="apt-key">Late</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_running_style_sashi)">{{ getAptGrade(v.proper_running_style_sashi) }}</span></span>
+        <span class="apt-item"><span class="apt-key">End</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(v.proper_running_style_oikomi)">{{ getAptGrade(v.proper_running_style_oikomi) }}</span></span>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <div class="content-section" *ngIf="getEncodedSkills(v).length > 0">
+      <span class="section-title">Skills</span>
+      <div class="sm-skills">
+        <span class="sm-skill" [ngClass]="getSkillRarityClass(sid)" *ngFor="let sid of getEncodedSkills(v)">
+          <img *ngIf="getSkillIcon(sid)" [src]="getSkillIcon(sid)" class="skill-icon" alt="" (error)="$any($event.target).style.display='none'">
+          <span class="skill-name">{{ getSkillName(sid) }}</span>
+          <span class="skill-level">Lv.{{ getSkillLevel(sid) }}</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Race History -->
+    <div class="content-section" *ngIf="wonRaces.length > 0">
+      <div class="section-header">
+        <span class="section-title">Race History</span>
+        <button class="view-scheduler-btn" (click)="openRaceHistory()" matTooltip="View full race schedule">
+          <mat-icon>calendar_month</mat-icon>
+          <span>Full Schedule</span>
+        </button>
+      </div>
+      <div class="race-list">
+        <span class="race-chip" *ngFor="let r of wonRaces" [class.g1]="r.grade === 100" [class.g2]="r.grade === 200" [class.g3]="r.grade === 300">
+          <span class="race-grade">{{ r.gradeLabel }}</span>
+          <span class="race-name">{{ r.name }}</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Own Factors -->
+    <div class="content-section" *ngIf="getFactors(v).length > 0">
+      <span class="section-title">Own Factors</span>
+      <div class="inh-node-sparks">
+        <span class="spark-item spark-item--sm" [ngClass]="f.color + '-spark'" *ngFor="let f of getFactors(v)">
+          <span class="spark-level">{{ f.level }}</span>
+          <mat-icon class="spark-star">star</mat-icon>
+          <span class="spark-name">{{ f.name }}</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Inheritance -->
+    <div class="content-section" *ngIf="getSuccessionParents(v).length > 0">
+      <div class="section-header">
+        <span class="section-title">Inheritance</span>
+        <span class="aff-chip" *ngIf="getAffinityScore(v) !== null">Aff: <strong class="mono">{{ getAffinityScore(v) }}</strong></span>
+      </div>
+      <div class="inh-list">
+        <div class="inh-branch" *ngFor="let parent of getSuccessionParents(v)">
+          <!-- Parent node -->
+          <div class="inh-node inh-node--parent">
+            <div class="inh-node-head">
+              <img *ngIf="getCardImage(parent.card_id)" [src]="getCardImage(parent.card_id)" class="inh-node-av">
+              <span class="inh-node-name">{{ getCharacterName(parent.card_id) }}</span>
+            </div>
+            <div class="inh-node-sparks">
+              <span class="spark-item spark-item--xs" [ngClass]="f.color + '-spark'" *ngFor="let f of getFactors(parent)">
+                <span class="spark-level">{{ f.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ f.name }}</span>
+              </span>
+            </div>
+          </div>
+          <!-- GP nodes -->
+          <div class="inh-gp-group" *ngIf="getSuccessionGrandparents(v, parent.position_id).length > 0">
+            <div class="inh-node inh-node--gp" *ngFor="let gp of getSuccessionGrandparents(v, parent.position_id)">
+              <div class="inh-node-head">
+                <img *ngIf="getCardImage(gp.card_id)" [src]="getCardImage(gp.card_id)" class="inh-node-av inh-node-av--sm">
+                <span class="inh-node-name inh-node-name--sm">{{ getCharacterName(gp.card_id) }}</span>
+              </div>
+              <div class="inh-node-sparks">
+                <span class="spark-item spark-item--xs" [ngClass]="f.color + '-spark'" *ngFor="let f of getFactors(gp)">
+                  <span class="spark-level">{{ f.level }}</span>
+                  <mat-icon class="spark-star">star</mat-icon>
+                  <span class="spark-name">{{ f.name }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

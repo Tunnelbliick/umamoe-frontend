@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { StatsService, StatsResponse } from '../../services/stats.service';
 import { DomainMigrationService } from '../../services/domain-migration.service';
+import { CookieConsentService } from '../../services/cookie-consent.service';
 import { DomainMigrationPopupComponent } from '../../components/domain-migration-popup/domain-migration-popup.component';
 import { Meta, Title } from '@angular/platform-browser';
 import { ThemeService } from '../../services/theme.service';
@@ -25,20 +26,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   stats: StatsResponse | null = null;
   loading = true;
   isChristmas$ = this.themeService.isChristmas$;
-  inheritanceRecords = 0;
-  supportCardRecords = 0;
-  dailyUsers = 0;
-  totalRecords = 0;
-  totalAccounts = 0;
-  totalCircles = 0;
-  totalCharacters = 0;
+  tasksToday = 0;
+  accountsUpdatedToday = 0;
+  accounts7d = 0;
+  umasTracked = 0;
   constructor(
     private statsService: StatsService, 
     private meta: Meta, 
     private title: Title,
     private dialog: MatDialog,
     private domainMigrationService: DomainMigrationService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private cookieConsentService: CookieConsentService
   ) {
     this.title.setTitle('honse.moe Umamusume Database & Tools');
     this.meta.addTags([
@@ -76,17 +75,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
   private updateDisplayValues(stats: StatsResponse) {
-    this.totalRecords = stats.totals.total_records;
-    this.inheritanceRecords = stats.totals.inheritance_records;
-    this.supportCardRecords = stats.totals.support_card_records;
-    this.dailyUsers = Math.round(stats.rolling_averages.unique_visitors_7_day);
-    this.totalAccounts = stats.totals.total_accounts_tracked;
-    this.totalCircles = stats.totals.total_circles_tracked;
-    this.totalCharacters = stats.totals.total_characters;
+    this.tasksToday = stats.today.tasks_24h;
+    this.accountsUpdatedToday = stats.freshness.accounts_24h;
+    this.accounts7d = stats.freshness.accounts_7d;
+    this.umasTracked = stats.freshness.umas_tracked;
   }
   onLogoError(event: Event) {
     const target = event.target as HTMLImageElement;
     target.src = 'assets/logo.png';
+  }
+  openCookieSettings(): void {
+    this.cookieConsentService.reopenBanner();
   }
   private checkForDomainMigrationPopup() {
     // Small delay to ensure the component is fully rendered

@@ -32,6 +32,7 @@ export interface Circle {
   club_rank?: number;
   live_points?: number;
   live_rank?: number;
+  last_live_update?: string;
 }
 export interface CircleMemberMonthlyData {
   id: number;

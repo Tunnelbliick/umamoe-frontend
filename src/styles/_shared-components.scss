@@ -211,3 +211,258 @@
     }
   }
 }
+
+// ===== STADIUM MEMBER CARD =====
+.sm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .sm-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  .sm-avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .sm-info {
+    flex: 1;
+    min-width: 0;
+
+    .sm-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.25rem;
+    }
+
+    .sm-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .sm-retired {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 3px;
+    }
+  }
+
+  .sm-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    margin-left: 4px;
+    vertical-align: middle;
+
+    .star-filled { color: #ffd700; font-size: 14px; width: 14px; height: 14px; }
+    .star-empty   { color: rgba(255, 255, 255, 0.15); font-size: 14px; width: 14px; height: 14px; }
+    .star-talent { color: #90caf9; font-size: 14px; width: 14px; height: 14px; }
+  }
+
+  .sm-rank-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 2px;
+  }
+
+  .sm-rank-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .sm-rank-label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sm-score-value {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+.sm-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  &.distance { background: rgba(100, 181, 246, 0.12); color: #90caf9; }
+  &.style { background: rgba(255, 183, 77, 0.12); color: #ffb74d; }
+  &.scenario { background: rgba(129, 199, 132, 0.1); color: #81c784; }
+}
+
+.sm-stats {
+  display: flex;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+
+  .sm-stat {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 0;
+
+    &:last-child { border-right: none; }
+    &.total { background: rgba(255, 183, 77, 0.06); }
+
+    .stat-icon { width: 20px; height: 20px; object-fit: contain; }
+    .sm-stat-label { display: block; font-size: 0.6rem; color: rgba(255, 255, 255, 0.35); text-transform: uppercase; letter-spacing: 0.03em; }
+    .sm-stat-value { font-size: 0.85rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); }
+  }
+
+  @media (max-width: 400px) {
+    .sm-stat {
+      padding: 0.35rem 0.15rem;
+      .stat-icon { width: 16px; height: 16px; }
+      .sm-stat-value { font-size: 0.75rem; }
+    }
+  }
+}
+
+.sm-aptitudes {
+  display: grid;
+  grid-template-columns: max-content repeat(4, max-content);
+  justify-content: start;
+  justify-items: end;
+  column-gap: 6px;
+  row-gap: 4px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 8px;
+  padding: 6px 10px;
+
+  @media (max-width: 400px) {
+    column-gap: 3px;
+    padding: 5px 6px;
+  }
+}
+
+.apt-row-label {
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  justify-self: start;
+  padding-right: 4px;
+}
+
+.apt-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  min-width: 58px;
+}
+
+.apt-key { font-size: 0.6rem; color: rgba(255, 255, 255, 0.35); line-height: 1; white-space: nowrap; }
+
+.apt-grade-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0;
+
+  &.grade-S { background: rgba(231, 182, 24, 0.18); color: #e7b618; }
+  &.grade-A { background: rgba(250, 136, 54, 0.16); color: #fa8836; }
+  &.grade-B { background: rgba(255, 125, 165, 0.15); color: #ff7da5; }
+  &.grade-C { background: rgba(129, 217, 104, 0.14); color: #81d968; }
+  &.grade-D { background: rgba(99, 186, 247, 0.14); color: #63baf7; }
+  &.grade-E { background: rgba(214, 117, 239, 0.14); color: #d675ef; }
+  &.grade-F { background: rgba(173, 151, 252, 0.12); color: #ad97fc; }
+  &.grade-G { background: rgba(198, 199, 198, 0.08); color: #c6c7c6; }
+}
+
+.apt-rank-icon { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.sm-rank-icon { width: 52px; height: auto; object-fit: contain; }
+
+.sm-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.sm-skill {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+
+  &.rarity-unique {
+    background: linear-gradient(135deg, rgba(103, 58, 183, 0.3), rgba(156, 39, 176, 0.25));
+    border-color: rgba(179, 102, 255, 0.35);
+    color: #ce93d8;
+  }
+  &.rarity-gold { background: rgba(255, 160, 0, 0.15); border-color: rgba(255, 193, 7, 0.35); color: #ffe082; }
+  &.rarity-special { background: rgba(33, 150, 243, 0.15); border-color: rgba(33, 150, 243, 0.35); color: #90caf9; }
+
+  .skill-icon { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+  .skill-name { overflow: hidden; text-overflow: ellipsis; }
+  .skill-level { font-size: 0.65rem; color: rgba(255, 255, 255, 0.35); flex-shrink: 0; }
+}

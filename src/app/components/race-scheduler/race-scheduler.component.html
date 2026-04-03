@@ -1,0 +1,115 @@
+<div class="race-scheduler">
+  <!-- Import/Export toolbar -->
+  <div class="scheduler-toolbar" *ngIf="selectable">
+    <input #importInput type="file" accept=".json" class="import-file-input" (change)="importSchedule($event)">
+    <button class="toolbar-btn import-btn" (click)="triggerImport()" matTooltip="Import schedule from JSON">
+      <mat-icon>upload</mat-icon>
+      <span>Import</span>
+    </button>
+    <button class="toolbar-btn export-btn" (click)="exportSchedule()" [disabled]="!hasAnySelected()" matTooltip="Export schedule to JSON">
+      <mat-icon>download</mat-icon>
+      <span>Export</span>
+    </button>
+    <button class="toolbar-btn clear-btn" (click)="clearSelection()" *ngIf="hasAnySelected()" matTooltip="Clear all selections">
+      <mat-icon>clear_all</mat-icon>
+    </button>
+  </div>
+
+  <div class="scheduler-grid">
+    <div class="year-column" *ngFor="let year of years">
+      <div class="year-header" [ngClass]="year">{{ yearLabels[year] }}</div>
+
+      <div class="month-block" *ngFor="let pair of monthPairs">
+        <!-- 4 cells per row: early m1, late m1, early m2, late m2 -->
+        <div class="half-row">
+          <ng-container *ngFor="let month of pair">
+            <div
+              class="half-cell"
+              *ngFor="let half of halves"
+              [class.has-races]="getCellRaces(year, month, half).length > 0"
+              [class.has-selection]="!!getSelectedInCell(year, month, half)"
+              (click)="openRaceDialog(year, month, half)">
+
+              <!-- Selected race in this cell -->
+              <ng-container *ngIf="getSelectedInCell(year, month, half) as race">
+                <div
+                  class="race-badge"
+                  [ngClass]="getGradeClass(race.grade)"
+                  [matTooltip]="race.name + ' (' + getGradeLabel(race.grade) + ')'">
+                  <span class="badge-label">{{ race.short_name }}</span>
+                  <button class="badge-remove" (click)="deselectRace(year, month, half, $event)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </ng-container>
+
+              <!-- Race results in this cell (display mode) — position 1 = won, else ran -->
+              <ng-container *ngIf="!selectable">
+                <ng-container *ngFor="let entry of getRanInCell(year, month, half)">
+                  <div
+                    class="race-badge"
+                    [class.won]="entry.position === 1"
+                    [class.ran]="entry.position !== 1"
+                    [ngClass]="[getGradeClass(entry.race.grade), getPositionClass(entry.position)]"
+                    [matTooltip]="entry.race.name + (entry.position === 1 ? ' — Won' : ' — ' + entry.position + getOrdinalSuffix(entry.position) + ' place')">
+                    <mat-icon *ngIf="entry.position === 1" class="won-icon">emoji_events</mat-icon>
+                    <span *ngIf="entry.position !== 1" class="position-num">{{ entry.position }}</span>
+                    <span class="badge-label">{{ entry.race.short_name }}</span>
+                  </div>
+                </ng-container>
+                <!-- Won races from saddle data (when no run result covers this cell) -->
+                <ng-container *ngIf="getRanInCell(year, month, half).length === 0">
+                  <ng-container *ngFor="let race of getWonInCell(year, month, half)">
+                    <div
+                      class="race-badge won"
+                      [ngClass]="getGradeClass(race.grade)"
+                      [matTooltip]="race.name + ' — Won'">
+                      <mat-icon class="won-icon">emoji_events</mat-icon>
+                      <span class="badge-label">{{ race.short_name }}</span>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+              <!-- Add button: only show when selectable, cell has races, and nothing selected yet -->
+              <button
+                *ngIf="selectable && getCellRaces(year, month, half).length > 0 && !getSelectedInCell(year, month, half)"
+                class="add-race-btn"
+                (click)="$event.stopPropagation(); openRaceDialog(year, month, half)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Cell labels -->
+        <div class="half-labels">
+          <span class="cell-label">{{ getCellLabel(pair[0], 1) }}</span>
+          <span class="cell-label">{{ getCellLabel(pair[0], 2) }}</span>
+          <span class="cell-label">{{ getCellLabel(pair[1], 1) }}</span>
+          <span class="cell-label">{{ getCellLabel(pair[1], 2) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grade color legend -->
+  <div class="grade-legend">
+    <span class="legend-item grade-g1-legend">G1</span>
+    <span class="legend-item grade-g2-legend">G2</span>
+    <span class="legend-item grade-g3-legend">G3</span>
+    <span class="legend-sep"></span>
+    <span class="legend-item won-legend">
+      <mat-icon>emoji_events</mat-icon> Won
+    </span>
+    <span class="legend-item ran-legend">
+      <span class="pos-dot pos-1st-dot"></span> 1st
+    </span>
+    <span class="legend-item ran-legend">
+      <span class="pos-dot pos-2nd-dot"></span> 2nd
+    </span>
+    <span class="legend-item ran-legend">
+      <span class="pos-dot pos-3rd-dot"></span> 3rd
+    </span>
+  </div>
+</div>

@@ -1,0 +1,236 @@
+<div class="settings-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Account Settings</h1>
+      <p>Manage your linked game accounts and connected logins.</p>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- Linked Game Accounts -->
+    <div class="settings-card">
+      <div class="card-header">
+        <mat-icon>sports_esports</mat-icon>
+        <h2>Linked Game Accounts</h2>
+      </div>
+
+      <div class="card-body">
+        <div class="loading-row" *ngIf="loadingAccounts">Loading…</div>
+
+        <div class="empty-state" *ngIf="!loadingAccounts && accounts.length === 0">
+          <mat-icon>link_off</mat-icon>
+          <p>No game accounts linked yet.</p>
+        </div>
+
+        <div class="account-list" *ngIf="!loadingAccounts && accounts.length > 0">
+          <div class="account-row" *ngFor="let acct of accounts">
+            <div class="account-header">
+              <div class="account-info">
+                <img *ngIf="getUmaImage(acct.representative_uma_id)" [src]="getUmaImage(acct.representative_uma_id)!" class="uma-avatar" alt="">
+                <div class="uma-avatar-placeholder" *ngIf="!getUmaImage(acct.representative_uma_id)">
+                  <mat-icon>person</mat-icon>
+                </div>
+                <span class="trainer-name" *ngIf="acct.trainer_name">{{ acct.trainer_name }}</span>
+                <span class="info-divider" *ngIf="acct.trainer_name"></span>
+                <span class="account-id">{{ acct.account_id }}</span>
+                <span class="account-badge" [class.verified]="acct.verification_status === 'verified'" [class.pending]="acct.verification_status !== 'verified'">
+                  <mat-icon>{{ acct.verification_status === 'verified' ? 'check_circle' : 'pending' }}</mat-icon>
+                  {{ acct.verification_status === 'verified' ? 'Verified' : 'Pending Verification' }}
+                </span>
+              </div>
+              <div class="account-actions">
+                <a *ngIf="acct.verification_status === 'verified'" class="action-btn profile small" [routerLink]="['/profile', acct.account_id]">
+                  <mat-icon>person</mat-icon>
+                  <span>View Profile</span>
+                </a>
+                <button class="action-btn danger small" (click)="unlinkAccount(acct.account_id)">
+                  <mat-icon>link_off</mat-icon>
+                  <span>Unlink</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Verification instructions for unverified accounts -->
+            <div class="verify-section" *ngIf="acct.verification_status !== 'verified'">
+              <div class="verify-instructions">
+                <p class="verify-heading">Verify ownership of this account</p>
+                <div class="verify-steps">
+                  <div class="step">
+                    <span class="step-num">1</span>
+                    <span>Open Uma Musume and go to your <strong>Profile</strong></span>
+                  </div>
+                  <div class="step">
+                    <span class="step-num">2</span>
+                    <span>Set your <strong>profile comment</strong> to this code:</span>
+                  </div>
+                </div>
+                <div class="token-display" *ngIf="acct.verification_token">
+                  <code>{{ acct.verification_token }}</code>
+                  <button class="copy-btn" (click)="copyToken(acct.verification_token!)" [title]="'Copy code'">
+                    <mat-icon>{{ copiedToken === acct.verification_token ? 'check' : 'content_copy' }}</mat-icon>
+                  </button>
+                </div>
+                <p class="token-note" *ngIf="acct.verification_token">This code changes on each page load, copy it before switching to the game.</p>
+                <div class="step">
+                  <span class="step-num">3</span>
+                  <span>Click <strong>Verify</strong> below, we'll check your profile comment matches the code</span>
+                </div>
+              </div>
+              <div class="verify-actions">
+                <button class="action-btn verify" (click)="verifyAccount(acct.account_id)" [disabled]="verifying[acct.account_id] || verifyCooldown[acct.account_id]">
+                  <mat-icon>{{ verifying[acct.account_id] ? 'hourglass_top' : verifyCooldown[acct.account_id] ? 'timer' : 'verified' }}</mat-icon>
+                  <span>{{ verifying[acct.account_id] ? 'Checking…' : verifyCooldown[acct.account_id] ? 'Retry in ' + verifyCooldown[acct.account_id] + 's' : 'Verify' }}</span>
+                </button>
+              </div>
+              <div class="error-msg" *ngIf="verifyError[acct.account_id]">{{ verifyError[acct.account_id] }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link new account -->
+        <div class="link-form">
+          <h3>Link a new account</h3>
+          <div class="form-row">
+            <div class="custom-input-wrap">
+              <input
+                type="text"
+                class="custom-input"
+                [(ngModel)]="newAccountId"
+                placeholder="Account / Viewer ID"
+                (keydown.enter)="linkAccount()"
+              />
+            </div>
+            <button class="action-btn primary" (click)="linkAccount()" [disabled]="linking || !newAccountId.trim()">
+              <mat-icon>{{ linking ? 'hourglass_top' : 'add_link' }}</mat-icon>
+              <span>{{ linking ? 'Linking…' : 'Link Account' }}</span>
+            </button>
+          </div>
+          <div class="error-msg" *ngIf="linkError">{{ linkError }}</div>
+          <div class="success-msg" *ngIf="linkSuccess">{{ linkSuccess }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connected SSO Providers -->
+    <div class="settings-card">
+      <div class="card-header">
+        <mat-icon>security</mat-icon>
+        <h2>Connected Logins</h2>
+      </div>
+
+      <div class="card-body">
+        <div class="loading-row" *ngIf="loadingIdentities">Loading…</div>
+
+        <div class="identity-list" *ngIf="!loadingIdentities">
+          <div class="identity-row" *ngFor="let id of identities">
+            <div class="identity-info">
+              <mat-icon>{{ getProviderIcon(id.provider) }}</mat-icon>
+              <span class="provider-name">{{ getProviderLabel(id.provider) }}</span>
+              <span class="provider-detail" *ngIf="id.display_name">{{ id.display_name }}</span>
+            </div>
+            <button class="action-btn danger small" (click)="disconnectIdentity(id.provider)" [disabled]="identities.length <= 1" [title]="identities.length <= 1 ? 'Cannot remove your only login method' : 'Disconnect'">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div class="connect-buttons">
+            <button class="action-btn secondary" (click)="authService.connectProvider('google')" *ngIf="!hasProvider('google')">
+              <mat-icon>mail</mat-icon>
+              <span>Connect Google</span>
+            </button>
+            <button class="action-btn secondary" (click)="authService.connectProvider('discord')" *ngIf="!hasProvider('discord')">
+              <mat-icon>forum</mat-icon>
+              <span>Connect Discord</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Keys -->
+    <div class="settings-card">
+      <div class="card-header">
+        <mat-icon>vpn_key</mat-icon>
+        <h2>API Keys</h2>
+      </div>
+
+      <div class="card-body">
+        <p class="api-keys-description">API keys are used to authenticate with the uma.moe API. Keys are currently optional during the transition period but will be required soon.</p>
+
+        <div class="loading-row" *ngIf="loadingApiKeys">Loading…</div>
+
+        <div class="api-keys-list" *ngIf="!loadingApiKeys && apiKeys.length > 0">
+          <div class="api-key-row" *ngFor="let key of apiKeys" [class.revoked]="key.revoked">
+            <div class="api-key-icon">
+              <mat-icon>{{ key.revoked ? 'block' : 'key' }}</mat-icon>
+            </div>
+            <div class="api-key-info">
+              <div class="api-key-name-row">
+                <span class="api-key-name">{{ key.name }}</span>
+                <span class="api-key-prefix">{{ key.key_prefix }}…</span>
+                <span class="account-badge revoked-badge" *ngIf="key.revoked">Revoked</span>
+              </div>
+              <div class="api-key-meta">
+                <span>Created {{ key.created_at | date:'mediumDate' }}</span>
+                <span *ngIf="key.last_used">· Last used {{ key.last_used | date:'mediumDate' }}</span>
+                <span *ngIf="key.total_requests">· {{ key.total_requests | number }} requests</span>
+              </div>
+            </div>
+            <button class="action-btn danger small" *ngIf="!key.revoked" (click)="revokeApiKey(key)">
+              <mat-icon>delete_outline</mat-icon>
+              <span>Revoke</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="!loadingApiKeys && apiKeys.length === 0 && !newlyCreatedKey">
+          <mat-icon>vpn_key_off</mat-icon>
+          <p>No API keys yet.</p>
+        </div>
+
+        <!-- Newly created key display -->
+        <div class="new-key-display" *ngIf="newlyCreatedKey">
+          <div class="new-key-header">
+            <mat-icon>check_circle</mat-icon>
+            <span>API key created! Copy it now — you won't see it again.</span>
+          </div>
+          <div class="token-display">
+            <code>{{ newlyCreatedKey }}</code>
+            <button class="copy-btn" (click)="copyApiKey(newlyCreatedKey!)" [title]="'Copy key'">
+              <mat-icon>{{ copiedApiKey ? 'check' : 'content_copy' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Create new key -->
+        <div class="link-form">
+          <h3>Create a new key</h3>
+          <div class="form-row">
+            <div class="custom-input-wrap">
+              <input
+                type="text"
+                class="custom-input"
+                [(ngModel)]="newKeyName"
+                placeholder="Key name (e.g. My App)"
+                (keydown.enter)="createApiKey()"
+              />
+            </div>
+            <button class="action-btn primary" (click)="createApiKey()" [disabled]="creatingKey || !newKeyName.trim()">
+              <mat-icon>{{ creatingKey ? 'hourglass_top' : 'add' }}</mat-icon>
+              <span>{{ creatingKey ? 'Creating…' : 'Create Key' }}</span>
+            </button>
+          </div>
+          <div class="error-msg" *ngIf="apiKeyError">{{ apiKeyError }}</div>
+        </div>
+
+        <div class="api-key-usage-hint">
+          <div class="usage-hint-label">Usage</div>
+          <p>Include your key in requests via the <code>X-API-Key</code> header:</p>
+          <div class="usage-example-block">
+            <code>curl -H "X-API-Key: uma_k_…" https://uma.moe/api/…</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

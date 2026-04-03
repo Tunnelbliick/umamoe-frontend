@@ -1456,6 +1456,12 @@
     box-sizing: border-box;
 }
 
+// Race Schedule filter group — full width own row
+.race-schedule-group {
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+}
+
 // Container for General Criteria + Total Star Count
 .criteria-starcount-group {
     flex: 1 1 300px;

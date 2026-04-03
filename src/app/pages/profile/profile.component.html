@@ -1,0 +1,425 @@
+﻿<div class="profile-page">
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-icon class="spin">sync</mat-icon>
+    <span>Loading profile…</span>
+  </div>
+
+  <!-- Error -->
+  <div class="error-container" *ngIf="error && !loading">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ error }}</span>
+    <a routerLink="/" class="back-link">Back to Home</a>
+  </div>
+
+  <!-- Profile Hidden (for visitors) -->
+  <div class="hidden-profile-container" *ngIf="profileHidden && !loading">
+    <div class="hidden-profile-card">
+      <mat-icon class="hidden-icon">visibility_off</mat-icon>
+      <h2>This profile is hidden</h2>
+      <p>The owner of this profile has chosen to keep it private.</p>
+      <a routerLink="/" class="back-link">Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <ng-container *ngIf="profile && !loading">
+    <!-- Page Header -->
+    <app-profile-header [profile]="profile"></app-profile-header>
+
+    <!-- Section tabs -->
+    <nav class="profile-nav-tabs">
+      <div class="nav-tabs-inner">
+        <a [routerLink]="['/profile', accountId]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-tab">
+          <mat-icon>person</mat-icon>
+          <span>Overview</span>
+        </a>
+        <a [routerLink]="['/profile', accountId, 'veterans']" routerLinkActive="active" class="nav-tab">
+          <mat-icon>history</mat-icon>
+          <span>Veterans</span>
+        </a>
+        <a [routerLink]="['/profile', accountId, 'cm']" routerLinkActive="active" class="nav-tab">
+          <mat-icon>emoji_events</mat-icon>
+          <span>Champions Meeting</span>
+          <span class="wip-chip">WIP</span>
+        </a>
+        <a [routerLink]="['/profile', accountId, 'achievements']" routerLinkActive="active" class="nav-tab">
+          <mat-icon>military_tech</mat-icon>
+          <span>Achievements</span>
+          <span class="wip-chip">WIP</span>
+        </a>
+        <a [routerLink]="['/profile', accountId, 'titles']" routerLinkActive="active" class="nav-tab">
+          <mat-icon>workspace_premium</mat-icon>
+          <span>Titles</span>
+          <span class="wip-chip">WIP</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="content-container" *ngIf="!hasActiveChild">
+      <!-- Fan History Table -->
+      <section class="details-card" *ngIf="profile.fan_history.monthly.length > 0 && (isOwnProfile || isSectionVisible('fan_history'))">
+        <div class="card-header">
+          <mat-icon>trending_up</mat-icon>
+          <h2>Fan History</h2>
+          <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('fan_history')" (click)="toggleSection('fan_history')">
+            <mat-icon>{{ isSectionVisible('fan_history') ? 'visibility' : 'visibility_off' }}</mat-icon>
+            <span>{{ isSectionVisible('fan_history') ? 'Public' : 'Hidden' }}</span>
+          </button>
+        </div>
+        <div class="card-content no-padding">
+          <div class="table-wrap">
+            <table class="data-table compact">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th class="right">Fans</th>
+                  <th class="right">Gain</th>
+                  <th class="right">Days</th>
+                  <th class="right">Avg/Day</th>
+                  <th class="right">Rank</th>
+                  <th>Circle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of profile.fan_history.monthly">
+                  <td class="month-cell">{{ getMonthName(m.month) }} {{ m.year }}</td>
+                  <td class="right mono">{{ formatNumber(m.total_fans) }}</td>
+                  <td class="right mono" [style.color]="getGainColor(m.monthly_gain)">
+                    {{ m.monthly_gain >= 0 ? '+' : '' }}{{ formatNumber(m.monthly_gain) }}
+                  </td>
+                  <td class="right mono">{{ m.active_days }}</td>
+                  <td class="right mono">{{ formatNumber(m.avg_daily) }}</td>
+                  <td class="right mono">#{{ formatRank(m.rank) }}</td>
+                  <td>
+                    <a *ngIf="m.circle_name" [routerLink]="['/circles', m.circle_id]" class="circle-link">{{ m.circle_name }}</a>
+                    <span *ngIf="!m.circle_name" class="muted">—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rolling Gains & All-Time Stats Row -->
+      <div class="cards-row" *ngIf="isOwnProfile || isSectionVisible('rolling_alltime')">
+        <!-- Rolling Gains -->
+        <section class="details-card" *ngIf="profile.fan_history.rolling">
+          <div class="card-header">
+            <mat-icon>speed</mat-icon>
+            <h2>Rolling Gains</h2>
+            <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('rolling_alltime')" (click)="toggleSection('rolling_alltime'); $event.stopPropagation()">
+              <mat-icon>{{ isSectionVisible('rolling_alltime') ? 'visibility' : 'visibility_off' }}</mat-icon>
+              <span>{{ isSectionVisible('rolling_alltime') ? 'Public' : 'Hidden' }}</span>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="stat-grid cols-3">
+              <div class="stat-block">
+                <div class="stat-block-label">3 Days</div>
+                <div class="stat-block-value mono" [style.color]="getGainColor(profile.fan_history.rolling.gain_3d)">
+                  {{ profile.fan_history.rolling.gain_3d >= 0 ? '+' : '' }}{{ formatNumber(profile.fan_history.rolling.gain_3d) }}
+                </div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.rolling.rank_3d) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">7 Days</div>
+                <div class="stat-block-value mono" [style.color]="getGainColor(profile.fan_history.rolling.gain_7d)">
+                  {{ profile.fan_history.rolling.gain_7d >= 0 ? '+' : '' }}{{ formatNumber(profile.fan_history.rolling.gain_7d) }}
+                </div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.rolling.rank_7d) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">30 Days</div>
+                <div class="stat-block-value mono" [style.color]="getGainColor(profile.fan_history.rolling.gain_30d)">
+                  {{ profile.fan_history.rolling.gain_30d >= 0 ? '+' : '' }}{{ formatNumber(profile.fan_history.rolling.gain_30d) }}
+                </div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.rolling.rank_30d) }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- All-Time Stats -->
+        <section class="details-card" *ngIf="profile.fan_history.alltime">
+          <div class="card-header">
+            <mat-icon>emoji_events</mat-icon>
+            <h2>All-Time Stats</h2>
+          </div>
+          <div class="card-content">
+            <div class="stat-grid cols-3">
+              <div class="stat-block">
+                <div class="stat-block-label">Total Fans</div>
+                <div class="stat-block-value mono">{{ formatNumber(profile.fan_history.alltime.total_fans) }}</div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.alltime.rank_total_fans) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">Total Gain</div>
+                <div class="stat-block-value mono" [style.color]="getGainColor(profile.fan_history.alltime.total_gain)">
+                  +{{ formatNumber(profile.fan_history.alltime.total_gain) }}
+                </div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.alltime.rank_total_gain) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">Active Days</div>
+                <div class="stat-block-value mono">{{ profile.fan_history.alltime.active_days }}</div>
+              </div>
+            </div>
+            <div class="stat-grid cols-3 mt">
+              <div class="stat-block">
+                <div class="stat-block-label">Avg / Day</div>
+                <div class="stat-block-value mono">{{ formatNumber(profile.fan_history.alltime.avg_day) }}</div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.alltime.rank_avg_day) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">Avg / Week</div>
+                <div class="stat-block-value mono">{{ formatNumber(profile.fan_history.alltime.avg_week) }}</div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.alltime.rank_avg_week) }}</div>
+              </div>
+              <div class="stat-block">
+                <div class="stat-block-label">Avg / Month</div>
+                <div class="stat-block-value mono">{{ formatNumber(profile.fan_history.alltime.avg_month) }}</div>
+                <div class="stat-block-rank">#{{ formatRank(profile.fan_history.alltime.rank_avg_month) }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Circle Section -->
+      <div class="cards-row" *ngIf="isOwnProfile || isSectionVisible('circle')">
+        <!-- Current Circle -->
+        <section class="details-card" *ngIf="profile.circle">
+          <div class="card-header">
+            <mat-icon>shield</mat-icon>
+            <h2>Current Circle</h2>
+            <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('circle')" (click)="toggleSection('circle'); $event.stopPropagation()">
+              <mat-icon>{{ isSectionVisible('circle') ? 'visibility' : 'visibility_off' }}</mat-icon>
+              <span>{{ isSectionVisible('circle') ? 'Public' : 'Hidden' }}</span>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="current-circle">
+              <a [routerLink]="['/circles', profile.circle.circle_id]" class="cc-name">{{ profile.circle.name }}</a>
+              <div class="cc-meta">{{ profile.circle.member_count }} members</div>
+              <div class="stat-grid cols-2 mt">
+                <div class="stat-block" *ngIf="profile.circle.monthly_rank != null">
+                  <div class="stat-block-label">Monthly Rank</div>
+                  <div class="stat-block-value mono">#{{ formatRank(profile.circle.monthly_rank) }}</div>
+                </div>
+                <div class="stat-block" *ngIf="profile.circle.monthly_point != null">
+                  <div class="stat-block-label">Monthly Points</div>
+                  <div class="stat-block-value mono">{{ formatNumber(profile.circle.monthly_point) }}</div>
+                </div>
+                <div class="stat-block" *ngIf="profile.circle.last_month_rank != null">
+                  <div class="stat-block-label">Last Month Rank</div>
+                  <div class="stat-block-value mono">#{{ formatRank(profile.circle.last_month_rank) }}</div>
+                </div>
+                <div class="stat-block" *ngIf="profile.circle.last_month_point != null">
+                  <div class="stat-block-label">Last Month Points</div>
+                  <div class="stat-block-value mono">{{ formatNumber(profile.circle.last_month_point) }}</div>
+                </div>
+                <div class="stat-block" *ngIf="profile.circle.live_rank != null">
+                  <div class="stat-block-label">Live Rank</div>
+                  <div class="stat-block-value mono">#{{ formatRank(profile.circle.live_rank) }}</div>
+                </div>
+                <div class="stat-block" *ngIf="profile.circle.live_points != null">
+                  <div class="stat-block-label">Live Points</div>
+                  <div class="stat-block-value mono">{{ formatNumber(profile.circle.live_points) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Circle Membership Timeline -->
+        <section class="details-card" *ngIf="circleMemberships.length > 0">
+          <div class="card-header">
+            <mat-icon>timeline</mat-icon>
+            <h2>Circle Membership</h2>
+          </div>
+          <div class="card-content">
+            <div class="membership-timeline">
+              <div class="timeline-item" *ngFor="let m of circleMemberships" [class.current]="m.current">
+                <div class="timeline-dot" [class.current]="m.current"></div>
+                <div class="timeline-content">
+                  <div class="timeline-header">
+                    <a [routerLink]="['/circles', m.circle_id]" class="timeline-circle-name">{{ m.circle_name }}</a>
+                    <span class="timeline-badge" *ngIf="m.current">Current</span>
+                  </div>
+                  <div class="timeline-period">
+                    {{ getMonthName(m.from.month) }} {{ m.from.year }}
+                    <span *ngIf="m.from.year !== m.to.year || m.from.month !== m.to.month">
+                      — {{ getMonthName(m.to.month) }} {{ m.to.year }}
+                    </span>
+                    <span class="timeline-duration">({{ m.months }} {{ m.months === 1 ? 'month' : 'months' }})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Circle Monthly Details -->
+      <section class="details-card" *ngIf="profile.circle_history.length > 0 && (isOwnProfile || isSectionVisible('circle_history'))">
+        <div class="card-header">
+          <mat-icon>history</mat-icon>
+          <h2>Circle History</h2>
+          <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('circle_history')" (click)="toggleSection('circle_history')">
+            <mat-icon>{{ isSectionVisible('circle_history') ? 'visibility' : 'visibility_off' }}</mat-icon>
+            <span>{{ isSectionVisible('circle_history') ? 'Public' : 'Hidden' }}</span>
+          </button>
+        </div>
+        <div class="card-content no-padding">
+          <div class="table-wrap">
+            <table class="data-table compact">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Circle</th>
+                  <th class="right">Rank</th>
+                  <th class="right">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let entry of profile.circle_history">
+                  <td class="month-cell">{{ getMonthName(entry.month) }} {{ entry.year }}</td>
+                  <td>
+                    <a [routerLink]="['/circles', entry.circle_id]" class="circle-link">{{ entry.circle_name }}</a>
+                  </td>
+                  <td class="right mono">
+                    <span *ngIf="entry.circle_rank != null">#{{ formatRank(entry.circle_rank) }}</span>
+                    <span *ngIf="entry.circle_rank == null" class="muted">—</span>
+                  </td>
+                  <td class="right mono">
+                    <span *ngIf="entry.circle_points != null">{{ formatNumber(entry.circle_points) }}</span>
+                    <span *ngIf="entry.circle_points == null" class="muted">—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inheritance -->
+      <section class="details-card inheritance-card" *ngIf="inheritanceRecord && (isOwnProfile || isSectionVisible('inheritance'))">
+        <div class="card-header">
+          <mat-icon>family_restroom</mat-icon>
+          <h2>Inheritance</h2>
+          <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('inheritance')" (click)="toggleSection('inheritance')">
+            <mat-icon>{{ isSectionVisible('inheritance') ? 'visibility' : 'visibility_off' }}</mat-icon>
+            <span>{{ isSectionVisible('inheritance') ? 'Public' : 'Hidden' }}</span>
+          </button>
+        </div>
+        <div class="card-content">
+          <app-inheritance-entry
+            [record]="inheritanceRecord"
+            [showDatabaseHeader]="false">
+          </app-inheritance-entry>
+        </div>
+      </section>
+
+      <!-- Team Stadium -->
+      <div class="stadium-section" *ngIf="profile.team_stadium && profile.team_stadium.length > 0 && (isOwnProfile || isSectionVisible('team_stadium'))">
+        <div class="stadium-section-header">
+          <mat-icon>stadium</mat-icon>
+          <h2>Team Stadium</h2>
+          <button class="vis-pill" *ngIf="isOwnProfile" [class.is-hidden]="!isSectionVisible('team_stadium')" (click)="toggleSection('team_stadium')">
+            <mat-icon>{{ isSectionVisible('team_stadium') ? 'visibility' : 'visibility_off' }}</mat-icon>
+            <span>{{ isSectionVisible('team_stadium') ? 'Public' : 'Hidden' }}</span>
+          </button>
+        </div>
+
+        <div class="stadium-tab-bar">
+          <button *ngFor="let group of stadiumByDistance; let i = index"
+                  class="stadium-tab-btn"
+                  [class.active]="selectedStadiumTab === i"
+                  (click)="selectedStadiumTab = i">
+            {{ group.distance }}
+          </button>
+        </div>
+
+        <div class="stadium-grid" *ngIf="stadiumByDistance[selectedStadiumTab] as group">
+            <div class="stadium-member" *ngFor="let m of group.members">
+              <!-- Character Header -->
+              <div class="sm-header">
+                <img *ngIf="m.card_id && getCardImage(m.card_id)"
+                     [src]="getCardImage(m.card_id)"
+                     [alt]="m.card_id ? getCharacterName(m.card_id) : 'Unknown'"
+                     class="sm-avatar">
+                <div class="sm-avatar-placeholder" *ngIf="!m.card_id || !getCardImage(m.card_id)">
+                  <mat-icon>person</mat-icon>
+                </div>
+                <div class="sm-info">
+                  <div class="sm-name">
+                    {{ m.card_id ? getCharacterName(m.card_id) : 'Unknown' }}
+                    <span class="sm-stars" *ngIf="m.rarity">
+                      <ng-container *ngFor="let s of getStarDisplay(m.rarity)">
+                        <mat-icon [class.star-filled]="s.filled" [class.star-empty]="!s.filled">{{ s.filled ? 'star' : 'star_border' }}</mat-icon>
+                      </ng-container>
+                    </span>
+                  </div>
+                  <div class="sm-tags">
+                    <span class="sm-tag style">{{ getRunningStyleName(m.running_style) }}</span>
+                    <span class="sm-tag scenario" *ngIf="m.scenario_id">{{ getScenarioName(m.scenario_id) }}</span>
+                  </div>
+                </div>
+                <div class="sm-rank-block" *ngIf="m.rank_score">
+                  <app-rank-badge [score]="m.rank_score" size="md"></app-rank-badge>
+                  <span class="sm-score-value mono">{{ m.rank_score | number }}</span>
+                </div>
+              </div>
+
+              <!-- Stats Bar -->
+              <div class="sm-stats">
+                <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span class="sm-stat-value mono">{{ m.speed || 0 }}</span></div>
+                <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span class="sm-stat-value mono">{{ m.stamina || 0 }}</span></div>
+                <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span class="sm-stat-value mono">{{ m.power || 0 }}</span></div>
+                <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span class="sm-stat-value mono">{{ m.guts || 0 }}</span></div>
+                <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span class="sm-stat-value mono">{{ m.wiz || 0 }}</span></div>
+                <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{ getTotalStats(m) }}</span></div>
+              </div>
+
+              <!-- Aptitudes -->
+              <div class="sm-aptitudes">
+                <span class="apt-row-label">TRACK</span>
+                <span class="apt-item"><span class="apt-key">Turf</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_ground_turf)">{{ getAptGrade(m.proper_ground_turf) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Dirt</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_ground_dirt)">{{ getAptGrade(m.proper_ground_dirt) }}</span></span>
+                <span></span><span></span>
+                <span class="apt-row-label">DIST</span>
+                <span class="apt-item"><span class="apt-key">Sprint</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_distance_short)">{{ getAptGrade(m.proper_distance_short) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Mile</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_distance_mile)">{{ getAptGrade(m.proper_distance_mile) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Medium</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_distance_middle)">{{ getAptGrade(m.proper_distance_middle) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Long</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_distance_long)">{{ getAptGrade(m.proper_distance_long) }}</span></span>
+                <span class="apt-row-label">STYLE</span>
+                <span class="apt-item"><span class="apt-key">Front</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_running_style_nige)">{{ getAptGrade(m.proper_running_style_nige) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Pace</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_running_style_senko)">{{ getAptGrade(m.proper_running_style_senko) }}</span></span>
+                <span class="apt-item"><span class="apt-key">Late</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_running_style_sashi)">{{ getAptGrade(m.proper_running_style_sashi) }}</span></span>
+                <span class="apt-item"><span class="apt-key">End</span><span class="apt-grade-badge" [ngClass]="'grade-' + getAptGrade(m.proper_running_style_oikomi)">{{ getAptGrade(m.proper_running_style_oikomi) }}</span></span>
+              </div>
+
+              <!-- Skills -->
+              <div class="sm-skills" *ngIf="m.skills && m.skills.length > 0">
+                <span class="sm-skill" [ngClass]="getSkillRarityClass(sid)" *ngFor="let sid of m.skills">
+                  <img *ngIf="getSkillIcon(sid)" [src]="getSkillIcon(sid)" class="skill-icon" alt="" (error)="$any($event.target).style.display='none'">
+                  <span class="skill-name">{{ getSkillName(sid) }}</span>
+                  <span class="skill-level">Lv.{{ getSkillLevel(sid) }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="!profile.fan_history.monthly.length && !profile.circle && !profile.fan_history.alltime && !profile.inheritance && !profile.support_card && !(profile.team_stadium && profile.team_stadium.length)">
+        <mat-icon>person_search</mat-icon>
+        <p>No data available for this trainer yet.</p>
+      </div>
+    </div>
+
+    <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"></router-outlet>
+  </ng-container>
+</div>

@@ -22,10 +22,10 @@ export class ToolsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   stats: StatsResponse | null = null;
   loading = true;
-  dailyUsers = 0;
-  totalAccounts = 0;
-  totalCircles = 0;
-  totalCharacters = 0;
+  tasksToday = 0;
+  accountsUpdatedToday = 0;
+  accounts7d = 0;
+  umasTracked = 0;
   constructor(
     private meta: Meta,
     private title: Title,
@@ -60,9 +60,9 @@ export class ToolsComponent implements OnInit, OnDestroy {
       });
   }
   private updateDisplayValues(stats: StatsResponse) {
-    this.dailyUsers = Math.round(stats.rolling_averages.unique_visitors_7_day);
-    this.totalAccounts = stats.totals.total_accounts_tracked;
-    this.totalCircles = stats.totals.total_circles_tracked;
-    this.totalCharacters = stats.totals.total_characters;
+    this.tasksToday = stats.today.tasks_24h;
+    this.accountsUpdatedToday = stats.freshness.accounts_24h;
+    this.accounts7d = stats.freshness.accounts_7d;
+    this.umasTracked = stats.freshness.umas_tracked;
   }
 }

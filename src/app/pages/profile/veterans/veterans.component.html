@@ -1,0 +1,889 @@
+﻿<div class="veterans-page">
+  <div class="page-body">
+
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="loading">
+      <mat-icon class="spin">sync</mat-icon>
+      <span>Loading veterans...</span>
+    </div>
+
+    <ng-container *ngIf="!loading">
+
+      <!-- Upload (owner only) -->
+      <section class="upload-section" *ngIf="isOwnProfile">
+        <div class="drop-zone" [class.drag-over]="dragOver" [class.uploading]="uploading"
+          (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+          <mat-icon>{{ uploading ? 'sync' : 'upload_file' }}</mat-icon>
+          <p class="drop-hint">{{ uploading ? 'Uploading...' : 'Drop your trained character JSON here' }}</p>
+          <span class="drop-or">or</span>
+          <label class="browse-label">
+            Browse
+            <input type="file" accept=".json" hidden (change)="onFileSelected($event)">
+          </label>
+        </div>
+        <div class="upload-feedback" *ngIf="uploadFeedback" [ngClass]="uploadFeedback.type">
+          <mat-icon>{{ uploadFeedback.type === 'success' ? 'check_circle' : 'error' }}</mat-icon>
+          {{ uploadFeedback.message }}
+        </div>
+      </section>
+
+      <!-- How to export instructions -->
+      <section class="export-instructions" *ngIf="isOwnProfile">
+        <h3 class="instructions-title">How to Export Your Data</h3>
+
+        <div class="instruction-step">
+          <span class="step-number">1</span>
+          <div class="step-content">
+            <h4>Download the Extractor Tool</h4>
+            <p>Get UmaExtractor from GitHub to export your game data.</p>
+            <div class="step-actions">
+              <a class="step-btn primary" href="https://github.com/xancia/UmaExtractor/releases" target="_blank" rel="noopener noreferrer">
+                <mat-icon>download</mat-icon> Download
+              </a>
+              <a class="step-btn secondary" href="https://github.com/xancia/UmaExtractor" target="_blank" rel="noopener noreferrer">
+                <mat-icon>open_in_new</mat-icon> View on GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="instruction-step">
+          <span class="step-number">2</span>
+          <div class="step-content">
+            <h4>Navigate to Veteran List</h4>
+            <p>In the game, go to <strong>Enhance</strong>, then <strong>Veteran List</strong>, then click into <strong>List</strong>.</p>
+            <div class="step-path">
+              <span class="path-item">Enhance</span>
+              <mat-icon class="path-arrow">arrow_forward</mat-icon>
+              <span class="path-item">Veteran List</span>
+              <mat-icon class="path-arrow">arrow_forward</mat-icon>
+              <span class="path-item">List</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="instruction-step">
+          <span class="step-number">3</span>
+          <div class="step-content">
+            <h4>Run the Extractor</h4>
+            <p>Execute <code>umaextractor.exe</code> while viewing the Veteran List. It will generate a <code>data.json</code> file.</p>
+          </div>
+        </div>
+
+        <div class="instruction-step">
+          <span class="step-number">4</span>
+          <div class="step-content">
+            <h4>Upload Your Data</h4>
+            <p>Use the upload area above to load your exported file and view your roster.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="veterans.length === 0 && !loading">
+        <mat-icon>history</mat-icon>
+        <p>No veterans found.</p>
+        <p *ngIf="isOwnProfile" style="font-size: 0.8rem">Upload your trained character JSON to get started.</p>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="vet-toolbar" *ngIf="veterans.length > 0">
+        <div class="toolbar-right">
+          <!-- Sort -->
+          <div class="sort-group">
+            <span class="sort-label">Sort</span>
+            <mat-form-field appearance="outline" class="sort-select-field" subscriptSizing="dynamic">
+              <mat-select [(ngModel)]="sortField" (selectionChange)="scheduleFilter()">
+                <mat-option value="total">Total Stats</mat-option>
+                <mat-option value="rank_score">Rank Score</mat-option>
+                <mat-option value="speed">Speed</mat-option>
+                <mat-option value="stamina">Stamina</mat-option>
+                <mat-option value="power">Power</mat-option>
+                <mat-option value="guts">Guts</mat-option>
+                <mat-option value="wiz">Wiz</mat-option>
+                <mat-option value="blue">Blue Stars</mat-option>
+                <mat-option value="pink">Pink Stars</mat-option>
+                <mat-option value="green">Green Stars</mat-option>
+                <mat-option value="name">Name</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button class="sort-dir-btn" (click)="sortDir = sortDir === 'asc' ? 'desc' : 'asc'; scheduleFilter()">
+              <mat-icon>{{ sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            </button>
+          </div>
+
+          <!-- Display tab toggle -->
+          <div class="display-tab-toggle">
+            <button [class.active]="displayTab === 'cards'" (click)="displayTab = 'cards'">
+              <mat-icon>style</mat-icon> Umas
+            </button>
+            <button [class.active]="displayTab === 'inheritance'" (click)="displayTab = 'inheritance'">
+              <mat-icon>account_tree</mat-icon> Inheritance
+            </button>
+          </div>
+
+          <!-- View toggle -->
+          <div class="view-toggle" *ngIf="displayTab === 'cards'">
+            <button [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'">
+              <mat-icon>grid_view</mat-icon>
+            </button>
+            <button [class.active]="viewMode === 'table'" (click)="viewMode = 'table'">
+              <mat-icon>view_list</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- --- FILTER HEADER --- -->
+      <div class="filter-header" (click)="showFilters = !showFilters" *ngIf="veterans.length > 0">
+        <mat-icon class="expand-icon" [class.expanded]="showFilters">expand_more</mat-icon>
+        <h2>Filters</h2>
+        <span class="filter-count-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+        <span class="fp-result-count">{{ filtered.length }} / {{ veterans.length }}</span>
+        <button class="fp-clear-btn" *ngIf="activeFilterCount > 0" (click)="clearFilters(); $event.stopPropagation()">
+          <mat-icon>clear_all</mat-icon> Reset
+        </button>
+      </div>
+
+      <!-- --- FILTER CONTENT --- -->
+      <div class="filter-content" [class.expanded]="showFilters" *ngIf="veterans.length > 0">
+        <div class="filter-inner">
+
+          <!-- Property Filters Grid -->
+          <div class="property-filters-compact">
+          <div class="filters-header-compact">
+            <h4>Property Filters</h4>
+          </div>
+          <div class="filters-grid-content">
+
+            <!-- Stats & Aptitudes -->
+            <div class="filter-group group--stats-apt" [class.section-collapsed]="!isSectionExpanded('stats')">
+              <h5 class="group-title collapsible-group-title" (click)="toggleSection('stats')">
+                <mat-icon class="collapse-chevron" [class.collapsed]="!isSectionExpanded('stats')">expand_more</mat-icon>
+                Stats &amp; Aptitudes
+              </h5>
+              <div class="filter-group-body" *ngIf="statsSectionRendered" [hidden]="!isSectionExpanded('stats')">
+                <div class="stats-apt-inner">
+                  <!-- Stats column -->
+                  <div class="stats-column">
+                    <div class="stat-range-filters">
+
+                      <!-- Speed -->
+                      <div class="stat-range-item stat-speed">
+                        <div class="stat-range-header">
+                          <span class="stat-range-label">Speed</span>
+                          <span class="stat-range-value">{{ filterSpeedMin }} – {{ filterSpeedMax }}</span>
+                        </div>
+                        <div class="slider-labeled">
+                          <mat-slider [min]="statBoundsMin.speed" [max]="statBoundsMax.speed" step="50">
+                            <input matSliderStartThumb [(ngModel)]="filterSpeedMin" (valueChange)="scheduleFilter()">
+                            <input matSliderEndThumb [(ngModel)]="filterSpeedMax" (valueChange)="scheduleFilter()">
+                          </mat-slider>
+                          <div class="slider-ticks">
+                            <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['speed']" [style.left.%]="t.percent">
+                              <span class="tick-line"></span>
+                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Stamina -->
+                      <div class="stat-range-item stat-stamina">
+                        <div class="stat-range-header">
+                          <span class="stat-range-label">Stamina</span>
+                          <span class="stat-range-value">{{ filterStaminaMin }} – {{ filterStaminaMax }}</span>
+                        </div>
+                        <div class="slider-labeled">
+                          <mat-slider [min]="statBoundsMin.stamina" [max]="statBoundsMax.stamina" step="50">
+                            <input matSliderStartThumb [(ngModel)]="filterStaminaMin" (valueChange)="scheduleFilter()">
+                            <input matSliderEndThumb [(ngModel)]="filterStaminaMax" (valueChange)="scheduleFilter()">
+                          </mat-slider>
+                          <div class="slider-ticks">
+                            <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['stamina']" [style.left.%]="t.percent">
+                              <span class="tick-line"></span>
+                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Power -->
+                      <div class="stat-range-item stat-power">
+                        <div class="stat-range-header">
+                          <span class="stat-range-label">Power</span>
+                          <span class="stat-range-value">{{ filterPowerMin }} – {{ filterPowerMax }}</span>
+                        </div>
+                        <div class="slider-labeled">
+                          <mat-slider [min]="statBoundsMin.power" [max]="statBoundsMax.power" step="50">
+                            <input matSliderStartThumb [(ngModel)]="filterPowerMin" (valueChange)="scheduleFilter()">
+                            <input matSliderEndThumb [(ngModel)]="filterPowerMax" (valueChange)="scheduleFilter()">
+                          </mat-slider>
+                          <div class="slider-ticks">
+                            <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['power']" [style.left.%]="t.percent">
+                              <span class="tick-line"></span>
+                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Guts -->
+                      <div class="stat-range-item stat-guts">
+                        <div class="stat-range-header">
+                          <span class="stat-range-label">Guts</span>
+                          <span class="stat-range-value">{{ filterGutsMin }} – {{ filterGutsMax }}</span>
+                        </div>
+                        <div class="slider-labeled">
+                          <mat-slider [min]="statBoundsMin.guts" [max]="statBoundsMax.guts" step="50">
+                            <input matSliderStartThumb [(ngModel)]="filterGutsMin" (valueChange)="scheduleFilter()">
+                            <input matSliderEndThumb [(ngModel)]="filterGutsMax" (valueChange)="scheduleFilter()">
+                          </mat-slider>
+                          <div class="slider-ticks">
+                            <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['guts']" [style.left.%]="t.percent">
+                              <span class="tick-line"></span>
+                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Wiz -->
+                      <div class="stat-range-item stat-wiz">
+                        <div class="stat-range-header">
+                          <span class="stat-range-label">Wiz</span>
+                          <span class="stat-range-value">{{ filterWizMin }} – {{ filterWizMax }}</span>
+                        </div>
+                        <div class="slider-labeled">
+                          <mat-slider [min]="statBoundsMin.wiz" [max]="statBoundsMax.wiz" step="50">
+                            <input matSliderStartThumb [(ngModel)]="filterWizMin" (valueChange)="scheduleFilter()">
+                            <input matSliderEndThumb [(ngModel)]="filterWizMax" (valueChange)="scheduleFilter()">
+                          </mat-slider>
+                          <div class="slider-ticks">
+                            <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['wiz']" [style.left.%]="t.percent">
+                              <span class="tick-line"></span>
+                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="stats-apt-divider"></div>
+
+                  <!-- Aptitudes column -->
+                  <div class="apt-column">
+                    <div class="apt-toggle-grid">
+
+                      <!-- Ground -->
+                      <div class="apt-sub-section apt-ground">
+                        <div class="section-label">Ground</div>
+                        <div class="apt-toggle-row" *ngFor="let apt of [
+                          {label: 'Turf', model: 'filterAptTurf'},
+                          {label: 'Dirt', model: 'filterAptDirt'}
+                        ]">
+                          <span class="apt-toggle-label">{{ apt.label }}</span>
+                          <div class="apt-grade-group">
+                            <button *ngFor="let g of aptGrades"
+                              class="apt-grade-btn"
+                              [class.highlighted]="isGradeHighlighted(apt.model, g)"
+                              [class.threshold]="getAptFilter(apt.model) === g"
+                              [attr.data-grade]="g"
+                              (click)="setAptFilter(apt.model, getAptFilter(apt.model) === g ? null : g)">
+                              {{ g }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Distance -->
+                      <div class="apt-sub-section apt-distance">
+                        <div class="section-label">Distance</div>
+                        <div class="apt-toggle-row" *ngFor="let apt of [
+                          {label: 'Sprint', model: 'filterAptSprint'},
+                          {label: 'Mile', model: 'filterAptMile'},
+                          {label: 'Middle', model: 'filterAptMiddle'},
+                          {label: 'Long', model: 'filterAptLong'}
+                        ]">
+                          <span class="apt-toggle-label">{{ apt.label }}</span>
+                          <div class="apt-grade-group">
+                            <button *ngFor="let g of aptGrades"
+                              class="apt-grade-btn"
+                              [class.highlighted]="isGradeHighlighted(apt.model, g)"
+                              [class.threshold]="getAptFilter(apt.model) === g"
+                              [attr.data-grade]="g"
+                              (click)="setAptFilter(apt.model, getAptFilter(apt.model) === g ? null : g)">
+                              {{ g }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Style -->
+                      <div class="apt-sub-section apt-style">
+                        <div class="section-label">Style</div>
+                        <div class="apt-toggle-row" *ngFor="let apt of [
+                          {label: 'Runner', model: 'filterAptNige'},
+                          {label: 'Leader', model: 'filterAptSenko'},
+                          {label: 'Betweener', model: 'filterAptSashi'},
+                          {label: 'Chaser', model: 'filterAptOikomi'}
+                        ]">
+                          <span class="apt-toggle-label">{{ apt.label }}</span>
+                          <div class="apt-grade-group">
+                            <button *ngFor="let g of aptGrades"
+                              class="apt-grade-btn"
+                              [class.highlighted]="isGradeHighlighted(apt.model, g)"
+                              [class.threshold]="getAptFilter(apt.model) === g"
+                              [attr.data-grade]="g"
+                              (click)="setAptFilter(apt.model, getAptFilter(apt.model) === g ? null : g)">
+                              {{ g }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="filter-group group--skills" [class.section-collapsed]="!isSectionExpanded('skills')">
+              <h5 class="group-title collapsible-group-title" (click)="toggleSection('skills')">
+                <mat-icon class="collapse-chevron" [class.collapsed]="!isSectionExpanded('skills')">expand_more</mat-icon>
+                Skills
+              </h5>
+              <div class="filter-group-body" *ngIf="isSectionExpanded('skills')">
+                  <div class="factor-list">
+                    <div class="factor-row-wrapper" *ngFor="let sf of skillFilters; let i = index">
+                      <div class="factor-row-item" [class.empty-row]="sf.skillId == null">
+                        <div class="factor-row-single" *ngIf="sf.skillId != null">
+                          <img *ngIf="getSkillIcon(sf.skillId)" [src]="getSkillIcon(sf.skillId)" class="skill-icon">
+                          <span class="factor-name">{{ sf.name }}</span>
+                        </div>
+                        <div class="factor-row-search" *ngIf="sf.skillId == null">
+                          <mat-form-field appearance="fill" class="custom-search-field inline-search" subscriptSizing="dynamic">
+                            <input matInput placeholder="Search skills..."
+                              [(ngModel)]="sf.searchQuery" (ngModelChange)="searchSkills(sf)"
+                              [matAutocomplete]="skillAutoRow">
+                            <mat-icon matSuffix class="input-icon" *ngIf="!sf.searchQuery">search</mat-icon>
+                            <mat-autocomplete #skillAutoRow="matAutocomplete" (optionSelected)="selectSkillForFilter(sf, $event.option.value)">
+                              <mat-option *ngFor="let s of sf.searchResults" [value]="s">
+                                {{ s.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <button class="remove-btn" (click)="removeSkillFilter(i)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="add-factor-row" (click)="addEmptySkillFilter()">
+                    <button class="add-factor-btn">
+                      <mat-icon>add</mat-icon>
+                      <span>Add Skill Filter</span>
+                    </button>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Parents & Grandparents -->
+            <div class="filter-group group--parents" [class.section-collapsed]="!isSectionExpanded('parents')">
+              <h5 class="group-title collapsible-group-title" (click)="toggleSection('parents')">
+                <mat-icon class="collapse-chevron" [class.collapsed]="!isSectionExpanded('parents')">expand_more</mat-icon>
+                Parents &amp; Grandparents
+              </h5>
+              <div class="filter-group-body" *ngIf="isSectionExpanded('parents')">
+                <div class="legacy-tree-section">
+                  <!-- Parent (the vet itself) -->
+                  <div class="tree-group">
+                    <div class="tree-box parent-box">
+                      <div class="filter-row include-row" (click)="openParentDialog('includeParent')">
+                        <button class="filter-row-add include-btn" matTooltip="Include parent">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                        <span class="filter-row-label include-label" *ngIf="includeParents.length === 0">Include</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip include" *ngFor="let c of includeParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('includeParent', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="filter-row exclude-row" (click)="openParentDialog('excludeParent')">
+                        <button class="filter-row-add exclude-btn" matTooltip="Exclude parent">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        <span class="filter-row-label exclude-label" *ngIf="excludeParents.length === 0">Exclude</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip exclude" *ngFor="let c of excludeParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('excludeParent', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="tree-group-label parent-color">Parent</span>
+                  </div>
+
+                  <span class="tree-connector">&mdash;</span>
+
+                  <!-- Grand Parent (positions 10, 20) -->
+                  <div class="tree-group">
+                    <div class="tree-box grandparent-box">
+                      <div class="filter-row include-row" (click)="openParentDialog('includeGP')">
+                        <button class="filter-row-add include-btn" matTooltip="Include grand parent">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                        <span class="filter-row-label include-label" *ngIf="includeGrandParents.length === 0">Include</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip include" *ngFor="let c of includeGrandParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('includeGP', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="filter-row exclude-row" (click)="openParentDialog('excludeGP')">
+                        <button class="filter-row-add exclude-btn" matTooltip="Exclude grand parent">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        <span class="filter-row-label exclude-label" *ngIf="excludeGrandParents.length === 0">Exclude</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip exclude" *ngFor="let c of excludeGrandParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('excludeGP', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="tree-group-label grandparent-color">Grand Parent</span>
+                  </div>
+
+                  <span class="tree-connector">&mdash;</span>
+
+                  <!-- Grand Grand Parent (positions 11, 12, 21, 22) -->
+                  <div class="tree-group">
+                    <div class="tree-box greatgrandparent-box">
+                      <div class="filter-row include-row" (click)="openParentDialog('includeGGP')">
+                        <button class="filter-row-add include-btn" matTooltip="Include grand grand parent">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                        <span class="filter-row-label include-label" *ngIf="includeGreatGrandParents.length === 0">Include</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip include" *ngFor="let c of includeGreatGrandParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('includeGGP', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="filter-row exclude-row" (click)="openParentDialog('excludeGGP')">
+                        <button class="filter-row-add exclude-btn" matTooltip="Exclude grand grand parent">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        <span class="filter-row-label exclude-label" *ngIf="excludeGreatGrandParents.length === 0">Exclude</span>
+                        <div class="filter-row-chips">
+                          <div class="filter-chip exclude" *ngFor="let c of excludeGreatGrandParents; let i = index">
+                            <img *ngIf="c.image" [src]="getCharacterImagePath(c.image)" class="filter-chip-img" [alt]="c.name">
+                            <span class="filter-chip-name">{{ c.name }}</span>
+                            <mat-icon class="filter-chip-remove" (click)="removeParent('excludeGGP', i); $event.stopPropagation()">close</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="tree-group-label greatgrandparent-color">Grand Grand Parent</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Parent Sparks -->
+            <div class="filter-group group--sparks" [class.section-collapsed]="!isSectionExpanded('factors')">
+              <h5 class="group-title collapsible-group-title" (click)="toggleSection('factors')">
+                <mat-icon class="collapse-chevron" [class.collapsed]="!isSectionExpanded('factors')">expand_more</mat-icon>
+                Inheritance Sparks
+              </h5>
+              <div class="filter-group-body" *ngIf="isSectionExpanded('factors')">
+
+                  <!-- Factor filter rows -->
+                  <div class="factor-list">
+                    <div class="factor-row-wrapper" *ngFor="let ff of parentFactorFilters; let i = index">
+                      <div class="factor-row-item" [ngClass]="ff.factorId != null ? (ff.color + '-factor') : 'empty-row'">
+                        <!-- Populated row — single compact line -->
+                        <div class="factor-row-single" *ngIf="ff.factorId != null">
+                          <span class="spark-dot" [ngClass]="ff.color + '-dot'"></span>
+                          <span class="factor-name">{{ ff.name }}</span>
+                          <div class="factor-row-right">
+                            <div class="scope-toggle">
+                              <button *ngFor="let s of sparkScopes"
+                                class="scope-btn"
+                                [class.active]="ff.scope === s.value"
+                                [matTooltip]="s.label"
+                                (click)="ff.scope = s.value; scheduleFilter()">
+                                {{ s.short }}
+                              </button>
+                            </div>
+                            <div class="scope-toggle level-toggle">
+                              <button class="scope-btn" [class.active]="ff.minLevel === 1" (click)="ff.minLevel = 1; scheduleFilter()">★</button>
+                              <button class="scope-btn" [class.active]="ff.minLevel === 2" (click)="ff.minLevel = 2; scheduleFilter()">★★</button>
+                              <button class="scope-btn" [class.active]="ff.minLevel === 3" (click)="ff.minLevel = 3; scheduleFilter()">★★★</button>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Empty row – inline search -->
+                        <div class="factor-row-search" *ngIf="ff.factorId == null">
+                          <mat-form-field appearance="fill" class="custom-search-field inline-search" subscriptSizing="dynamic">
+                            <input matInput placeholder="Search factors..."
+                              [(ngModel)]="ff.searchQuery" (ngModelChange)="searchFactors(ff)"
+                              [matAutocomplete]="factorAutoRow">
+                            <mat-icon matSuffix class="input-icon" *ngIf="!ff.searchQuery">search</mat-icon>
+                            <mat-autocomplete #factorAutoRow="matAutocomplete" (optionSelected)="selectFactorForFilter(ff, $event.option.value)">
+                              <mat-option *ngFor="let f of ff.searchResults" [value]="f">
+                                <span class="spark-dot" [ngClass]="f.color + '-dot'"></span>
+                                {{ f.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <button class="remove-btn" (click)="removeFactorFilter(i)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="add-factor-row" (click)="addEmptyFactorFilter()">
+                    <button class="add-factor-btn">
+                      <mat-icon>add</mat-icon>
+                      <span>Add Spark Filter</span>
+                    </button>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Race Scheduler -->
+            <div class="filter-group group--saddles" [class.section-collapsed]="!isSectionExpanded('saddle')">
+              <h5 class="group-title collapsible-group-title" (click)="toggleSection('saddle')">
+                <mat-icon class="collapse-chevron" [class.collapsed]="!isSectionExpanded('saddle')">expand_more</mat-icon>
+                Race Schedule
+              </h5>
+              <div class="filter-group-body" *ngIf="isSectionExpanded('saddle')">
+                <app-race-scheduler
+                  [selectable]="true"
+                  (selectionChanged)="onRaceSelectionChanged($event)">
+                </app-race-scheduler>
+              </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- --- INHERITANCE VIEW --- -->
+      <div class="inh-list" *ngIf="displayTab === 'inheritance' && filtered.length > 0">
+        <div class="tree" *ngFor="let d of displayed; trackBy: trackByDisplay">
+
+          <!-- Main character node -->
+          <div class="tree-node tree-node--main clickable" (click)="openDetail(d.veteran)">
+            <div class="tree-node-head">
+              <img *ngIf="d.cardImage" [src]="d.cardImage" class="tree-node-av">
+              <div class="tree-node-info">
+                <span class="tree-node-name">
+                  {{ d.characterName }}
+                  <span class="sm-stars" *ngIf="d.veteran.rarity">
+                    <ng-container *ngFor="let s of d.starDisplay">
+                      <mat-icon [class.star-filled]="s.filled" [class.star-empty]="!s.filled">{{ s.filled ? 'star' : 'star_border' }}</mat-icon>
+                    </ng-container>
+                  </span>
+                </span>
+                <span class="tree-node-meta">
+                  <span class="sm-tag scenario" *ngIf="d.veteran.scenario_id">{{ d.scenarioName }}</span>
+                  <span class="sm-tag distance" *ngIf="d.veteran.distance_type">{{ d.distanceName }}</span>
+                </span>
+              </div>
+              <div class="tree-node-score" *ngIf="d.veteran.rank_score">
+                <app-rank-badge [score]="d.veteran.rank_score" size="sm"></app-rank-badge>
+                <span class="sm-score-value mono">{{ d.veteran.rank_score | number }}</span>
+              </div>
+            </div>
+            <div class="tree-node-sparks tree-node-sparks--flat" *ngIf="d.factors.length > 0">
+              <span class="spark-item spark-item--sm" [ngClass]="f.color + '-spark'" *ngFor="let f of d.factors; trackBy: trackByFactor">
+                <span class="spark-level">{{ f.level }}</span>
+                <mat-icon class="spark-star">star</mat-icon>
+                <span class="spark-name">{{ f.name }}</span>
+              </span>
+            </div>
+            <div class="tree-node-stats" *ngIf="d.affinityScore !== null">
+              <span class="stat-chip stat-chip--aff">Affinity <strong class="mono">{{ d.affinityScore
+                  }}</strong></span>
+            </div>
+            <div class="tree-open-hint">
+              <mat-icon>open_in_new</mat-icon>
+              <span>View details</span>
+            </div>
+          </div>
+
+          <!-- Parent branches (vertical spine via CSS) -->
+          <div class="tree-branches" *ngIf="d.successionParents.length > 0">
+            <div class="tree-branch" *ngFor="let parent of d.successionParents">
+
+              <!-- Parent node -->
+              <div class="tree-node tree-node--parent">
+                <div class="tree-node-head">
+                  <img *ngIf="parent._image" [src]="parent._image" class="tree-node-av">
+                  <span class="tree-node-name">{{ parent._name }}</span>
+                </div>
+                <div class="tree-node-sparks tree-node-sparks--flat">
+                  <span class="spark-item spark-item--sm" [ngClass]="f.color + '-spark'"
+                    *ngFor="let f of parent._factors; trackBy: trackByFactor">
+                    <span class="spark-level">{{ f.level }}</span>
+                    <mat-icon class="spark-star">star</mat-icon>
+                    <span class="spark-name">{{ f.name }}</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- GP nodes (vertical spine via CSS) -->
+              <div class="tree-gps" *ngIf="parent._gps.length > 0">
+                <div class="tree-node tree-node--gp"
+                  *ngFor="let gp of parent._gps">
+                  <div class="tree-node-head">
+                    <img *ngIf="gp._image" [src]="gp._image"
+                      class="tree-node-av tree-node-av--sm">
+                    <span class="tree-node-name tree-node-name--sm">{{ gp._name }}</span>
+                  </div>
+                  <div class="tree-node-sparks tree-node-sparks--flat">
+                    <span class="spark-item spark-item--xs" [ngClass]="f.color + '-spark'"
+                      *ngFor="let f of gp._factors; trackBy: trackByFactor">
+                      <span class="spark-level">{{ f.level }}</span>
+                      <mat-icon class="spark-star">star</mat-icon>
+                      <span class="spark-name">{{ f.name }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No inheritance data -->
+          <div class="inh-empty" *ngIf="d.successionParents.length === 0 && d.factors.length === 0">
+            <span>No inheritance data</span>
+          </div>
+        </div>
+        <!-- Infinite scroll sentinel for inheritance -->
+        <div class="scroll-sentinel" #scrollSentinel *ngIf="displayed.length < filtered.length">
+          <mat-icon class="spin">sync</mat-icon>
+        </div>
+      </div>
+
+      <!-- --- GRID VIEW --- -->
+      <div class="vet-grid" *ngIf="displayTab === 'cards' && viewMode === 'grid' && filtered.length > 0">
+        <div class="vet-card stadium-member clickable" *ngFor="let d of displayed; trackBy: trackByDisplay" (click)="openDetail(d.veteran)">
+
+          <!-- Character Header -->
+          <div class="sm-header">
+            <img *ngIf="d.cardImage" [src]="d.cardImage"
+              [alt]="d.characterName" class="sm-avatar">
+            <div class="sm-avatar-placeholder" *ngIf="!d.cardImage">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="sm-info">
+              <div class="sm-name">
+                {{ d.characterName }}
+                <span class="sm-stars" *ngIf="d.veteran.rarity">
+                  <ng-container *ngFor="let s of d.starDisplay">
+                    <mat-icon [class.star-filled]="s.filled" [class.star-empty]="!s.filled">{{ s.filled ? 'star' : 'star_border' }}</mat-icon>
+                  </ng-container>
+                </span>
+              </div>
+              <div class="sm-tags">
+                <span class="sm-tag scenario" *ngIf="d.veteran.scenario_id">{{ d.scenarioName }}</span>
+              </div>
+            </div>
+            <div class="sm-rank-block" *ngIf="d.veteran.rank_score">
+              <app-rank-badge [score]="d.veteran.rank_score" size="md"></app-rank-badge>
+              <span class="sm-score-value mono">{{ d.veteran.rank_score | number }}</span>
+            </div>
+          </div>
+
+          <!-- Stats Bar -->
+          <div class="sm-stats">
+            <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span
+                class="sm-stat-value mono">{{ d.veteran.speed || 0 }}</span></div>
+            <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span
+                class="sm-stat-value mono">{{ d.veteran.stamina || 0 }}</span></div>
+            <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span
+                class="sm-stat-value mono">{{ d.veteran.power || 0 }}</span></div>
+            <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span
+                class="sm-stat-value mono">{{ d.veteran.guts || 0 }}</span></div>
+            <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span
+                class="sm-stat-value mono">{{ d.veteran.wiz || 0 }}</span></div>
+            <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{
+                d.totalStats }}</span></div>
+          </div>
+
+          <!-- Aptitudes -->
+          <div class="sm-aptitudes">
+            <span class="apt-row-label">TRACK</span>
+            <span class="apt-item"><span class="apt-key">Turf</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptTurf">{{ d.aptTurf }}</span></span>
+            <span class="apt-item"><span class="apt-key">Dirt</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptDirt">{{ d.aptDirt }}</span></span>
+            <span></span><span></span>
+            <span class="apt-row-label">DIST</span>
+            <span class="apt-item"><span class="apt-key">Sprint</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptSprint">{{ d.aptSprint }}</span></span>
+            <span class="apt-item"><span class="apt-key">Mile</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptMile">{{ d.aptMile }}</span></span>
+            <span class="apt-item"><span class="apt-key">Medium</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptMiddle">{{ d.aptMiddle }}</span></span>
+            <span class="apt-item"><span class="apt-key">Long</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptLong">{{ d.aptLong }}</span></span>
+            <span class="apt-row-label">STYLE</span>
+            <span class="apt-item"><span class="apt-key">Front</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptNige">{{ d.aptNige }}</span></span>
+            <span class="apt-item"><span class="apt-key">Pace</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptSenko">{{ d.aptSenko }}</span></span>
+            <span class="apt-item"><span class="apt-key">Late</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptSashi">{{ d.aptSashi }}</span></span>
+            <span class="apt-item"><span class="apt-key">End</span><span class="apt-grade-badge"
+                [ngClass]="'grade-' + d.aptOikomi">{{ d.aptOikomi }}</span></span>
+          </div>
+
+          <!-- Skills -->
+          <div class="sm-skills" *ngIf="d.skills.length > 0">
+            <span class="sm-skill" [ngClass]="sk.rarityClass" *ngFor="let sk of d.skills; trackBy: trackBySkill">
+              <img *ngIf="sk.icon" [src]="sk.icon" class="skill-icon" alt=""
+                (error)="$any($event.target).style.display='none'">
+              <span class="skill-name">{{ sk.name }}</span>
+              <span class="skill-level">Lv.{{ sk.level }}</span>
+            </span>
+          </div>
+
+          <!-- Click hint -->
+          <div class="click-hint">
+            <mat-icon>open_in_new</mat-icon>
+            <span>Details</span>
+          </div>
+        </div>
+
+        <!-- Infinite scroll sentinel for grid -->
+        <div class="scroll-sentinel" #scrollSentinel *ngIf="displayed.length < filtered.length">
+          <mat-icon class="spin">sync</mat-icon>
+        </div>
+      </div>
+
+      <!-- --- TABLE VIEW --- -->
+      <div class="vet-table-wrap" *ngIf="displayTab === 'cards' && viewMode === 'table' && filtered.length > 0">
+        <table class="vet-table">
+          <thead>
+            <tr>
+              <th class="th-char sortable" [class.sorted]="sortField === 'name'" (click)="toggleSort('name')">Character</th>
+              <th class="th-stat sortable" [class.sorted]="sortField === 'speed'" (click)="toggleSort('speed')">SPD</th>
+              <th class="th-stat sortable" [class.sorted]="sortField === 'stamina'" (click)="toggleSort('stamina')">STA
+              </th>
+              <th class="th-stat sortable" [class.sorted]="sortField === 'power'" (click)="toggleSort('power')">POW</th>
+              <th class="th-stat sortable" [class.sorted]="sortField === 'guts'" (click)="toggleSort('guts')">GUT</th>
+              <th class="th-stat sortable" [class.sorted]="sortField === 'wiz'" (click)="toggleSort('wiz')">WIZ</th>
+              <th class="th-total sortable" [class.sorted]="sortField === 'total'" (click)="toggleSort('total')">TOT
+              </th>
+              <th class="th-score sortable" [class.sorted]="sortField === 'rank_score'"
+                (click)="toggleSort('rank_score')">Rank</th>
+              <th class="th-apt">Aptitudes</th>
+              <th class="th-factors sortable" [class.sorted]="sortField === 'blue'" (click)="toggleSort('blue')">Factors
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let d of displayed; let i = index; trackBy: trackByDisplay">
+              <tr class="vet-row clickable" [class.row-even]="i % 2 === 0"
+                (click)="openDetail(d.veteran)">
+                <!-- Character -->
+                <td class="td-char">
+                  <img *ngIf="d.cardImage" [src]="d.cardImage" class="row-avatar"
+                    alt="">
+                  <div class="row-char-info">
+                    <span class="row-name">{{ d.characterName }}</span>
+                    <span class="row-meta">
+                      <span class="sm-tag scenario" *ngIf="d.veteran.scenario_id">{{ d.scenarioName }}</span>
+                    </span>
+                  </div>
+                </td>
+                <!-- Stats -->
+                <td class="td-stat mono">{{ d.veteran.speed || 0 }}</td>
+                <td class="td-stat mono">{{ d.veteran.stamina || 0 }}</td>
+                <td class="td-stat mono">{{ d.veteran.power || 0 }}</td>
+                <td class="td-stat mono">{{ d.veteran.guts || 0 }}</td>
+                <td class="td-stat mono">{{ d.veteran.wiz || 0 }}</td>
+                <td class="td-stat td-total mono">{{ d.totalStats }}</td>
+                <!-- Rank -->
+                <td class="td-score">
+                  <app-rank-badge *ngIf="d.veteran.rank_score" [score]="d.veteran.rank_score" size="sm"></app-rank-badge>
+                  <span class="score-num mono" *ngIf="d.veteran.rank_score">{{ d.veteran.rank_score | number }}</span>
+                </td>
+                <!-- Aptitudes -->
+                <td class="td-apt">
+                  <div class="apt-compact">
+                    <span class="apt-group">
+                      <span class="apt-group-label">T</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptTurf">{{ d.aptTurf }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptDirt">{{ d.aptDirt }}</span>
+                    </span>
+                    <span class="apt-group">
+                      <span class="apt-group-label">D</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptSprint">{{ d.aptSprint }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptMile">{{ d.aptMile }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptMiddle">{{ d.aptMiddle }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptLong">{{ d.aptLong }}</span>
+                    </span>
+                    <span class="apt-group">
+                      <span class="apt-group-label">S</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptNige">{{ d.aptNige }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptSenko">{{ d.aptSenko }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptSashi">{{ d.aptSashi }}</span>
+                      <span class="apt-badge" [ngClass]="'grade-' + d.aptOikomi">{{ d.aptOikomi }}</span>
+                    </span>
+                  </div>
+                </td>
+                <!-- Factors: colored sparks + white sum -->
+                <td class="td-factors">
+                  <div class="fac-inline" *ngIf="d.factors.length > 0">
+                    <span class="fac-pill" [ngClass]="f.color + '-spark'" *ngFor="let f of d.coloredFactors; trackBy: trackByFactor">
+                      <span class="fac-pill-level">{{ f.level }}</span>
+                      <span class="fac-pill-name">{{ f.name }}</span>
+                    </span>
+                    <span class="fac-white-sum" *ngIf="d.whiteStarSum > 0">
+                      <mat-icon>star</mat-icon>{{ d.whiteStarSum }}
+                    </span>
+                  </div>
+                  <span class="no-factors" *ngIf="d.factors.length === 0">–</span>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <!-- Infinite scroll sentinel for table -->
+        <div class="scroll-sentinel" #scrollSentinel *ngIf="displayed.length < filtered.length">
+          <mat-icon class="spin">sync</mat-icon>
+        </div>
+      </div>
+
+      <!-- No results -->
+      <div class="empty-state" *ngIf="veterans.length > 0 && filtered.length === 0">
+        <mat-icon>filter_list_off</mat-icon>
+        <p>No veterans match your filters.</p>
+        <button class="clear-btn-standalone" (click)="clearFilters()">Clear all filters</button>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

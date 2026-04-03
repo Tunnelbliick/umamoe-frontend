@@ -60,6 +60,52 @@
         <mat-icon [class.active-snowflake]="isChristmas$ | async">ac_unit</mat-icon>
       </button> -->
     </div>
+
+    <div class="nav-auth">
+      <ng-container *ngIf="user$ | async as user; else loginBtn">
+        <div class="user-menu-wrap">
+          <button class="user-menu-btn" (click)="toggleUserMenu($event)" [class.open]="userMenuOpen">
+            <img *ngIf="user.avatar_url" [src]="user.avatar_url" class="user-avatar" alt="avatar" width="28" height="28" />
+            <mat-icon *ngIf="!user.avatar_url">account_circle</mat-icon>
+            <span class="user-name">{{ user.display_name }}</span>
+            <mat-icon class="chevron">expand_more</mat-icon>
+          </button>
+          <div class="user-dropdown" *ngIf="userMenuOpen">
+            <ng-container *ngIf="linkedAccounts.length > 0">
+              <a *ngFor="let acct of linkedAccounts" class="dropdown-option account-link" [routerLink]="['/profile', acct.account_id]" (click)="userMenuOpen = false">
+                <img *ngIf="getUmaImage(acct)" [src]="getUmaImage(acct)" class="acct-avatar" alt="" width="22" height="22" />
+                <mat-icon *ngIf="!getUmaImage(acct)">person</mat-icon>
+                <span class="acct-info">
+                  <span class="acct-name">{{ acct.trainer_name || 'Trainer' }}</span>
+                  <span class="acct-id">{{ acct.account_id }}</span>
+                </span>
+              </a>
+              <div class="dropdown-divider"></div>
+            </ng-container>
+            <a class="dropdown-option account-link add-account" routerLink="/settings" (click)="userMenuOpen = false">
+              <mat-icon>add</mat-icon>
+              <span>Add account</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-option" routerLink="/settings" (click)="userMenuOpen = false">
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </a>
+            <button class="dropdown-option" (click)="authService.logout(); userMenuOpen = false">
+              <mat-icon>logout</mat-icon>
+              <span>Sign out</span>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #loginBtn>
+        <a routerLink="/login" class="nav-link login-btn">
+          <mat-icon>login</mat-icon>
+          <span>Sign in</span>
+        </a>
+      </ng-template>
+    </div>
   </div>
 
   <!-- Tierlist Menu -->

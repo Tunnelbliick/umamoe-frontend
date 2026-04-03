@@ -534,6 +534,21 @@ export class CircleDetailsComponent implements OnInit, AfterViewInit, OnDestroy 
   get isLiveCircle(): boolean {
     return this.isCurrentMonth && !!this.circle && (this.circle.monthly_rank ?? 999) <= 100;
   }
+
+  /** True when last_live_update is from after the most recent JST midnight (00:00 JST). */
+  get isLiveDataFresh(): boolean {
+    if (!this.circle?.last_live_update || !this.circle.live_points) return false;
+    const liveDate = new Date(this.circle.last_live_update);
+    if (isNaN(liveDate.getTime())) return false;
+    // Calculate the most recent JST midnight in UTC: today 00:00 JST = today-at-15:00-UTC-yesterday
+    const now = new Date();
+    const utcNow = now.getTime();
+    const jstNow = utcNow + 9 * 3600000;
+    // Floor to JST midnight, then convert back to UTC
+    const jstMidnight = Math.floor(jstNow / 86400000) * 86400000;
+    const lastResetUtc = jstMidnight - 9 * 3600000;
+    return liveDate.getTime() >= lastResetUtc;
+  }
   formatCountdown(s: number): string {
     const m = Math.floor(s / 60);
     const sec = s % 60;

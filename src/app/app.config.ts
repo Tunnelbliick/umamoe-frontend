@@ -3,9 +3,9 @@ import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './app.routes';
-import { TurnstileInterceptor } from './interceptors/turnstile.interceptor';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
 import { RateLimitInterceptor } from './interceptors/rate-limit.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { StatsService } from './services/stats.service';
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TurnstileInterceptor,
+      useClass: AuthInterceptor,
       multi: true
     },
     {

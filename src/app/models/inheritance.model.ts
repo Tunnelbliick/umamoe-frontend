@@ -85,7 +85,29 @@ export interface InheritanceRecord {
   main_green_factors?: number;
   main_white_factors?: number[];
   main_white_count?: number;
-  
+
+  // Left parent spark counts
+  left_blue_factors?: number;
+  left_pink_factors?: number;
+  left_green_factors?: number;
+  left_white_factors?: number[];
+  left_white_count?: number;
+
+  // Right parent spark counts
+  right_blue_factors?: number;
+  right_pink_factors?: number;
+  right_green_factors?: number;
+  right_white_factors?: number[];
+  right_white_count?: number;
+
+  // Win saddles per parent (V2 API)
+  main_win_saddles?: number[];
+  left_win_saddles?: number[];
+  right_win_saddles?: number[];
+
+  // All race instance IDs the main parent ran (V2 API)
+  race_results?: number[];
+
   // Support Card information
   support_card_id?: number;
   limit_break_count?: number;
@@ -175,6 +197,7 @@ export interface InheritanceSearchFilters {
   minPinkStarsSum?: number;
   minGreenStarsSum?: number;
   minWhiteStarsSum?: number;
+  mainWinSaddle?: number[];
   // Pagination
   page?: number;
   pageSize?: number;

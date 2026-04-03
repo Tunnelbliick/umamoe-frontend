@@ -11,7 +11,7 @@
 .nav-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1.5rem;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
@@ -67,6 +67,179 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-left: auto;
+}
+
+.nav-auth {
+  display: flex;
+  align-items: center;
+}
+
+.user-menu-wrap {
+  position: relative;
+  z-index: 100;
+}
+
+.user-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+
+  .user-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chevron {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    opacity: 0.5;
+    margin-left: -2px;
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  &.open {
+    background: rgba(100, 181, 246, 0.1);
+    border-color: rgba(100, 181, 246, 0.3);
+    color: #64b5f6;
+
+    .chevron { transform: rotate(180deg); opacity: 0.8; }
+  }
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 4px;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+
+    mat-icon {
+      font-size: 17px;
+      width: 17px;
+      height: 17px;
+      line-height: 17px;
+      color: rgba(255, 255, 255, 0.35);
+      flex-shrink: 0;
+      transition: color 0.12s;
+    }
+
+    &:hover {
+      background: rgba(100, 181, 246, 0.08);
+      color: #fff;
+
+      mat-icon { color: #64b5f6; }
+    }
+
+    &:active {
+      background: rgba(100, 181, 246, 0.14);
+    }
+  }
+
+  .account-link {
+    .acct-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .acct-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .acct-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .acct-id {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.35);
+      font-family: monospace;
+      line-height: 1.2;
+    }
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 3px 8px;
+  }
+
+  .add-account {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+
+    mat-icon {
+      color: rgba(255, 255, 255, 0.25);
+    }
+  }
+}
+
+.login-btn {
+  margin-left: auto;
 }
 
 .nav-link {
@@ -272,6 +445,7 @@
 @media (max-width: 768px) {
   .nav-container {
     padding: 0 1rem;
+    gap: 0.75rem;
   }
 
   .nav-links {
@@ -286,22 +460,57 @@
     }
   }
 
-  .brand-text {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-container {
-    padding: 0 0.75rem;
+  .login-btn span {
+    display: none;
   }
 
-  .nav-link {
-    padding: 0.5rem;
+  .user-menu-btn .user-name {
+    display: none;
   }
 
   .brand-text {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    height: 52px;
+  }
+
+  .nav-container {
+    padding: 0 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .nav-links {
+    gap: 0;
+  }
+
+  .nav-link {
+    padding: 0.4rem;
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  .user-menu-btn {
+    height: 32px;
+    padding: 0 8px;
+    gap: 4px;
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .user-dropdown {
+    min-width: 200px;
+    right: -0.5rem;
   }
 
   // Disable expensive box-shadow glow on mobile

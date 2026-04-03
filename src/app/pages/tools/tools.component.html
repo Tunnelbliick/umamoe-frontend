@@ -51,24 +51,24 @@
   <section class="stats">
     <div class="stats-grid">
       <div class="stat-card">
+        <mat-icon>task_alt</mat-icon>
+        <div class="stat-value">{{ tasksToday | number }}</div>
+        <div class="stat-label">Tasks Today</div>
+      </div>
+      <div class="stat-card">
+        <mat-icon>sync</mat-icon>
+        <div class="stat-value">{{ accountsUpdatedToday | number }}</div>
+        <div class="stat-label">Updated Today</div>
+      </div>
+      <div class="stat-card">
         <mat-icon>group</mat-icon>
-        <div class="stat-value">{{ dailyUsers | number }}</div>
-        <div class="stat-label">Daily Users</div>
-      </div>
-      <div class="stat-card">
-        <mat-icon>person</mat-icon>
-        <div class="stat-value">{{ totalAccounts | number }}</div>
-        <div class="stat-label">Accounts Tracked</div>
-      </div>
-      <div class="stat-card">
-        <mat-icon>groups</mat-icon>
-        <div class="stat-value">{{ totalCircles | number }}</div>
-        <div class="stat-label">Circles Tracked</div>
+        <div class="stat-value">{{ accounts7d | number }}</div>
+        <div class="stat-label">Active (7d)</div>
       </div>
       <div class="stat-card">
         <mat-icon>face</mat-icon>
-        <div class="stat-value">{{ totalCharacters | number }}</div>
-        <div class="stat-label">Umas Tracked</div>
+        <div class="stat-value">{{ umasTracked | number }}</div>
+        <div class="stat-label">Total Umas Tracked</div>
       </div>
     </div>
   </section>

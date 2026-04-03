@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, map, catchError, of, filter, switchMap } from 'rxjs';
+import { Observable, BehaviorSubject, map, catchError, of, filter } from 'rxjs';
 import {
   SupportCard,
   SupportCardRecord,
@@ -16,7 +16,6 @@ import {
 } from '../models/support-card.model';
 import { PaginatedResponse, ApiResponse, SearchResult } from '../models/common.model';
 import { SUPPORT_CARDS, getAllSupportCards, getSupportCardById as getCardById, getSupportCardsByIds } from '../data/support-cards.data';
-import { TurnstileService } from './turnstile.service';
 // V3 API interfaces
 interface V3SearchResult {
   items: V3UnifiedAccountRecord[];
@@ -66,7 +65,7 @@ export class SupportCardService {
   private readonly apiUrl = '/api/v3'; // Updated to use v3 unified API
   private searchResults$ = new BehaviorSubject<SearchResult<SupportCardRecord> | null>(null);
   private supportCards$ = new BehaviorSubject<SupportCardShort[]>([]);
-  constructor(private http: HttpClient, private turnstileService: TurnstileService) {
+  constructor(private http: HttpClient) {
     // Load support cards from bundled data immediately
     this.supportCards$.next(getAllSupportCards());
   }
@@ -239,14 +238,7 @@ export class SupportCardService {
   }
   // Submit new support card record
   submitSupportCardRecord(submission: SupportCardSubmission): Observable<SupportCardRecord> {
-    // Generate Turnstile token first, then submit with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        return this.http.post<SupportCardRecord>(`${this.apiUrl}/support-cards/submit`, submission, { headers });
-      }),
+    return this.http.post<SupportCardRecord>(`${this.apiUrl}/support-cards/submit`, submission).pipe(
       map(response => {
         // Handle direct response or ApiResponse wrapper
         if (response && typeof response === 'object' && 'success' in response) {
@@ -278,18 +270,10 @@ export class SupportCardService {
   }
   // Vote on support card record
   voteOnSupportCardRecord(recordId: string, voteType: 'up' | 'down'): Observable<{ upvotes: number; downvotes: number }> {
-    // Generate Turnstile token first, then vote with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        return this.http.post<ApiResponse<{ upvotes: number; downvotes: number }>>(
-          `${this.apiUrl}/support-cards/record/${recordId}/vote`,
-          { voteType },
-          { headers }
-        );
-      }),
+    return this.http.post<ApiResponse<{ upvotes: number; downvotes: number }>>(
+      `${this.apiUrl}/support-cards/record/${recordId}/vote`,
+      { voteType }
+    ).pipe(
       map(response => {
         if (response.success && response.data) {
           return response.data;
@@ -410,18 +394,10 @@ export class SupportCardService {
   }
   // Report user as unavailable/friend list full - now creates a task immediately
   reportUserUnavailable(trainerId: string): Observable<{ success: boolean; report_count: number; task_created: boolean; message: string }> {
-    // Generate Turnstile token first, then report with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        return this.http.post<{ success: boolean; report_count: number; task_created: boolean; message: string }>(
-          `${this.apiUrl}/tasks/report-unavailable/${trainerId}`, 
-          {},
-          { headers }
-        );
-      }),
+    return this.http.post<{ success: boolean; report_count: number; task_created: boolean; message: string }>(
+      `${this.apiUrl}/tasks/report-unavailable/${trainerId}`, 
+      {}
+    ).pipe(
       catchError(error => {
         console.error('Error reporting friend list full:', error);
         throw error;

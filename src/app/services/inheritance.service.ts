@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, map, catchError, of, switchMap } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, BehaviorSubject, map, catchError, of } from 'rxjs';
 import {
   InheritanceRecord,
   InheritanceSearchFilters,
@@ -8,7 +8,6 @@ import {
   UmaMusumeCharacter
 } from '../models/inheritance.model';
 import { PaginatedResponse, SearchResult } from '../models/common.model';
-import { TurnstileService } from './turnstile.service';
 // V3 API interfaces
 interface V3SearchResult {
   items: V3UnifiedAccountRecord[];
@@ -45,6 +44,20 @@ interface V3InheritanceRecord {
   main_green_factors: number;
   main_white_factors: number[];
   main_white_count: number;
+  left_blue_factors: number;
+  left_pink_factors: number;
+  left_green_factors: number;
+  left_white_factors: number[];
+  left_white_count: number;
+  right_blue_factors: number;
+  right_pink_factors: number;
+  right_green_factors: number;
+  right_white_factors: number[];
+  right_white_count: number;
+  main_win_saddles: number[];
+  left_win_saddles: number[];
+  right_win_saddles: number[];
+  race_results: number[];
 }
 interface V3SupportCardRecord {
   account_id: string;
@@ -66,7 +79,7 @@ export class InheritanceService {
   private readonly apiUrl = '/api/v3'; // Updated to use v3 unified API
   private searchResults$ = new BehaviorSubject<SearchResult<InheritanceRecord> | null>(null);
   private characters$ = new BehaviorSubject<UmaMusumeCharacter[]>([]);
-  constructor(private http: HttpClient, private turnstileService: TurnstileService) {
+  constructor(private http: HttpClient) {
     this.loadCharacters();
   }
   // Health check endpoint
@@ -289,6 +302,9 @@ export class InheritanceService {
       // White stars have no max limit
       params = params.set('min_white_stars_sum', filters.minWhiteStarsSum.toString());
     }
+    if (filters.mainWinSaddle && filters.mainWinSaddle.length > 0) {
+      params = params.set('main_win_saddle', filters.mainWinSaddle.join(','));
+    }
     // Add sorting parameters
     if (filters.sortBy) {
       params = params.set('sort_by', this.mapSortByToBackend(filters.sortBy));
@@ -361,6 +377,20 @@ export class InheritanceService {
       main_green_factors: inheritance.main_green_factors,
       main_white_factors: inheritance.main_white_factors,
       main_white_count: inheritance.main_white_count,
+      left_blue_factors: inheritance.left_blue_factors,
+      left_pink_factors: inheritance.left_pink_factors,
+      left_green_factors: inheritance.left_green_factors,
+      left_white_factors: inheritance.left_white_factors,
+      left_white_count: inheritance.left_white_count,
+      right_blue_factors: inheritance.right_blue_factors,
+      right_pink_factors: inheritance.right_pink_factors,
+      right_green_factors: inheritance.right_green_factors,
+      right_white_factors: inheritance.right_white_factors,
+      right_white_count: inheritance.right_white_count,
+      main_win_saddles: inheritance.main_win_saddles,
+      left_win_saddles: inheritance.left_win_saddles,
+      right_win_saddles: inheritance.right_win_saddles,
+      race_results: inheritance.race_results,
       follower_num: v3Record.follower_num,
       last_updated: v3Record.last_updated,
       // Map support card data
@@ -376,15 +406,7 @@ export class InheritanceService {
   }
   // Submit new inheritance record
   submitInheritance(submission: InheritanceSubmission): Observable<any> {
-    // Generate Turnstile token first, then submit with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        
-        return this.http.post<any>(`${this.apiUrl}/inheritance`, submission, { headers });
-      }),
+    return this.http.post<any>(`${this.apiUrl}/inheritance`, submission).pipe(
       catchError(error => {
         console.error('Error submitting inheritance:', error);
         throw error;
@@ -406,19 +428,10 @@ export class InheritanceService {
     const voteRequest: VoteRequest = {
       vote: voteType === 'up' ? 1 : -1
     };
-    // Generate Turnstile token first, then vote with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        
-        return this.http.post<VoteResponse>(
-          `${this.apiUrl}/inheritance/${recordId}/vote`,
-          voteRequest,
-          { headers }
-        );
-      }),
+    return this.http.post<VoteResponse>(
+      `${this.apiUrl}/inheritance/${recordId}/vote`,
+      voteRequest
+    ).pipe(
       catchError(error => {
         console.error('Error voting on inheritance:', error);
         throw error;
@@ -427,19 +440,10 @@ export class InheritanceService {
   }
   // Report trainer friend list as full - now creates a task immediately
   reportUserUnavailable(trainerId: string): Observable<{ success: boolean; report_count: number; task_created: boolean; message: string }> {
-    // Generate Turnstile token first, then report with the token
-    return this.turnstileService.generateTokenWithRetry().pipe(
-      switchMap(token => {
-        const headers = new HttpHeaders({
-          'CF-Turnstile-Token': token
-        });
-        
-        return this.http.post<{ success: boolean; report_count: number; task_created: boolean; message: string }>(
-          `/api/tasks/report-unavailable/${trainerId}`, 
-          {},
-          { headers }
-        );
-      }),
+    return this.http.post<{ success: boolean; report_count: number; task_created: boolean; message: string }>(
+      `/api/tasks/report-unavailable/${trainerId}`, 
+      {}
+    ).pipe(
       catchError(error => {
         console.error('Error reporting friend list full:', error);
         throw error;

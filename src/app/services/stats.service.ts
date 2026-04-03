@@ -2,43 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timer, switchMap, BehaviorSubject, tap, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-export interface TodayStats {
-  total_visitors: number;
-  unique_visitors: number;
-  inheritance_uploads: number;
-  total_inheritance_records: number;
-  total_support_card_records: number;
+export interface TodayActivity {
+  tasks_24h: number;
 }
-export interface RollingStats {
-  visitors_7_day: number;
-  visitors_30_day: number;
-  unique_visitors_7_day: number;
-  unique_visitors_30_day: number;
-  uploads_7_day: number;
-  uploads_30_day: number;
-}
-export interface DailyStatsData {
-  date: string;
-  total_visits: number;
-  unique_visitors: number;
-  inheritance_uploads: number;
-  support_card_uploads: number;
-}
-export interface TotalStats {
-  total_records: number;
-  inheritance_records: number;
-  support_card_records: number;
-  total_votes: number;
-  total_visitors: number;
-  total_accounts_tracked: number;
-  total_circles_tracked: number;
-  total_characters: number;
+export interface DataFreshness {
+  accounts_24h: number;
+  accounts_7d: number;
+  umas_tracked: number;
 }
 export interface StatsResponse {
-  today: TodayStats;
-  rolling_averages: RollingStats;
-  daily_data: DailyStatsData[];
-  totals: TotalStats;
+  today: TodayActivity;
+  freshness: DataFreshness;
 }
 export interface FriendlistReportResponse {
   success: boolean;
@@ -152,32 +126,12 @@ export class StatsService {
           console.error('Failed to load stats:', error);
           // Return fallback stats
           const fallbackStats: StatsResponse = {
-            today: { 
-              total_visitors: 0, 
-              unique_visitors: 0, 
-              inheritance_uploads: 0,
-              total_inheritance_records: 0,
-              total_support_card_records: 0
+            today: { tasks_24h: 0 },
+            freshness: {
+              accounts_24h: 0,
+              accounts_7d: 0,
+              umas_tracked: 0,
             },
-            rolling_averages: {
-              visitors_7_day: 0,
-              visitors_30_day: 0,
-              unique_visitors_7_day: 0,
-              unique_visitors_30_day: 0,
-              uploads_7_day: 0,
-              uploads_30_day: 0
-            },
-            daily_data: [],
-            totals: { 
-              total_records: 0, 
-              inheritance_records: 0, 
-              support_card_records: 0, 
-              total_votes: 0, 
-              total_visitors: 0,
-              total_accounts_tracked: 0,
-              total_circles_tracked: 0,
-              total_characters: 0
-            }
           };
           this.stats$.next(fallbackStats);
           return of(fallbackStats);
@@ -185,24 +139,18 @@ export class StatsService {
       );
   }
   // Get today's stats only (clean JSON response)
-  getTodayStats(): Observable<TodayStats> {
-    return this.http.get<TodayStats>(`${this.apiUrl}/stats/today`)
+  getTodayStats(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/stats/today`)
       .pipe(
         catchError(error => {
           console.error('Failed to load today stats:', error);
-          return of({
-            total_visitors: 0,
-            unique_visitors: 0,
-            inheritance_uploads: 0,
-            total_inheritance_records: 0,
-            total_support_card_records: 0
-          });
+          return of(null);
         })
       );
   }
   // Get daily stats for graphing
-  getDailyStats(days: number = 30): Observable<DailyStatsData[]> {
-    return this.http.get<DailyStatsData[]>(`${this.apiUrl}/stats/daily?days=${days}`)
+  getDailyStats(days: number = 30): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/stats/daily?days=${days}`)
       .pipe(
         catchError(error => {
           console.error('Failed to load daily stats:', error);

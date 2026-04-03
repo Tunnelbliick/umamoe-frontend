@@ -745,6 +745,21 @@
           </div>
         </div>
         </div>
+
+        <!-- Group 5: Race Schedule -->
+        <div class="filter-group race-schedule-group">
+          <h5 class="group-title collapsible-group-title" (click)="toggleSection('raceSchedule')">
+            <mat-icon class="collapse-chevron" [class.collapsed]="isSectionCollapsed('raceSchedule')">expand_more</mat-icon>
+            Race Schedule Filter
+          </h5>
+          <div class="collapsible-body" [class.collapsed]="isSectionCollapsed('raceSchedule')">
+            <div class="collapsible-body-inner">
+              <app-race-scheduler
+                (selectionChanged)="onRaceSelectionChanged($event)">
+              </app-race-scheduler>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

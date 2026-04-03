@@ -585,6 +585,32 @@
       border-bottom: none;
     }
 
+    &.live-row {
+      .label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: #ef5350;
+
+        .live-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #f44336;
+          flex-shrink: 0;
+          box-shadow: 0 0 5px rgba(244, 67, 54, 0.7);
+          animation: pulse-dot 2s ease-in-out infinite;
+        }
+      }
+
+      .live-rank {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-left: 0.5rem;
+        white-space: nowrap;
+      }
+    }
+
     &.description {
       flex-direction: column;
       align-items: flex-start;

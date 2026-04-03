@@ -1,0 +1,5223 @@
+{
+  "races": [
+    {
+      "race_instance_id": 100101,
+      "race_id": 1001,
+      "thumbnail_id": 1001,
+      "grade": 100,
+      "name": "February Stakes",
+      "short_name": "February S.",
+      "schedule": [
+        {
+          "program_id": 1,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 9,
+          "group_id": 12,
+          "priority": 12,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100101,
+            102001
+          ]
+        },
+        {
+          "saddle_id": 30,
+          "group_id": 13,
+          "priority": 35,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100201,
+      "race_id": 1002,
+      "thumbnail_id": 1002,
+      "grade": 100,
+      "name": "Takamatsunomiya Kinen",
+      "short_name": "Takamatsunomiya Kinen",
+      "schedule": [
+        {
+          "program_id": 2,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 15000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 8,
+          "group_id": 11,
+          "priority": 11,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101301,
+            100201
+          ]
+        },
+        {
+          "saddle_id": 20,
+          "group_id": 14,
+          "priority": 25,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100301,
+      "race_id": 1003,
+      "thumbnail_id": 1003,
+      "grade": 100,
+      "name": "Osaka Hai",
+      "short_name": "Osaka Hai",
+      "schedule": [
+        {
+          "program_id": 3,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 4,
+          "group_id": 5,
+          "priority": 5,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            101201
+          ]
+        },
+        {
+          "saddle_id": 17,
+          "group_id": 15,
+          "priority": 22,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100301
+          ]
+        },
+        {
+          "saddle_id": 145,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            102501
+          ]
+        },
+        {
+          "saddle_id": 151,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            102701,
+            101201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100401,
+      "race_id": 1004,
+      "thumbnail_id": 1004,
+      "grade": 100,
+      "name": "Oka Sho",
+      "short_name": "Oka Sho",
+      "schedule": [
+        {
+          "program_id": 162,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 11,
+          "race_permission": 2,
+          "need_fan_count": 4500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 3,
+          "group_id": 4,
+          "priority": 4,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100401,
+            100901,
+            101401
+          ]
+        },
+        {
+          "saddle_id": 24,
+          "group_id": 16,
+          "priority": 29,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100501,
+      "race_id": 1005,
+      "thumbnail_id": 1005,
+      "grade": 100,
+      "name": "Satsuki Sho",
+      "short_name": "Satsuki Sho",
+      "schedule": [
+        {
+          "program_id": 163,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 900,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 4500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 1,
+          "group_id": 1,
+          "priority": 1,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100501,
+            101001,
+            101501
+          ]
+        },
+        {
+          "saddle_id": 18,
+          "group_id": 17,
+          "priority": 23,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100501
+          ]
+        },
+        {
+          "saddle_id": 144,
+          "group_id": 1,
+          "priority": 2,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100501,
+            101001,
+            102601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100601,
+      "race_id": 1006,
+      "thumbnail_id": 1006,
+      "grade": 100,
+      "name": "Tenno Sho (Spring)",
+      "short_name": "Tenno Sho (Spring)",
+      "schedule": [
+        {
+          "program_id": 4,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 400,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1079,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 402,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1083,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 403,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 4,
+          "group_id": 5,
+          "priority": 5,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            101201
+          ]
+        },
+        {
+          "saddle_id": 5,
+          "group_id": 7,
+          "priority": 7,
+          "condition": 1,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100601,
+            101601
+          ]
+        },
+        {
+          "saddle_id": 13,
+          "group_id": 18,
+          "priority": 16,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100601
+          ]
+        },
+        {
+          "saddle_id": 145,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            102501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100701,
+      "race_id": 1007,
+      "thumbnail_id": 1007,
+      "grade": 100,
+      "name": "NHK Mile Cup",
+      "short_name": "NHK Mile C.",
+      "schedule": [
+        {
+          "program_id": 164,
+          "month": 5,
+          "half": 1,
+          "turn_label": "May 1st half",
+          "program_group": 0,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 5000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 27,
+          "group_id": 19,
+          "priority": 32,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100801,
+      "race_id": 1008,
+      "thumbnail_id": 1008,
+      "grade": 100,
+      "name": "Victoria Mile",
+      "short_name": "Victoria Mile",
+      "schedule": [
+        {
+          "program_id": 5,
+          "month": 5,
+          "half": 1,
+          "turn_label": "May 1st half",
+          "program_group": 0,
+          "recommend_class_id": 13,
+          "race_permission": 4,
+          "need_fan_count": 10000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 25,
+          "group_id": 20,
+          "priority": 30,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 100901,
+      "race_id": 1009,
+      "thumbnail_id": 1009,
+      "grade": 100,
+      "name": "Japanese Oaks",
+      "short_name": "Japanese Oaks",
+      "schedule": [
+        {
+          "program_id": 165,
+          "month": 5,
+          "half": 2,
+          "turn_label": "May 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 11,
+          "race_permission": 2,
+          "need_fan_count": 6000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 3,
+          "group_id": 4,
+          "priority": 4,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100401,
+            100901,
+            101401
+          ]
+        },
+        {
+          "saddle_id": 19,
+          "group_id": 21,
+          "priority": 24,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            100901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101001,
+      "race_id": 1010,
+      "thumbnail_id": 1010,
+      "grade": 100,
+      "name": "Tokyo Yushun (Japanese Derby)",
+      "short_name": "Japanese Derby",
+      "schedule": [
+        {
+          "program_id": 166,
+          "month": 5,
+          "half": 2,
+          "turn_label": "May 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 6000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 1,
+          "group_id": 1,
+          "priority": 1,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100501,
+            101001,
+            101501
+          ]
+        },
+        {
+          "saddle_id": 12,
+          "group_id": 22,
+          "priority": 15,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101001
+          ]
+        },
+        {
+          "saddle_id": 144,
+          "group_id": 1,
+          "priority": 2,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100501,
+            101001,
+            102601
+          ]
+        },
+        {
+          "saddle_id": 154,
+          "group_id": 1,
+          "priority": 2,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102801,
+            101001,
+            101501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101101,
+      "race_id": 1011,
+      "thumbnail_id": 1011,
+      "grade": 100,
+      "name": "Yasuda Kinen",
+      "short_name": "Yasuda Kinen",
+      "schedule": [
+        {
+          "program_id": 73,
+          "month": 6,
+          "half": 1,
+          "turn_label": "Jun 1st half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 15000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 7,
+          "group_id": 10,
+          "priority": 10,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101101,
+            101801
+          ]
+        },
+        {
+          "saddle_id": 21,
+          "group_id": 23,
+          "priority": 26,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101201,
+      "race_id": 1012,
+      "thumbnail_id": 1012,
+      "grade": 100,
+      "name": "Takarazuka Kinen",
+      "short_name": "Takarazuka Kinen",
+      "schedule": [
+        {
+          "program_id": 74,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 100,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1072,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 102,
+          "recommend_class_id": 14,
+          "race_permission": 2,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 4,
+          "group_id": 5,
+          "priority": 5,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            101201
+          ]
+        },
+        {
+          "saddle_id": 6,
+          "group_id": 8,
+          "priority": 8,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101201,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 14,
+          "group_id": 24,
+          "priority": 17,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101201
+          ]
+        },
+        {
+          "saddle_id": 151,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            102701,
+            101201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101301,
+      "race_id": 1013,
+      "thumbnail_id": 1013,
+      "grade": 100,
+      "name": "Sprinters Stakes",
+      "short_name": "Sprinters S.",
+      "schedule": [
+        {
+          "program_id": 75,
+          "month": 9,
+          "half": 2,
+          "turn_label": "Sep 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 15000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 8,
+          "group_id": 11,
+          "priority": 11,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101301,
+            100201
+          ]
+        },
+        {
+          "saddle_id": 22,
+          "group_id": 26,
+          "priority": 27,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101401,
+      "race_id": 1014,
+      "thumbnail_id": 1014,
+      "grade": 100,
+      "name": "Shuka Sho",
+      "short_name": "Shuka Sho",
+      "schedule": [
+        {
+          "program_id": 167,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 11,
+          "race_permission": 2,
+          "need_fan_count": 7500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 3,
+          "group_id": 4,
+          "priority": 4,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100401,
+            100901,
+            101401
+          ]
+        },
+        {
+          "saddle_id": 28,
+          "group_id": 27,
+          "priority": 33,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101501,
+      "race_id": 1015,
+      "thumbnail_id": 1015,
+      "grade": 100,
+      "name": "Kikuka Sho",
+      "short_name": "Kikuka Sho",
+      "schedule": [
+        {
+          "program_id": 168,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 200,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 7500
+        },
+        {
+          "program_id": 1073,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 201,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 7500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 1,
+          "group_id": 1,
+          "priority": 1,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100501,
+            101001,
+            101501
+          ]
+        },
+        {
+          "saddle_id": 16,
+          "group_id": 28,
+          "priority": 20,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101501
+          ]
+        },
+        {
+          "saddle_id": 154,
+          "group_id": 1,
+          "priority": 2,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102801,
+            101001,
+            101501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101601,
+      "race_id": 1016,
+      "thumbnail_id": 1016,
+      "grade": 100,
+      "name": "Tenno Sho (Autumn)",
+      "short_name": "Tenno Sho (Autumn)",
+      "schedule": [
+        {
+          "program_id": 76,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 500,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1080,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 501,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1084,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 502,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1087,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 503,
+          "recommend_class_id": 14,
+          "race_permission": 2,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1097,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 504,
+          "recommend_class_id": 14,
+          "race_permission": 2,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1098,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 505,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        },
+        {
+          "program_id": 1099,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 506,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 2,
+          "group_id": 3,
+          "priority": 3,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101601,
+            101901,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 5,
+          "group_id": 7,
+          "priority": 7,
+          "condition": 1,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100601,
+            101601
+          ]
+        },
+        {
+          "saddle_id": 15,
+          "group_id": 30,
+          "priority": 19,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101601
+          ]
+        },
+        {
+          "saddle_id": 152,
+          "group_id": 7,
+          "priority": 7,
+          "condition": 1,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102701,
+            101601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101701,
+      "race_id": 1017,
+      "thumbnail_id": 1017,
+      "grade": 100,
+      "name": "Queen Elizabeth II Cup",
+      "short_name": "Queen Elizabeth II Cup",
+      "schedule": [
+        {
+          "program_id": 77,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 13,
+          "race_permission": 3,
+          "need_fan_count": 10000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 26,
+          "group_id": 31,
+          "priority": 31,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101801,
+      "race_id": 1018,
+      "thumbnail_id": 1018,
+      "grade": 100,
+      "name": "Mile Championship",
+      "short_name": "Mile Ch.",
+      "schedule": [
+        {
+          "program_id": 78,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 15000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 7,
+          "group_id": 10,
+          "priority": 10,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101101,
+            101801
+          ]
+        },
+        {
+          "saddle_id": 23,
+          "group_id": 32,
+          "priority": 28,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 101901,
+      "race_id": 1019,
+      "thumbnail_id": 1019,
+      "grade": 100,
+      "name": "Japan Cup",
+      "short_name": "Japan C.",
+      "schedule": [
+        {
+          "program_id": 79,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 600,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1081,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 601,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1085,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 602,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1088,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 603,
+          "recommend_class_id": 14,
+          "race_permission": 2,
+          "need_fan_count": 25000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 2,
+          "group_id": 3,
+          "priority": 3,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101601,
+            101901,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 11,
+          "group_id": 33,
+          "priority": 14,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            101901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102001,
+      "race_id": 1020,
+      "thumbnail_id": 1020,
+      "grade": 100,
+      "name": "Champions Cup",
+      "short_name": "Champions C.",
+      "schedule": [
+        {
+          "program_id": 80,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 9,
+          "group_id": 12,
+          "priority": 12,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100101,
+            102001
+          ]
+        },
+        {
+          "saddle_id": 29,
+          "group_id": 34,
+          "priority": 34,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102101,
+      "race_id": 1021,
+      "thumbnail_id": 1021,
+      "grade": 100,
+      "name": "Hanshin Juvenile Fillies",
+      "short_name": "Hanshin J.F.",
+      "schedule": [
+        {
+          "program_id": 623,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 5,
+          "race_permission": 1,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 35,
+          "group_id": 35,
+          "priority": 40,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102201,
+      "race_id": 1022,
+      "thumbnail_id": 1022,
+      "grade": 100,
+      "name": "Asahi Hai Futurity Stakes",
+      "short_name": "Asahi Hai F.S.",
+      "schedule": [
+        {
+          "program_id": 624,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 5,
+          "race_permission": 1,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 33,
+          "group_id": 36,
+          "priority": 38,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102301,
+      "race_id": 1023,
+      "thumbnail_id": 1023,
+      "grade": 100,
+      "name": "Arima Kinen",
+      "short_name": "Arima Kinen",
+      "schedule": [
+        {
+          "program_id": 81,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 700,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1082,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 701,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1086,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 702,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 25000
+        },
+        {
+          "program_id": 1089,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 703,
+          "recommend_class_id": 14,
+          "race_permission": 2,
+          "need_fan_count": 25000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 2,
+          "group_id": 3,
+          "priority": 3,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101601,
+            101901,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 6,
+          "group_id": 8,
+          "priority": 8,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            101201,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 10,
+          "group_id": 37,
+          "priority": 13,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102301
+          ]
+        },
+        {
+          "saddle_id": 146,
+          "group_id": 8,
+          "priority": 9,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102501,
+            102301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102401,
+      "race_id": 1024,
+      "thumbnail_id": 1024,
+      "grade": 100,
+      "name": "Hopeful Stakes",
+      "short_name": "Hopeful S.",
+      "schedule": [
+        {
+          "program_id": 625,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 5,
+          "race_permission": 1,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 34,
+          "group_id": 38,
+          "priority": 39,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102501,
+      "race_id": 1025,
+      "thumbnail_id": 1012,
+      "grade": 100,
+      "name": "Takarazuka Kinen",
+      "short_name": "Takarazuka Kinen",
+      "schedule": [
+        {
+          "program_id": 1071,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 101,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 145,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            100601,
+            102501
+          ]
+        },
+        {
+          "saddle_id": 146,
+          "group_id": 8,
+          "priority": 9,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102501,
+            102301
+          ]
+        },
+        {
+          "saddle_id": 147,
+          "group_id": 24,
+          "priority": 18,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102701,
+      "race_id": 1027,
+      "thumbnail_id": 1027,
+      "grade": 100,
+      "name": "Tenno Sho (Spring)",
+      "short_name": "Tenno Sho (Spring)",
+      "schedule": [
+        {
+          "program_id": 1076,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 401,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 20000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 151,
+          "group_id": 5,
+          "priority": 6,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            100301,
+            102701,
+            101201
+          ]
+        },
+        {
+          "saddle_id": 152,
+          "group_id": 7,
+          "priority": 7,
+          "condition": 1,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102701,
+            101601
+          ]
+        },
+        {
+          "saddle_id": 153,
+          "group_id": 18,
+          "priority": 16,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 102801,
+      "race_id": 1028,
+      "thumbnail_id": 1028,
+      "grade": 100,
+      "name": "Satsuki Sho",
+      "short_name": "Satsuki Sho",
+      "schedule": [
+        {
+          "program_id": 1095,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 901,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 4500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 154,
+          "group_id": 1,
+          "priority": 2,
+          "condition": 0,
+          "win_saddle_type": 0,
+          "win_saddle_type_label": "Crown (multi-race)",
+          "required_race_instance_ids": [
+            102801,
+            101001,
+            101501
+          ]
+        },
+        {
+          "saddle_id": 155,
+          "group_id": 17,
+          "priority": 23,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            102801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110101,
+      "race_id": 1101,
+      "thumbnail_id": 1101,
+      "grade": 100,
+      "name": "Teio Sho",
+      "short_name": "Teio Sho",
+      "schedule": [
+        {
+          "program_id": 1022,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 4,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 36,
+          "group_id": 39,
+          "priority": 41,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110201,
+      "race_id": 1102,
+      "thumbnail_id": 1102,
+      "grade": 100,
+      "name": "Japan Dirt Derby",
+      "short_name": "Japan Dirt Derby",
+      "schedule": [
+        {
+          "program_id": 1023,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 2000,
+          "recommend_class_id": 12,
+          "race_permission": 2,
+          "need_fan_count": 4000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 38,
+          "group_id": 40,
+          "priority": 43,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110301,
+      "race_id": 1103,
+      "thumbnail_id": 1103,
+      "grade": 100,
+      "name": "JBC Ladies’ Classic",
+      "short_name": "JBC Ladies’ Classic",
+      "schedule": [
+        {
+          "program_id": 1024,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 13,
+          "race_permission": 3,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 39,
+          "group_id": 41,
+          "priority": 44,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110401,
+      "race_id": 1104,
+      "thumbnail_id": 1104,
+      "grade": 100,
+      "name": "JBC Sprint",
+      "short_name": "JBC Sprint",
+      "schedule": [
+        {
+          "program_id": 1025,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 37,
+          "group_id": 42,
+          "priority": 42,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110501,
+      "race_id": 1105,
+      "thumbnail_id": 1105,
+      "grade": 100,
+      "name": "JBC Classic",
+      "short_name": "JBC Classic",
+      "schedule": [
+        {
+          "program_id": 1026,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 31,
+          "group_id": 43,
+          "priority": 36,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 110601,
+      "race_id": 1106,
+      "thumbnail_id": 1106,
+      "grade": 100,
+      "name": "Tokyo Daishoten",
+      "short_name": "Tokyo Daishoten",
+      "schedule": [
+        {
+          "program_id": 1027,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 14,
+          "race_permission": 3,
+          "need_fan_count": 12000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 32,
+          "group_id": 44,
+          "priority": 37,
+          "condition": 0,
+          "win_saddle_type": 3,
+          "win_saddle_type_label": "G1",
+          "required_race_instance_ids": [
+            110601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200101,
+      "race_id": 2001,
+      "thumbnail_id": 2001,
+      "grade": 200,
+      "name": "Nikkei Shinshun Hai",
+      "short_name": "Nikkei Shinshun Hai",
+      "schedule": [
+        {
+          "program_id": 6,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 40,
+          "group_id": 45,
+          "priority": 45,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200201,
+      "race_id": 2002,
+      "thumbnail_id": 2002,
+      "grade": 200,
+      "name": "Tokai Stakes",
+      "short_name": "Tokai S.",
+      "schedule": [
+        {
+          "program_id": 7,
+          "month": 1,
+          "half": 2,
+          "turn_label": "Jan 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 41,
+          "group_id": 46,
+          "priority": 46,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200301,
+      "race_id": 2003,
+      "thumbnail_id": 2003,
+      "grade": 200,
+      "name": "American JCC",
+      "short_name": "American JCC",
+      "schedule": [
+        {
+          "program_id": 8,
+          "month": 1,
+          "half": 2,
+          "turn_label": "Jan 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 42,
+          "group_id": 47,
+          "priority": 47,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200401,
+      "race_id": 2004,
+      "thumbnail_id": 2004,
+      "grade": 200,
+      "name": "Kyoto Kinen",
+      "short_name": "Kyoto Kinen",
+      "schedule": [
+        {
+          "program_id": 9,
+          "month": 2,
+          "half": 1,
+          "turn_label": "Feb 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 43,
+          "group_id": 48,
+          "priority": 48,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200501,
+      "race_id": 2005,
+      "thumbnail_id": 2005,
+      "grade": 200,
+      "name": "Nakayama Kinen",
+      "short_name": "Nakayama Kinen",
+      "schedule": [
+        {
+          "program_id": 10,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 44,
+          "group_id": 49,
+          "priority": 49,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200601,
+      "race_id": 2006,
+      "thumbnail_id": 2006,
+      "grade": 200,
+      "name": "Yayoi Sho",
+      "short_name": "Yayoi Sho",
+      "schedule": [
+        {
+          "program_id": 169,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 45,
+          "group_id": 50,
+          "priority": 50,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200701,
+      "race_id": 2007,
+      "thumbnail_id": 2007,
+      "grade": 200,
+      "name": "Kinko Sho",
+      "short_name": "Kinko Sho",
+      "schedule": [
+        {
+          "program_id": 11,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 46,
+          "group_id": 51,
+          "priority": 51,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200801,
+      "race_id": 2008,
+      "thumbnail_id": 2008,
+      "grade": 200,
+      "name": "Fillies' Revue",
+      "short_name": "Fillies' Revue",
+      "schedule": [
+        {
+          "program_id": 170,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 47,
+          "group_id": 52,
+          "priority": 52,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 200901,
+      "race_id": 2009,
+      "thumbnail_id": 2009,
+      "grade": 200,
+      "name": "Hanshin Daishoten",
+      "short_name": "Hanshin Daishoten",
+      "schedule": [
+        {
+          "program_id": 12,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 48,
+          "group_id": 53,
+          "priority": 53,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            200901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201001,
+      "race_id": 2010,
+      "thumbnail_id": 2010,
+      "grade": 200,
+      "name": "Spring Stakes",
+      "short_name": "Spring S.",
+      "schedule": [
+        {
+          "program_id": 171,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 300,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        },
+        {
+          "program_id": 1074,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 301,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 49,
+          "group_id": 54,
+          "priority": 54,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201101,
+      "race_id": 2011,
+      "thumbnail_id": 2011,
+      "grade": 200,
+      "name": "Nikkei Sho",
+      "short_name": "Nikkei Sho",
+      "schedule": [
+        {
+          "program_id": 13,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 50,
+          "group_id": 56,
+          "priority": 56,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201201,
+      "race_id": 2012,
+      "thumbnail_id": 2012,
+      "grade": 200,
+      "name": "Hanshin Umamusume Stakes",
+      "short_name": "Hanshin Umamusume S.",
+      "schedule": [
+        {
+          "program_id": 14,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 7,
+          "race_permission": 4,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 51,
+          "group_id": 57,
+          "priority": 57,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201301,
+      "race_id": 2013,
+      "thumbnail_id": 2013,
+      "grade": 200,
+      "name": "New Zealand Trophy",
+      "short_name": "New Zealand T.",
+      "schedule": [
+        {
+          "program_id": 172,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 52,
+          "group_id": 58,
+          "priority": 58,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201401,
+      "race_id": 2014,
+      "thumbnail_id": 2014,
+      "grade": 200,
+      "name": "Milers Cup",
+      "short_name": "Yomiuri Milers C.",
+      "schedule": [
+        {
+          "program_id": 15,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 53,
+          "group_id": 59,
+          "priority": 59,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201501,
+      "race_id": 2015,
+      "thumbnail_id": 2015,
+      "grade": 200,
+      "name": "Flora Stakes",
+      "short_name": "Flora S.",
+      "schedule": [
+        {
+          "program_id": 173,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 54,
+          "group_id": 60,
+          "priority": 60,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201601,
+      "race_id": 2016,
+      "thumbnail_id": 2016,
+      "grade": 200,
+      "name": "Aoba Sho",
+      "short_name": "Aoba Sho",
+      "schedule": [
+        {
+          "program_id": 174,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 55,
+          "group_id": 61,
+          "priority": 61,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201701,
+      "race_id": 2017,
+      "thumbnail_id": 2017,
+      "grade": 200,
+      "name": "Kyoto Shimbun Hai",
+      "short_name": "Kyoto Shimbun Hai",
+      "schedule": [
+        {
+          "program_id": 175,
+          "month": 5,
+          "half": 1,
+          "turn_label": "May 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 56,
+          "group_id": 62,
+          "priority": 62,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201801,
+      "race_id": 2018,
+      "thumbnail_id": 2018,
+      "grade": 200,
+      "name": "Keio Hai Spring Cup",
+      "short_name": "Keio Hai Spring C.",
+      "schedule": [
+        {
+          "program_id": 16,
+          "month": 5,
+          "half": 1,
+          "turn_label": "May 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 57,
+          "group_id": 63,
+          "priority": 63,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 201901,
+      "race_id": 2019,
+      "thumbnail_id": 2019,
+      "grade": 200,
+      "name": "Meguro Kinen",
+      "short_name": "Meguro Kinen",
+      "schedule": [
+        {
+          "program_id": 17,
+          "month": 5,
+          "half": 2,
+          "turn_label": "May 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 58,
+          "group_id": 64,
+          "priority": 64,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            201901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202001,
+      "race_id": 2020,
+      "thumbnail_id": 2020,
+      "grade": 200,
+      "name": "Sapporo Kinen",
+      "short_name": "Sapporo Kinen",
+      "schedule": [
+        {
+          "program_id": 82,
+          "month": 8,
+          "half": 2,
+          "turn_label": "Aug 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 59,
+          "group_id": 65,
+          "priority": 65,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202101,
+      "race_id": 2021,
+      "thumbnail_id": 2021,
+      "grade": 200,
+      "name": "Centaur Stakes",
+      "short_name": "Centaur S.",
+      "schedule": [
+        {
+          "program_id": 83,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 60,
+          "group_id": 66,
+          "priority": 66,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202201,
+      "race_id": 2022,
+      "thumbnail_id": 2022,
+      "grade": 200,
+      "name": "Rose Stakes",
+      "short_name": "Rose S.",
+      "schedule": [
+        {
+          "program_id": 176,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 61,
+          "group_id": 67,
+          "priority": 67,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202301,
+      "race_id": 2023,
+      "thumbnail_id": 2023,
+      "grade": 200,
+      "name": "St. Lite Kinen",
+      "short_name": "St. Lite Kinen",
+      "schedule": [
+        {
+          "program_id": 177,
+          "month": 9,
+          "half": 2,
+          "turn_label": "Sep 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 62,
+          "group_id": 68,
+          "priority": 68,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202401,
+      "race_id": 2024,
+      "thumbnail_id": 2024,
+      "grade": 200,
+      "name": "Kobe Shimbun Hai",
+      "short_name": "Kobe Shimbun Hai",
+      "schedule": [
+        {
+          "program_id": 84,
+          "month": 9,
+          "half": 2,
+          "turn_label": "Sep 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 63,
+          "group_id": 69,
+          "priority": 69,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202501,
+      "race_id": 2025,
+      "thumbnail_id": 2025,
+      "grade": 200,
+      "name": "All Comers",
+      "short_name": "All Comers",
+      "schedule": [
+        {
+          "program_id": 85,
+          "month": 9,
+          "half": 2,
+          "turn_label": "Sep 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 64,
+          "group_id": 70,
+          "priority": 70,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202601,
+      "race_id": 2026,
+      "thumbnail_id": 2026,
+      "grade": 200,
+      "name": "Mainichi Okan",
+      "short_name": "Mainichi Okan",
+      "schedule": [
+        {
+          "program_id": 86,
+          "month": 10,
+          "half": 1,
+          "turn_label": "Oct 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 65,
+          "group_id": 71,
+          "priority": 71,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202701,
+      "race_id": 2027,
+      "thumbnail_id": 2027,
+      "grade": 200,
+      "name": "Kyoto Daishoten",
+      "short_name": "Kyoto Daishoten",
+      "schedule": [
+        {
+          "program_id": 87,
+          "month": 10,
+          "half": 1,
+          "turn_label": "Oct 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 66,
+          "group_id": 72,
+          "priority": 72,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202801,
+      "race_id": 2028,
+      "thumbnail_id": 2028,
+      "grade": 200,
+      "name": "Fuchu Umamusume Stakes",
+      "short_name": "Fuchu Umamusume S.",
+      "schedule": [
+        {
+          "program_id": 88,
+          "month": 10,
+          "half": 1,
+          "turn_label": "Oct 1st half",
+          "program_group": 0,
+          "recommend_class_id": 7,
+          "race_permission": 3,
+          "need_fan_count": 1800
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 67,
+          "group_id": 73,
+          "priority": 73,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 202901,
+      "race_id": 2029,
+      "thumbnail_id": 2029,
+      "grade": 200,
+      "name": "Swan Stakes",
+      "short_name": "Swan S.",
+      "schedule": [
+        {
+          "program_id": 89,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 68,
+          "group_id": 74,
+          "priority": 74,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            202901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 203001,
+      "race_id": 2030,
+      "thumbnail_id": 2030,
+      "grade": 200,
+      "name": "Keio Hai Junior Stakes",
+      "short_name": "Keio Hai Junior S.",
+      "schedule": [
+        {
+          "program_id": 626,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 375
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 69,
+          "group_id": 75,
+          "priority": 75,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            203001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 203101,
+      "race_id": 2031,
+      "thumbnail_id": 2031,
+      "grade": 200,
+      "name": "Copa Republica Argentina",
+      "short_name": "Copa Republica Argentina",
+      "schedule": [
+        {
+          "program_id": 90,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 70,
+          "group_id": 76,
+          "priority": 76,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            203101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 203201,
+      "race_id": 2032,
+      "thumbnail_id": 2032,
+      "grade": 200,
+      "name": "Daily Hai Junior Stakes",
+      "short_name": "Daily Hai Junior S.",
+      "schedule": [
+        {
+          "program_id": 627,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 375
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 71,
+          "group_id": 77,
+          "priority": 77,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            203201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 203301,
+      "race_id": 2033,
+      "thumbnail_id": 2033,
+      "grade": 200,
+      "name": "Stayers Stakes",
+      "short_name": "Stayers S.",
+      "schedule": [
+        {
+          "program_id": 91,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 72,
+          "group_id": 78,
+          "priority": 78,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            203301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 203401,
+      "race_id": 2034,
+      "thumbnail_id": 2034,
+      "grade": 200,
+      "name": "Hanshin Cup",
+      "short_name": "Hanshin C.",
+      "schedule": [
+        {
+          "program_id": 92,
+          "month": 12,
+          "half": 2,
+          "turn_label": "Dec 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 2000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 73,
+          "group_id": 79,
+          "priority": 79,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            203401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300101,
+      "race_id": 3001,
+      "thumbnail_id": 3001,
+      "grade": 300,
+      "name": "Kyoto Kimpai",
+      "short_name": "Kyoto Kimpai",
+      "schedule": [
+        {
+          "program_id": 18,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 74,
+          "group_id": 80,
+          "priority": 80,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300201,
+      "race_id": 3002,
+      "thumbnail_id": 3002,
+      "grade": 300,
+      "name": "Nakayama Kimpai",
+      "short_name": "Nakayama Kimpai",
+      "schedule": [
+        {
+          "program_id": 19,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 75,
+          "group_id": 81,
+          "priority": 81,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300301,
+      "race_id": 3003,
+      "thumbnail_id": 3003,
+      "grade": 300,
+      "name": "Shinzan Kinen",
+      "short_name": "Shinzan Kinen",
+      "schedule": [
+        {
+          "program_id": 178,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 76,
+          "group_id": 82,
+          "priority": 82,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300401,
+      "race_id": 3004,
+      "thumbnail_id": 3004,
+      "grade": 300,
+      "name": "Fairy Stakes",
+      "short_name": "Fairy S.",
+      "schedule": [
+        {
+          "program_id": 179,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 77,
+          "group_id": 83,
+          "priority": 83,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300501,
+      "race_id": 3005,
+      "thumbnail_id": 3005,
+      "grade": 300,
+      "name": "Aichi Hai",
+      "short_name": "Aichi Hai",
+      "schedule": [
+        {
+          "program_id": 20,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 78,
+          "group_id": 84,
+          "priority": 84,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300601,
+      "race_id": 3006,
+      "thumbnail_id": 3006,
+      "grade": 300,
+      "name": "Keisei Hai",
+      "short_name": "Keisei Hai",
+      "schedule": [
+        {
+          "program_id": 180,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 800,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        },
+        {
+          "program_id": 1093,
+          "month": 1,
+          "half": 1,
+          "turn_label": "Jan 1st half",
+          "program_group": 801,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 79,
+          "group_id": 85,
+          "priority": 85,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300701,
+      "race_id": 3007,
+      "thumbnail_id": 3007,
+      "grade": 300,
+      "name": "Silk Road Stakes",
+      "short_name": "Silk Road S.",
+      "schedule": [
+        {
+          "program_id": 21,
+          "month": 1,
+          "half": 2,
+          "turn_label": "Jan 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 80,
+          "group_id": 86,
+          "priority": 86,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300801,
+      "race_id": 3008,
+      "thumbnail_id": 3008,
+      "grade": 300,
+      "name": "Negishi Stakes",
+      "short_name": "Negishi S.",
+      "schedule": [
+        {
+          "program_id": 22,
+          "month": 1,
+          "half": 2,
+          "turn_label": "Jan 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 81,
+          "group_id": 87,
+          "priority": 87,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 300901,
+      "race_id": 3009,
+      "thumbnail_id": 3009,
+      "grade": 300,
+      "name": "Kisaragi Sho",
+      "short_name": "Kisaragi Sho",
+      "schedule": [
+        {
+          "program_id": 181,
+          "month": 2,
+          "half": 1,
+          "turn_label": "Feb 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 82,
+          "group_id": 88,
+          "priority": 88,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            300901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301001,
+      "race_id": 3010,
+      "thumbnail_id": 3010,
+      "grade": 300,
+      "name": "Tokyo Shimbun Hai",
+      "short_name": "Tokyo Shimbun Hai",
+      "schedule": [
+        {
+          "program_id": 23,
+          "month": 2,
+          "half": 1,
+          "turn_label": "Feb 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 83,
+          "group_id": 89,
+          "priority": 89,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301101,
+      "race_id": 3011,
+      "thumbnail_id": 3011,
+      "grade": 300,
+      "name": "Queen Cup",
+      "short_name": "Queen C.",
+      "schedule": [
+        {
+          "program_id": 182,
+          "month": 2,
+          "half": 1,
+          "turn_label": "Feb 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 84,
+          "group_id": 90,
+          "priority": 90,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301201,
+      "race_id": 3012,
+      "thumbnail_id": 3012,
+      "grade": 300,
+      "name": "Kyodo News Hai",
+      "short_name": "Kyodo News Hai",
+      "schedule": [
+        {
+          "program_id": 183,
+          "month": 2,
+          "half": 1,
+          "turn_label": "Feb 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 85,
+          "group_id": 91,
+          "priority": 91,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301301,
+      "race_id": 3013,
+      "thumbnail_id": 3013,
+      "grade": 300,
+      "name": "Kyoto Umamusume Stakes",
+      "short_name": "Kyoto Umamusume S.",
+      "schedule": [
+        {
+          "program_id": 24,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 7,
+          "race_permission": 4,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 86,
+          "group_id": 92,
+          "priority": 92,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301401,
+      "race_id": 3014,
+      "thumbnail_id": 3014,
+      "grade": 300,
+      "name": "Diamond Stakes",
+      "short_name": "Diamond S.",
+      "schedule": [
+        {
+          "program_id": 25,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 87,
+          "group_id": 93,
+          "priority": 93,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301501,
+      "race_id": 3015,
+      "thumbnail_id": 3015,
+      "grade": 300,
+      "name": "Kokura Daishoten",
+      "short_name": "Kokura Daishoten",
+      "schedule": [
+        {
+          "program_id": 26,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 88,
+          "group_id": 94,
+          "priority": 94,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301601,
+      "race_id": 3016,
+      "thumbnail_id": 3016,
+      "grade": 300,
+      "name": "Arlington Cup",
+      "short_name": "Arlington C.",
+      "schedule": [
+        {
+          "program_id": 184,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 89,
+          "group_id": 95,
+          "priority": 95,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301701,
+      "race_id": 3017,
+      "thumbnail_id": 3017,
+      "grade": 300,
+      "name": "Hankyu Hai",
+      "short_name": "Hankyu Hai",
+      "schedule": [
+        {
+          "program_id": 27,
+          "month": 2,
+          "half": 2,
+          "turn_label": "Feb 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 90,
+          "group_id": 96,
+          "priority": 96,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301801,
+      "race_id": 3018,
+      "thumbnail_id": 3018,
+      "grade": 200,
+      "name": "Tulip Sho",
+      "short_name": "Tulip Sho",
+      "schedule": [
+        {
+          "program_id": 185,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 1750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 91,
+          "group_id": 97,
+          "priority": 97,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            301801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 301901,
+      "race_id": 3019,
+      "thumbnail_id": 3019,
+      "grade": 300,
+      "name": "Ocean Stakes",
+      "short_name": "Ocean S.",
+      "schedule": [
+        {
+          "program_id": 28,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 92,
+          "group_id": 98,
+          "priority": 98,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            301901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302001,
+      "race_id": 3020,
+      "thumbnail_id": 3020,
+      "grade": 300,
+      "name": "Nakayama Umamusume Stakes",
+      "short_name": "Nakayama Umamusume S.",
+      "schedule": [
+        {
+          "program_id": 29,
+          "month": 3,
+          "half": 1,
+          "turn_label": "Mar 1st half",
+          "program_group": 0,
+          "recommend_class_id": 7,
+          "race_permission": 4,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 93,
+          "group_id": 99,
+          "priority": 99,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302101,
+      "race_id": 3021,
+      "thumbnail_id": 3021,
+      "grade": 300,
+      "name": "Falcon Stakes",
+      "short_name": "Falcon S.",
+      "schedule": [
+        {
+          "program_id": 186,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 94,
+          "group_id": 100,
+          "priority": 100,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302201,
+      "race_id": 3022,
+      "thumbnail_id": 3022,
+      "grade": 300,
+      "name": "Flower Cup",
+      "short_name": "Flower C.",
+      "schedule": [
+        {
+          "program_id": 187,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 95,
+          "group_id": 101,
+          "priority": 101,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302301,
+      "race_id": 3023,
+      "thumbnail_id": 3023,
+      "grade": 300,
+      "name": "Mainichi Hai",
+      "short_name": "Mainichi Hai",
+      "schedule": [
+        {
+          "program_id": 188,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 96,
+          "group_id": 102,
+          "priority": 102,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302401,
+      "race_id": 3024,
+      "thumbnail_id": 3024,
+      "grade": 300,
+      "name": "March Stakes",
+      "short_name": "March S.",
+      "schedule": [
+        {
+          "program_id": 30,
+          "month": 3,
+          "half": 2,
+          "turn_label": "Mar 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 97,
+          "group_id": 103,
+          "priority": 103,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302501,
+      "race_id": 3025,
+      "thumbnail_id": 3025,
+      "grade": 300,
+      "name": "Lord Derby Challenge Trophy",
+      "short_name": "Lord Derby C.T.",
+      "schedule": [
+        {
+          "program_id": 31,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 98,
+          "group_id": 104,
+          "priority": 104,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302601,
+      "race_id": 3026,
+      "thumbnail_id": 3026,
+      "grade": 300,
+      "name": "Antares Stakes",
+      "short_name": "Antares S.",
+      "schedule": [
+        {
+          "program_id": 32,
+          "month": 4,
+          "half": 1,
+          "turn_label": "Apr 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 99,
+          "group_id": 105,
+          "priority": 105,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302701,
+      "race_id": 3027,
+      "thumbnail_id": 3027,
+      "grade": 300,
+      "name": "Fukushima Umamusume Stakes",
+      "short_name": "Fukushima Umamusume S.",
+      "schedule": [
+        {
+          "program_id": 33,
+          "month": 4,
+          "half": 2,
+          "turn_label": "Apr 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 7,
+          "race_permission": 4,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 100,
+          "group_id": 106,
+          "priority": 106,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302801,
+      "race_id": 3028,
+      "thumbnail_id": 3028,
+      "grade": 300,
+      "name": "Niigata Daishoten",
+      "short_name": "Niigata Daishoten",
+      "schedule": [
+        {
+          "program_id": 34,
+          "month": 5,
+          "half": 1,
+          "turn_label": "May 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 4,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 101,
+          "group_id": 107,
+          "priority": 107,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 302901,
+      "race_id": 3029,
+      "thumbnail_id": 3029,
+      "grade": 300,
+      "name": "Heian Stakes",
+      "short_name": "Heian S.",
+      "schedule": [
+        {
+          "program_id": 35,
+          "month": 5,
+          "half": 2,
+          "turn_label": "May 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 4,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 102,
+          "group_id": 108,
+          "priority": 108,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            302901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303001,
+      "race_id": 3030,
+      "thumbnail_id": 3030,
+      "grade": 300,
+      "name": "Naruo Kinen",
+      "short_name": "Naruo Kinen",
+      "schedule": [
+        {
+          "program_id": 93,
+          "month": 6,
+          "half": 1,
+          "turn_label": "Jun 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 103,
+          "group_id": 110,
+          "priority": 110,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303101,
+      "race_id": 3031,
+      "thumbnail_id": 3031,
+      "grade": 300,
+      "name": "Mermaid Stakes",
+      "short_name": "Mermaid S.",
+      "schedule": [
+        {
+          "program_id": 94,
+          "month": 6,
+          "half": 1,
+          "turn_label": "Jun 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 104,
+          "group_id": 111,
+          "priority": 111,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303201,
+      "race_id": 3032,
+      "thumbnail_id": 3032,
+      "grade": 300,
+      "name": "Epsom Cup",
+      "short_name": "Epsom C.",
+      "schedule": [
+        {
+          "program_id": 95,
+          "month": 6,
+          "half": 1,
+          "turn_label": "Jun 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 105,
+          "group_id": 112,
+          "priority": 112,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303301,
+      "race_id": 3033,
+      "thumbnail_id": 3033,
+      "grade": 300,
+      "name": "Unicorn Stakes",
+      "short_name": "Unicorn S.",
+      "schedule": [
+        {
+          "program_id": 189,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 106,
+          "group_id": 113,
+          "priority": 113,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303401,
+      "race_id": 3034,
+      "thumbnail_id": 3034,
+      "grade": 300,
+      "name": "Hakodate Sprint Stakes",
+      "short_name": "Hakodate Sprint S.",
+      "schedule": [
+        {
+          "program_id": 96,
+          "month": 6,
+          "half": 2,
+          "turn_label": "Jun 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 107,
+          "group_id": 114,
+          "priority": 114,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303501,
+      "race_id": 3035,
+      "thumbnail_id": 3035,
+      "grade": 300,
+      "name": "CBC Sho",
+      "short_name": "CBC Sho",
+      "schedule": [
+        {
+          "program_id": 97,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 108,
+          "group_id": 115,
+          "priority": 115,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303601,
+      "race_id": 3036,
+      "thumbnail_id": 3036,
+      "grade": 300,
+      "name": "Radio Nikkei Sho",
+      "short_name": "Radio Nikkei Sho",
+      "schedule": [
+        {
+          "program_id": 190,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 109,
+          "group_id": 116,
+          "priority": 116,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303701,
+      "race_id": 3037,
+      "thumbnail_id": 3037,
+      "grade": 300,
+      "name": "Procyon Stakes",
+      "short_name": "Procyon S.",
+      "schedule": [
+        {
+          "program_id": 98,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 110,
+          "group_id": 117,
+          "priority": 117,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303801,
+      "race_id": 3038,
+      "thumbnail_id": 3038,
+      "grade": 300,
+      "name": "Tanabata Sho",
+      "short_name": "Tanabata Sho",
+      "schedule": [
+        {
+          "program_id": 99,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 111,
+          "group_id": 118,
+          "priority": 118,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 303901,
+      "race_id": 3039,
+      "thumbnail_id": 3039,
+      "grade": 300,
+      "name": "Hakodate Kinen",
+      "short_name": "Hakodate Kinen",
+      "schedule": [
+        {
+          "program_id": 100,
+          "month": 7,
+          "half": 1,
+          "turn_label": "Jul 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 112,
+          "group_id": 119,
+          "priority": 119,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            303901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304001,
+      "race_id": 3040,
+      "thumbnail_id": 3040,
+      "grade": 300,
+      "name": "Chukyo Kinen",
+      "short_name": "Chukyo Kinen",
+      "schedule": [
+        {
+          "program_id": 101,
+          "month": 7,
+          "half": 2,
+          "turn_label": "Jul 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 113,
+          "group_id": 120,
+          "priority": 120,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304101,
+      "race_id": 3041,
+      "thumbnail_id": 3041,
+      "grade": 300,
+      "name": "Hakodate Junior Stakes",
+      "short_name": "Hakodate Junior S.",
+      "schedule": [
+        {
+          "program_id": 628,
+          "month": 7,
+          "half": 2,
+          "turn_label": "Jul 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 114,
+          "group_id": 121,
+          "priority": 121,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304201,
+      "race_id": 3042,
+      "thumbnail_id": 3042,
+      "grade": 300,
+      "name": "Ibis Summer Dash",
+      "short_name": "Ibis Summer D.",
+      "schedule": [
+        {
+          "program_id": 102,
+          "month": 7,
+          "half": 2,
+          "turn_label": "Jul 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 115,
+          "group_id": 122,
+          "priority": 122,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304301,
+      "race_id": 3043,
+      "thumbnail_id": 3043,
+      "grade": 300,
+      "name": "Queen Stakes",
+      "short_name": "Queen S.",
+      "schedule": [
+        {
+          "program_id": 103,
+          "month": 7,
+          "half": 2,
+          "turn_label": "Jul 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 116,
+          "group_id": 123,
+          "priority": 123,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304401,
+      "race_id": 3044,
+      "thumbnail_id": 3044,
+      "grade": 300,
+      "name": "Kokura Kinen",
+      "short_name": "Kokura Kinen",
+      "schedule": [
+        {
+          "program_id": 104,
+          "month": 8,
+          "half": 1,
+          "turn_label": "Aug 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 117,
+          "group_id": 124,
+          "priority": 124,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304501,
+      "race_id": 3045,
+      "thumbnail_id": 3045,
+      "grade": 300,
+      "name": "Leopard Stakes",
+      "short_name": "Leopard S.",
+      "schedule": [
+        {
+          "program_id": 191,
+          "month": 8,
+          "half": 1,
+          "turn_label": "Aug 1st half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 118,
+          "group_id": 125,
+          "priority": 125,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304601,
+      "race_id": 3046,
+      "thumbnail_id": 3046,
+      "grade": 300,
+      "name": "Sekiya Kinen",
+      "short_name": "Sekiya Kinen",
+      "schedule": [
+        {
+          "program_id": 105,
+          "month": 8,
+          "half": 1,
+          "turn_label": "Aug 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 119,
+          "group_id": 126,
+          "priority": 126,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304701,
+      "race_id": 3047,
+      "thumbnail_id": 3047,
+      "grade": 300,
+      "name": "Elm Stakes",
+      "short_name": "Elm S.",
+      "schedule": [
+        {
+          "program_id": 106,
+          "month": 8,
+          "half": 1,
+          "turn_label": "Aug 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 120,
+          "group_id": 127,
+          "priority": 127,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304801,
+      "race_id": 3048,
+      "thumbnail_id": 3048,
+      "grade": 300,
+      "name": "Kitakyushu Kinen",
+      "short_name": "Kitakyushu Kinen",
+      "schedule": [
+        {
+          "program_id": 107,
+          "month": 8,
+          "half": 2,
+          "turn_label": "Aug 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 121,
+          "group_id": 128,
+          "priority": 128,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 304901,
+      "race_id": 3049,
+      "thumbnail_id": 3049,
+      "grade": 300,
+      "name": "Niigata Junior Stakes",
+      "short_name": "Niigata Junior S.",
+      "schedule": [
+        {
+          "program_id": 629,
+          "month": 8,
+          "half": 2,
+          "turn_label": "Aug 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 122,
+          "group_id": 129,
+          "priority": 129,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            304901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305001,
+      "race_id": 3050,
+      "thumbnail_id": 3050,
+      "grade": 300,
+      "name": "Keeneland Cup",
+      "short_name": "Keeneland C.",
+      "schedule": [
+        {
+          "program_id": 108,
+          "month": 8,
+          "half": 2,
+          "turn_label": "Aug 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 123,
+          "group_id": 130,
+          "priority": 130,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305101,
+      "race_id": 3051,
+      "thumbnail_id": 3051,
+      "grade": 300,
+      "name": "Sapporo Junior Stakes",
+      "short_name": "Sapporo Junior S.",
+      "schedule": [
+        {
+          "program_id": 630,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 124,
+          "group_id": 131,
+          "priority": 131,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305201,
+      "race_id": 3052,
+      "thumbnail_id": 3052,
+      "grade": 300,
+      "name": "Kokura Junior Stakes",
+      "short_name": "Kokura Junior S.",
+      "schedule": [
+        {
+          "program_id": 631,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 125,
+          "group_id": 132,
+          "priority": 132,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305301,
+      "race_id": 3053,
+      "thumbnail_id": 3053,
+      "grade": 300,
+      "name": "Niigata Kinen",
+      "short_name": "Niigata Kinen",
+      "schedule": [
+        {
+          "program_id": 109,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 126,
+          "group_id": 133,
+          "priority": 133,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305401,
+      "race_id": 3054,
+      "thumbnail_id": 3054,
+      "grade": 300,
+      "name": "Shion Stakes",
+      "short_name": "Shion S.",
+      "schedule": [
+        {
+          "program_id": 192,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 9,
+          "race_permission": 2,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 127,
+          "group_id": 134,
+          "priority": 134,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305501,
+      "race_id": 3055,
+      "thumbnail_id": 3055,
+      "grade": 300,
+      "name": "Keisei Hai Autumn Handicap",
+      "short_name": "Keisei Hai A.H.",
+      "schedule": [
+        {
+          "program_id": 110,
+          "month": 9,
+          "half": 1,
+          "turn_label": "Sep 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 128,
+          "group_id": 135,
+          "priority": 135,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305601,
+      "race_id": 3056,
+      "thumbnail_id": 3056,
+      "grade": 300,
+      "name": "Sirius Stakes",
+      "short_name": "Sirius S.",
+      "schedule": [
+        {
+          "program_id": 111,
+          "month": 9,
+          "half": 2,
+          "turn_label": "Sep 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 129,
+          "group_id": 136,
+          "priority": 136,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305701,
+      "race_id": 3057,
+      "thumbnail_id": 3057,
+      "grade": 300,
+      "name": "Saudi Arabia Royal Cup",
+      "short_name": "Saudi Arabia R.C.",
+      "schedule": [
+        {
+          "program_id": 632,
+          "month": 10,
+          "half": 1,
+          "turn_label": "Oct 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 130,
+          "group_id": 137,
+          "priority": 137,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305801,
+      "race_id": 3058,
+      "thumbnail_id": 3058,
+      "grade": 200,
+      "name": "Fuji Stakes",
+      "short_name": "Fuji S.",
+      "schedule": [
+        {
+          "program_id": 112,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 1900
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 131,
+          "group_id": 138,
+          "priority": 138,
+          "condition": 0,
+          "win_saddle_type": 2,
+          "win_saddle_type_label": "G2",
+          "required_race_instance_ids": [
+            305801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 305901,
+      "race_id": 3059,
+      "thumbnail_id": 3059,
+      "grade": 300,
+      "name": "Artemis Stakes",
+      "short_name": "Artemis S.",
+      "schedule": [
+        {
+          "program_id": 633,
+          "month": 10,
+          "half": 2,
+          "turn_label": "Oct 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 132,
+          "group_id": 139,
+          "priority": 139,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            305901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306001,
+      "race_id": 3060,
+      "thumbnail_id": 3060,
+      "grade": 300,
+      "name": "Fantasy Stakes",
+      "short_name": "Fantasy S.",
+      "schedule": [
+        {
+          "program_id": 634,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 133,
+          "group_id": 140,
+          "priority": 140,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306101,
+      "race_id": 3061,
+      "thumbnail_id": 3061,
+      "grade": 300,
+      "name": "Miyako Stakes",
+      "short_name": "Miyako S.",
+      "schedule": [
+        {
+          "program_id": 113,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 750
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 134,
+          "group_id": 141,
+          "priority": 141,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306101
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306201,
+      "race_id": 3062,
+      "thumbnail_id": 3062,
+      "grade": 300,
+      "name": "Musashino Stakes",
+      "short_name": "Musashino S.",
+      "schedule": [
+        {
+          "program_id": 114,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 8,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 135,
+          "group_id": 142,
+          "priority": 142,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306201
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306301,
+      "race_id": 3063,
+      "thumbnail_id": 3063,
+      "grade": 300,
+      "name": "Fukushima Kinen",
+      "short_name": "Fukushima Kinen",
+      "schedule": [
+        {
+          "program_id": 115,
+          "month": 11,
+          "half": 1,
+          "turn_label": "Nov 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 136,
+          "group_id": 143,
+          "priority": 143,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306301
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306401,
+      "race_id": 3064,
+      "thumbnail_id": 3064,
+      "grade": 300,
+      "name": "Tokyo Sports Hai Junior Stakes",
+      "short_name": "Tokyo Sports Hai Junior S.",
+      "schedule": [
+        {
+          "program_id": 635,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 137,
+          "group_id": 144,
+          "priority": 144,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306401
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306501,
+      "race_id": 3065,
+      "thumbnail_id": 3065,
+      "grade": 300,
+      "name": "Kyoto Junior Stakes",
+      "short_name": "Kyoto Junior S.",
+      "schedule": [
+        {
+          "program_id": 636,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 4,
+          "race_permission": 1,
+          "need_fan_count": 350
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 138,
+          "group_id": 145,
+          "priority": 145,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306501
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306601,
+      "race_id": 3066,
+      "thumbnail_id": 3066,
+      "grade": 300,
+      "name": "Keihan Hai",
+      "short_name": "Keihan Hai",
+      "schedule": [
+        {
+          "program_id": 116,
+          "month": 11,
+          "half": 2,
+          "turn_label": "Nov 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 139,
+          "group_id": 146,
+          "priority": 146,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306601
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306701,
+      "race_id": 3067,
+      "thumbnail_id": 3067,
+      "grade": 300,
+      "name": "Challenge Cup",
+      "short_name": "Challenge C.",
+      "schedule": [
+        {
+          "program_id": 117,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 140,
+          "group_id": 147,
+          "priority": 147,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306701
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306801,
+      "race_id": 3068,
+      "thumbnail_id": 3068,
+      "grade": 300,
+      "name": "Chunichi Shimbun Hai",
+      "short_name": "Chunichi Shimbun Hai",
+      "schedule": [
+        {
+          "program_id": 118,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1500
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 141,
+          "group_id": 148,
+          "priority": 148,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306801
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 306901,
+      "race_id": 3069,
+      "thumbnail_id": 3069,
+      "grade": 300,
+      "name": "Capella Stakes",
+      "short_name": "Capella S.",
+      "schedule": [
+        {
+          "program_id": 119,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 142,
+          "group_id": 149,
+          "priority": 149,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            306901
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 307001,
+      "race_id": 3070,
+      "thumbnail_id": 3070,
+      "grade": 300,
+      "name": "Turquoise Stakes",
+      "short_name": "Turquoise S.",
+      "schedule": [
+        {
+          "program_id": 120,
+          "month": 12,
+          "half": 1,
+          "turn_label": "Dec 1st half",
+          "program_group": 0,
+          "recommend_class_id": 6,
+          "race_permission": 3,
+          "need_fan_count": 1000
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 143,
+          "group_id": 150,
+          "priority": 150,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            307001
+          ]
+        }
+      ]
+    },
+    {
+      "race_instance_id": 405001,
+      "race_id": 4050,
+      "thumbnail_id": 4050,
+      "grade": 300,
+      "name": "Aoi Stakes",
+      "short_name": "Aoi S.",
+      "schedule": [
+        {
+          "program_id": 210,
+          "month": 5,
+          "half": 2,
+          "turn_label": "May 2nd half",
+          "program_group": 0,
+          "recommend_class_id": 10,
+          "race_permission": 2,
+          "need_fan_count": 1250
+        }
+      ],
+      "win_saddles": [
+        {
+          "saddle_id": 150,
+          "group_id": 109,
+          "priority": 109,
+          "condition": 0,
+          "win_saddle_type": 1,
+          "win_saddle_type_label": "G3",
+          "required_race_instance_ids": [
+            405001
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "exported_at": "2026-03-30T23:48:13.082660",
+    "source": "C:\\Users\\lars\\AppData\\LocalLow\\Cygames\\Umamusume\\master\\master.mdb",
+    "total_races": 138,
+    "image_convention": "thumbnail_id maps to game asset tex_race_thumb_{thumbnail_id}",
+    "schedule_notes": {
+      "month": "In-game calendar month (1=Jan, 4=Apr ... 12=Dec)",
+      "half": "1 = first half of month, 2 = second half of month",
+      "program_group": "0 = main route; other values = scenario/chara-specific routes",
+      "recommend_class_id": "Minimum class required to enter (higher = stricter)"
+    },
+    "saddle_type": {
+      "0": "Crown / multi-race set",
+      "1": "G3 single race",
+      "2": "G2 single race",
+      "3": "G1 single race"
+    }
+  }
+}

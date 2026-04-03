@@ -4,7 +4,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Increment this number whenever you want to show the update notification again
-export const CURRENT_UPDATE_VERSION = 4;
+export const CURRENT_UPDATE_VERSION = 5;
 export interface ChangeItem {
     text: string;
     link?: string; // Internal route link
@@ -23,6 +23,55 @@ export interface UpdateEntry {
 }
 // Define your updates here - newest first
 export const UPDATE_LOG: UpdateEntry[] = [
+    {
+        title: '🐴 Easter Update 🐇 Part 1',
+        date: '2026-04-01',
+        categories: [
+            {
+                category: 'major',
+                label: 'Major Changes',
+                icon: 'star',
+                color: '#ffc107',
+                items: [
+                    { text: 'User logins - sign in to save and sync your data' },
+                    {
+                        text: 'Profile page - view your trainer stats, veterans, and more',
+                        link: '/profile'
+                    },
+                    {
+                        text: 'Veteran browser - browse, filter, and inspect your trained characters',
+                        link: '/profile'
+                    },
+                ]
+            },
+            {
+                category: 'improvement',
+                label: 'Improvements',
+                icon: 'upgrade',
+                color: '#ff9800',
+                items: [
+                    { text: 'Search for parents with specific run races in the inheritance database' },
+                    {
+                        text: 'Spark splitting - click a parent to view their individual sparks',
+                        link: '/database'
+                    },
+                ]
+            },
+            {
+                category: 'minor',
+                label: 'Minor Changes',
+                icon: 'add_circle',
+                color: '#64b5f6',
+                items: [
+                    { text: 'Infinite scroll replaces pagination in the veteran browser' },
+                    { text: 'Updated rank badge color scheme' },
+                    { text: 'Consistent race grade colors across all dialogs' },
+                    { text: 'Added export instructions for veteran data upload' },
+                    { text: 'Various layout and styling improvements' },
+                ]
+            },
+        ]
+    },
     {
         title: 'Timeline Improvements & Predictions',
         date: '2026-03-01',
@@ -156,7 +205,7 @@ export const UPDATE_LOG: UpdateEntry[] = [
     <div class="update-dialog-container">
       <div class="dialog-header">
         <mat-icon class="header-icon">auto_awesome</mat-icon>
-        <span class="header-title">What's New</span>
+        <span class="header-title">{{ updates[0]?.title || fallbackTitle }}</span>
         <span class="header-date" *ngIf="updates[0]?.date">{{ formatDate(updates[0].date!) }}</span>
         <button class="close-btn" (click)="dismiss()">
           <mat-icon>close</mat-icon>
@@ -445,6 +494,7 @@ export const UPDATE_LOG: UpdateEntry[] = [
 })
 export class UpdateNotificationComponent implements OnInit {
     updates = UPDATE_LOG;
+    fallbackTitle = "What's New";
     constructor(private dialogRef: MatDialogRef<UpdateNotificationComponent>) { }
     ngOnInit() { }
     formatDate(dateStr: string): string {

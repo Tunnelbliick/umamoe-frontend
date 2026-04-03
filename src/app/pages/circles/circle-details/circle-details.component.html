@@ -72,9 +72,13 @@
             <span class="label">Leader Name</span>
             <span class="value">{{circle?.leader_name || circle?.leader_viewer_id}}</span>
           </div>
-          <div class="info-row no-border">
+          <div class="info-row" [class.no-border]="!isLiveDataFresh">
             <span class="label">Monthly Fans</span>
             <span class="value highlight"><app-animated-number [value]="displayedMonthlyPoint"></app-animated-number></span>
+          </div>
+          <div class="info-row live-row no-border" *ngIf="isLiveDataFresh">
+            <span class="label"><span class="live-dot"></span> Live Points</span>
+            <span class="value highlight"><app-animated-number [value]="circle!.live_points!"></app-animated-number></span>
           </div>
           <div class="club-rank-row" *ngIf="clubRank" [class.max-rank]="!fansToNextTier">
             <div class="tier-side lower" *ngIf="fansToLowerTier !== undefined && fansToLowerTier !== null">

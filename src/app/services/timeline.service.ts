@@ -82,6 +82,11 @@ const CONFIRMED_CHARACTER_BANNER_DATES = new Map<string, Date>([
   ['2022_30074.png', new Date(Date.UTC(2026, 2, 12, 22, 0, 0))], // March 18, 2026 22:00 UTC
   ['2022_30076.png', new Date(Date.UTC(2026, 2, 22, 22, 0, 0))], // March 25, 2026 22:00 UTC
   ['2022_30078.png', new Date(Date.UTC(2026, 2, 26, 22, 0, 0))], // April 1, 2026 22:00 UTC
+  ['2022_30080.png', new Date(Date.UTC(2026, 3, 5, 22, 0, 0))], // April 9, 2026 22:00 UTC
+  ['2022_30082.png', new Date(Date.UTC(2026, 3, 12, 22, 0, 0))], // April 14, 2026 22:00 UTC
+  ['2022_30084.png', new Date(Date.UTC(2026, 3, 20, 22, 0, 0))], // April 24, 2026 22:00 UTC
+  ['2022_30086.png', new Date(Date.UTC(2026, 3, 26, 22, 0, 0))], // May 6, 2026 22:00 UTC
+  ['2022_30088.png', new Date(Date.UTC(2026, 3, 30, 22, 0, 0))], // May 14, 2026 22:00 UTC
   // Add more confirmed character banner dates here as they're announced
 ]);
 // Support Banner confirmed dates (banner image -> global release date)
@@ -125,6 +130,11 @@ const CONFIRMED_SUPPORT_BANNER_DATES = new Map<string, Date>([
   ['2022_30075.png', new Date(Date.UTC(2026, 2, 12, 22, 0, 0))], // March 18, 2026 22:00 UTC
   ['2022_30077.png', new Date(Date.UTC(2026, 2, 22, 22, 0, 0))], // March 25, 2026 22:00 UTC
   ['2022_30079.png', new Date(Date.UTC(2026, 2, 26, 22, 0, 0))], // April 1, 2026 22:00 UTC
+  ['2022_30081.png', new Date(Date.UTC(2026, 3, 5, 22, 0, 0))], // April 9, 2026 22:00 UTC
+  ['2022_30083.png', new Date(Date.UTC(2026, 3, 12, 22, 0, 0))], // April 14, 2026 22:00 UTC
+  ['2022_30085.png', new Date(Date.UTC(2026, 3, 20, 22, 0, 0))], // April 24, 2026 22:00 UTC
+  ['2022_30087.png', new Date(Date.UTC(2026, 3, 26, 22, 0, 0))], // May 6, 2026 22:00 UTC
+  ['2022_30089.png', new Date(Date.UTC(2026, 3, 30, 22, 0, 0))], // May 14, 2026 22:00 UTC 
   // Add more confirmed support banner dates here as they're announced
 ]);
 // Story Event confirmed dates (banner image -> global release date)
@@ -139,6 +149,7 @@ const CONFIRMED_STORY_EVENT_DATES = new Map<string, Date>([
   ['11_miracles_of_the_holy_night_banner.png', new Date(Date.UTC(2026, 0, 5, 22, 0, 0))],
   ['01_patisserie_grandeur_banner.png', new Date(Date.UTC(2026, 1, 18, 22, 0, 0))],
   ['02_flapping_run_up_banner.png', new Date(Date.UTC(2026, 2, 12, 22, 0, 0))],
+  ['03_tonight_at_the_ligne_droite_banner.png', new Date(Date.UTC(2026, 3, 5, 22, 0, 0))],
 ]);
 // Paid Banner confirmed dates (banner image -> global release date)
 const CONFIRMED_PAID_BANNER_DATES = new Map<string, Date>([
@@ -164,6 +175,7 @@ const CONFIRMED_CHAMPIONS_MEETING_DATES = new Map<string, Date>([
   ['champions_meeting_8', new Date(Date.UTC(2026, 1, 9, 22, 0, 0))], // Ninth Champions Meeting (February 4, 2026)
   ['champions_meeting_9', new Date(Date.UTC(2026, 2, 2, 22, 0, 0))], // Tenth Champions Meeting (February 25, 2026)
   ['champions_meeting_10', new Date(Date.UTC(2026, 2, 26, 22, 0, 0))], // Eleventh Champions Meeting (March 17, 2026)
+  ['champions_meeting_11', new Date(Date.UTC(2026, 3, 20, 22, 0, 0))], // Twelfth Champions Meeting (April 14, 2026)
   // Add more confirmed champions meeting dates here as they're announced
 ]);
 // Legend Race confirmed dates (index -> global release date)
@@ -180,6 +192,7 @@ const CONFIRMED_LEGEND_RACE_DATES = new Map<string, Date>([
   ['legend_race_8', new Date(Date.UTC(2026, 0, 22, 22, 0, 0))], //
   ['legend_race_9', new Date(Date.UTC(2026, 1, 26, 22, 0, 0))], //
   ['legend_race_10', new Date(Date.UTC(2026, 2, 23, 22, 0, 0))], //
+  //['legend_race_11', new Date(Date.UTC(2026, 3, 20, 22, 0, 0))], //
   // Add more confirmed legend race dates here as they're announced
 ]);
 // Campaign confirmed dates (campaign image -> global release date)
@@ -202,7 +215,7 @@ const BANNER_TWEAK_FACTORS = new Map<number, number>([]);
 // Key: Unconfirmed banner index (0 = first unconfirmed banner, 1 = second, ইত্যাদি.)
 // Value: Number of days to delay (can be negative to bring forward)
 const UNCONFIRMED_GAP_DAYS = new Map<number, number>([
-  [0, 2], // Shift the first unpredicted banner block back by 14 days (adjust as needed)
+  [0, 0], // Shift the first unpredicted banner block back by 14 days (adjust as needed)
 ]);
 // Helper function to parse date strings as UTC
 function parseAsUTC(dateString: string): Date {
