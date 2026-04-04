@@ -672,31 +672,22 @@
         margin-right: auto;
       }
 
-      .role-badge {
+      .role-badge, .status-badge {
         padding: 2px 6px;
         border-radius: var(--radius-xs);
         font-size: 0.65rem;
         text-transform: uppercase;
         font-weight: 600;
         white-space: nowrap;
-        
+      }
+
+      .role-badge {
         &.leader { background: rgba(255, 167, 38, 0.15); color: #ffa726; border: 1px solid rgba(255, 167, 38, 0.3); }
-
         &.officer { background: rgba(102, 187, 106, 0.15); color: #66bb6a; border: 1px solid rgba(102, 187, 106, 0.3); }
-
         &.member { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border-primary); }
       }
-      
-      .status-badge {
-        padding: 2px 6px;
-        border-radius: var(--radius-xs);
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        font-weight: 600;
-        white-space: nowrap;
-        
-        &.inactive { background: rgba(244, 67, 54, 0.15); color: #ef5350; border: 1px solid rgba(244, 67, 54, 0.3); }
-      }
+
+      .status-badge.inactive { background: rgba(244, 67, 54, 0.15); color: #ef5350; border: 1px solid rgba(244, 67, 54, 0.3); }
     }
 
     .member-stats {
@@ -954,18 +945,6 @@
         overflow: hidden;
       }
 
-      .rank-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        background: var(--surface-4);
-
-        &.gold   { background: #ffd700; box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
-        &.silver { background: #90a4ae; }
-        &.bronze { background: #cd7f32; }
-      }
-
       .contrib-name {
         @include text-ellipsis;
         color: var(--text-secondary);
@@ -983,7 +962,20 @@
       }
     }
 
-    // Hover Popover — mirrors the calendar cell's contrib-row style
+    // Shared rank dot (used in both contributors and popover)
+    .rank-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--surface-4);
+
+      &.gold   { background: #ffd700; box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
+      &.silver { background: #90a4ae; }
+      &.bronze { background: #cd7f32; }
+    }
+
+    // Hover Popover
     .day-popover {
       display: none;
       position: absolute;
@@ -1026,18 +1018,6 @@
         line-height: 1.3;
 
         &:hover { background: var(--surface-1); }
-
-        .rank-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          flex-shrink: 0;
-          background: var(--surface-4);
-
-          &.gold   { background: #ffd700; box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
-          &.silver { background: #90a4ae; }
-          &.bronze { background: #cd7f32; }
-        }
 
         .popover-name {
           flex: 1;

@@ -186,54 +186,21 @@
 
             // Active / included state — per type accent color
             &.active {
-              &.chip-character {
-                background: rgba(100, 181, 246, 0.1);
-                border-color: rgba(100, 181, 246, 0.35);
-                color: var(--accent-primary);
-                mat-icon { color: var(--accent-primary); }
-                &:hover { background: rgba(100, 181, 246, 0.16); border-color: rgba(100, 181, 246, 0.5); }
-              }
-              &.chip-support {
-                background: rgba(186, 104, 200, 0.1);
-                border-color: rgba(186, 104, 200, 0.35);
-                color: var(--accent-secondary);
-                mat-icon { color: var(--accent-secondary); }
-                &:hover { background: rgba(186, 104, 200, 0.16); border-color: rgba(186, 104, 200, 0.5); }
-              }
-              &.chip-story {
-                background: rgba(255, 183, 77, 0.1);
-                border-color: rgba(255, 183, 77, 0.35);
-                color: var(--accent-warning);
-                mat-icon { color: var(--accent-warning); }
-                &:hover { background: rgba(255, 183, 77, 0.16); border-color: rgba(255, 183, 77, 0.5); }
-              }
-              &.chip-champions {
-                background: rgba(156, 39, 176, 0.1);
-                border-color: rgba(156, 39, 176, 0.35);
-                color: var(--accent-purple);
-                mat-icon { color: var(--accent-purple); }
-                &:hover { background: rgba(156, 39, 176, 0.16); border-color: rgba(156, 39, 176, 0.5); }
-              }
-              &.chip-legend {
-                background: rgba(233, 30, 99, 0.1);
-                border-color: rgba(233, 30, 99, 0.35);
-                color: var(--color-pink);
-                mat-icon { color: var(--color-pink); }
-                &:hover { background: rgba(233, 30, 99, 0.16); border-color: rgba(233, 30, 99, 0.5); }
-              }
-              &.chip-paid {
-                background: rgba(255, 152, 0, 0.1);
-                border-color: rgba(255, 152, 0, 0.35);
-                color: #ffcc80;
-                mat-icon { color: #ffcc80; }
-                &:hover { background: rgba(255, 152, 0, 0.16); border-color: rgba(255, 152, 0, 0.5); }
-              }
-              &.chip-campaign {
-                background: rgba(38, 166, 154, 0.1);
-                border-color: rgba(38, 166, 154, 0.35);
-                color: #80cbc4;
-                mat-icon { color: #80cbc4; }
-                &:hover { background: rgba(38, 166, 154, 0.16); border-color: rgba(38, 166, 154, 0.5); }
+              $chip-colors: (
+                character: (rgba(100, 181, 246, 0.1), rgba(100, 181, 246, 0.35), var(--accent-primary), rgba(100, 181, 246, 0.16), rgba(100, 181, 246, 0.5)),
+                support: (rgba(186, 104, 200, 0.1), rgba(186, 104, 200, 0.35), var(--accent-secondary), rgba(186, 104, 200, 0.16), rgba(186, 104, 200, 0.5)),
+                story: (rgba(255, 183, 77, 0.1), rgba(255, 183, 77, 0.35), var(--accent-warning), rgba(255, 183, 77, 0.16), rgba(255, 183, 77, 0.5)),
+                champions: (rgba(156, 39, 176, 0.1), rgba(156, 39, 176, 0.35), var(--accent-purple), rgba(156, 39, 176, 0.16), rgba(156, 39, 176, 0.5)),
+                legend: (rgba(233, 30, 99, 0.1), rgba(233, 30, 99, 0.35), var(--color-pink), rgba(233, 30, 99, 0.16), rgba(233, 30, 99, 0.5)),
+                paid: (rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.35), #ffcc80, rgba(255, 152, 0, 0.16), rgba(255, 152, 0, 0.5)),
+                campaign: (rgba(38, 166, 154, 0.1), rgba(38, 166, 154, 0.35), #80cbc4, rgba(38, 166, 154, 0.16), rgba(38, 166, 154, 0.5)),
+              );
+              @each $type, $colors in $chip-colors {
+                &.chip-#{$type} {
+                  background: nth($colors, 1); border-color: nth($colors, 2); color: nth($colors, 3);
+                  mat-icon { color: nth($colors, 3); }
+                  &:hover { background: nth($colors, 4); border-color: nth($colors, 5); }
+                }
               }
             }
           }
@@ -326,7 +293,8 @@
         border: 2px solid var(--bg-tertiary); // Add border for better definition
         min-width: 20px; // Ensure minimum thumb size
 
-        &:hover { background: var(--accent-primary); }
+        &:hover { background: var(--accent-primary); }
+
         &:active { background: var(--accent-secondary); }
       }
 
@@ -539,7 +507,8 @@
           }
 
           &.timeline-year {
-            .center-marker { display: none; }
+            .center-marker { display: none; }
+
             .connection-line { display: none; }
 
             &::before {
@@ -567,7 +536,8 @@
                 text-align: center;
                 opacity: 0.6;
 
-                span { color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; }
+                span { color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; }
+
                 small { display: none; }
               }
             }
@@ -609,8 +579,10 @@
             left: 50%;
             transform: translateX(-50%);
 
-            &.line-top { height: 75px; width: 2px; transform: translate(-50%, -50%); }
-            &.line-bottom { height: 75px; width: 2px; transform: translate(-50%, 50%); }
+            &.line-top { height: 75px; width: 2px; transform: translate(-50%, -50%); }
+
+            &.line-bottom { height: 75px; width: 2px; transform: translate(-50%, 50%); }
+
             &.line-center { display: none; }
           }
 
@@ -726,47 +698,25 @@
               }
 
               // Event type specific styling using classes
-              &.event-type-champions_meeting {
-                border-left: 4px solid #9c27b0;
-
-                &:hover { border-color: var(--color-purple); box-shadow: 0 2px 8px rgba(156, 39, 176); }
-              }
-
-              &.event-type-legend_race {
-                border-left: 4px solid #e91e63;
-
-                &:hover { border-color: var(--color-pink); box-shadow: 0 1px 8px rgba(233, 30, 99); }
-              }
-
-              &.event-type-paid_banner {
-                border-left: 4px solid #ff9800;
-
-                &:hover { border-color: var(--color-orange); box-shadow: 0 1px 8px rgba(255, 152, 0); }
+              $event-type-colors: (
+                champions_meeting: (#9c27b0, var(--color-purple), rgba(156, 39, 176)),
+                legend_race: (#e91e63, var(--color-pink), rgba(233, 30, 99)),
+                paid_banner: (#ff9800, var(--color-orange), rgba(255, 152, 0)),
+                story_event: (#ffb74d, var(--accent-warning), rgba(255, 183, 77)),
+                character_banner: (var(--accent-primary), var(--accent-primary), var(--accent-primary)),
+                support_card_banner: (var(--accent-secondary), var(--accent-secondary), var(--accent-secondary)),
+              );
+              @each $type, $colors in $event-type-colors {
+                &.event-type-#{$type} {
+                  border-left: 4px solid nth($colors, 1);
+                  &:hover { border-color: nth($colors, 2); box-shadow: 0 1px 8px nth($colors, 3); }
+                }
               }
 
               &.event-type-campaign {
                 border-left: 4px solid #26a69a;
-
-                &:hover { border-color: #26a69a; box-shadow: 0 1px 8px rgba(38, 166, 154, 0.5); }
+                &:hover { border-color: #26a69a; box-shadow: 0 1px 8px rgba(38, 166, 154, 0.5); }
                 .event-image { padding-top: 0.5rem; }
-              }
-
-              &.event-type-story_event {
-                border-left: 4px solid #ffb74d;
-
-                &:hover { border-color: var(--accent-warning); box-shadow: 0 1px 8px rgba(255, 183, 77); }
-              }
-
-              &.event-type-character_banner {
-                border-left: 4px solid var(--accent-primary);
-
-                &:hover { border-color: var(--accent-primary); box-shadow: 0 1px 8px var(--accent-primary); }
-              }
-
-              &.event-type-support_card_banner {
-                border-left: 4px solid var(--accent-secondary);
-
-                &:hover { border-color: var(--accent-secondary); box-shadow: 0 1px 8px var(--accent-secondary); }
               }
 
               // Grouped events styling
@@ -860,67 +810,19 @@
                 background: linear-gradient(135deg, var(--bg-secondary), var(--bg-quaternary));
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
 
-                .placeholder-icon-character {
-                  color: var(--accent-primary);
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-support-card {
-                  color: var(--accent-secondary);
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-event {
-                  color: var(--accent-warning);
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-story_event {
-                  color: var(--accent-warning);
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-champions_meeting {
-                  color: var(--color-purple); // Purple for Champions Meeting
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-legend_race {
-                  color: var(--color-pink); // Pink/Red for Legend Race
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-paid_banner {
-                  color: var(--color-orange); // Orange for Paid Banners
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-campaign {
-                  color: #26a69a;
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
-                }
-
-                .placeholder-icon-milestone {
-                  color: #FFD700;
-                  font-size: 3rem;
-                  width: 3rem;
-                  height: 3rem;
+                $placeholder-colors: (
+                  character: var(--accent-primary),
+                  support-card: var(--accent-secondary),
+                  event: var(--accent-warning),
+                  story_event: var(--accent-warning),
+                  champions_meeting: var(--color-purple),
+                  legend_race: var(--color-pink),
+                  paid_banner: var(--color-orange),
+                  campaign: #26a69a,
+                  milestone: #FFD700
+                );
+                @each $type, $color in $placeholder-colors {
+                  .placeholder-icon-#{$type} { color: $color; font-size: 3rem; width: 3rem; height: 3rem; }
                 }
               }
 
@@ -939,24 +841,19 @@
                   width: 1.2rem;
                   height: 1.2rem;
 
-                  &.event-icon-character { color: var(--accent-primary); }
-                  &.event-icon-support-card { color: var(--accent-secondary); }
-                  &.event-icon-event { color: var(--accent-warning); }
-                  &.event-icon-story_event { color: var(--accent-warning); }
-
-                  &.event-icon-champions_meeting {
-                    color: var(--color-purple); // Purple for Champions Meeting
+                  $event-icon-colors: (
+                    character: var(--accent-primary),
+                    support-card: var(--accent-secondary),
+                    event: var(--accent-warning),
+                    story_event: var(--accent-warning),
+                    champions_meeting: var(--color-purple),
+                    legend_race: var(--color-pink),
+                    paid_banner: var(--color-orange),
+                    campaign: #26a69a
+                  );
+                  @each $type, $color in $event-icon-colors {
+                    &.event-icon-#{$type} { color: $color; }
                   }
-
-                  &.event-icon-legend_race {
-                    color: var(--color-pink); // Pink/Red for Legend Race
-                  }
-
-                  &.event-icon-paid_banner {
-                    color: var(--color-orange); // Orange for Paid Banners
-                  }
-
-                  &.event-icon-campaign { color: #26a69a; }
                 }
 
                 .event-type {
@@ -997,7 +894,8 @@
                 overflow-y: auto;
 
                 // Custom scrollbar
-                &::-webkit-scrollbar { height: 5px; width: 5px; }
+                &::-webkit-scrollbar { height: 5px; width: 5px; }
+
                 &::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: var(--radius-sm); }
 
                 &::-webkit-scrollbar-thumb {
@@ -1008,23 +906,23 @@
                   &:hover { background: var(--accent-primary); }
                 }
 
-                .character-chip {
-                  background: rgba(100, 181, 246, 0.2);
-                  color: var(--accent-primary);
+                .character-chip,
+                .support-chip {
                   padding: 0.2rem 0.5rem;
                   border-radius: var(--border-radius);
                   font-size: 0.7rem;
                   font-weight: 500;
+                }
+
+                .character-chip {
+                  background: rgba(100, 181, 246, 0.2);
+                  color: var(--accent-primary);
                   border: 1px solid rgba(100, 181, 246, 0.3);
                 }
 
                 .support-chip {
                   background: rgba(186, 104, 200, 0.2);
                   color: #ba68c8;
-                  padding: 0.2rem 0.5rem;
-                  border-radius: var(--border-radius);
-                  font-size: 0.7rem;
-                  font-weight: 500;
                   border: 1px solid rgba(186, 104, 200, 0.3);
                 }
               }
@@ -1111,7 +1009,8 @@
           gap: 1rem;
           align-items: flex-start;
 
-          .header-divider { display: none; }
+          .header-divider { display: none; }
+
           .filter-controls { width: 100%; }
         }
       }
@@ -1127,44 +1026,25 @@
           font-size: 0.8rem;
           min-width: 60px;
 
-          span { font-size: 0.8rem; }
+          span { font-size: 0.8rem; }
+
           small { font-size: 0.6rem; }
         }
       }
 
       .timeline-controls .controls-content { flex-direction: column; gap: 1rem; text-align: center; }
-    }
-  }
 
-  // Mobile responsive adjustments for grouped events
-  @media (max-width: 768px) {
-    .timeline-page {
-      .timeline-wrapper {
-        .timeline-container {
-          .timeline-track {
-            .timeline-item {
-              &.grouped-content {
-                .event-card.grouped-event {
-                  // On mobile, reduce horizontal spacing between grouped events
-                  --group-offset: calc(var(--group-index, 0) * 140px);
-                  transform: translateX(var(--group-offset)) !important;
-
-                  &:hover {
-                    // Maintain mobile spacing on hover with scale
-                    transform: translateX(var(--group-offset)) translateY(-4px) scale(1.02) !important;
-                  }
-                }
-
-                .group-connector {
-                  left: 70px; // Adjust for smaller card spacing
-
-                  .connector-line {
-                    // Adjust connector width for mobile
-                    width: calc(100% - 20px);
-                  }
-                }
-              }
-            }
+      // Grouped events mobile adjustments
+      .timeline-wrapper .timeline-container .timeline-track .timeline-item {
+        &.grouped-content {
+          .event-card.grouped-event {
+            --group-offset: calc(var(--group-index, 0) * 140px);
+            transform: translateX(var(--group-offset)) !important;
+            &:hover { transform: translateX(var(--group-offset)) translateY(-4px) scale(1.02) !important; }
+          }
+          .group-connector {
+            left: 70px;
+            .connector-line { width: calc(100% - 20px); }
           }
         }
       }
@@ -1312,32 +1192,17 @@
             }
           }
 
-          .compact-character-toggle {
-            .compact-checkbox-content mat-icon { color: var(--accent-primary); }
-          }
-
-          .compact-support-toggle {
-            .compact-checkbox-content mat-icon { color: var(--accent-secondary); }
-          }
-
-          .compact-story-events-toggle {
-            .compact-checkbox-content mat-icon { color: var(--accent-warning); }
-          }
-
-          .compact-champions-toggle {
-            .compact-checkbox-content mat-icon { color: var(--color-purple); }
-          }
-
-          .compact-legend-races-toggle {
-            .compact-checkbox-content mat-icon { color: var(--color-pink); }
-          }
-
-          .compact-paid-toggle {
-            .compact-checkbox-content mat-icon { color: var(--color-orange); }
-          }
-
-          .compact-campaign-toggle {
-            .compact-checkbox-content mat-icon { color: #26a69a; }
+          $compact-toggle-colors: (
+            character: var(--accent-primary),
+            support: var(--accent-secondary),
+            story-events: var(--accent-warning),
+            champions: var(--color-purple),
+            legend-races: var(--color-pink),
+            paid: var(--color-orange),
+            campaign: #26a69a
+          );
+          @each $type, $color in $compact-toggle-colors {
+            .compact-#{$type}-toggle { .compact-checkbox-content mat-icon { color: $color; } }
           }
         }
       }
@@ -1364,7 +1229,6 @@
 
           .header-info {
             text-align: center;
-
             h1 { font-size: 1.5rem; }
           }
 
@@ -1389,45 +1253,24 @@
         .timeline-track .timeline-item .timeline-label {
           font-size: 0.8rem;
           min-width: 60px;
-
-          span { font-size: 0.8rem; }
+          span { font-size: 0.8rem; }
           small { font-size: 0.6rem; }
         }
       }
 
       .timeline-controls .controls-content { flex-direction: column; gap: 1rem; text-align: center; }
-    }
-  }
 
-  // Mobile responsive adjustments for grouped events
-  @media (max-width: 768px) {
-    .timeline-page {
-      .timeline-wrapper {
-        .timeline-container {
-          .timeline-track {
-            .timeline-item {
-              &.grouped-content {
-                .event-card.grouped-event {
-                  // On mobile, reduce horizontal spacing between grouped events
-                  --group-offset: calc(var(--group-index, 0) * 140px);
-                  transform: translateX(var(--group-offset)) !important;
-
-                  &:hover {
-                    // Maintain mobile spacing on hover with scale
-                    transform: translateX(var(--group-offset)) translateY(-4px) scale(1.02) !important;
-                  }
-                }
-
-                .group-connector {
-                  left: 70px; // Adjust for smaller card spacing
-
-                  .connector-line {
-                    // Adjust connector width for mobile
-                    width: calc(100% - 20px);
-                  }
-                }
-              }
-            }
+      // Grouped events mobile adjustments
+      .timeline-wrapper .timeline-container .timeline-track .timeline-item {
+        &.grouped-content {
+          .event-card.grouped-event {
+            --group-offset: calc(var(--group-index, 0) * 140px);
+            transform: translateX(var(--group-offset)) !important;
+            &:hover { transform: translateX(var(--group-offset)) translateY(-4px) scale(1.02) !important; }
+          }
+          .group-connector {
+            left: 70px;
+            .connector-line { width: calc(100% - 20px); }
           }
         }
       }
@@ -1448,7 +1291,8 @@
     .floating-filter-card { display: none; }
 
     // Fallback to regular header on narrow screens even in compact mode
-    .compact-header { display: none; }
+    .compact-header { display: none; }
+
     .page-header { display: block !important; }
   }
 
@@ -1459,7 +1303,8 @@
 @keyframes pulse-today {
 
   0%,
-  100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3); transform: scale(1); }
+  100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3); transform: scale(1); }
+
   50% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.8), 0 2px 12px rgba(0, 0, 0, 0.4); transform: scale(1.1); }
 }
 
@@ -1467,6 +1312,7 @@
 @keyframes text-glow {
 
   0%,
-  100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+  100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+
   50% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 87, 34, 0.6); }
 }

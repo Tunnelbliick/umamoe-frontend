@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "npm run precompute && ng build",
     "build:prod": "npm run precompute && ng build --configuration production",
+    "build:beta": "npm run precompute && ng build --configuration beta",
     "build:dev": "ng build",
     "precompute": "node scripts/precompute-tierlist.js",
     "watch": "ng build --watch --configuration development",

@@ -658,6 +658,78 @@
   }
 }
 
+// ===== SPARK / FACTOR COLOR SYSTEM =====
+// Generates .blue-spark, .pink-spark, .green-spark, .white-spark classes
+// Usage: @include spark-colors; (inside a scoping selector or at root)
+$spark-palette: (
+  "blue":  (#2196f3, #90caf9, var(--accent-primary)),
+  "pink":  (#e91e63, var(--color-pink), #f06292),
+  "green": (#4caf50, #a5d6a7, var(--accent-secondary)),
+  "white": (#9e9e9e, #e0e0e0, #bdbdbd),
+) !default;
+
+@mixin spark-colors($bg-alpha: 0.1, $border-alpha: 0.4) {
+  @each $name, $vals in $spark-palette {
+    $base: nth($vals, 1);
+    $text: nth($vals, 2);
+    $star: nth($vals, 3);
+    .#{$name}-spark {
+      background: rgba($base, $bg-alpha);
+      border-color: rgba($base, $border-alpha);
+      color: $text;
+      .spark-star { color: $star; }
+    }
+  }
+}
+
+// Factor row color variants (for filter factor items)
+@mixin factor-row-colors {
+  @each $name, $color, $text in
+    ("blue", rgba(66, 188, 247, 0.25), #90caf9),
+    ("pink", rgba(255, 120, 178, 0.25), var(--color-pink)),
+    ("green", rgba(151, 212, 52, 0.25), #a5d6a7),
+    ("white", rgba(200, 200, 200, 0.25), #e0e0e0) {
+    &.#{$name}-factor {
+      border-color: $color;
+      background: rgba($color, 0.16);
+      .factor-name { color: $text; }
+    }
+  }
+}
+
+// Toggle badge (for split-sparks, max-followers, etc.) - two states
+@mixin toggle-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  .badge-icon { @include icon-size(18px); }
+  .badge-label { font-weight: 500; color: var(--text-secondary); }
+  .badge-status { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-xs); letter-spacing: 0.5px; }
+}
+
+@mixin toggle-badge-state($color, $inactive-label: 'inactive', $active-label: 'active') {
+  &.#{$inactive-label} {
+    background: var(--surface-2); border: 1px solid var(--border-secondary);
+    &:hover { background: var(--surface-3); }
+    .badge-icon { color: var(--text-muted); }
+    .badge-status { color: var(--accent-warning); background: rgba(255, 152, 0, 0.15); }
+  }
+  &.#{$active-label} {
+    background: rgba($color, 0.08); border: 1px solid rgba($color, 0.35);
+    &:hover { background: rgba($color, 0.14); border-color: rgba($color, 0.5); }
+    .badge-icon { color: $color; }
+    .badge-status { color: $color; background: rgba($color, 0.2); }
+  }
+}
+
 // ===== RANK BADGE =====
 @mixin rank-color($color) {
   border-color: rgba($color, 0.5);
