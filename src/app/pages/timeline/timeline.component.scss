@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .timeline-page {
   min-height: calc(100vh - 60px);
   display: flex;
@@ -12,9 +14,7 @@
   @media (max-width: 1150px) {
 
     // Hide desktop timeline on mobile
-    .desktop-timeline {
-      display: none;
-    }
+    .desktop-timeline { display: none; }
   }
 
   .desktop-timeline {
@@ -27,9 +27,7 @@
   @media (min-width: 1150px) {
 
     // Hide mobile timeline on desktop
-    app-mobile-timeline {
-      display: none;
-    }
+    app-mobile-timeline { display: none; }
   }
 
   h1 {
@@ -69,10 +67,7 @@
         flex: 0 0 275px;
         padding-right: 1.5rem;
 
-        h1 {
-          font-size: 1.75rem;
-          margin-bottom: 0.15rem;
-        }
+        h1 { font-size: 1.75rem; margin-bottom: 0.15rem; }
 
         .subtitle {
           margin: 0;
@@ -119,76 +114,7 @@
           align-items: center;
           gap: 0.5rem;
 
-          .search-field {
-            flex: 1 1 auto;
-            min-width: 0;
-
-            ::ng-deep {
-              .mat-mdc-text-field-wrapper {
-                height: 38px !important;
-                padding: 0 12px !important;
-                background: rgba(255, 255, 255, 0.05) !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
-                border-radius: 6px !important;
-                transition: all 0.2s ease;
-              }
-
-              .mat-mdc-form-field-focus-overlay {
-                background-color: transparent !important;
-              }
-
-              .mdc-notched-outline__leading,
-              .mdc-notched-outline__notch,
-              .mdc-notched-outline__trailing {
-                border: none !important;
-              }
-
-              &:hover .mat-mdc-text-field-wrapper {
-                background: rgba(255, 255, 255, 0.08) !important;
-                border-color: rgba(255, 255, 255, 0.2) !important;
-              }
-
-              &.mat-focused .mat-mdc-text-field-wrapper {
-                background: rgba(255, 255, 255, 0.1) !important;
-                border-color: #2196f3 !important;
-                box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
-              }
-
-              .mat-mdc-form-field-infix {
-                padding: 0 !important;
-                min-height: 38px !important;
-                display: flex !important;
-                align-items: center !important;
-              }
-
-              .mat-mdc-form-field-icon-suffix {
-                color: rgba(255, 255, 255, 0.3);
-                display: flex;
-                align-items: center;
-                height: 100%;
-
-                .mat-icon {
-                  font-size: 18px;
-                  width: 18px;
-                  height: 18px;
-                  line-height: 18px;
-                }
-              }
-
-              .mat-mdc-floating-label {
-                color: rgba(255, 255, 255, 0.35) !important;
-              }
-
-              input.mat-mdc-input-element {
-                margin-top: 0 !important;
-                color: rgba(255, 255, 255, 0.9);
-              }
-
-              .mat-mdc-form-field-subscript-wrapper {
-                display: none;
-              }
-            }
-          }
+          .search-field { flex: 1 1 auto; min-width: 0; }
 
           .search-navigation {
             display: flex;
@@ -201,18 +127,12 @@
               height: 32px;
               min-width: 32px;
               line-height: 32px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+              @include flex-center;
 
-              ::ng-deep .mat-icon {
-                font-size: 20px;
-                width: 20px;
-                height: 20px;
+              .mat-icon {
+                @include icon-size(20px);
                 line-height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
               }
             }
 
@@ -238,7 +158,7 @@
             gap: 6px;
             height: 30px;
             padding: 0 11px;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             font-family: inherit;
             font-size: 0.8rem;
@@ -249,24 +169,20 @@
             line-height: 1;
 
             // Excluded / inactive state
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.45);
+            background: var(--surface-2);
+            border: 1px solid var(--border-primary);
+            color: var(--text-muted);
 
             mat-icon {
               font-size: 0.95rem;
               width: 0.95rem;
               height: 0.95rem;
               flex-shrink: 0;
-              color: rgba(255, 255, 255, 0.35);
+              color: var(--text-disabled);
               transition: color 0.18s ease;
             }
 
-            &:hover:not(.active) {
-              background: rgba(255, 255, 255, 0.08);
-              border-color: rgba(255, 255, 255, 0.18);
-              color: rgba(255, 255, 255, 0.65);
-            }
+            &:hover:not(.active) { background: var(--surface-3); border-color: var(--border-secondary); color: var(--text-secondary); }
 
             // Active / included state — per type accent color
             &.active {
@@ -287,22 +203,22 @@
               &.chip-story {
                 background: rgba(255, 183, 77, 0.1);
                 border-color: rgba(255, 183, 77, 0.35);
-                color: #ffb74d;
-                mat-icon { color: #ffb74d; }
+                color: var(--accent-warning);
+                mat-icon { color: var(--accent-warning); }
                 &:hover { background: rgba(255, 183, 77, 0.16); border-color: rgba(255, 183, 77, 0.5); }
               }
               &.chip-champions {
                 background: rgba(156, 39, 176, 0.1);
                 border-color: rgba(156, 39, 176, 0.35);
-                color: #ce93d8;
-                mat-icon { color: #ce93d8; }
+                color: var(--accent-purple);
+                mat-icon { color: var(--accent-purple); }
                 &:hover { background: rgba(156, 39, 176, 0.16); border-color: rgba(156, 39, 176, 0.5); }
               }
               &.chip-legend {
                 background: rgba(233, 30, 99, 0.1);
                 border-color: rgba(233, 30, 99, 0.35);
-                color: #f48fb1;
-                mat-icon { color: #f48fb1; }
+                color: var(--color-pink);
+                mat-icon { color: var(--color-pink); }
                 &:hover { background: rgba(233, 30, 99, 0.16); border-color: rgba(233, 30, 99, 0.5); }
               }
               &.chip-paid {
@@ -340,17 +256,13 @@
       border-radius: var(--border-radius);
 
       .date-info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         gap: 0.5rem;
         font-size: 1.2rem;
         font-weight: 500;
         padding: 0.5rem;
 
-        mat-icon {
-          color: #FFD700;
-        }
+        mat-icon { color: #FFD700; }
       }
     }
   }
@@ -369,17 +281,15 @@
       overflow-x: auto;
       overflow-y: hidden;
       position: relative;
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+      scrollbar-color: var(--text-disabled) transparent;
 
       // Smooth scrolling for programmatic scrolls
       scroll-behavior: smooth;
 
       // Disable smooth scrolling when dragging
-      &.is-dragging {
-        scroll-behavior: auto;
-      }
+      &.is-dragging { scroll-behavior: auto; }
 
       // Chrome scrolling optimizations
       -webkit-overflow-scrolling: touch;
@@ -391,9 +301,7 @@
       cursor: grab;
       user-select: none; // Prevent text selection during drag
 
-      &:active {
-        cursor: grabbing;
-      }
+      &:active { cursor: grabbing; }
 
       // Removed problematic properties that can interfere with Chrome scrolling
       // will-change: scroll-position; // Can cause scrolling issues in Chrome
@@ -408,28 +316,21 @@
 
       &::-webkit-scrollbar-track {
         background: var(--bg-tertiary);
-        border-radius: 8px;
+        border-radius: var(--radius-md);
         margin: 0 4px; // Add margins to prevent track from touching edges
       }
 
       &::-webkit-scrollbar-thumb {
         background: var(--bg-quaternary);
-        border-radius: 8px;
+        border-radius: var(--radius-md);
         border: 2px solid var(--bg-tertiary); // Add border for better definition
         min-width: 20px; // Ensure minimum thumb size
 
-        &:hover {
-          background: var(--accent-primary);
-        }
-
-        &:active {
-          background: var(--accent-secondary);
-        }
+        &:hover { background: var(--accent-primary); }
+        &:active { background: var(--accent-secondary); }
       }
 
-      &::-webkit-scrollbar-corner {
-        background: var(--bg-tertiary);
-      }
+      &::-webkit-scrollbar-corner { background: var(--bg-tertiary); }
 
       // Chrome-specific scrolling fixes
       @supports (-webkit-appearance: none) {
@@ -443,29 +344,21 @@
             -webkit-appearance: none;
           }
 
-          &::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-radius: 9px !important;
-          }
+          &::-webkit-scrollbar-track { background: var(--surface-3) !important; border-radius: 9px !important; }
 
           &::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3) !important;
+            background: var(--surface-4) !important;
             border-radius: 9px !important;
-            border: 3px solid rgba(255, 255, 255, 0.1) !important;
+            border: 3px solid var(--border-primary) !important;
 
-            &:hover {
-              background: rgba(100, 181, 246, 0.7) !important;
-            }
+            &:hover { background: rgba(100, 181, 246, 0.7) !important; }
           }
         }
       }
 
       // Fallback for browsers that don't support custom scrollbars
       @supports not ((-webkit-appearance: none) or (-moz-appearance: none)) {
-        .timeline-page .timeline-wrapper .timeline-container {
-          scrollbar-width: thick;
-          scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
-        }
+        .timeline-page .timeline-wrapper .timeline-container { scrollbar-width: thick; scrollbar-color: var(--text-disabled) rgba(255, 255, 255, 0.1); }
       }
 
       .timeline-track {
@@ -505,10 +398,7 @@
           position: absolute;
           top: 50%;
           height: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
+          @include flex-col-center;
           z-index: 2;
           transform: translateY(-50%);
 
@@ -520,9 +410,7 @@
           min-height: auto;
 
           // Anniversary items should have higher z-index
-          &.timeline-anniversary {
-            z-index: 5;
-          }
+          &.timeline-anniversary { z-index: 5; }
 
           .timeline-marker {
             display: flex;
@@ -560,11 +448,7 @@
               }
             }
 
-            .marker-line {
-              width: 2px;
-              height: 30px;
-              background: rgba(255, 255, 255, 0.5);
-            }
+            .marker-line { width: 2px; height: 30px; background: rgba(255, 255, 255, 0.5); }
           }
 
           .timeline-label {
@@ -584,20 +468,14 @@
               color: var(--text-primary);
             }
 
-            small {
-              display: block;
-              color: var(--text-muted);
-              font-size: 0.7rem;
-            }
+            small { display: block; color: var(--text-muted); font-size: 0.7rem; }
           }
 
           &.timeline-milestone .timeline-label {
             background: rgba(255, 215, 0, 0.2);
             border-color: #FFD700;
 
-            span {
-              color: #FFD700;
-            }
+            span { color: #FFD700; }
           }
 
           .milestone-label {
@@ -612,11 +490,7 @@
               color: var(--accent-primary);
             }
 
-            small {
-              display: block;
-              color: var(--accent-primary);
-              font-size: 0.7rem;
-            }
+            small { display: block; color: var(--accent-primary); font-size: 0.7rem; }
           }
 
           .anniversary-label {
@@ -628,13 +502,13 @@
               display: block;
               font-weight: 700;
               font-size: 1rem;
-              color: #E91E63;
+              color: var(--color-pink);
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             }
 
             small {
               display: block;
-              color: #E91E63;
+              color: var(--color-pink);
               font-size: 0.75rem;
               font-weight: 600;
               opacity: 0.9;
@@ -665,13 +539,8 @@
           }
 
           &.timeline-year {
-            .center-marker {
-              display: none;
-            }
-
-            .connection-line {
-              display: none;
-            }
+            .center-marker { display: none; }
+            .connection-line { display: none; }
 
             &::before {
               content: '';
@@ -680,7 +549,7 @@
               bottom: 0;
               left: 50%;
               width: 1px;
-              background: rgba(255, 255, 255, 0.1);
+              background: var(--surface-3);
               transform: translateX(-50%);
               z-index: 0;
             }
@@ -698,15 +567,8 @@
                 text-align: center;
                 opacity: 0.6;
 
-                span {
-                  color: var(--text-secondary);
-                  font-size: 0.8rem;
-                  font-weight: 500;
-                }
-
-                small {
-                  display: none;
-                }
+                span { color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; }
+                small { display: none; }
               }
             }
           }
@@ -727,9 +589,7 @@
             // Ensure all child elements maintain their relative positioning
             .connection-line,
             .center-marker,
-            .item-content {
-              z-index: inherit;
-            }
+            .item-content { z-index: inherit; }
           }
 
           &.side-top .item-content {
@@ -749,21 +609,9 @@
             left: 50%;
             transform: translateX(-50%);
 
-            &.line-top {
-              height: 75px;
-              width: 2px;
-              transform: translate(-50%, -50%);
-            }
-
-            &.line-bottom {
-              height: 75px;
-              width: 2px;
-              transform: translate(-50%, 50%);
-            }
-
-            &.line-center {
-              display: none;
-            }
+            &.line-top { height: 75px; width: 2px; transform: translate(-50%, -50%); }
+            &.line-bottom { height: 75px; width: 2px; transform: translate(-50%, 50%); }
+            &.line-center { display: none; }
           }
 
           .center-marker {
@@ -773,10 +621,7 @@
             z-index: 3;
 
             // Anniversary markers should be above others
-            .marker-anniversary {
-              z-index: 15;
-              position: relative;
-            }
+            .marker-anniversary { z-index: 15; position: relative; }
 
             .marker-dot {
               width: 12px;
@@ -786,26 +631,18 @@
               border: 3px solid;
               box-shadow: var(--shadow-sm);
 
-              &.marker-event {
-                background: var(--accent-secondary);
-                border-color: #26C6DA;
-              }
+              &.marker-event { background: var(--accent-secondary); border-color: #26C6DA; }
 
               &.marker-milestone {
                 width: 32px;
                 height: 32px;
                 background: linear-gradient(45deg, #FF6B6B, #FFD700);
                 border-color: #FFA500;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
                 font-size: 16px;
                 color: white;
 
-                &::before {
-                  content: '🚀';
-                  font-size: 18px;
-                }
+                &::before { content: '🚀'; font-size: 18px; }
               }
 
               &.marker-anniversary {
@@ -813,17 +650,12 @@
                 height: 32px;
                 background: linear-gradient(45deg, #E91E63, #F8BBD9);
                 border-color: #C2185B;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
                 font-size: 16px;
                 color: white;
                 z-index: 15; // Higher z-index than other markers
 
-                &::before {
-                  content: '🎁';
-                  font-size: 18px;
-                }
+                &::before { content: '🎁'; font-size: 18px; }
               }
 
               &.marker-today {
@@ -831,9 +663,7 @@
                 height: 24px;
                 background: linear-gradient(45deg, #FF5722, #FF8A65);
                 border-color: #D84315;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
                 font-size: 14px;
                 color: white;
                 z-index: 20; // Highest z-index to ensure it's always visible
@@ -870,10 +700,7 @@
               // Transform handled by inline styles
             }
 
-            &.content-center {
-              top: 100%;
-              margin-top: 0.5rem;
-            }
+            &.content-center { top: 100%; margin-top: 0.5rem; }
 
             .event-card {
               background: var(--bg-tertiary);
@@ -902,68 +729,44 @@
               &.event-type-champions_meeting {
                 border-left: 4px solid #9c27b0;
 
-                &:hover {
-                  border-color: #9c27b0;
-                  box-shadow: 0 2px 8px rgba(156, 39, 176);
-                }
+                &:hover { border-color: var(--color-purple); box-shadow: 0 2px 8px rgba(156, 39, 176); }
               }
 
               &.event-type-legend_race {
                 border-left: 4px solid #e91e63;
 
-                &:hover {
-                  border-color: #e91e63;
-                  box-shadow: 0 1px 8px rgba(233, 30, 99);
-                }
+                &:hover { border-color: var(--color-pink); box-shadow: 0 1px 8px rgba(233, 30, 99); }
               }
 
               &.event-type-paid_banner {
                 border-left: 4px solid #ff9800;
 
-                &:hover {
-                  border-color: #ff9800;
-                  box-shadow: 0 1px 8px rgba(255, 152, 0);
-                }
+                &:hover { border-color: var(--color-orange); box-shadow: 0 1px 8px rgba(255, 152, 0); }
               }
 
               &.event-type-campaign {
                 border-left: 4px solid #26a69a;
 
-                &:hover {
-                  border-color: #26a69a;
-                  box-shadow: 0 1px 8px rgba(38, 166, 154, 0.5);
-                }
-
-                .event-image {
-                  padding-top: 0.5rem;
-                }
+                &:hover { border-color: #26a69a; box-shadow: 0 1px 8px rgba(38, 166, 154, 0.5); }
+                .event-image { padding-top: 0.5rem; }
               }
 
               &.event-type-story_event {
                 border-left: 4px solid #ffb74d;
 
-                &:hover {
-                  border-color: #ffb74d;
-                  box-shadow: 0 1px 8px rgba(255, 183, 77);
-                }
+                &:hover { border-color: var(--accent-warning); box-shadow: 0 1px 8px rgba(255, 183, 77); }
               }
 
               &.event-type-character_banner {
                 border-left: 4px solid var(--accent-primary);
 
-                &:hover {
-                  border-color: var(--accent-primary);
-                  box-shadow: 0 1px 8px var(--accent-primary);
-                }
+                &:hover { border-color: var(--accent-primary); box-shadow: 0 1px 8px var(--accent-primary); }
               }
 
               &.event-type-support_card_banner {
                 border-left: 4px solid var(--accent-secondary);
 
-                &:hover {
-                  border-color: var(--accent-secondary);
-                  box-shadow: 0 1px 8px var(--accent-secondary);
-                }
+                &:hover { border-color: var(--accent-secondary); box-shadow: 0 1px 8px var(--accent-secondary); }
               }
 
               // Grouped events styling
@@ -989,22 +792,13 @@
                 }
 
                 // First card: left portion is the hover area (since it's not overlapped on the left)
-                &:first-of-type::before {
-                  left: 0;
-                  right: 50%;
-                }
+                &:first-of-type::before { left: 0; right: 50%; }
 
                 // Middle cards: only the center portion is hoverable
-                &:not(:first-of-type):not(:last-of-type)::before {
-                  left: 25%;
-                  right: 25%;
-                }
+                &:not(:first-of-type):not(:last-of-type)::before { left: 25%; right: 25%; }
 
                 // Last card: right portion is the hover area
-                &:last-of-type::before {
-                  left: 50%;
-                  right: 0;
-                }
+                &:last-of-type::before { left: 50%; right: 0; }
 
                 // Make sure content areas can be interacted with despite the pseudo-element
                 .event-content,
@@ -1014,9 +808,7 @@
                   pointer-events: auto;
                 }
 
-                .event-tags {
-                  padding-top: 1px;
-                }
+                .event-tags { padding-top: 1px; }
 
                 // On hover, simplified effect to reduce repaints
                 &:hover {
@@ -1025,9 +817,7 @@
                 }
 
                 // Remove margin from the last card in a group to avoid extra spacing
-                &:last-of-type {
-                  margin-right: 0;
-                }
+                &:last-of-type { margin-right: 0; }
               }
 
               .event-image {
@@ -1057,7 +847,7 @@
                     width: 60%; // Make each image smaller to allow for overlap
                     height: 80%;
                     object-fit: contain;
-                    border-radius: 4px;
+                    border-radius: var(--radius-xs);
                     transition: transform 0.2s ease;
                   }
                 }
@@ -1066,9 +856,7 @@
               .event-image-placeholder {
                 width: 100%;
                 height: 120px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
                 background: linear-gradient(135deg, var(--bg-secondary), var(--bg-quaternary));
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
 
@@ -1087,35 +875,35 @@
                 }
 
                 .placeholder-icon-event {
-                  color: #ffb74d;
+                  color: var(--accent-warning);
                   font-size: 3rem;
                   width: 3rem;
                   height: 3rem;
                 }
 
                 .placeholder-icon-story_event {
-                  color: #ffb74d;
+                  color: var(--accent-warning);
                   font-size: 3rem;
                   width: 3rem;
                   height: 3rem;
                 }
 
                 .placeholder-icon-champions_meeting {
-                  color: #9c27b0; // Purple for Champions Meeting
+                  color: var(--color-purple); // Purple for Champions Meeting
                   font-size: 3rem;
                   width: 3rem;
                   height: 3rem;
                 }
 
                 .placeholder-icon-legend_race {
-                  color: #e91e63; // Pink/Red for Legend Race
+                  color: var(--color-pink); // Pink/Red for Legend Race
                   font-size: 3rem;
                   width: 3rem;
                   height: 3rem;
                 }
 
                 .placeholder-icon-paid_banner {
-                  color: #ff9800; // Orange for Paid Banners
+                  color: var(--color-orange); // Orange for Paid Banners
                   font-size: 3rem;
                   width: 3rem;
                   height: 3rem;
@@ -1136,9 +924,7 @@
                 }
               }
 
-              .event-content {
-                padding: 1rem;
-              }
+              .event-content { padding: 1rem; }
 
               .event-header {
                 display: flex;
@@ -1153,37 +939,24 @@
                   width: 1.2rem;
                   height: 1.2rem;
 
-                  &.event-icon-character {
-                    color: var(--accent-primary);
-                  }
-
-                  &.event-icon-support-card {
-                    color: var(--accent-secondary);
-                  }
-
-                  &.event-icon-event {
-                    color: #ffb74d;
-                  }
-
-                  &.event-icon-story_event {
-                    color: #ffb74d;
-                  }
+                  &.event-icon-character { color: var(--accent-primary); }
+                  &.event-icon-support-card { color: var(--accent-secondary); }
+                  &.event-icon-event { color: var(--accent-warning); }
+                  &.event-icon-story_event { color: var(--accent-warning); }
 
                   &.event-icon-champions_meeting {
-                    color: #9c27b0; // Purple for Champions Meeting
+                    color: var(--color-purple); // Purple for Champions Meeting
                   }
 
                   &.event-icon-legend_race {
-                    color: #e91e63; // Pink/Red for Legend Race
+                    color: var(--color-pink); // Pink/Red for Legend Race
                   }
 
                   &.event-icon-paid_banner {
-                    color: #ff9800; // Orange for Paid Banners
+                    color: var(--color-orange); // Orange for Paid Banners
                   }
 
-                  &.event-icon-campaign {
-                    color: #26a69a;
-                  }
+                  &.event-icon-campaign { color: #26a69a; }
                 }
 
                 .event-type {
@@ -1224,24 +997,15 @@
                 overflow-y: auto;
 
                 // Custom scrollbar
-                &::-webkit-scrollbar {
-                  height: 5px;
-                  width: 5px;
-                }
-
-                &::-webkit-scrollbar-track {
-                  background: var(--bg-tertiary);
-                  border-radius: 6px;
-                }
+                &::-webkit-scrollbar { height: 5px; width: 5px; }
+                &::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: var(--radius-sm); }
 
                 &::-webkit-scrollbar-thumb {
                   background: var(--bg-quaternary);
-                  border-radius: 6px;
+                  border-radius: var(--radius-sm);
                   border: 1px solid var(--border-primary);
 
-                  &:hover {
-                    background: var(--accent-primary);
-                  }
+                  &:hover { background: var(--accent-primary); }
                 }
 
                 .character-chip {
@@ -1272,10 +1036,7 @@
           position: absolute;
           top: 50%;
           height: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
+          @include flex-col-center;
           z-index: 10;
           transform: translateY(-50%);
 
@@ -1284,9 +1045,7 @@
             height: 40px;
             background: linear-gradient(135deg, #FFD700, #FFA500);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            @include flex-center;
             box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
             border: 3px solid var(--text-primary);
 
@@ -1320,7 +1079,7 @@
 
             span {
               display: block;
-              color: #E91E63;
+              color: var(--color-pink);
               font-weight: 600;
               font-size: 0.85rem;
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -1329,7 +1088,7 @@
 
             small {
               display: block;
-              color: #E91E63;
+              color: var(--color-pink);
               font-weight: 600;
               font-size: 0.75rem;
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -1352,21 +1111,14 @@
           gap: 1rem;
           align-items: flex-start;
 
-          .header-divider {
-            display: none;
-          }
-
-          .filter-controls {
-            width: 100%;
-          }
+          .header-divider { display: none; }
+          .filter-controls { width: 100%; }
         }
       }
 
       .current-date-display,
       .timeline-wrapper,
-      .timeline-controls {
-        padding: 1rem;
-      }
+      .timeline-controls { padding: 1rem; }
 
       .timeline-wrapper .timeline-container {
         padding: 1rem;
@@ -1375,21 +1127,12 @@
           font-size: 0.8rem;
           min-width: 60px;
 
-          span {
-            font-size: 0.8rem;
-          }
-
-          small {
-            font-size: 0.6rem;
-          }
+          span { font-size: 0.8rem; }
+          small { font-size: 0.6rem; }
         }
       }
 
-      .timeline-controls .controls-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
+      .timeline-controls .controls-content { flex-direction: column; gap: 1rem; text-align: center; }
     }
   }
 
@@ -1450,16 +1193,10 @@
         align-items: center;
         gap: 0.5rem;
 
-        .page-icon {
-          color: var(--accent-color);
-        }
+        .page-icon { color: var(--accent-color); }
       }
 
-      .event-count {
-        margin: 0;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-      }
+      .event-count { margin: 0; font-size: 0.9rem; color: var(--text-secondary); }
     }
   }
 
@@ -1488,10 +1225,7 @@
         font-size: 1.1rem;
         margin: 0;
 
-        mat-icon {
-          color: var(--accent-color);
-          font-size: 1.2rem;
-        }
+        mat-icon { color: var(--accent-color); font-size: 1.2rem; }
       }
     }
 
@@ -1504,77 +1238,11 @@
       .compact-search-field {
         width: 100%;
 
-        ::ng-deep {
-          .mat-mdc-text-field-wrapper {
-            height: 38px !important;
-            padding: 0 12px !important;
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 6px !important;
-            transition: all 0.2s ease;
-          }
-
-          .mat-mdc-form-field-focus-overlay {
-            background-color: transparent !important;
-          }
-
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border: none !important;
-          }
-
-          &:hover .mat-mdc-text-field-wrapper {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
-          }
-
-          &.mat-focused .mat-mdc-text-field-wrapper {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-color: #2196f3 !important;
-            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
-          }
-
-          .mat-mdc-form-field-infix {
-            padding: 0 !important;
-            min-height: 38px !important;
-            display: flex !important;
-            align-items: center !important;
-          }
-
-          .mat-mdc-form-field-icon-suffix {
-            color: rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            height: 100%;
-
-            .mat-icon {
-              font-size: 18px;
-              width: 18px;
-              height: 18px;
-              line-height: 18px;
-            }
-          }
-
-          .mat-mdc-floating-label {
-            display: none !important;
-          }
-
-          input.mat-mdc-input-element {
-            margin-top: 0 !important;
-            color: rgba(255, 255, 255, 0.9);
-          }
-
-          .mat-mdc-form-field-subscript-wrapper {
-            display: none;
-          }
-        }
+        .mat-mdc-floating-label { display: none !important; }
       }
 
       .compact-search-navigation {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         gap: 0.5rem;
         margin-bottom: 1rem;
 
@@ -1592,24 +1260,16 @@
           min-width: 36px;
           min-height: 36px;
           border-radius: 50% !important;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          @include flex-center;
           padding: 0;
 
           .mat-mdc-button-persistent-ripple,
-          .mat-mdc-button-ripple {
-            border-radius: 50% !important;
-          }
+          .mat-mdc-button-ripple { border-radius: 50% !important; }
 
-          ::ng-deep .mat-icon {
-            font-size: 20px;
-            width: 20px;
-            height: 20px;
+          .mat-icon {
+            @include icon-size(20px);
             line-height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            @include flex-center;
           }
         }
 
@@ -1631,10 +1291,7 @@
           mat-checkbox {
             margin: 0;
 
-            ::ng-deep .mdc-form-field>label {
-              margin: 0;
-              padding: 0;
-            }
+
 
             .compact-checkbox-content {
               display: flex;
@@ -1651,88 +1308,36 @@
                 margin: 0;
               }
 
-              span {
-                margin: 0;
-                padding: 0;
-              }
+              span { margin: 0; padding: 0; }
             }
           }
 
           .compact-character-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #64b5f6;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: var(--accent-primary) !important;
-              border-color: var(--accent-primary) !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--accent-primary); }
           }
 
           .compact-support-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #81c784;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: var(--accent-secondary) !important;
-              border-color: var(--accent-secondary) !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--accent-secondary); }
           }
 
           .compact-story-events-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #ffb74d;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: #ffb74d !important;
-              border-color: #ffb74d !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--accent-warning); }
           }
 
           .compact-champions-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #9c27b0;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: #9c27b0 !important;
-              border-color: #9c27b0 !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--color-purple); }
           }
 
           .compact-legend-races-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #e91e63;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: #e91e63 !important;
-              border-color: #e91e63 !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--color-pink); }
           }
 
           .compact-paid-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #ff9800;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: #ff9800 !important;
-              border-color: #ff9800 !important;
-            }
+            .compact-checkbox-content mat-icon { color: var(--color-orange); }
           }
 
           .compact-campaign-toggle {
-            .compact-checkbox-content mat-icon {
-              color: #26a69a;
-            }
-
-            ::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
-              background-color: #26a69a !important;
-              border-color: #26a69a !important;
-            }
+            .compact-checkbox-content mat-icon { color: #26a69a; }
           }
         }
       }
@@ -1760,9 +1365,7 @@
           .header-info {
             text-align: center;
 
-            h1 {
-              font-size: 1.5rem;
-            }
+            h1 { font-size: 1.5rem; }
           }
 
           .filter-controls {
@@ -1778,9 +1381,7 @@
 
       .current-date-display,
       .timeline-wrapper,
-      .timeline-controls {
-        padding: 1rem;
-      }
+      .timeline-controls { padding: 1rem; }
 
       .timeline-wrapper .timeline-container {
         padding: 1rem;
@@ -1789,21 +1390,12 @@
           font-size: 0.8rem;
           min-width: 60px;
 
-          span {
-            font-size: 0.8rem;
-          }
-
-          small {
-            font-size: 0.6rem;
-          }
+          span { font-size: 0.8rem; }
+          small { font-size: 0.6rem; }
         }
       }
 
-      .timeline-controls .controls-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
+      .timeline-controls .controls-content { flex-direction: column; gap: 1rem; text-align: center; }
     }
   }
 
@@ -1844,33 +1436,20 @@
 
   // Responsive adjustments for compact mode
   @media (max-width: 1400px) {
-    .floating-filter-card {
-      width: 240px;
-      right: 15px;
-    }
+    .floating-filter-card { width: 240px; right: 15px; }
   }
 
   @media (max-width: 1300px) {
-    .floating-filter-card {
-      width: 220px;
-      right: 10px;
-    }
+    .floating-filter-card { width: 220px; right: 10px; }
   }
 
   // Hide floating card on very narrow screens
   @media (max-width: 1200px) {
-    .floating-filter-card {
-      display: none;
-    }
+    .floating-filter-card { display: none; }
 
     // Fallback to regular header on narrow screens even in compact mode
-    .compact-header {
-      display: none;
-    }
-
-    .page-header {
-      display: block !important;
-    }
+    .compact-header { display: none; }
+    .page-header { display: block !important; }
   }
 
   // Existing styles below...
@@ -1880,26 +1459,14 @@
 @keyframes pulse-today {
 
   0%,
-  100% {
-    box-shadow: 0 0 12px rgba(255, 87, 34, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-    transform: scale(1);
-  }
-
-  50% {
-    box-shadow: 0 0 20px rgba(255, 87, 34, 0.8), 0 2px 12px rgba(0, 0, 0, 0.4);
-    transform: scale(1.1);
-  }
+  100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3); transform: scale(1); }
+  50% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.8), 0 2px 12px rgba(0, 0, 0, 0.4); transform: scale(1.1); }
 }
 
 // Animation for today label text
 @keyframes text-glow {
 
   0%,
-  100% {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-
-  50% {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 87, 34, 0.6);
-  }
+  100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+  50% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 87, 34, 0.6); }
 }

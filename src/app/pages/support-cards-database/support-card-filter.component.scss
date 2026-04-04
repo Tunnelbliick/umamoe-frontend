@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .support-card-filter {
   width: 100%;
 
@@ -15,13 +17,11 @@
       color: white;
       font-size: 18px;
       font-weight: 500;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid var(--border-primary);
       padding-bottom: 8px;
     }
 
-    .full-width {
-      width: 100%;
-    }
+    .full-width { width: 100%; }
   }
 
   // Card Selection
@@ -29,35 +29,28 @@
     margin-bottom: 20px;
 
     .empty-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center;
       padding: 20px;
       border: 2px solid #666;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       cursor: pointer;
       transition: all 0.2s ease;
       color: #666;
       min-height: 80px;
 
       &:hover {
-        border-color: #2196f3;
+        border-color: var(--color-blue);
         background-color: rgba(33, 150, 243, 0.08);
-        color: #2196f3;
+        color: var(--color-blue);
         box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
       }
 
       mat-icon {
         margin-right: 12px;
-        font-size: 28px;
-        width: 28px;
-        height: 28px;
+        @include icon-size(28px);
       }
 
-      span {
-        font-size: 16px;
-        font-weight: 500;
-      }
+      span { font-size: 16px; font-weight: 500; }
     }
 
     .selected-card {
@@ -65,18 +58,16 @@
       align-items: center;
       padding: 16px;
       border: 2px solid #2196f3;
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       background: rgba(33, 150, 243, 0.04);
       transition: all 0.2s ease;
 
-      &:hover {
-        background: rgba(33, 150, 243, 0.08);
-      }
+      &:hover { background: rgba(33, 150, 243, 0.08); }
 
       .card-image {
         width: 64px;
         height: 64px;
-        border-radius: 8px;
+        border-radius: var(--radius-md);
         object-fit: cover;
         margin-right: 16px;
       }
@@ -87,16 +78,8 @@
         flex-direction: column;
         gap: 4px;
 
-        .card-name {
-          font-weight: 600;
-          color: #fff;
-          font-size: 1.1rem;
-        }
-
-        .card-character {
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 0.9rem;
-        }
+        .card-name { font-weight: 600; color: var(--text-primary); font-size: 1.1rem; }
+        .card-character { color: var(--text-secondary); font-size: 0.9rem; }
 
         .card-meta {
           display: flex;
@@ -107,30 +90,21 @@
           .card-rarity {
             font-size: 0.75rem;
             padding: 2px 6px;
-            border-radius: 4px;
+            border-radius: var(--radius-xs);
             font-weight: 500;
           }
 
-          .card-type {
-            background: rgba(100, 181, 246, 0.2);
-            color: #64b5f6;
-          }
-
-          .card-rarity {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
-          }
+          .card-type { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); }
+          .card-rarity { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
         }
       }
 
       .remove-btn {
         background-color: rgba(244, 67, 54, 0.1);
-        color: #f44336;
+        color: var(--color-red);
         margin-left: 12px;
 
-        &:hover {
-          background-color: rgba(244, 67, 54, 0.2);
-        }
+        &:hover { background-color: rgba(244, 67, 54, 0.2); }
       }
     }
   }
@@ -140,9 +114,7 @@
 
     .slider-container {
 
-      .limit-break-slider {
-        width: 95%;
-      }
+      .limit-break-slider { width: 95%; }
 
       .slider-labels {
         display: flex;
@@ -151,14 +123,11 @@
 
         .label {
           font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.6);
+          color: var(--text-secondary);
           font-weight: 500;
           transition: color 0.2s ease;
 
-          &.active {
-            color: #2196f3;
-            font-weight: 600;
-          }
+          &.active { color: var(--color-blue); font-weight: 600; }
         }
       }
     }
@@ -170,7 +139,7 @@
     gap: 12px;
     margin-top: 24px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-primary);
 
     button {
       display: flex;
@@ -181,80 +150,13 @@
   }
 }
 
-// Form field overrides for dark theme
-::ng-deep .mat-mdc-form-field {
-  .mat-mdc-text-field-wrapper {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
+// Form field dark theme overrides moved to global styles.scss (.support-card-filter scope)
 
-  .mdc-text-field--outlined {
-
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-  }
-
-  .mdc-text-field {
-    background-color: transparent;
-  }
-
-  .mdc-floating-label {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .mdc-text-field--focused .mdc-floating-label {
-    color: #64b5f6;
-  }
-
-  .mdc-text-field--focused .mdc-notched-outline__leading,
-  .mdc-text-field--focused .mdc-notched-outline__notch,
-  .mdc-text-field--focused .mdc-notched-outline__trailing {
-    border-color: #64b5f6;
-  }
-
-  input,
-  .mat-mdc-select-value {
-    color: #fff;
-  }
-}
-
-// Slider styling
-::ng-deep .mat-mdc-slider {
-  .mdc-slider__track {
-    .mdc-slider__track--inactive {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .mdc-slider__track--active_fill {
-      background-color: #2196f3;
-    }
-  }
-
-  .mdc-slider__thumb {
-    .mdc-slider__thumb-knob {
-      background-color: #2196f3;
-      border-color: #2196f3;
-    }
-  }
-
-  .mdc-slider__tick-marks {
-    .mdc-slider__tick-mark--active {
-      background-color: rgba(255, 255, 255, 0.7);
-    }
-
-    .mdc-slider__tick-mark--inactive {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-  }
-}
+// Slider styling moved to global styles.scss (.support-card-filter scope)
 
 // Responsive Design
 @media (max-width: 1024px) {
-  .limit-break-slider {
-    width: 97% !important;
-  }
+  .limit-break-slider { width: 97% !important; }
 }
 
 @media (max-width: 768px) {
@@ -263,26 +165,15 @@
     .filter-actions {
       flex-direction: column;
 
-      button {
-        width: 100%;
-        justify-content: center;
-      }
+      button { width: 100%; justify-content: center; }
     }
 
     .selected-card {
-      .card-image {
-        width: 48px;
-        height: 48px;
-      }
+      .card-image { width: 48px; height: 48px; }
 
       .card-info {
-        .card-name {
-          font-size: 1rem;
-        }
-
-        .card-character {
-          font-size: 0.85rem;
-        }
+        .card-name { font-size: 1rem; }
+        .card-character { font-size: 0.85rem; }
       }
     }
   }

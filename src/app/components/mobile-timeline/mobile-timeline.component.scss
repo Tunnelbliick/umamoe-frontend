@@ -1,10 +1,10 @@
+@use '../../../styles/mixins' as *;
+
 // ==========================================
 // MOBILE TIMELINE - Redesigned
 // ==========================================
 
-:host {
-    display: block;
-}
+:host { display: block; }
 
 // ==========================================
 // LAYOUT
@@ -22,9 +22,7 @@
 // ==========================================
 
 .tl-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include flex-between;
     padding: 14px 16px;
     margin-bottom: 20px;
     background: var(--bg-secondary);
@@ -37,9 +35,7 @@
         gap: 12px;
 
         .tl-header-icon {
-            font-size: 26px;
-            width: 26px;
-            height: 26px;
+            @include icon-size(26px);
             color: var(--accent-primary);
             flex-shrink: 0;
         }
@@ -61,19 +57,14 @@
         }
     }
 
-    .tl-today-btn {
-        color: var(--accent-primary);
-        flex-shrink: 0;
-    }
+    .tl-today-btn { color: var(--accent-primary); flex-shrink: 0; }
 }
 
 // ==========================================
 // FEED
 // ==========================================
 
-.tl-feed {
-    position: relative;
-}
+.tl-feed { position: relative; }
 
 .tl-spine {
     position: absolute;
@@ -161,9 +152,9 @@
     &.dot-char    { border-color: var(--accent-primary);    background: var(--accent-primary); }
     &.dot-support { border-color: var(--accent-secondary);  background: var(--accent-secondary); }
     &.dot-story   { border-color: var(--accent-warning);    background: var(--accent-warning); }
-    &.dot-champs  { border-color: #9c27b0;                  background: #9c27b0; }
-    &.dot-legend  { border-color: #e91e63;                  background: #e91e63; }
-    &.dot-paid    { border-color: #ff9800;                  background: #ff9800; }
+    &.dot-champs  { border-color: var(--color-purple);                  background: #9c27b0; }
+    &.dot-legend  { border-color: var(--color-pink);                  background: #e91e63; }
+    &.dot-paid    { border-color: var(--color-orange);                  background: #ff9800; }
     &.dot-campaign { border-color: #26a69a;                 background: #26a69a; }
 
     &.dot-grouped {
@@ -180,10 +171,7 @@
 // CONTENT AREA
 // ==========================================
 
-.tl-content {
-    flex: 1;
-    min-width: 0;
-}
+.tl-content { flex: 1; min-width: 0; }
 
 .tl-date {
     display: flex;
@@ -233,12 +221,8 @@
     }
 
     &.tl-marker-milestone .tl-marker-label { color: #ffd700; }
-    &.tl-marker-anniversary .tl-marker-label { color: #e91e63; }
-
-    &.tl-marker-today .tl-marker-label {
-        color: #ff5722;
-        animation: glow-today 2s infinite alternate;
-    }
+    &.tl-marker-anniversary .tl-marker-label { color: var(--color-pink); }
+    &.tl-marker-today .tl-marker-label { color: #ff5722; animation: glow-today 2s infinite alternate; }
 
     &.tl-marker-year .tl-marker-label {
         font-size: 0.78rem;
@@ -267,11 +251,7 @@
     flex-shrink: 0;
 }
 
-.tl-grouped {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+.tl-grouped { display: flex; flex-direction: column; gap: 8px; }
 
 // ==========================================
 // EVENT CARD
@@ -282,11 +262,7 @@
     border-left-color: $color;
     background: linear-gradient(105deg, rgba($color, 0.055) 0%, transparent 52%);
 
-    .ev-badge {
-        color: $badge-fg;
-        background: rgba($color, 0.1);
-        border-color: rgba($color, 0.22);
-    }
+    .ev-badge { color: $badge-fg; background: rgba($color, 0.1); border-color: rgba($color, 0.22); }
 
     .ev-placeholder {
         background: rgba($color, 0.07);
@@ -304,11 +280,7 @@
     transition: box-shadow 0.2s, transform 0.15s;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-    &:hover {
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-        transform: translateY(-1px);
-    }
-
+    &:hover { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35); transform: translateY(-1px); }
     &.ev-type-character_banner    { @include ev-type(#64b5f6, #64b5f6); }
     &.ev-type-support_card_banner { @include ev-type(#81c784, #81c784); }
     &.ev-type-story_event         { @include ev-type(#ffb74d, #ffb74d); }
@@ -351,9 +323,7 @@
 }
 
 .ev-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include flex-between;
     padding: 6px 8px 4px 14px;
 }
 
@@ -373,9 +343,7 @@
     transition: background 0.2s;
 
     mat-icon {
-        font-size: 12px;
-        width: 12px;
-        height: 12px;
+        @include icon-size(12px);
         flex-shrink: 0;
     }
 }
@@ -387,13 +355,8 @@
     color: var(--accent-primary);
     opacity: 0.6;
 
-    &:hover { opacity: 1; }
-
-    mat-icon {
-        font-size: 15px;
-        width: 15px;
-        height: 15px;
-    }
+    &:hover { opacity: 1; }
+    mat-icon { @include icon-size(15px); }
 }
 
 .ev-body {
@@ -403,10 +366,7 @@
     padding: 2px 12px 11px 14px;
 }
 
-.ev-info {
-    flex: 1;
-    min-width: 0;
-}
+.ev-info { flex: 1; min-width: 0; }
 
 .ev-desc {
     margin: 0;
@@ -435,17 +395,8 @@
     border-radius: 999px;
     white-space: nowrap;
 
-    &.ev-tag-char {
-        background: rgba(100, 181, 246, 0.12);
-        color: var(--accent-primary);
-        border: 1px solid rgba(100, 181, 246, 0.25);
-    }
-
-    &.ev-tag-support {
-        background: rgba(129, 199, 132, 0.12);
-        color: var(--accent-secondary);
-        border: 1px solid rgba(129, 199, 132, 0.25);
-    }
+    &.ev-tag-char { background: rgba(100, 181, 246, 0.12); color: var(--accent-primary); border: 1px solid rgba(100, 181, 246, 0.25); }
+    &.ev-tag-support { background: rgba(129, 199, 132, 0.12); color: var(--accent-secondary); border: 1px solid rgba(129, 199, 132, 0.25); }
 }
 
 .ev-tag-more {
@@ -467,11 +418,7 @@
     letter-spacing: 0.01em;
 }
 
-.ev-course-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
+.ev-course-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 
 .ev-course-chip {
     display: inline-flex;
@@ -486,28 +433,18 @@
     padding: 3px 9px 3px 6px;
     white-space: nowrap;
 
-    mat-icon {
-        font-size: 12px;
-        width: 12px;
-        height: 12px;
-    }
+    mat-icon { @include icon-size(12px); }
 }
 
-.ev-legend-avatars {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-end;
-}
+.ev-legend-avatars { display: flex; flex-wrap: nowrap; align-items: flex-end; }
 
 .ev-legend-avatar {
     width: 64px;
     height: 64px;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
 
-    &:not(:first-child) {
-        margin-left: -18px;
-    }
+    &:not(:first-child) { margin-left: -18px; }
 }
 
 .ev-campaign-info {
@@ -529,11 +466,7 @@
     border-radius: 999px;
     padding: 3px 9px 3px 6px;
 
-    mat-icon {
-        font-size: 12px;
-        width: 12px;
-        height: 12px;
-    }
+    mat-icon { @include icon-size(12px); }
 }
 
 .ev-media {
@@ -554,17 +487,13 @@
     flex-shrink: 0;
     width: 44px;
     height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     background: var(--bg-tertiary);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-primary);
 
     mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
+        @include icon-size(20px);
         opacity: 0.35;
         color: var(--text-secondary);
     }
@@ -587,9 +516,7 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(calc(100% - 50px));
 
-    &.expanded {
-        transform: translateY(0);
-    }
+    &.expanded { transform: translateY(0); }
 
     .filter-toggle-btn {
         position: absolute;
@@ -601,13 +528,8 @@
         box-shadow: var(--shadow-lg);
         z-index: 1001;
 
-        mat-icon {
-            transition: transform 0.3s ease;
-        }
-
-        &:hover {
-            transform: translateX(-50%) scale(1.05);
-        }
+        mat-icon { transition: transform 0.3s ease; }
+        &:hover { transform: translateX(-50%) scale(1.05); }
     }
 
     .filter-content {
@@ -617,83 +539,20 @@
         opacity: 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-        &.visible {
-            max-height: 70vh;
-            opacity: 1;
-            overflow-y: auto;
-        }
-
-        .search-field {
-            width: 100%;
-            margin-bottom: 16px;
-        }
+        &.visible { max-height: 70vh; opacity: 1; overflow-y: auto; }
+        .search-field { width: 100%; margin-bottom: 16px; }
 
         .filter-toggles {
             display: grid;
             grid-template-columns: 1fr;
             gap: 10px;
 
-            @media (min-width: 480px) {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px 16px;
-            }
+            @media (min-width: 480px) { grid-template-columns: repeat(2, 1fr); gap: 8px 16px; }
 
             .filter-toggle {
                 margin: 0;
 
-                .mdc-label {
-                    color: var(--text-primary) !important;
-                    font-size: 14px;
-                }
-
-                &.character-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: var(--accent-primary) !important;
-                        border-color: var(--accent-primary) !important;
-                    }
-                }
-
-                &.support-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: var(--accent-secondary) !important;
-                        border-color: var(--accent-secondary) !important;
-                    }
-                }
-
-                &.story-events-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: #ffb74d !important;
-                        border-color: #ffb74d !important;
-                    }
-                }
-
-                &.champions-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: #9c27b0 !important;
-                        border-color: #9c27b0 !important;
-                    }
-                }
-
-                &.legend-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: #e91e63 !important;
-                        border-color: #e91e63 !important;
-                    }
-                }
-
-                &.paid-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: #ff9800 !important;
-                        border-color: #ff9800 !important;
-                    }
-                }
-
-                &.campaign-toggle {
-                    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
-                        background-color: #26a69a !important;
-                        border-color: #26a69a !important;
-                    }
-                }
+                .mdc-label { color: var(--text-primary) !important; font-size: 14px; }
             }
         }
 

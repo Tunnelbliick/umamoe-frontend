@@ -1,10 +1,12 @@
+@use '../../../styles/mixins' as *;
+
 .christmas-popup-container {
   background: #1e1e1e; // Dark background
   padding: 1rem;
   color: #e0e0e0;
   position: relative;
   overflow: visible; // Allow lights to hang out
-  border-radius: 8px; // Ensure radius if dialog doesn't provide it
+  border-radius: var(--radius-md); // Ensure radius if dialog doesn't provide it
   box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
   margin-top: 20px; // Push down slightly to make room for lights
   max-height: 85vh; // Limit height
@@ -32,7 +34,7 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-primary);
   margin-top: 10px; // Space for lights
   flex-shrink: 0; // Don't shrink header
 
@@ -70,21 +72,14 @@
   padding-right: 0.5rem; // Space for scrollbar
 
   // Custom scrollbar
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-  }
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: var(--surface-2); }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--surface-4);
     border-radius: 3px;
     
-    &:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+    &:hover { background: var(--surface-4); }
   }
 
   .intro-text {
@@ -96,10 +91,10 @@
 }
 
 .feature-list {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
@@ -110,12 +105,10 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.4rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     transition: background 0.2s;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
+    &:hover { background: var(--surface-2); }
 
     .feature-icon {
       color: #66bb6a; // Christmas Green
@@ -124,11 +117,7 @@
       height: 1.1rem;
     }
 
-    span {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #f5f5f5;
-    }
+    span { font-size: 0.9rem; font-weight: 500; color: #f5f5f5; }
   }
 }
 
@@ -137,15 +126,13 @@
   gap: 1rem;
   padding: 1rem;
   background: rgba(239, 83, 80, 0.1); // Subtle red tint
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(239, 83, 80, 0.2);
   align-items: flex-start;
 
   .notice-icon {
     color: #ef5350;
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    @include icon-size(24px);
     margin-top: 0;
     overflow: visible; // Prevent clipping
     flex-shrink: 0;
@@ -164,16 +151,14 @@
   gap: 1rem;
   padding: 1rem;
   background: rgba(88, 101, 242, 0.1); // Discord Blurple tint
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(88, 101, 242, 0.2);
   align-items: flex-start;
   margin-top: 1rem;
 
   .notice-icon {
     color: #5865F2; // Discord Blurple
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    @include icon-size(24px);
     margin-top: 0;
     overflow: visible;
     flex-shrink: 0;
@@ -191,10 +176,7 @@
     text-decoration: none;
     font-weight: 600;
     
-    &:hover {
-      text-decoration: underline;
-      color: lighten(#5865F2, 10%);
-    }
+    &:hover { text-decoration: underline; color: lighten(#5865F2, 10%); }
   }
 }
 
@@ -203,23 +185,15 @@
   justify-content: flex-end;
   gap: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-primary);
 
-  button {
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-  }
+  button { text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
   .btn-dont-show {
     color: #bdbdbd;
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--border-secondary);
     
-    &:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.4);
-    }
+    &:hover { background: var(--surface-2); color: var(--text-primary); border-color: var(--text-muted); }
   }
 
   .btn-close {
@@ -227,22 +201,11 @@
     color: white;
     border: none;
     
-    &:hover {
-      box-shadow: 0 4px 12px rgba(102, 187, 106, 0.4);
-      filter: brightness(1.1);
-    }
+    &:hover { box-shadow: 0 4px 12px rgba(102, 187, 106, 0.4); filter: brightness(1.1); }
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+// @keyframes fadeIn and slideUp are in global utilities.scss
 
 // Christmas Lights
 .christmas-lights {
@@ -324,24 +287,12 @@
       animation-duration: 2.2s;
     }
     
-    &:nth-child(odd) {
-      animation-duration: 1.8s;
-    }
-    
-    &:nth-child(3n+1) {
-      animation-duration: 1.4s;
-    }
+    &:nth-child(odd) { animation-duration: 1.8s; }
+    &:nth-child(3n+1) { animation-duration: 1.4s; }
 
     // Add more randomness
-    &:nth-child(5n+3) {
-      animation-duration: 2.3s;
-      animation-delay: 0.5s;
-    }
-    
-    &:nth-child(7n) {
-      animation-duration: 0.8s;
-      animation-delay: 0.2s;
-    }
+    &:nth-child(5n+3) { animation-duration: 2.3s; animation-delay: 0.5s; }
+    &:nth-child(7n) { animation-duration: 0.8s; animation-delay: 0.2s; }
     
     &:before {
       content: '';
@@ -365,13 +316,8 @@
       border-radius: 50%;
     }
     
-    &:last-child:after {
-      content: none;
-    }
-    
-    &:first-child {
-      margin-left: -40px;
-    }
+    &:last-child:after { content: none; }
+    &:first-child { margin-left: -40px; }
   }
 }
 
@@ -407,9 +353,6 @@
 
 @media (max-width: 600px) {
   .popup-actions {
-    .btn-dont-show {
-      font-size: 0.75rem;
-      padding: 0 12px;
-    }
+    .btn-dont-show { font-size: 0.75rem; padding: 0 12px; }
   }
 }

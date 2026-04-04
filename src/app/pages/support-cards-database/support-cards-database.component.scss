@@ -1,51 +1,28 @@
 @use '../../../styles/mixins' as *;
 
-.support-cards-database {
-  min-height: calc(100vh - var(--header-height));
-  background: #121212;
-}
+.support-cards-database { min-height: calc(100vh - var(--header-height)); background: var(--bg-secondary); }
 
 .page-header {
   background: linear-gradient(135deg, rgba(129, 199, 132, 0.1) 0%, rgba(255, 183, 77, 0.1) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem 0;
-}
+  @include page-header-gradient;
 
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  gap: 2rem;
+  .header-content {
+    --page-max-width: 1400px;
+    @include flex-between;
+    gap: 2rem;
 
-  h1 {
-    @include gradient-text(45deg, #81c784, #ffb74d);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-  }
-
-  p {
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-    font-size: 1.125rem;
+    h1 { @include gradient-text(45deg, #81c784, #ffb74d); }
   }
 }
 
-.quick-actions {
-  display: flex;
-  gap: 1rem;
-  flex-shrink: 0;
-}
+.quick-actions { display: flex; gap: 1rem; flex-shrink: 0; }
 
 .action-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
 }
 
 .content-container {
@@ -85,22 +62,16 @@
 }
 
 .results-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-between;
 
   h2 {
-    color: #fff;
+    color: var(--text-primary);
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
   }
 
-  p {
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0.25rem 0 0 0;
-    font-size: 0.875rem;
-  }
+  p { color: var(--text-secondary); margin: 0.25rem 0 0 0; font-size: 0.875rem; }
 
   .sorting-controls {
     display: flex;
@@ -113,34 +84,19 @@
   }
 }
 
-.filter-indicator {
-  color: #81c784;
-  font-weight: 500;
-}
+.filter-indicator { color: var(--accent-secondary); font-weight: 500; }
 
 .trainer-filter-indicator {
-  color: #ffb74d;
+  color: var(--accent-warning);
   font-weight: 600;
   padding: 0.25rem 0.5rem;
   background: rgba(255, 183, 77, 0.2);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 183, 77, 0.3);
 }
 
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 3rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.results-grid {
-  display: grid;
-  gap: 1.5rem;
-}
+.loading-container { @include loading-container; }
+.results-grid { display: grid; gap: 1.5rem; }
 
 .record-card {
   @include glass;
@@ -153,9 +109,7 @@
   padding: 1.5rem;
 
   .record-main-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include flex-between;
     align-items: flex-start;
     gap: 1em;
     width: 100%;
@@ -170,18 +124,11 @@
   min-width: 0;
 
   .support-card-meta-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    @include flex-col-center;
     flex-shrink: 0;
     gap: 0.5rem;
 
-    .card-image-header {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-    }
+    .card-image-header { width: 80px; height: 80px; object-fit: cover; }
 
     .card-limit-break {
       display: flex;
@@ -193,11 +140,9 @@
         align-items: center;
 
         svg {
-          fill: rgba(255, 255, 255, 0.3);
+          fill: var(--text-disabled);
 
-          &[fill="#2196F3"] {
-            fill: #2196f3;
-          }
+          &[fill="#2196F3"] { fill: #2196f3; }
         }
       }
     }
@@ -217,7 +162,7 @@
       gap: 0.75rem;
 
       .card-name-stat {
-        color: #fff;
+        color: var(--text-primary);
         font-weight: 600;
         font-size: 1rem;
         margin: 0;
@@ -231,17 +176,13 @@
         .rarity-tag {
           font-size: 0.75rem;
           padding: 0.125rem 0.5rem;
-          border-radius: 6px;
+          border-radius: var(--radius-sm);
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.025em;
         }
 
-        .type-tag {
-          background: rgba(100, 181, 246, 0.2);
-          color: #64b5f6;
-          border: 1px solid rgba(100, 181, 246, 0.3);
-        }
+        .type-tag { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); border: 1px solid rgba(100, 181, 246, 0.3); }
 
         .rarity-tag {
           background: rgba(255, 193, 7, 0.2);
@@ -249,10 +190,7 @@
           border: 1px solid rgba(255, 193, 7, 0.3);
 
           // SSR specific styling
-          &:contains("SSR") {
-            background: rgba(255, 193, 7, 0.25);
-            color: #ffb74d;
-          }
+          &:contains("SSR") { background: rgba(255, 193, 7, 0.25); color: var(--accent-warning); }
         }
       }
     }
@@ -262,7 +200,7 @@
       align-items: center;
       gap: 0.375rem;
       padding: 0.375rem 0.625rem;
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       background: rgba(158, 158, 158, 0.1);
       border: 1px solid rgba(158, 158, 158, 0.3);
       font-size: 0.8125rem;
@@ -271,30 +209,19 @@
       max-width: fit-content;
 
       mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-        color: #9e9e9e;
+        @include icon-size(16px);
+        color: var(--text-muted);
         flex-shrink: 0;
       }
 
-      .badge-date {
-        color: #9e9e9e;
-        font-size: 0.75rem;
-      }
+      .badge-date { color: var(--text-muted); font-size: 0.75rem; }
 
       &.verified {
         background: rgba(76, 175, 80, 0.15);
         border: 1px solid rgba(76, 175, 80, 0.4);
 
-        mat-icon {
-          color: #4caf50;
-        }
-
-        .badge-date {
-          color: rgba(76, 175, 80, 0.9);
-          font-weight: 500;
-        }
+        mat-icon { color: var(--color-green); }
+        .badge-date { color: rgba(76, 175, 80, 0.9); font-weight: 500; }
       }
     }
 
@@ -333,16 +260,13 @@
       font-size: 0.8125rem;
 
       .trainer-label {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--text-muted);
         text-transform: uppercase;
         font-size: 0.6875rem;
         letter-spacing: 0.05em;
       }
 
-      .trainer-name {
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 500;
-      }
+      .trainer-name { color: var(--text-primary); font-weight: 500; }
     }
 
     .user-id-copy-btn {
@@ -350,27 +274,18 @@
       align-items: center;
       gap: 0.25rem;
       padding: 0.25rem 0.5rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
+      background: var(--surface-3);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-sm);
       transition: all 0.2s ease;
       min-height: auto;
 
-      &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(100, 181, 246, 0.5);
-      }
-
-      .user-id {
-        font-weight: 600;
-        margin-left: -0.2rem;
-      }
+      &:hover { background: var(--surface-4); border-color: rgba(100, 181, 246, 0.5); }
+      .user-id { font-weight: 600; margin-left: -0.2rem; }
 
       mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-        color: rgba(255, 255, 255, 0.6);
+        @include icon-size(16px);
+        color: var(--text-secondary);
       }
     }
   }
@@ -383,26 +298,15 @@
   padding: 0.375rem 0.75rem;
   background: rgba(255, 152, 0, 0.1) !important;
   border: 1px solid rgba(255, 152, 0, 0.3);
-  color: #ff9800 !important;
-  border-radius: 6px;
+  color: var(--color-orange) !important;
+  border-radius: var(--radius-sm);
   transition: all 0.2s ease;
   min-height: auto;
   font-size: 0.8125rem;
 
-  &:hover {
-    background: rgba(255, 152, 0, 0.2);
-    border-color: rgba(255, 152, 0, 0.5);
-  }
-
-  mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .btn-text {
-    font-weight: 500;
-  }
+  &:hover { background: rgba(255, 152, 0, 0.2); border-color: rgba(255, 152, 0, 0.5); }
+  mat-icon { @include icon-size(16px); }
+  .btn-text { font-weight: 500; }
 }
 
 // Spark styles - keep compact and subtle
@@ -412,9 +316,7 @@
   gap: 0.25rem;
   align-items: flex-start;
 
-  &:not(:last-child) {
-    padding-right: 0.35rem;
-  }
+  &:not(:last-child) { padding-right: 0.35rem; }
 }
 
 .spark-badge {
@@ -423,47 +325,39 @@
   display: inline-flex;
   gap: 0.125rem;
   padding: 0.125rem 0.375rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 0.6875rem;
   font-weight: 600;
   white-space: nowrap;
   border: 1px solid;
 
   .tiny-icon {
-    font-size: 11px !important;
-    width: 11px !important;
-    height: 11px !important;
+    @include icon-size(11px, true);
     line-height: 11px !important;
   }
 
   &.blue {
     background: rgba(33, 150, 243, 0.08);
     border-color: rgba(33, 150, 243, 0.2);
-    color: #64b5f6;
+    color: var(--accent-primary);
 
-    .tiny-icon {
-      color: #2196f3;
-    }
+    .tiny-icon { color: var(--color-blue); }
   }
 
   &.pink {
     background: rgba(233, 30, 99, 0.08);
     border-color: rgba(233, 30, 99, 0.2);
-    color: #f48fb1;
+    color: var(--color-pink);
 
-    .tiny-icon {
-      color: #e91e63;
-    }
+    .tiny-icon { color: var(--color-pink); }
   }
 
   &.green {
     background: rgba(76, 175, 80, 0.08);
     border-color: rgba(76, 175, 80, 0.2);
-    color: #81c784;
+    color: var(--accent-secondary);
 
-    .tiny-icon {
-      color: #4caf50;
-    }
+    .tiny-icon { color: var(--color-green); }
   }
 
   &.white {
@@ -471,27 +365,20 @@
     border-color: rgba(158, 158, 158, 0.2);
     color: #bdbdbd;
 
-    .tiny-icon {
-      color: #9e9e9e;
-    }
+    .tiny-icon { color: var(--text-muted); }
   }
 }
 
 // Mobile responsive
 @include breakpoint(1400px) {
-  .content-container {
-    max-width: 100%;
-    padding: 2rem 3%;
-  }
+  .content-container { max-width: 100%; padding: 2rem 3%; }
 }
 
 @include breakpoint(1200px) {
   .content-container {
 
     app-support-card-filter,
-    .search-section {
-      flex: 0 0 320px;
-    }
+    .search-section { flex: 0 0 320px; }
   }
 }
 
@@ -518,30 +405,15 @@
     text-align: center;
     gap: 1.5rem;
 
-    .quick-actions {
-      justify-content: center;
-    }
+    .quick-actions { justify-content: center; }
   }
 }
 
 @include mobile {
-  .content-container {
-    padding: 1rem;
-  }
-
-  .search-section {
-    padding: 1rem;
-    max-width: 100%;
-  }
-
-  .record-header {
-    padding: 1rem;
-  }
-
-  .record-main-info {
-    flex-direction: row;
-    gap: 1rem;
-  }
+  .content-container { padding: 1rem; }
+  .search-section { padding: 1rem; max-width: 100%; }
+  .record-header { padding: 1rem; }
+  .record-main-info { flex-direction: row; gap: 1rem; }
 
   .right-actions {
     align-items: flex-end;
@@ -553,51 +425,33 @@
       align-items: flex-end;
       gap: 0.375rem;
 
-      .trainer-details {
-        font-size: 0.75rem;
-      }
+      .trainer-details { font-size: 0.75rem; }
 
       .user-id-copy-btn {
-        .user-id {
-          font-size: 0.75rem;
-        }
+        .user-id { font-size: 0.75rem; }
       }
     }
 
-    .unavailable-btn {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.625rem;
-    }
+    .unavailable-btn { font-size: 0.75rem; padding: 0.3rem 0.625rem; }
   }
 
   .performance-section {
     .support-card-meta-header {
-      .card-image-header {
-        width: 60px;
-        height: 60px;
-      }
+      .card-image-header { width: 60px; height: 60px; }
 
       .card-limit-break {
-        .limit-break-icon svg {
-          height: 18px;
-          width: 18px;
-        }
+        .limit-break-icon svg { height: 18px; width: 18px; }
       }
     }
 
     .main-stats {
       .card-title-line {
-        .card-name-stat {
-          font-size: 0.95rem;
-        }
+        .card-name-stat { font-size: 0.95rem; }
 
         .card-tags {
 
           .type-tag,
-          .rarity-tag {
-            font-size: 0.7rem;
-            padding: 0.1rem 0.425rem;
-          }
+          .rarity-tag { font-size: 0.7rem; padding: 0.1rem 0.425rem; }
         }
       }
 
@@ -605,9 +459,7 @@
         font-size: 0.75rem;
         padding: 0.3rem 0.5rem;
 
-        .badge-date {
-          font-size: 0.7rem;
-        }
+        .badge-date { font-size: 0.7rem; }
       }
     }
   }
@@ -617,31 +469,18 @@
   .header-content {
     padding: 0 1rem;
 
-    h1 {
-      font-size: 1.75rem;
-    }
-
-    p {
-      font-size: 1rem;
-    }
+    h1 { font-size: 1.75rem; }
+    p { font-size: 1rem; }
 
     .quick-actions {
       width: 100%;
 
-      .action-btn {
-        width: 100%;
-        justify-content: center;
-      }
+      .action-btn { width: 100%; justify-content: center; }
     }
   }
 
-  .content-container {
-    padding: 0.75rem;
-  }
-
-  .record-header {
-    padding: 0.75rem;
-  }
+  .content-container { padding: 0.75rem; }
+  .record-header { padding: 0.75rem; }
 
   .record-main-info {
     flex-direction: column;
@@ -650,23 +489,15 @@
 
   .performance-section {
     .support-card-meta-header {
-      .card-image-header {
-        width: 50px;
-        height: 50px;
-      }
+      .card-image-header { width: 50px; height: 50px; }
 
       .card-limit-break {
-        .limit-break-icon svg {
-          height: 16px;
-          width: 16px;
-        }
+        .limit-break-icon svg { height: 16px; width: 16px; }
       }
     }
 
     .main-stats {
-      .card-name-stat {
-        font-size: 0.875rem;
-      }
+      .card-name-stat { font-size: 0.875rem; }
 
       .inheritance-inline {
         margin-top: 0; // Remove top margin on mobile
@@ -697,16 +528,11 @@
           gap: 0.375rem;
           width: 100%;
 
-          .trainer-label {
-            font-size: 0.625rem;
-            flex-shrink: 0;
-          }
+          .trainer-label { font-size: 0.625rem; flex-shrink: 0; }
 
           .trainer-name {
             font-size: 0.75rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            @include text-ellipsis;
           }
         }
 
@@ -720,11 +546,7 @@
             letter-spacing: 0.025em;
           }
 
-          mat-icon {
-            font-size: 14px;
-            width: 14px;
-            height: 14px;
-          }
+          mat-icon { @include icon-size(14px); }
         }
       }
     }
@@ -741,11 +563,7 @@
         font-size: 0.7rem;
       }
 
-      mat-icon {
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
-      }
+      mat-icon { @include icon-size(14px); }
     }
   }
 
@@ -764,24 +582,19 @@
     &:not(:last-child) {
       padding-bottom: 0.125rem; // Reduced from 0.25rem
       margin-bottom: 0.125rem; // Reduced from 0.25rem
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--border-primary);
     }
   }
 }
 
 @include breakpoint(360px) {
   .header-content {
-    h1 {
-      font-size: 1.5rem;
-    }
+    h1 { font-size: 1.5rem; }
   }
 
   .performance-section {
     .support-card-meta-header {
-      .card-image-header {
-        width: 45px;
-        height: 45px;
-      }
+      .card-image-header { width: 45px; height: 45px; }
     }
   }
 
@@ -796,10 +609,7 @@
       .trainer-info {
         align-items: stretch;
 
-        .user-id-copy-btn {
-          width: 100%;
-          justify-content: center;
-        }
+        .user-id-copy-btn { width: 100%; justify-content: center; }
       }
     }
 
@@ -807,9 +617,7 @@
       width: 100%;
       justify-content: center;
 
-      .btn-text {
-        display: inline;
-      }
+      .btn-text { display: inline; }
     }
   }
 }

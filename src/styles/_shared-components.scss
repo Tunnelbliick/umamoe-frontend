@@ -1,6 +1,283 @@
 // Shared Component Styles
 // Component patterns used across multiple pages
 
+// ===== PAGE LAYOUT PATTERNS =====
+// Used by: rankings, circles, circle-details, support-cards-database,
+// inheritance-database, tierlist, statistics, timeline, settings, profile, veterans, etc.
+.page-header-gradient {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem 0;
+
+  .header-content {
+    max-width: var(--page-max-width, 1400px);
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      line-height: 1;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      font-size: 1.125rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0 1rem;
+      h1 { font-size: 1.75rem; }
+      p { font-size: 1rem; }
+    }
+  }
+}
+
+.content-area {
+  max-width: var(--page-max-width, 1400px);
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// ===== TAB BAR PATTERN =====
+// Used by: rankings, circles, support-cards-database, inheritance-database, statistics
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 4px;
+
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+// ===== FILTER BAR PATTERNS =====
+// Used by: rankings, circles, inheritance-database, support-cards-database, veterans
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-chip-base {
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &.active-blue,
+  &.active {
+    background: rgba(100, 181, 246, 0.12);
+    border-color: rgba(100, 181, 246, 0.35);
+    color: #64b5f6;
+  }
+
+  &.active-green {
+    background: rgba(76, 175, 80, 0.12);
+    border-color: rgba(76, 175, 80, 0.35);
+    color: #81c784;
+  }
+
+  &.active-orange {
+    background: rgba(255, 152, 0, 0.12);
+    border-color: rgba(255, 152, 0, 0.35);
+    color: #ffb74d;
+  }
+
+  &.active-red {
+    background: rgba(244, 67, 54, 0.12);
+    border-color: rgba(244, 67, 54, 0.35);
+    color: #e57373;
+  }
+}
+
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: rgba(244, 67, 54, 0.3);
+    color: #e57373;
+  }
+
+  &.inline {
+    margin-top: 0.5rem;
+    border: none;
+    color: #ffb74d;
+    font-size: 0.875rem;
+
+    &:hover {
+      background: rgba(255, 183, 77, 0.1);
+      color: #ffcc80;
+    }
+  }
+}
+
+.sort-direction-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// ===== LOADING & EMPTY STATES =====
+// Used by: rankings, circles, inheritance-database, support-cards-database, etc.
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.5);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+// ===== SECTION LABEL =====
+// Common uppercase label used in filters, headers, sidebars
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+// ===== LEADERBOARD ROW =====
+// Used by: rankings, circles
+.lb-row-base {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
 // ===== RECORD CARD PATTERNS =====
 .record-card-base {
   @include card-base(1.5rem, 12px);
@@ -466,3 +743,81 @@
   .skill-name { overflow: hidden; text-overflow: ellipsis; }
   .skill-level { font-size: 0.65rem; color: rgba(255, 255, 255, 0.35); flex-shrink: 0; }
 }
+
+
+// =============================================================================
+// DESIGN SYSTEM UTILITY CLASSES
+// =============================================================================
+// Apply directly in HTML templates. Use these instead of writing per-component
+// visual styles. Component SCSS should then be ~90% layout (flex, grid, gaps).
+
+// ===== SURFACE CLASSES =====
+// Dark glass cards/panels at different elevation levels.
+.surface-1 { @include surface(1); }
+.surface-2 { @include surface(2); }
+.surface-3 { @include surface(3); }
+.surface-interactive { @include surface-interactive; }
+.glass-panel { @include glass-panel; }
+
+// ===== CHIP / TAG / BADGE CLASSES =====
+// Composable: add .chip + color modifier in the template.
+.ds-chip { @include chip; }
+.ds-chip-sm { @include chip(3px 8px, var(--radius-xs), var(--font-xs)); }
+
+// Chip active color modifiers (use alongside .ds-chip or .filter-chip-base)
+.chip-blue    { background: rgba(var(--accent-primary-rgb), 0.12); border-color: rgba(var(--accent-primary-rgb), 0.35); color: var(--accent-primary); }
+.chip-green   { background: rgba(var(--accent-secondary-rgb), 0.12); border-color: rgba(var(--accent-secondary-rgb), 0.35); color: var(--accent-secondary); }
+.chip-orange  { background: rgba(var(--accent-warning-rgb), 0.12); border-color: rgba(var(--accent-warning-rgb), 0.35); color: var(--accent-warning); }
+.chip-red     { background: rgba(var(--accent-error-rgb), 0.12); border-color: rgba(var(--accent-error-rgb), 0.35); color: var(--accent-error); }
+.chip-purple  { background: rgba(var(--accent-purple-rgb), 0.12); border-color: rgba(var(--accent-purple-rgb), 0.35); color: var(--accent-purple); }
+
+// Display-only tags (small, non-interactive)
+.ds-tag { @include tag; }
+.ds-tag-blue   { @include tag-color(#64b5f6); }
+.ds-tag-green  { @include tag-color(#81c784); }
+.ds-tag-orange { @include tag-color(#ffb74d); }
+.ds-tag-red    { @include tag-color(#e57373); }
+.ds-tag-purple { @include tag-color(#ce93d8); }
+.ds-tag-gold   { @include tag-color(#ffd700); }
+
+// Pill badges
+.ds-pill { @include pill; }
+
+// ===== BUTTON CLASSES =====
+.ds-btn         { @include btn-ghost; }
+.ds-btn-sm      { @include btn-ghost(3px 8px); font-size: var(--font-xs); }
+.ds-btn-icon    { @include btn-icon; }
+.ds-btn-icon-sm { @include btn-icon(28px); }
+.ds-btn-danger  { @include btn-danger; }
+
+// ===== FORM HELPERS =====
+.ds-input       { @include mat-input-dark; }
+.ds-input-sm    { @include mat-input-dark(32px); }
+
+// ===== AVATAR CLASSES =====
+.ds-avatar      { @include avatar; }
+.ds-avatar-sm   { @include avatar(32px); }
+.ds-avatar-lg   { @include avatar(64px); }
+.ds-avatar-xl   { @include avatar(80px); }
+
+// ===== LABEL CLASSES =====
+.ds-label       { @include label-uppercase; }
+.ds-section-title { @include section-title; }
+
+// ===== STATE CLASSES =====
+// For loading, error, empty states—just apply the class to a container div.
+.ds-state       { @include state-container; }
+.ds-loading     { @include loading-container; }
+.ds-no-results  { @include no-results; }
+
+// ===== DISTANCE COLOR CLASSES =====
+// Consistent distance palette across all distance-related UIs.
+.distance-sprint  { --distance-color: var(--distance-sprint); }
+.distance-mile    { --distance-color: var(--distance-mile); }
+.distance-medium  { --distance-color: var(--distance-medium); }
+.distance-long    { --distance-color: var(--distance-long); }
+.distance-dirt    { --distance-color: var(--distance-dirt); }
+
+// ===== SPIN ANIMATION CLASS =====
+.spin { animation: spin 1s linear infinite; }
+.spin-slow { animation: spin 1.5s linear infinite; }

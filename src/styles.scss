@@ -33,54 +33,111 @@ $dark-theme: mat.define-dark-theme((color: (primary: $primary-palette,
 }
 
 :root {
-  // Background colors
+  // ===== BACKGROUND TOKENS =====
   --bg-primary: #0a0a0a;
   --bg-secondary: #121212;
   --bg-tertiary: #1e1e1e;
   --bg-quaternary: #2a2a2a;
 
-  // Text colors
+  // Glass / surface layers (used for cards, panels, overlays)
+  --surface-1: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.05);
+  --surface-3: rgba(255, 255, 255, 0.08);
+  --surface-4: rgba(255, 255, 255, 0.12);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-active: rgba(255, 255, 255, 0.12);
+
+  // ===== TEXT TOKENS =====
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.5);
+  --text-disabled: rgba(255, 255, 255, 0.3);
 
-  // Accent colors
-  --accent-primary: #64b5f6;
-  --accent-secondary: #81c784;
-  --accent-warning: #ffb74d;
+  // ===== ACCENT / SEMANTIC COLORS =====
+  --accent-primary: #64b5f6;       // Blue
+  --accent-primary-rgb: 100, 181, 246;
+  --accent-secondary: #81c784;     // Green
+  --accent-secondary-rgb: 129, 199, 132;
+  --accent-warning: #ffb74d;       // Orange
+  --accent-warning-rgb: 255, 183, 77;
+  --accent-error: #e57373;         // Red
+  --accent-error-rgb: 229, 115, 115;
+  --accent-purple: #ce93d8;        // Purple
+  --accent-purple-rgb: 206, 147, 216;
 
-  // Border colors
+  // Stronger / darker variants for buttons & fills
+  --color-blue: #2196f3;
+  --color-blue-dark: #1976d2;
+  --color-green: #4caf50;
+  --color-green-dark: #388e3c;
+  --color-orange: #ff9800;
+  --color-red: #f44336;
+  --color-purple: #9c27b0;
+  --color-pink: #e91e63;
+  --color-gold: #ffd700;
+
+  // ===== BORDER TOKENS =====
+  --border-subtle: rgba(255, 255, 255, 0.06);
   --border-primary: rgba(255, 255, 255, 0.12);
   --border-secondary: rgba(255, 255, 255, 0.2);
+  --border-strong: rgba(255, 255, 255, 0.3);
 
-  // Shadows
+  // ===== SHADOW TOKENS =====
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-glow-blue: 0 0 0 2px rgba(33, 150, 243, 0.15);
 
-  // Border radius
+  // ===== BORDER RADIUS TOKENS =====
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+  // Legacy aliases
   --border-radius-sm: 6px;
   --border-radius: 8px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
   --border-radius-xl: 16px;
 
-  // Layout dimensions
+  // ===== SPACING / LAYOUT TOKENS =====
   --header-height: 60px;
   --navbar-height: 60px;
   --page-padding: 2rem;
   --page-padding-mobile: 1rem;
+  --page-max-width: 1400px;
   --card-padding: 1.5rem;
   --card-padding-mobile: 1rem;
   --filter-card-width: 280px;
 
-  // Transitions
+  // ===== TYPOGRAPHY =====
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-xs: 0.6875rem;   // 11px
+  --font-sm: 0.8125rem;   // 13px
+  --font-base: 0.875rem;  // 14px
+  --font-md: 1rem;        // 16px
+  --font-lg: 1.125rem;    // 18px
+  --font-xl: 1.5rem;      // 24px
+  --font-2xl: 2rem;       // 32px
+  --font-3xl: 2.5rem;     // 40px
+
+  // ===== TRANSITIONS =====
   --transition: all 0.3s ease;
   --transition-fast: all 0.15s ease;
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Gradients
+  // ===== GRADIENTS (page headers) =====
   --gradient-primary: linear-gradient(45deg, #64b5f6, #81c784, #ffb74d);
   --gradient-logo: linear-gradient(45deg, #64b5f6, #81c784);
+
+  // ===== DISTANCE COLORS (consistent across all distance selectors) =====
+  --distance-sprint: #ff9800;
+  --distance-mile: #4caf50;
+  --distance-medium: #2196f3;
+  --distance-long: #9c27b0;
+  --distance-dirt: #795548;
 }
 
 html,
@@ -694,6 +751,824 @@ body.christmas-theme {
       box-shadow: none !important;
       border-radius: 0 !important;
       overflow: hidden !important;
+    }
+  }
+}
+
+// ===== GLOBAL: FACTOR ITEM CHECKBOX LABEL =====
+.factor-item mat-checkbox .mdc-label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+// ===== GLOBAL: INPUT GRID FORM FIELDS =====
+// For number input grids in advanced-filter (star sums, property filters, etc.)
+.input-grid mat-form-field {
+  .mat-mdc-text-field-wrapper {
+    height: 38px !important;
+    padding: 0 12px !important;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all 0.2s ease;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border: none !important;
+  }
+
+  &:hover .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--border-secondary) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--color-blue) !important;
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mat-mdc-input-element {
+    margin-top: 0 !important;
+    position: relative !important;
+    top: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .mat-mdc-form-field-hint {
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+
+  .mdc-line-ripple {
+    display: none;
+  }
+}
+
+// ===== GLOBAL: FACTOR SELECT FIELD =====
+// Base styling for .factor-select (shares compact-field-dark pattern)
+.factor-select {
+  .mat-mdc-text-field-wrapper {
+    height: 38px !important;
+    padding: 0 12px !important;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all 0.2s ease;
+  }
+
+  &:hover .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--border-secondary) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: #33b5e5 !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    min-height: 38px !important;
+  }
+
+  .mat-mdc-form-field-flex {
+    height: 38px !important;
+    align-items: center !important;
+  }
+
+  .mat-mdc-select-value {
+    color: var(--text-primary) !important;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .mat-mdc-select-arrow {
+    color: var(--text-secondary) !important;
+  }
+}
+
+// Factor color variants (global so ::ng-deep not needed)
+.blue-factor .factor-select {
+  .mat-mdc-text-field-wrapper {
+    border-color: rgba(66, 188, 247, 0.3) !important;
+    background: rgba(66, 188, 247, 0.05) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #42bcf7 !important;
+  }
+}
+
+.pink-factor .factor-select {
+  .mat-mdc-text-field-wrapper {
+    border-color: rgba(255, 120, 178, 0.3) !important;
+    background: rgba(255, 120, 178, 0.05) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #ff78b2 !important;
+  }
+}
+
+.green-factor .factor-select {
+  .mat-mdc-text-field-wrapper {
+    border-color: rgba(151, 212, 52, 0.3) !important;
+    background: rgba(151, 212, 52, 0.05) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #97d434 !important;
+  }
+}
+
+.optional-factor .factor-select {
+  .mat-mdc-text-field-wrapper {
+    border-color: rgba(180, 180, 180, 0.3) !important;
+    background: rgba(180, 180, 180, 0.05) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: rgba(200, 200, 200, 0.6) !important;
+  }
+}
+
+// Factor slider color variants
+.blue-factor mat-slider {
+  .mdc-slider__track--active_fill {
+    border-color: #42bcf7 !important;
+  }
+
+  .mdc-slider__thumb-knob {
+    background-color: #42bcf7 !important;
+    border-color: #42bcf7 !important;
+  }
+}
+
+.pink-factor mat-slider {
+  .mdc-slider__track--active_fill {
+    border-color: #ff78b2 !important;
+  }
+
+  .mdc-slider__thumb-knob {
+    background-color: #ff78b2 !important;
+    border-color: #ff78b2 !important;
+  }
+}
+
+.green-factor mat-slider {
+  .mdc-slider__track--active_fill {
+    border-color: #97d434 !important;
+  }
+
+  .mdc-slider__thumb-knob {
+    background-color: #97d434 !important;
+    border-color: #97d434 !important;
+  }
+}
+
+// Factor slider tick marks & value indicator
+.factor-item mat-slider {
+  .mdc-slider__track {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .mdc-slider__tick-mark--active,
+  .mdc-slider__tick-mark--inactive {
+    background-color: var(--text-disabled) !important;
+    width: 2px !important;
+    height: 2px !important;
+    border-radius: 50%;
+  }
+
+  .mdc-slider__value-indicator-container {
+    top: auto !important;
+    bottom: 5px !important;
+
+    .mdc-slider__value-indicator {
+      transform: rotate(180deg) !important;
+
+      .mdc-slider__value-indicator-text {
+        transform: rotate(180deg) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+      }
+    }
+  }
+}
+
+// ===== GLOBAL: RANK SELECT PANEL =====
+.rank-select-panel {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1f1f1f 100%) !important;
+  border: 1px solid var(--border-secondary) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  max-height: 360px !important;
+  overflow-y: auto !important;
+
+  .mat-mdc-option {
+    color: white !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 16px !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      background: linear-gradient(90deg, rgba(33, 150, 243, 0.12) 0%, rgba(33, 150, 243, 0.04) 100%) !important;
+
+      &::before {
+        background: #2196f3;
+      }
+    }
+
+    &.mdc-list-item--selected {
+      background: linear-gradient(90deg, rgba(33, 150, 243, 0.25) 0%, rgba(33, 150, 243, 0.08) 100%) !important;
+
+      &::before {
+        background: #2196f3;
+      }
+
+      &:hover {
+        background: linear-gradient(90deg, rgba(33, 150, 243, 0.35) 0%, rgba(33, 150, 243, 0.12) 100%) !important;
+      }
+    }
+
+    .rank-option-content {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      width: 100% !important;
+
+      .rank-icon {
+        width: 28px !important;
+        height: 28px !important;
+        flex-shrink: 0 !important;
+        object-fit: contain !important;
+        border-radius: var(--radius-xs) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+        transition: transform 0.2s ease !important;
+      }
+
+      .no-rank-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--text-secondary) !important;
+        background: var(--surface-3) !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .rank-text {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: white !important;
+        line-height: 1.3 !important;
+      }
+    }
+
+    &:hover .rank-option-content {
+      .rank-icon {
+        transform: scale(1.05) !important;
+      }
+
+      .no-rank-icon {
+        background: var(--surface-4) !important;
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+
+  .mat-mdc-select-panel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(33, 150, 243, 0.5) transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--surface-2);
+      border-radius: var(--radius-xs);
+      margin: 8px 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #2196f3, #1976d2);
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--border-primary);
+
+      &:hover {
+        background: linear-gradient(180deg, #42a5f5, #2196f3);
+      }
+    }
+  }
+}
+
+// ===== GLOBAL: RANK SELECT FIELD =====
+.rank-select-field {
+  .mat-mdc-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .mat-mdc-select-value {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+// ===== GLOBAL CHECKBOX COLOR OVERRIDES =====
+// Replaces per-component ::ng-deep checkbox color blocks
+// Used by timeline, mobile-timeline, timeline-vertical
+
+// Character (blue)
+.character-toggle,
+.compact-character-toggle {
+  .mdc-checkbox {
+    --mdc-checkbox-unselected-icon-color: var(--text-secondary);
+  }
+
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: #4fc3f7;
+  }
+}
+
+// Support (green)
+.support-toggle,
+.compact-support-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--accent-secondary) !important;
+    border-color: var(--accent-secondary) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: #66bb6a;
+  }
+}
+
+// Story Events (orange/warning)
+.story-events-toggle,
+.compact-story-events-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--accent-warning) !important;
+    border-color: var(--accent-warning) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: var(--accent-warning);
+  }
+}
+
+// Champions Meeting (purple)
+.champions-toggle,
+.compact-champions-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--color-purple) !important;
+    border-color: var(--color-purple) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: #ab47bc;
+  }
+}
+
+// Legend Races (pink)
+.legend-toggle,
+.legend-races-toggle,
+.compact-legend-races-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--color-pink) !important;
+    border-color: var(--color-pink) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: #f06292;
+  }
+}
+
+// Paid (orange)
+.paid-toggle,
+.paid-banners-toggle,
+.compact-paid-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: var(--color-orange) !important;
+    border-color: var(--color-orange) !important;
+  }
+
+  .mdc-checkbox.mdc-checkbox--selected {
+    --mdc-checkbox-selected-icon-color: #ff8a65;
+  }
+}
+
+// Campaign (teal)
+.campaign-toggle,
+.campaigns-toggle,
+.compact-campaign-toggle {
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+    background-color: #26a69a !important;
+    border-color: #26a69a !important;
+  }
+}
+
+// ===== GLOBAL MATERIAL DARK THEME: COMPACT FORM FIELD (38px) =====
+// Replaces per-component ::ng-deep form field overrides.
+// Apply class "compact-field-dark" to any mat-form-field.
+.compact-field-dark {
+  .mat-mdc-text-field-wrapper {
+    height: 38px !important;
+    padding: 0 12px !important;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all 0.2s ease;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border: none !important;
+  }
+
+  &:hover .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--border-secondary) !important;
+  }
+
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--color-blue) !important;
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    min-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-floating-label {
+    color: var(--text-disabled) !important;
+  }
+
+  input.mat-mdc-input-element {
+    margin-top: 0 !important;
+    color: var(--text-primary);
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    color: var(--text-disabled);
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+    }
+  }
+}
+
+// ===== GLOBAL MATERIAL DARK THEME: COMPACT SLIDER =====
+// Replaces per-component ::ng-deep slider overrides.
+// Apply class "compact-slider-dark" to any mat-slider.
+.compact-slider-dark {
+  .mdc-slider {
+    margin: 0 !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mdc-slider__input {
+    height: 24px !important;
+  }
+
+  .mdc-slider__track {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .mdc-slider__track--inactive {
+    background-color: var(--surface-4) !important;
+    height: 2px !important;
+    border-radius: 2px;
+    opacity: 1 !important;
+  }
+
+  .mdc-slider__track--active_fill {
+    background-color: var(--color-blue) !important;
+    border-color: var(--color-blue) !important;
+    height: 2px !important;
+  }
+
+  .mdc-slider__thumb-knob {
+    background-color: var(--color-blue) !important;
+    border-color: var(--color-blue) !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-width: 2px !important;
+  }
+}
+
+// ===== GLOBAL MATERIAL DARK THEME: SEARCH FIELD =====
+// Replaces per-component ::ng-deep overrides for search inputs.
+// Apply the class "search-field-dark" to any mat-form-field for dark search styling.
+.search-field-dark,
+.search-field {
+  .mat-mdc-form-field-subscript-wrapper { display: none; }
+
+  .mat-mdc-form-field-wrapper {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background: transparent !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background: transparent !important;
+  }
+
+  .mat-mdc-input-element {
+    color: #fff !important;
+  }
+
+  .mat-mdc-form-field-label,
+  .mat-mdc-floating-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+}
+
+// ===== GLOBAL MATERIAL DARK THEME: COMPACT SELECT =====
+// Replaces per-component ::ng-deep overrides for compact dropdowns.
+// Apply the class "compact-select" to any mat-form-field with mat-select.
+.compact-select {
+  .mat-mdc-text-field-wrapper {
+    height: 32px !important;
+    padding: 0 6px 0 0 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-radius: 6px !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding: 4px 0 !important;
+    min-height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .mat-mdc-select-value {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.8125rem;
+  }
+
+  .mat-mdc-select-arrow {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .mat-mdc-form-field-icon-prefix {
+    padding: 0 2px 0 8px !important;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  .mat-mdc-select-placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+// ===== GLOBAL: CLOSE BUTTON TOUCH TARGET =====
+.close-btn .mat-mdc-button-touch-target {
+  width: 32px;
+  height: 32px;
+}
+
+// ===== GLOBAL: SPINNER CIRCLE STROKE =====
+.voting-spinner .mat-progress-spinner circle {
+  stroke: currentColor;
+}
+
+// ===== GLOBAL: VOTE COOLDOWN TOOLTIP =====
+.mat-tooltip.vote-cooldown-tooltip {
+  background-color: rgba(244, 67, 54, 0.9);
+  color: white;
+  font-size: 12px;
+}
+
+// ===== GLOBAL: CARD DETAILS DIALOG PANEL =====
+.card-details-dialog {
+  .mat-mdc-dialog-container {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    padding: 1.5rem;
+  }
+
+  .mat-mdc-dialog-title {
+    margin: 0;
+    padding: 0 0 1rem 0;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0;
+    margin: 0;
+    max-height: none;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-details-dialog {
+    .mat-mdc-dialog-container {
+      margin: 1rem;
+      max-height: calc(100vh - 2rem);
+      width: calc(100vw - 2rem);
+      padding: 1rem;
+    }
+
+    .mat-mdc-dialog-title {
+      padding: 0 0 0.75rem 0;
+    }
+
+    .mat-mdc-dialog-content {
+      padding: 0;
+    }
+  }
+}
+
+// ===== GLOBAL: CHECKBOX LABEL RESET =====
+.compact-filter-toggles mat-checkbox .mdc-form-field > label {
+  margin: 0;
+  padding: 0;
+}
+
+// ===== GLOBAL: ALL-CLASSES TOGGLE CHECKBOX =====
+.all-classes-toggle .mat-mdc-checkbox {
+  .mdc-form-field {
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .mdc-checkbox__background {
+    border-color: var(--accent-primary);
+  }
+
+  &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+}
+
+// ===== GLOBAL: SUPPORT-CARD-FILTER FORM FIELD DARK =====
+.support-card-filter .mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--surface-2);
+  }
+
+  .mdc-text-field--outlined {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: var(--border-strong);
+    }
+  }
+
+  .mdc-text-field {
+    background-color: transparent;
+  }
+
+  .mdc-floating-label {
+    color: var(--text-secondary);
+  }
+
+  .mdc-text-field--focused .mdc-floating-label {
+    color: var(--accent-primary);
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--accent-primary);
+  }
+
+  input,
+  .mat-mdc-select-value {
+    color: var(--text-primary);
+  }
+}
+
+// ===== GLOBAL: SUPPORT-CARD-FILTER SLIDER =====
+.support-card-filter .mat-mdc-slider {
+  .mdc-slider__track .mdc-slider__track--inactive {
+    background-color: var(--surface-4);
+  }
+
+  .mdc-slider__track--active_fill {
+    background-color: var(--color-blue);
+  }
+
+  .mdc-slider__thumb .mdc-slider__thumb-knob {
+    background-color: var(--color-blue);
+    border-color: var(--color-blue);
+  }
+
+  .mdc-slider__tick-marks {
+    .mdc-slider__tick-mark--active {
+      background-color: var(--text-secondary);
+    }
+
+    .mdc-slider__tick-mark--inactive {
+      background-color: var(--text-disabled);
     }
   }
 }

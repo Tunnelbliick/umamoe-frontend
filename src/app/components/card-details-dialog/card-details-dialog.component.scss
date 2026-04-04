@@ -15,10 +15,7 @@
   button {
     color: var(--text-secondary);
     
-    &:hover {
-      color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.1);
-    }
+    &:hover { color: var(--text-primary); background: var(--surface-3); }
   }
 }
 
@@ -87,11 +84,7 @@
             gap: 0.5rem;
             flex-wrap: wrap;
 
-            .current-score {
-              font-size: 1rem;
-              font-weight: 700;
-              color: var(--accent-primary);
-            }
+            .current-score { font-size: 1rem; font-weight: 700; color: var(--accent-primary); }
 
             .tier-chip {
               padding: 0.25rem 0.5rem;
@@ -144,15 +137,8 @@
           padding: 0.25rem 0;
           font-size: 0.875rem;
 
-          .label {
-            color: var(--text-secondary);
-            font-weight: 500;
-          }
-
-          .value {
-            color: var(--text-primary);
-            font-weight: 600;
-          }
+          .label { color: var(--text-secondary); font-weight: 500; }
+          .value { color: var(--text-primary); font-weight: 600; }
         }
       }
 
@@ -187,16 +173,10 @@
               opacity: 0.5;
               background: var(--bg-quaternary);
               
-              .tier-badge {
-                background: #9e9e9e !important;
-              }
+              .tier-badge { background: #9e9e9e !important; }
             }
             
-            .lb-label {
-              font-size: 0.7rem;
-              font-weight: 600;
-              color: var(--text-secondary);
-            }
+            .lb-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); }
             
             .tier-badge {
               display: inline-block;
@@ -209,17 +189,10 @@
               min-width: 24px;
               text-align: center;
               
-              &.na-tier {
-                background: #9e9e9e !important;
-                color: var(--text-muted);
-              }
+              &.na-tier { background: #9e9e9e !important; color: var(--text-muted); }
             }
             
-            .score {
-              font-size: 0.65rem;
-              color: var(--text-secondary);
-              font-weight: 500;
-            }
+            .score { font-size: 0.65rem; color: var(--text-secondary); font-weight: 500; }
           }
         }
       }
@@ -237,30 +210,17 @@
       padding: 0.75rem;
 
       .card-header {
-        .card-image {
-          width: 64px;
-          height: 64px;
-        }
-
-        .card-info .card-name {
-          font-size: 1rem;
-        }
+        .card-image { width: 64px; height: 64px; }
+        .card-info .card-name { font-size: 1rem; }
       }
 
-      .progression-section .chart-container {
-        height: 175px;
-      }
-
-      .quick-stats .stat-item {
-        font-size: 0.8rem;
-      }
+      .progression-section .chart-container { height: 175px; }
+      .quick-stats .stat-item { font-size: 0.8rem; }
     }
   }
 }
 
 // Mobile specific adjustments
 @media (max-width: 768px) {
-  .dialog-content {
-    max-height: 80vh;
-  }
+  .dialog-content { max-height: 80vh; }
 }

@@ -173,7 +173,7 @@
             min="0"
             max="4"
             step="1"
-            class="limit-break-slider-compact"
+            class="limit-break-slider-compact compact-slider-dark"
             [displayWith]="formatLabel">
             <input matSliderThumb [(ngModel)]="selectedLimitBreak" (valueChange)="onFilterChange()">
           </mat-slider>
@@ -201,7 +201,7 @@
             <!-- User ID Search -->
             <div class="input-wrapper">
               <span class="input-label">Trainer ID</span>
-              <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+              <mat-form-field appearance="fill" class="custom-search-field compact-field-dark" subscriptSizing="dynamic">
                 <input 
                   matInput
                   [(ngModel)]="searchUserId"
@@ -221,7 +221,7 @@
             <!-- Username Search -->
             <div class="input-wrapper">
               <span class="input-label">Username</span>
-              <mat-form-field appearance="fill" class="custom-search-field" subscriptSizing="dynamic">
+              <mat-form-field appearance="fill" class="custom-search-field compact-field-dark" subscriptSizing="dynamic">
                 <input 
                   matInput
                   [(ngModel)]="searchUsername"

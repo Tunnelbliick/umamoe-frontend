@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .timeline-vertical {
   display: flex;
   flex-direction: column;
@@ -9,7 +11,7 @@
   .header {
     padding: 16px 20px;
     background: rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-primary);
     flex-shrink: 0;
 
     .header-info {
@@ -23,22 +25,11 @@
         font-size: 1.5rem;
         font-weight: 600;
 
-        .page-icon {
-          font-size: 1.5rem;
-        }
+        .page-icon { font-size: 1.5rem; }
       }
 
-      .subtitle {
-        margin: 0 0 4px 0;
-        opacity: 0.8;
-        font-size: 0.9rem;
-      }
-
-      .event-count {
-        margin: 0;
-        opacity: 0.7;
-        font-size: 0.8rem;
-      }
+      .subtitle { margin: 0 0 4px 0; opacity: 0.8; font-size: 0.9rem; }
+      .event-count { margin: 0; opacity: 0.7; font-size: 0.8rem; }
     }
 
     .search-field {
@@ -46,34 +37,13 @@
       margin-bottom: 16px;
 
       ::ng-deep {
-        .mat-mdc-form-field-flex {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-        }
-
-        .mat-mdc-text-field-wrapper {
-          background: transparent;
-        }
-
-        .mat-mdc-form-field-outline {
-          color: rgba(255, 255, 255, 0.3);
-        }
-
-        .mat-mdc-form-field-outline-thick {
-          color: rgba(255, 255, 255, 0.6);
-        }
-
-        .mdc-floating-label {
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        .mat-mdc-input-element {
-          color: white;
-        }
-
-        .mat-icon {
-          color: rgba(255, 255, 255, 0.7);
-        }
+        .mat-mdc-form-field-flex { background: var(--surface-3); border-radius: var(--radius-md); }
+        .mat-mdc-text-field-wrapper { background: transparent; }
+        .mat-mdc-form-field-outline { color: var(--text-disabled); }
+        .mat-mdc-form-field-outline-thick { color: var(--text-secondary); }
+        .mdc-floating-label { color: var(--text-secondary); }
+        .mat-mdc-input-element { color: white; }
+        .mat-icon { color: var(--text-secondary); }
       }
     }
 
@@ -84,24 +54,15 @@
       margin-bottom: 16px;
       font-size: 0.9rem;
 
-      button {
-        color: white;
-      }
-
-      .search-results-count {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .no-results {
-        color: rgba(255, 255, 255, 0.6);
-        font-style: italic;
-      }
+      button { color: white; }
+      .search-results-count { color: var(--text-primary); }
+      .no-results { color: var(--text-secondary); font-style: italic; }
     }
   }
 
   .filter-controls {
     padding: 0 20px 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-primary);
     flex-shrink: 0;
 
     .filter-toggles {
@@ -110,65 +71,13 @@
       gap: 8px;
 
       mat-checkbox {
-        ::ng-deep {
-          .mdc-checkbox {
-            --mdc-checkbox-unselected-icon-color: rgba(255, 255, 255, 0.7);
-            --mdc-checkbox-selected-icon-color: white;
-          }
-
-          .mdc-form-field {
-            color: white;
-          }
-        }
-
         .checkbox-content {
           display: flex;
           align-items: center;
           gap: 4px;
           font-size: 0.85rem;
 
-          mat-icon {
-            font-size: 1rem;
-            width: 1rem;
-            height: 1rem;
-          }
-        }
-
-        // Event type specific colors
-        &.character-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #4fc3f7;
-          }
-        }
-
-        &.support-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #66bb6a;
-          }
-        }
-
-        &.story-events-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #ffb74d;
-          }
-        }
-
-        &.champions-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #ab47bc;
-          }
-        }
-
-        &.legend-races-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #f06292;
-          }
-        }
-
-        &.paid-banners-toggle {
-          ::ng-deep .mdc-checkbox.mdc-checkbox--selected {
-            --mdc-checkbox-selected-icon-color: #ff8a65;
-          }
+          mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
         }
       }
     }
@@ -184,7 +93,7 @@
       flex-shrink: 0;
       position: relative;
       background: rgba(0, 0, 0, 0.1);
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid var(--border-primary);
 
       .timeline-line {
         position: absolute;
@@ -216,17 +125,13 @@
               transform: translateY(-50%);
               font-size: 0.7rem;
               font-weight: 600;
-              color: rgba(255, 255, 255, 0.8);
+              color: var(--text-primary);
               text-align: left;
               line-height: 1.2;
             }
           }
 
-          &.marker-year .marker-label {
-            font-size: 0.8rem;
-            color: white;
-            font-weight: 700;
-          }
+          &.marker-year .marker-label { font-size: 0.8rem; color: white; font-weight: 700; }
 
           &.marker-event,
           &.marker-grouped-events,
@@ -239,17 +144,11 @@
               width: 24px;
               height: 24px;
               border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+              @include flex-center;
               background: white;
               box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-              mat-icon {
-                font-size: 14px;
-                width: 14px;
-                height: 14px;
-              }
+              mat-icon { @include icon-size(14px); }
             }
           }
 
@@ -257,17 +156,13 @@
             background: #ff9800;
             animation: pulse 2s infinite;
 
-            .today-icon {
-              color: white;
-            }
+            .today-icon { color: white; }
           }
 
           &.marker-grouped-events .marker-dot {
             background: #9c27b0;
 
-            .group-icon {
-              color: white;
-            }
+            .group-icon { color: white; }
           }
         }
       }
@@ -305,7 +200,7 @@
               margin: 0;
               font-size: 1.2rem;
               font-weight: 600;
-              color: rgba(255, 255, 255, 0.9);
+              color: var(--text-primary);
               text-align: center;
             }
           }
@@ -327,14 +222,8 @@
               border-radius: 20px;
               animation: pulse 2s infinite;
 
-              .today-icon {
-                color: #ff9800;
-              }
-
-              span {
-                color: #ff9800;
-                font-weight: 600;
-              }
+              .today-icon { color: var(--color-orange); }
+              span { color: var(--color-orange); font-weight: 600; }
             }
           }
         }
@@ -343,47 +232,22 @@
           .event-card {
             mat-card {
               background: rgba(255, 255, 255, 0.95);
-              border-radius: 12px;
+              border-radius: var(--radius-lg);
               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
               border-left: 4px solid #2196f3;
 
               // Event type colors
-              &.event-type-character_banner {
-                border-left-color: #4fc3f7;
-              }
-
-              &.event-type-support_banner {
-                border-left-color: #66bb6a;
-              }
-
-              &.event-type-story_event {
-                border-left-color: #ffb74d;
-              }
-
-              &.event-type-champions_meeting {
-                border-left-color: #ab47bc;
-              }
-
-              &.event-type-legend_race {
-                border-left-color: #f06292;
-              }
-
-              &.event-type-paid_banner {
-                border-left-color: #ff8a65;
-              }
+              &.event-type-character_banner { border-left-color: #4fc3f7; }
+              &.event-type-support_banner { border-left-color: #66bb6a; }
+              &.event-type-story_event { border-left-color: var(--accent-warning); }
+              &.event-type-champions_meeting { border-left-color: #ab47bc; }
+              &.event-type-legend_race { border-left-color: #f06292; }
+              &.event-type-paid_banner { border-left-color: #ff8a65; }
 
               ::ng-deep {
-                .mat-mdc-card-header {
-                  padding: 16px 16px 8px 16px;
-                }
-
-                .mat-mdc-card-content {
-                  padding: 0 16px 8px 16px;
-                }
-
-                .mat-mdc-card-actions {
-                  padding: 8px 16px 16px 16px;
-                }
+                .mat-mdc-card-header { padding: 16px 16px 8px 16px; }
+                .mat-mdc-card-content { padding: 0 16px 8px 16px; }
+                .mat-mdc-card-actions { padding: 8px 16px 16px 16px; }
 
                 .mat-mdc-card-title {
                   color: #333;
@@ -392,45 +256,32 @@
                   line-height: 1.3;
                 }
 
-                .mat-mdc-card-subtitle {
-                  color: #666;
-                  font-size: 0.9rem;
-                }
+                .mat-mdc-card-subtitle { color: #666; font-size: 0.9rem; }
               }
 
               .event-icon {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex-center;
                 background: #f5f5f5;
 
-                mat-icon {
-                  color: #666;
-                }
+                mat-icon { color: #666; }
               }
 
               .event-image {
                 margin: 8px 0;
-                border-radius: 8px;
+                border-radius: var(--radius-md);
                 overflow: hidden;
 
-                img {
-                  width: 100%;
-                  height: auto;
-                  display: block;
-                }
+                img { width: 100%; height: auto; display: block; }
 
                 // Campaign images need padding since logos have busy edges
                 &.campaign-image {
                   padding: 8px 12px;
                   overflow: visible;
 
-                  img {
-                    border-radius: 8px;
-                  }
+                  img { border-radius: var(--radius-md); }
                 }
               }
 
@@ -438,15 +289,10 @@
                 mat-chip-set {
                   margin-bottom: 8px;
 
-                  &:last-child {
-                    margin-bottom: 0;
-                  }
+                  &:last-child { margin-bottom: 0; }
                 }
 
-                ::ng-deep .mat-mdc-chip {
-                  font-size: 0.75rem;
-                  height: 24px;
-                }
+                ::ng-deep .mat-mdc-chip { font-size: 0.75rem; height: 24px; }
               }
             }
           }
@@ -459,7 +305,7 @@
 
               h5 {
                 margin: 0;
-                color: rgba(255, 255, 255, 0.9);
+                color: var(--text-primary);
                 font-size: 1rem;
                 font-weight: 600;
                 text-align: center;
@@ -473,42 +319,20 @@
 
               .mini-event-card {
                 background: rgba(255, 255, 255, 0.9);
-                border-radius: 8px;
+                border-radius: var(--radius-md);
                 border-left: 3px solid #2196f3;
 
                 // Event type colors
-                &.event-type-character_banner {
-                  border-left-color: #4fc3f7;
-                }
-
-                &.event-type-support_banner {
-                  border-left-color: #66bb6a;
-                }
-
-                &.event-type-story_event {
-                  border-left-color: #ffb74d;
-                }
-
-                &.event-type-champions_meeting {
-                  border-left-color: #ab47bc;
-                }
-
-                &.event-type-legend_race {
-                  border-left-color: #f06292;
-                }
-
-                &.event-type-paid_banner {
-                  border-left-color: #ff8a65;
-                }
+                &.event-type-character_banner { border-left-color: #4fc3f7; }
+                &.event-type-support_banner { border-left-color: #66bb6a; }
+                &.event-type-story_event { border-left-color: var(--accent-warning); }
+                &.event-type-champions_meeting { border-left-color: #ab47bc; }
+                &.event-type-legend_race { border-left-color: #f06292; }
+                &.event-type-paid_banner { border-left-color: #ff8a65; }
 
                 ::ng-deep {
-                  .mat-mdc-card-header {
-                    padding: 12px;
-                  }
-
-                  .mat-mdc-card-content {
-                    padding: 0 12px 12px 12px;
-                  }
+                  .mat-mdc-card-header { padding: 12px; }
+                  .mat-mdc-card-content { padding: 0 12px 12px 12px; }
 
                   .mat-mdc-card-title {
                     color: #333;
@@ -522,29 +346,21 @@
                   width: 32px;
                   height: 32px;
                   border-radius: 50%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
+                  @include flex-center;
                   background: #f5f5f5;
 
                   mat-icon {
                     color: #666;
-                    font-size: 16px;
-                    width: 16px;
-                    height: 16px;
+                    @include icon-size(16px);
                   }
                 }
 
                 .mini-event-image {
                   margin-top: 8px;
-                  border-radius: 4px;
+                  border-radius: var(--radius-xs);
                   overflow: hidden;
 
-                  img {
-                    width: 100%;
-                    height: auto;
-                    display: block;
-                  }
+                  img { width: 100%; height: auto; display: block; }
                 }
               }
             }
@@ -557,28 +373,15 @@
 
 // Animations
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 // Responsive adjustments for very small screens
 @media (max-width: 360px) {
   .timeline-vertical {
-    .header {
-      padding: 12px 16px;
-    }
+    .header { padding: 12px 16px; }
 
     .filter-controls {
       padding: 0 16px 12px 16px;
@@ -604,10 +407,7 @@
 
           &.marker-year,
           &.marker-month {
-            .marker-label {
-              font-size: 0.6rem;
-              left: 4px;
-            }
+            .marker-label { font-size: 0.6rem; left: 4px; }
           }
 
           &.marker-event,
@@ -617,19 +417,13 @@
               width: 20px;
               height: 20px;
 
-              mat-icon {
-                font-size: 12px;
-                width: 12px;
-                height: 12px;
-              }
+              mat-icon { @include icon-size(12px); }
             }
           }
         }
       }
 
-      .events-section {
-        padding: 16px;
-      }
+      .events-section { padding: 16px; }
     }
   }
 }

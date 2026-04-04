@@ -171,3 +171,547 @@
     z-index: 0;
   }
 }
+
+// ===== SHARED LAYOUT MIXINS =====
+// These correspond to the global classes in _shared-components.scss
+// but can be @include'd in component SCSS (where @extend won't work
+// across Angular's per-component compilation).
+
+@mixin page-header-gradient {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem 0;
+
+  .header-content {
+    max-width: var(--page-max-width, 1400px);
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      line-height: 1;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      font-size: 1.125rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0 1rem;
+      h1 { font-size: 1.75rem; }
+      p { font-size: 1rem; }
+    }
+  }
+}
+
+@mixin content-area {
+  max-width: var(--page-max-width, 1400px);
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+@mixin filter-chip-base {
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+@mixin lb-row-base {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+@mixin loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@mixin no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.5;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
+// =============================================================================
+// DESIGN SYSTEM MIXINS
+// =============================================================================
+// These mixins form the core design system for building new components quickly.
+// Component SCSS should be ~90% layout (flex, grid, positioning) and use these
+// mixins + CSS variables for all visual styling.
+
+// ===== SURFACE / CARD MIXINS =====
+// The primary building block: a dark glass card with subtle border.
+// Use for any container that needs a "panel" appearance.
+@mixin surface($level: 2, $radius: var(--radius-md)) {
+  @if $level == 1 { background: var(--surface-1); }
+  @else if $level == 2 { background: var(--surface-2); }
+  @else if $level == 3 { background: var(--surface-3); }
+  @else if $level == 4 { background: var(--surface-4); }
+  border: 1px solid var(--border-primary);
+  border-radius: $radius;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+@mixin surface-hover {
+  background: var(--surface-hover);
+  border-color: var(--border-secondary);
+}
+
+@mixin surface-interactive($level: 2, $radius: var(--radius-md)) {
+  @include surface($level, $radius);
+  cursor: pointer;
+
+  &:hover {
+    @include surface-hover;
+  }
+}
+
+// Glass panel with backdrop blur (heavier, use sparingly)
+@mixin glass-panel($blur: 10px) {
+  background: var(--surface-2);
+  backdrop-filter: blur($blur);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+}
+
+// Frosted sheet (bottom sheets, heavy overlays)
+@mixin frosted-sheet {
+  background: rgba(26, 26, 30, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+}
+
+// ===== CHIP / TAG / BADGE MIXINS =====
+// Compact colored labels for metadata, filters, statuses.
+@mixin chip($padding: 5px 12px, $radius: var(--radius-sm), $font-size: var(--font-sm)) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: $padding;
+  border: 1px solid var(--border-primary);
+  border-radius: $radius;
+  background: var(--surface-1);
+  color: var(--text-muted);
+  font-size: $font-size;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-secondary);
+    color: var(--text-secondary);
+  }
+}
+
+// Activate a chip with a semantic color.
+// Usage: &.active { @include chip-active(--accent-primary-rgb); }
+@mixin chip-active($color-rgb) {
+  background: rgba($color-rgb, 0.12);
+  border-color: rgba($color-rgb, 0.35);
+  color: rgb($color-rgb);
+}
+
+// Small colored tag (non-interactive, for display only)
+@mixin tag($bg-alpha: 0.12, $border-alpha: 0.3) {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@mixin tag-color($color) {
+  background: rgba($color, 0.12);
+  border: 1px solid rgba($color, 0.3);
+  color: $color;
+}
+
+// Pill badge (fully rounded)
+@mixin pill($font-size: var(--font-xs)) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: $font-size;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+// ===== AVATAR MIXIN =====
+@mixin avatar($size: 48px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+@mixin avatar-bordered($size: 48px, $border-color: var(--border-primary)) {
+  @include avatar($size);
+  border: 2px solid $border-color;
+}
+
+@mixin avatar-placeholder($size: 48px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    $icon-size: calc(#{$size} * 0.5);
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+    color: var(--text-disabled);
+  }
+}
+
+// ===== BUTTON MIXINS =====
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+@mixin btn-ghost($padding: 5px 12px) {
+  @include btn-base;
+  padding: $padding;
+
+  &:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-secondary);
+    color: var(--text-primary);
+  }
+}
+
+@mixin btn-accent($color, $color-dark: $color) {
+  @include btn-base;
+  background: $color;
+  border-color: $color;
+  color: #fff;
+
+  &:hover {
+    background: $color-dark;
+    border-color: $color-dark;
+    box-shadow: 0 2px 8px rgba($color, 0.3);
+  }
+}
+
+@mixin btn-danger {
+  @include btn-base;
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: rgba(244, 67, 54, 0.3);
+    color: var(--accent-error);
+  }
+}
+
+// Icon-only button (square)
+@mixin btn-icon($size: 32px) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  mat-icon {
+    $icon-size: calc(#{$size} * 0.5);
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+  }
+
+  &:hover {
+    background: var(--surface-3);
+    color: var(--text-primary);
+    border-color: var(--border-secondary);
+  }
+}
+
+// ===== MATERIAL FORM FIELD OVERRIDES =====
+// Use these instead of scattering ::ng-deep blocks everywhere.
+// Apply the class to the mat-form-field, then the mixin in SCSS.
+
+// Compact dark input (for filters, toolbars). Height-customizable.
+@mixin mat-input-dark($height: 38px) {
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    height: $height !important;
+    padding: 0 12px !important;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all 0.2s ease;
+  }
+
+  ::ng-deep .mdc-notched-outline__leading,
+  ::ng-deep .mdc-notched-outline__notch,
+  ::ng-deep .mdc-notched-outline__trailing {
+    border: none !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  ::ng-deep .mat-mdc-form-field-infix {
+    padding: 0 !important;
+    min-height: $height !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  ::ng-deep input.mat-mdc-input-element {
+    margin-top: 0 !important;
+    color: var(--text-primary) !important;
+    font-weight: 500;
+  }
+
+  ::ng-deep .mat-mdc-select-value {
+    color: var(--text-primary) !important;
+    font-size: var(--font-sm);
+    font-weight: 500;
+  }
+
+  ::ng-deep .mat-mdc-select-arrow {
+    color: var(--text-muted) !important;
+  }
+
+  &:hover ::ng-deep .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--border-secondary) !important;
+  }
+
+  &.mat-focused ::ng-deep .mat-mdc-text-field-wrapper {
+    background: var(--surface-3) !important;
+    border-color: var(--color-blue) !important;
+    box-shadow: var(--shadow-glow-blue);
+  }
+}
+
+// Slider color variants (for factor selectors, range inputs)
+@mixin slider-color($color) {
+  ::ng-deep {
+    .mdc-slider__track--active_fill { border-color: $color !important; }
+    .mdc-slider__thumb-knob {
+      background-color: $color !important;
+      border-color: $color !important;
+    }
+  }
+}
+
+// ===== LABEL / TYPOGRAPHY MIXINS =====
+@mixin label-uppercase {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@mixin section-title {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+// ===== LAYOUT SHORTHAND MIXINS =====
+@mixin flex-center { display: flex; align-items: center; justify-content: center; }
+@mixin flex-col-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+@mixin flex-between { display: flex; align-items: center; justify-content: space-between; }
+@mixin flex-col($gap: 0) { display: flex; flex-direction: column; @if $gap != 0 { gap: $gap; } }
+@mixin flex-row($gap: 0) { display: flex; align-items: center; @if $gap != 0 { gap: $gap; } }
+@mixin text-ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+// ===== MAT-ICON SIZING =====
+@mixin icon-size($size, $important: false) {
+  @if $important {
+    font-size: $size !important; width: $size !important; height: $size !important; line-height: $size !important;
+  } @else {
+    font-size: $size; width: $size; height: $size; line-height: $size;
+  }
+}
+
+// ===== COLOR VARIANT GENERATOR =====
+// For event-type borders, chip colors, spark variants, rank badges
+@mixin color-variant($color, $bg-alpha: 0.12, $border-alpha: 0.3) {
+  background: rgba($color, $bg-alpha);
+  border-color: rgba($color, $border-alpha);
+  color: $color;
+}
+
+// Card hover lift with glow
+@mixin card-hover-glow($color: rgba(100, 181, 246, 0.3), $distance: -2px, $scale: 1) {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateY($distance) #{ if($scale != 1, 'scale(#{$scale})', '')};
+    border-color: rgba($color, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 12px $color;
+  }
+}
+
+// ===== RANK BADGE =====
+@mixin rank-color($color) {
+  border-color: rgba($color, 0.5);
+  background: linear-gradient(145deg, rgba($color, 0.05), var(--bg-tertiary));
+  .rank, .name { color: $color; }
+}
+
+// ===== SCROLLBAR SHORTHAND =====
+@mixin scrollbar-thin($thumb: var(--surface-4), $track: transparent) {
+  scrollbar-width: thin;
+  scrollbar-color: $thumb $track;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: $track; }
+  &::-webkit-scrollbar-thumb { background: $thumb; border-radius: 3px; }
+}
+
+// ===== STATE MIXINS =====
+// Unified approach for loading, error, and empty states.
+@mixin state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+// ===== DIALOG HEADER =====
+@mixin dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+// ===== STAT ITEM (key-value pair row) =====
+@mixin stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+
+  .label, &-label {
+    color: var(--text-muted);
+    font-size: var(--font-sm);
+    font-weight: 500;
+  }
+
+  .value, &-value {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}

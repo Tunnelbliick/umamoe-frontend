@@ -548,6 +548,43 @@
 .gap-sm { gap: 0.5rem; }
 .gap { gap: 1rem; }
 .gap-lg { gap: 1.5rem; }
+
+// ===== SHARED KEYFRAME ANIMATIONS =====
+// Consolidated from multiple components to avoid duplication.
+// NOTE: spin, fadeIn, slideUp are defined in the ANIMATIONS section below.
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+  50% {
+    transform: translateY(-0.5rem) scale(1.05);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+  }
+}
+
+@keyframes badge-pulse-blue {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.6);
+  }
+}
+
+@keyframes badge-pulse-orange {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.6);
+  }
+}
 .gap-xl { gap: 2rem; }
 
 .p-xs { padding: 0.25rem; }

@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .hover-menu {
   position: fixed;
   z-index: 9999;
@@ -52,11 +54,7 @@
       gap: 0.5rem;
       flex-wrap: wrap;
 
-      .current-score {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--accent-primary);
-      }
+      .current-score { font-size: 1rem; font-weight: 700; color: var(--accent-primary); }
 
       .tier-chip {
         padding: 0.25rem 0.5rem;
@@ -107,85 +105,39 @@
     padding: 0.25rem 0;
     font-size: 0.875rem;
 
-    .label {
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .value {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
+    .label { color: var(--text-secondary); font-weight: 500; }
+    .value { color: var(--text-primary); font-weight: 600; }
   }
 }
 
 // Animations
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.hover-menu {
-  animation: fadeInUp 0.3s ease;
-}
+.hover-menu { animation: fadeInUp 0.3s ease; }
 
 // Responsive design
 @media (max-width: 768px) {
-  .hover-content {
-    width: 280px;
-    padding: 0.75rem;
-  }
+  .hover-content { width: 280px; padding: 0.75rem; }
 
   .card-header {
-    .card-image {
-      width: 48px;
-      height: 64px;
-    }
-
-    .card-info .card-name {
-      font-size: 1rem;
-    }
+    .card-image { width: 48px; height: 64px; }
+    .card-info .card-name { font-size: 1rem; }
   }
 
-  .progression-section .chart-container {
-    height: 120px;
-  }
-
-  .quick-stats .stat-item {
-    font-size: 0.8rem;
-  }
+  .progression-section .chart-container { height: 120px; }
+  .quick-stats .stat-item { font-size: 0.8rem; }
 }
 
 // Tier-specific styling
-.tier-s\+ {
-  border-left: 4px solid #ff1744;
-}
-
-.tier-s {
-  border-left: 4px solid #ff6b35;
-}
-
-.tier-a {
-  border-left: 4px solid #f7931e;
-}
-
-.tier-b {
-  border-left: 4px solid #ffcd3c;
-}
-
-.tier-c {
-  border-left: 4px solid #7cb342;
-}
-
-.tier-d {
-  border-left: 4px solid #26a69a;
-}
+.tier-s\+ { border-left: 4px solid #ff1744; }
+.tier-s { border-left: 4px solid #ff6b35; }
+.tier-a { border-left: 4px solid #f7931e; }
+.tier-b { border-left: 4px solid #ffcd3c; }
+.tier-c { border-left: 4px solid #7cb342; }
+.tier-d { border-left: 4px solid #26a69a; }
 
 // Tier progression styling
 .tier-progression {
@@ -218,16 +170,10 @@
         opacity: 0.5;
         background: var(--bg-quaternary);
         
-        .tier-badge {
-          background: #9e9e9e !important;
-        }
+        .tier-badge { background: #9e9e9e !important; }
       }
       
-      .lb-label {
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--text-secondary);
-      }
+      .lb-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); }
       
       .tier-badge {
         display: inline-block;
@@ -240,17 +186,10 @@
         min-width: 24px;
         text-align: center;
         
-        &.na-tier {
-          background: #9e9e9e !important;
-          color: var(--text-muted);
-        }
+        &.na-tier { background: #9e9e9e !important; color: var(--text-muted); }
       }
       
-      .score {
-        font-size: 0.65rem;
-        color: var(--text-secondary);
-        font-weight: 500;
-      }
+      .score { font-size: 0.65rem; color: var(--text-secondary); font-weight: 500; }
     }
   }
   
@@ -270,9 +209,7 @@
       gap: 0.25rem;
       
       .tier-change {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        @include flex-between;
         padding: 0.3rem 0.5rem;
         border-radius: calc(var(--border-radius) / 2);
         font-size: 0.75rem;
@@ -282,31 +219,19 @@
           color: var(--accent-secondary);
           border: 1px solid rgba(129, 199, 132, 0.3);
           
-          .change-icon {
-            color: var(--accent-secondary);
-          }
+          .change-icon { color: var(--accent-secondary); }
         }
         
         &.decline {
           background: rgba(244, 67, 54, 0.15);
-          color: #f44336;
+          color: var(--color-red);
           border: 1px solid rgba(244, 67, 54, 0.3);
           
-          .change-icon {
-            color: #f44336;
-          }
+          .change-icon { color: var(--color-red); }
         }
         
-        .change-text {
-          flex: 1;
-          font-weight: 500;
-        }
-        
-        .change-icon {
-          font-size: 1rem;
-          width: 1rem;
-          height: 1rem;
-        }
+        .change-text { flex: 1; font-weight: 500; }
+        .change-icon { font-size: 1rem; width: 1rem; height: 1rem; }
       }
     }
   }

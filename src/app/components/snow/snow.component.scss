@@ -22,12 +22,8 @@
 }
 
 @keyframes fall {
-  0% {
-    transform: translateY(-10vh) translateX(0);
-  }
-  100% {
-    transform: translateY(100vh) translateX(10rem);
-  }
+  0% { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(100vh) translateX(10rem); }
 }
 
 // Generate random positions and delays for snowflakes
