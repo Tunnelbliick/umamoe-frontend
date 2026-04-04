@@ -105,7 +105,8 @@
     padding: 0.25rem 0;
     font-size: 0.875rem;
 
-    .label { color: var(--text-secondary); font-weight: 500; }
+    .label { color: var(--text-secondary); font-weight: 500; }
+
     .value { color: var(--text-primary); font-weight: 600; }
   }
 }
@@ -123,20 +124,27 @@
   .hover-content { width: 280px; padding: 0.75rem; }
 
   .card-header {
-    .card-image { width: 48px; height: 64px; }
+    .card-image { width: 48px; height: 64px; }
+
     .card-info .card-name { font-size: 1rem; }
   }
 
-  .progression-section .chart-container { height: 120px; }
+  .progression-section .chart-container { height: 120px; }
+
   .quick-stats .stat-item { font-size: 0.8rem; }
 }
 
 // Tier-specific styling
-.tier-s\+ { border-left: 4px solid #ff1744; }
-.tier-s { border-left: 4px solid #ff6b35; }
-.tier-a { border-left: 4px solid #f7931e; }
-.tier-b { border-left: 4px solid #ffcd3c; }
-.tier-c { border-left: 4px solid #7cb342; }
+.tier-s\+ { border-left: 4px solid #ff1744; }
+
+.tier-s { border-left: 4px solid #ff6b35; }
+
+.tier-a { border-left: 4px solid #f7931e; }
+
+.tier-b { border-left: 4px solid #ffcd3c; }
+
+.tier-c { border-left: 4px solid #7cb342; }
+
 .tier-d { border-left: 4px solid #26a69a; }
 
 // Tier progression styling
@@ -230,7 +238,8 @@
           .change-icon { color: var(--color-red); }
         }
         
-        .change-text { flex: 1; font-weight: 500; }
+        .change-text { flex: 1; font-weight: 500; }
+
         .change-icon { font-size: 1rem; width: 1rem; height: 1rem; }
       }
     }

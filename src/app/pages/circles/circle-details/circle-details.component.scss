@@ -38,7 +38,8 @@
         background: transparent;
         flex-shrink: 0;
         
-        &:hover { background: var(--surface-3); color: var(--text-primary); }
+        &:hover { background: var(--surface-3); color: var(--text-primary); }
+
         mat-icon { @include icon-size(22px); }
       }
 
@@ -72,7 +73,8 @@
           font-size: 0.75rem;
           font-weight: 600;
           
-          &.rank-badge { background: rgba(100, 181, 246, 0.12); color: #90caf9; border: 1px solid rgba(100, 181, 246, 0.2); }
+          &.rank-badge { background: rgba(100, 181, 246, 0.12); color: #90caf9; border: 1px solid rgba(100, 181, 246, 0.2); }
+
           &.members-badge { background: var(--surface-2); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
 
           &.join-badge {
@@ -136,7 +138,8 @@
           color: var(--text-muted);
           transition: color 0.15s, background 0.15s;
 
-          mat-icon { @include icon-size(16px); }
+          mat-icon { @include icon-size(16px); }
+
           &:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-3); }
 
           &:disabled {
@@ -365,7 +368,8 @@
       justify-content: center;
       gap: 0;
 
-      .tier-side.lower { flex: 0 1 auto; justify-content: flex-end; }
+      .tier-side.lower { flex: 0 1 auto; justify-content: flex-end; }
+
       .rank-center { flex: 0 0 auto; }
     }
 
@@ -377,7 +381,8 @@
       min-width: 0;
       overflow: hidden;
 
-      &.lower { justify-content: flex-end; }
+      &.lower { justify-content: flex-end; }
+
       &.upper { justify-content: flex-start; }
 
       .tier-icon {
@@ -418,7 +423,8 @@
           @include text-ellipsis;
           max-width: 100%;
 
-          &.safe { color: var(--accent-secondary); }
+          &.safe { color: var(--accent-secondary); }
+
           &.needed { color: var(--accent-warning); }
         }
 
@@ -429,7 +435,8 @@
           max-width: 100%;
           color: var(--text-disabled);
 
-          &.positive { color: var(--accent-secondary); }
+          &.positive { color: var(--accent-secondary); }
+
           &.negative { color: var(--accent-error); }
         }
       }
@@ -461,8 +468,10 @@
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--border-subtle);
 
-    &:first-child { padding-top: 0; }
-    &:last-child { border-bottom: none; padding-bottom: 0; }
+    &:first-child { padding-top: 0; }
+
+    &:last-child { border-bottom: none; padding-bottom: 0; }
+
     &.no-border { border-bottom: none; }
 
     &.live-row {
@@ -566,7 +575,8 @@
         background: rgba(0, 0, 0, 0.2);
         border: 1px solid transparent;
         
-        &:hover { background: rgba(0, 0, 0, 0.5); border-color: rgba(0, 0, 0, 1); }
+        &:hover { background: rgba(0, 0, 0, 0.5); border-color: rgba(0, 0, 0, 1); }
+
         &.hidden { opacity: 0.4; text-decoration: line-through; }
         
         .color-indicator {
@@ -670,8 +680,10 @@
         font-weight: 600;
         white-space: nowrap;
         
-        &.leader { background: rgba(255, 167, 38, 0.15); color: #ffa726; border: 1px solid rgba(255, 167, 38, 0.3); }
-        &.officer { background: rgba(102, 187, 106, 0.15); color: #66bb6a; border: 1px solid rgba(102, 187, 106, 0.3); }
+        &.leader { background: rgba(255, 167, 38, 0.15); color: #ffa726; border: 1px solid rgba(255, 167, 38, 0.3); }
+
+        &.officer { background: rgba(102, 187, 106, 0.15); color: #66bb6a; border: 1px solid rgba(102, 187, 106, 0.3); }
+
         &.member { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border-primary); }
       }
       
@@ -704,7 +716,8 @@
           border-top: 1px solid var(--border-subtle);
           border-bottom: 1px solid var(--border-subtle);
           
-          .label { color: var(--accent-primary); font-weight: 500; }
+          .label { color: var(--accent-primary); font-weight: 500; }
+
           .value { font-weight: 700; font-size: 0.9rem; }
         }
 
@@ -765,7 +778,8 @@
 .toggle-btn {
   color: var(--text-muted) !important;
   
-  &:hover { color: var(--text-primary) !important; background: var(--surface-2); }
+  &:hover { color: var(--text-primary) !important; background: var(--surface-2); }
+
   &.active { color: var(--accent-primary) !important; background: rgba(100, 181, 246, 0.1); }
 }
 
@@ -785,7 +799,8 @@
   font-size: 13px;
   outline: none;
 
-  .badge-icon { @include icon-size(18px); }
+  .badge-icon { @include icon-size(18px); }
+
   .badge-label { font-weight: 500; color: var(--text-secondary); }
 
   .badge-status {
@@ -800,8 +815,10 @@
     background: var(--surface-2);
     border: 1px solid var(--border-secondary);
 
-    &:hover { background: var(--surface-3); border-color: var(--border-secondary); }
-    .badge-icon { color: var(--text-muted); }
+    &:hover { background: var(--surface-3); border-color: var(--border-secondary); }
+
+    .badge-icon { color: var(--text-muted); }
+
     .badge-status { color: var(--accent-warning); background: rgba(255, 152, 0, 0.15); }
   }
 
@@ -809,8 +826,10 @@
     background: rgba(76, 175, 80, 0.08);
     border: 1px solid rgba(76, 175, 80, 0.3);
 
-    &:hover { background: rgba(76, 175, 80, 0.14); border-color: rgba(76, 175, 80, 0.45); }
-    .badge-icon { color: var(--accent-secondary); }
+    &:hover { background: rgba(76, 175, 80, 0.14); border-color: rgba(76, 175, 80, 0.45); }
+
+    .badge-icon { color: var(--accent-secondary); }
+
     .badge-status { color: var(--accent-secondary); background: rgba(76, 175, 80, 0.15); }
   }
 }
@@ -836,7 +855,8 @@
     }
   }
 
-  .calendar-body { display: flex; flex-direction: column; gap: 4px; }
+  .calendar-body { display: flex; flex-direction: column; gap: 4px; }
+
   .calendar-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 
   .calendar-day {
@@ -906,8 +926,10 @@
       border-radius: var(--radius-xs);
       line-height: 1;
 
-      &.positive { color: var(--accent-secondary); background: rgba(129, 199, 132, 0.12); }
-      &.negative { color: var(--accent-error); background: rgba(229, 115, 115, 0.12); }
+      &.positive { color: var(--accent-secondary); background: rgba(129, 199, 132, 0.12); }
+
+      &.negative { color: var(--accent-error); background: rgba(229, 115, 115, 0.12); }
+
       &.neutral { color: var(--text-disabled); background: var(--surface-2); }
     }
 
@@ -1079,7 +1101,8 @@
     border: 1px solid var(--border-subtle);
     transition: background 0.2s, border-color 0.2s;
 
-    &:hover { background: #252525; border-color: rgba(100, 181, 246, 0.2); }
+    &:hover { background: #252525; border-color: rgba(100, 181, 246, 0.2); }
+
     &.inactive { opacity: 0.5; border-style: dashed; }
 
     @each $rank, $color in (1: #ffd700, 2: #90a4ae, 3: #cd7f32) {
@@ -1133,8 +1156,10 @@
       text-transform: uppercase;
       font-weight: 600;
 
-      &.leader { background: rgba(255, 167, 38, 0.15); color: #ffa726; }
-      &.officer { background: rgba(102, 187, 106, 0.15); color: #66bb6a; }
+      &.leader { background: rgba(255, 167, 38, 0.15); color: #ffa726; }
+
+      &.officer { background: rgba(102, 187, 106, 0.15); color: #66bb6a; }
+
       &.member { background: var(--surface-2); color: var(--text-muted); }
     }
   }
@@ -1193,7 +1218,8 @@
 
 // ========== MOBILE RESPONSIVE ==========
 @media (max-width: 768px) {
-  .circle-details-page { padding-bottom: 1rem; }
+  .circle-details-page { padding-bottom: 1rem; }
+
   .page-header { padding: 1rem 0; margin-bottom: 1rem; }
 
   .header-content {
@@ -1203,7 +1229,8 @@
     .header-top {
       flex-wrap: wrap;
 
-      h1 { font-size: 1.25rem; }
+      h1 { font-size: 1.25rem; }
+
       .header-rank-icon { width: 44px; height: 44px; margin: -10px 0; }
 
       .badges {
@@ -1223,7 +1250,8 @@
         height: 36px;
         flex: 1;
 
-        button { height: 28px !important; width: 28px !important; }
+        button { height: 28px !important; width: 28px !important; }
+
         .current-month { font-size: 0.85rem; padding: 0 0.5rem; min-width: 80px; }
       }
 
@@ -1266,15 +1294,18 @@
         min-width: 0;
         overflow: hidden;
 
-        .tier-icon { width: 22px; height: 22px; flex-shrink: 0; }
+        .tier-icon { width: 22px; height: 22px; flex-shrink: 0; }
+
         .tier-arrow { @include icon-size(14px); }
 
         .tier-info {
           min-width: 0;
           overflow: hidden;
 
-          .tier-gap-label { font-size: 0.5rem; }
-          .tier-gap-value { font-size: 0.7rem; overflow: hidden; text-overflow: ellipsis; }
+          .tier-gap-label { font-size: 0.5rem; }
+
+          .tier-gap-value { font-size: 0.7rem; overflow: hidden; text-overflow: ellipsis; }
+
           .tier-delta { font-size: 0.55rem; }
         }
       }
@@ -1283,13 +1314,15 @@
         padding: 0 0.3rem;
         flex-shrink: 0;
 
-        .club-rank-icon { width: 30px; height: 30px; }
+        .club-rank-icon { width: 30px; height: 30px; }
+
         .rank-label { font-size: 0.55rem; }
       }
     }
 
     .info-row {
-      .label { font-size: 0.8rem; }
+      .label { font-size: 0.8rem; }
+
       .value { font-size: 0.85rem; }
     }
   }
@@ -1335,7 +1368,8 @@
       .legend-item {
         padding: 3px 6px;
 
-        .name { font-size: 0.75rem; }
+        .name { font-size: 0.75rem; }
+
         .color-indicator { width: 10px; height: 10px; }
       }
     }
@@ -1357,7 +1391,8 @@
   // Row view mobile
   .members-row-list {
     .member-row-header,
-    .member-row { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+    .member-row { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+
     .col-rank { width: 28px; font-size: 0.75rem; }
     .col-name { font-size: 0.8rem; flex: 1.5; }
     .col-value { flex: 1; font-size: 0.75rem; }
@@ -1376,7 +1411,8 @@
     .header-top {
       gap: 0.5rem;
 
-      h1 { font-size: 1.1rem; }
+      h1 { font-size: 1.1rem; }
+
       .header-rank-icon { width: 38px; height: 38px; margin: -8px 0; }
 
       .badges {
@@ -1392,7 +1428,8 @@
   .info-card .card-content {
     .club-rank-row {
       .tier-side {
-        .tier-icon { display: none; }
+        .tier-icon { display: none; }
+
         .tier-arrow { display: none; }
       }
     }

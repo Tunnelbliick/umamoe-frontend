@@ -37,7 +37,8 @@
     grid-template-rows: 0fr;
     transition: grid-template-rows 300ms ease-in-out;
 
-    &.expanded { grid-template-rows: 1fr; }
+    &.expanded { grid-template-rows: 1fr; }
+
     .filter-inner { overflow: hidden; min-width: 0; padding-left: 1px; }
 }
 
@@ -114,7 +115,8 @@
     transition: grid-template-rows 300ms ease-in-out, opacity 200ms ease;
     opacity: 1;
 
-    > * { overflow: hidden; }
+    > * { overflow: hidden; }
+
     &.collapsed { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 300ms ease-in-out, opacity 200ms ease; }
 }
 
@@ -294,7 +296,8 @@
             transition: grid-template-rows 0.25s ease-out, opacity 0.2s ease-out;
             opacity: 1;
 
-            > * { overflow: hidden; min-height: 0; }
+            > * { overflow: hidden; min-height: 0; }
+
             &.collapsed { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.2s ease-in, opacity 0.15s ease-in; }
         }
     }
@@ -582,7 +585,8 @@
         }
     }
 
-    &.parent-box { border-color: rgba(100, 181, 246, 0.2); background: rgba(100, 181, 246, 0.02); }
+    &.parent-box { border-color: rgba(100, 181, 246, 0.2); background: rgba(100, 181, 246, 0.02); }
+
     &.grandparent-box { border-color: rgba(186, 104, 200, 0.2); background: rgba(186, 104, 200, 0.02); }
 }
 
@@ -598,7 +602,8 @@
     border-radius: var(--radius-md);
     transition: background-color 0.15s ease;
 
-    &:hover { background: var(--surface-1); }
+    &:hover { background: var(--surface-1); }
+
     & + .filter-row { border-top: 1px solid var(--border-subtle); padding-top: 4px; margin-top: 0; }
 }
 
@@ -609,7 +614,8 @@
     user-select: none;
     flex-shrink: 0;
 
-    &.include-label { color: rgba(129, 199, 132, 0.5); }
+    &.include-label { color: rgba(129, 199, 132, 0.5); }
+
     &.exclude-label { color: rgba(239, 83, 80, 0.5); }
 }
 
@@ -694,7 +700,8 @@
         box-sizing: border-box;
         overflow: hidden;
 
-        mat-icon { @include icon-size(16px); }
+        mat-icon { @include icon-size(16px); }
+
         &:hover { background: rgba(244, 67, 54, 0.8); color: white; }
     }
 
@@ -702,7 +709,8 @@
         border-color: rgba(255, 193, 7, 0.3);
         color: rgba(255, 193, 7, 0.4);
 
-        &:hover { border-color: rgba(255, 193, 7, 0.6); background: rgba(255, 193, 7, 0.05); color: rgba(255, 193, 7, 0.7); }
+        &:hover { border-color: rgba(255, 193, 7, 0.6); background: rgba(255, 193, 7, 0.05); color: rgba(255, 193, 7, 0.7); }
+
         &.has-character { border-style: solid; border-color: rgba(255, 193, 7, 0.5); }
     }
 }
@@ -757,7 +765,8 @@
         border-color: rgba(129, 199, 132, 0.25);
         color: #a5d6a7;
 
-        .filter-chip-img { border-color: rgba(129, 199, 132, 0.3); }
+        .filter-chip-img { border-color: rgba(129, 199, 132, 0.3); }
+
         &:hover { background: rgba(129, 199, 132, 0.18); }
     }
 
@@ -766,7 +775,8 @@
         border-color: rgba(244, 67, 54, 0.25);
         color: #ef9a9a;
 
-        .filter-chip-img { border-color: rgba(244, 67, 54, 0.3); }
+        .filter-chip-img { border-color: rgba(244, 67, 54, 0.3); }
+
         &:hover { background: rgba(244, 67, 54, 0.18); }
     }
 }
@@ -794,7 +804,8 @@
     height: 130px;
     box-sizing: border-box;
 
-    @media (max-width: 1000px) { font-size: 14px; }
+    @media (max-width: 1000px) { font-size: 14px; }
+
     @media (max-width: 600px) { font-size: 16px; }
 
     &:hover {
@@ -858,7 +869,8 @@
         border-radius: 3px;
         font-weight: 600;
 
-        &.type-badge { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); }
+        &.type-badge { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); }
+
         &.rarity-badge { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
     }
 
@@ -875,7 +887,8 @@
         padding: 0;
         z-index: 10;
 
-        mat-icon { @include icon-size(16px); }
+        mat-icon { @include icon-size(16px); }
+
         &:hover { background: rgba(244, 67, 54, 0.8); color: white; }
     }
 }
@@ -958,10 +971,14 @@
             text-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
         }
 
-        &.lbl-0 { left: 0%; }
-        &.lbl-1 { left: 25%; }
-        &.lbl-2 { left: 50%; }
-        &.lbl-3 { left: 75%; }
+        &.lbl-0 { left: 0%; }
+
+        &.lbl-1 { left: 25%; }
+
+        &.lbl-2 { left: 50%; }
+
+        &.lbl-3 { left: 75%; }
+
         &.lbl-4 { left: 100%; }
     }
 }
@@ -1077,7 +1094,8 @@
     gap: 8px;
     transition: all 0.2s ease;
 
-    @media (max-width: 600px) { flex: 1 1 100%; }
+    @media (max-width: 600px) { flex: 1 1 100%; }
+
     &:hover { border-color: rgba(33, 150, 243, 0.3); background: var(--surface-1); }
 
     // When section is collapsed, remove bottom padding and gap
@@ -1105,7 +1123,8 @@
     align-items: center;
     gap: 12px;
 
-    .factor-select { flex: 1; width: 100%; }
+    .factor-select { flex: 1; width: 100%; }
+
     mat-checkbox { flex-shrink: 0; }
 }
 
@@ -1235,7 +1254,8 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 8px;
 
-    @media (max-width: 768px) { grid-template-columns: minmax(0, 1fr); }
+    @media (max-width: 768px) { grid-template-columns: minmax(0, 1fr); }
+
     &.single-column { grid-template-columns: minmax(0, 1fr); }
 
     .input-wrapper {
@@ -1277,7 +1297,8 @@
                     border: 1px solid var(--border-primary);
                     color: var(--text-muted);
 
-                    &:hover { background: var(--surface-3); border-color: var(--border-secondary); }
+                    &:hover { background: var(--surface-3); border-color: var(--border-secondary); }
+
                     .toggle-btn-icon { color: var(--text-muted); }
                 }
 
@@ -1286,7 +1307,8 @@
                     border: 1px solid rgba(76, 175, 80, 0.3);
                     color: var(--accent-secondary);
 
-                    &:hover { background: rgba(76, 175, 80, 0.16); border-color: rgba(76, 175, 80, 0.45); }
+                    &:hover { background: rgba(76, 175, 80, 0.16); border-color: rgba(76, 175, 80, 0.45); }
+
                     .toggle-btn-icon { color: var(--accent-secondary); }
                 }
             }
@@ -1332,7 +1354,8 @@
                 @include flex-center;
                 user-select: none;
 
-                &:hover { color: var(--color-blue); background: rgba(33, 150, 243, 0.1); border-radius: 2px; }
+                &:hover { color: var(--color-blue); background: rgba(33, 150, 243, 0.1); border-radius: 2px; }
+
                 &:active { color: var(--accent-primary); }
             }
         }
@@ -1431,7 +1454,8 @@
             min-width: 0;
         }
 
-        .chip-name { opacity: 0.85; overflow: hidden; text-overflow: ellipsis; }
+        .chip-name { opacity: 0.85; overflow: hidden; text-overflow: ellipsis; }
+
         .separator { opacity: 0.6; margin-right: 2px; }
 
         .chip-value {

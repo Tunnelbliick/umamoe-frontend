@@ -221,7 +221,8 @@
     }
 
     &.tl-marker-milestone .tl-marker-label { color: #ffd700; }
-    &.tl-marker-anniversary .tl-marker-label { color: var(--color-pink); }
+    &.tl-marker-anniversary .tl-marker-label { color: var(--color-pink); }
+
     &.tl-marker-today .tl-marker-label { color: #ff5722; animation: glow-today 2s infinite alternate; }
 
     &.tl-marker-year .tl-marker-label {
@@ -280,7 +281,8 @@
     transition: box-shadow 0.2s, transform 0.15s;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
-    &:hover { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35); transform: translateY(-1px); }
+    &:hover { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35); transform: translateY(-1px); }
+
     &.ev-type-character_banner    { @include ev-type(#64b5f6, #64b5f6); }
     &.ev-type-support_card_banner { @include ev-type(#81c784, #81c784); }
     &.ev-type-story_event         { @include ev-type(#ffb74d, #ffb74d); }
@@ -355,7 +357,8 @@
     color: var(--accent-primary);
     opacity: 0.6;
 
-    &:hover { opacity: 1; }
+    &:hover { opacity: 1; }
+
     mat-icon { @include icon-size(15px); }
 }
 
@@ -395,7 +398,8 @@
     border-radius: 999px;
     white-space: nowrap;
 
-    &.ev-tag-char { background: rgba(100, 181, 246, 0.12); color: var(--accent-primary); border: 1px solid rgba(100, 181, 246, 0.25); }
+    &.ev-tag-char { background: rgba(100, 181, 246, 0.12); color: var(--accent-primary); border: 1px solid rgba(100, 181, 246, 0.25); }
+
     &.ev-tag-support { background: rgba(129, 199, 132, 0.12); color: var(--accent-secondary); border: 1px solid rgba(129, 199, 132, 0.25); }
 }
 
@@ -528,7 +532,8 @@
         box-shadow: var(--shadow-lg);
         z-index: 1001;
 
-        mat-icon { transition: transform 0.3s ease; }
+        mat-icon { transition: transform 0.3s ease; }
+
         &:hover { transform: translateX(-50%) scale(1.05); }
     }
 
@@ -539,7 +544,8 @@
         opacity: 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-        &.visible { max-height: 70vh; opacity: 1; overflow-y: auto; }
+        &.visible { max-height: 70vh; opacity: 1; overflow-y: auto; }
+
         .search-field { width: 100%; margin-bottom: 16px; }
 
         .filter-toggles {

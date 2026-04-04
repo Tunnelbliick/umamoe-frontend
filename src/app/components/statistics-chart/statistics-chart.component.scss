@@ -25,7 +25,8 @@
   scrollbar-color: var(--text-disabled) rgba(255, 255, 255, 0.05);
   
   // Webkit browsers (Chrome, Safari, Edge)
-  &::-webkit-scrollbar { background: var(--surface-4); width: 6px; }
+  &::-webkit-scrollbar { background: var(--surface-4); width: 6px; }
+
   &::-webkit-scrollbar-track { background: var(--surface-2); border-radius: 3px; }
 
   &::-webkit-scrollbar-thumb {
@@ -192,7 +193,8 @@
     .horizontal-bar-item {
       min-height: 52px;
 
-      .item-content { padding: 8px 10px; }
+      .item-content { padding: 8px 10px; }
+
       .image-container { margin-right: 10px; }
 
       .item-info {
