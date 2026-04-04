@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .dialog-header {
   display: flex;
   justify-content: space-between;
@@ -86,17 +88,7 @@
 
             .current-score { font-size: 1rem; font-weight: 700; color: var(--accent-primary); }
 
-            .tier-chip {
-              padding: 0.25rem 0.5rem;
-              border-radius: var(--border-radius);
-              font-size: 0.75rem;
-              font-weight: 600;
-              color: white;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-              border: none;
-              box-shadow: var(--shadow-sm);
-            }
+            .tier-chip { @include tier-chip; }
           }
         }
       }
@@ -137,7 +129,8 @@
           padding: 0.25rem 0;
           font-size: 0.875rem;
 
-          .label { color: var(--text-secondary); font-weight: 500; }
+          .label { color: var(--text-secondary); font-weight: 500; }
+
           .value { color: var(--text-primary); font-weight: 600; }
         }
       }
@@ -179,17 +172,7 @@
             .lb-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); }
             
             .tier-badge {
-              display: inline-block;
-              padding: 0.15rem 0.4rem;
-              border-radius: calc(var(--border-radius) / 2);
-              font-size: 0.75rem;
-              font-weight: bold;
-              color: white;
-              text-shadow: var(--shadow-sm);
-              min-width: 24px;
-              text-align: center;
-              
-              &.na-tier { background: #9e9e9e !important; color: var(--text-muted); }
+              @include tier-badge;
             }
             
             .score { font-size: 0.65rem; color: var(--text-secondary); font-weight: 500; }
@@ -210,11 +193,13 @@
       padding: 0.75rem;
 
       .card-header {
-        .card-image { width: 64px; height: 64px; }
+        .card-image { width: 64px; height: 64px; }
+
         .card-info .card-name { font-size: 1rem; }
       }
 
-      .progression-section .chart-container { height: 175px; }
+      .progression-section .chart-container { height: 175px; }
+
       .quick-stats .stat-item { font-size: 0.8rem; }
     }
   }

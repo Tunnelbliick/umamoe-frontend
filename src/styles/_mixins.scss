@@ -659,16 +659,14 @@
 }
 
 // ===== SPARK / FACTOR COLOR SYSTEM =====
-// Generates .blue-spark, .pink-spark, .green-spark, .white-spark classes
-// Usage: @include spark-colors; (inside a scoping selector or at root)
 $spark-palette: (
-  "blue":  (#2196f3, #90caf9, var(--accent-primary)),
-  "pink":  (#e91e63, var(--color-pink), #f06292),
-  "green": (#4caf50, #a5d6a7, var(--accent-secondary)),
-  "white": (#9e9e9e, #e0e0e0, #bdbdbd),
+  "blue":  (#2196f3, var(--accent-primary), var(--color-blue)),
+  "pink":  (#e91e63, var(--color-pink), var(--color-pink)),
+  "green": (#4caf50, var(--accent-secondary), var(--color-green)),
+  "white": (#9e9e9e, #bdbdbd, var(--text-muted)),
 ) !default;
 
-@mixin spark-colors($bg-alpha: 0.1, $border-alpha: 0.4) {
+@mixin spark-colors($bg-alpha: 0.15, $border-alpha: 0.5) {
   @each $name, $vals in $spark-palette {
     $base: nth($vals, 1);
     $text: nth($vals, 2);
@@ -680,6 +678,247 @@ $spark-palette: (
       .spark-star { color: $star; }
     }
   }
+}
+
+// Spark item base pill
+@mixin spark-item($gap: 0.25rem, $padding: 0.25rem 0.5rem, $radius: var(--radius-lg), $font-size: 0.875rem, $level-weight: 600, $star-size: 14px) {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
+  padding: $padding;
+  border-radius: $radius;
+  font-size: $font-size;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid;
+  transition: all 0.2s ease;
+
+  &:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+
+  .spark-level { font-weight: $level-weight; font-size: $font-size; }
+  .spark-star { @include icon-size($star-size, true); }
+  .spark-name { font-size: $font-size; }
+}
+
+// Parent indicators + matched-filter highlight (inheritance pages)
+@mixin spark-item-inheritance {
+  .parent-icon { @include icon-size(16px, true); opacity: 0.9; }
+
+  .parent-contribution {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    font-size: 0.8125rem;
+    opacity: 0.9;
+    font-weight: 600;
+    &::before { content: '('; margin-right: 0.1rem; }
+    &::after { content: ')'; }
+  }
+
+  &.from-main-parent {
+    .parent-icon { color: #ff9100; filter: drop-shadow(0 0 4px rgba(255, 145, 0, 0.4)); }
+    .parent-contribution { color: #ff9100; font-weight: 700; text-shadow: 0 0 8px rgba(255, 145, 0, 0.25); }
+  }
+
+  &.matched-filter {
+    border-color: #ffd700 !important;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+    position: relative;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      pointer-events: none;
+    }
+  }
+}
+
+// Size variants for spark items (veterans pages)
+@mixin spark-item-sizes {
+  &.spark-item--sm {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.72rem;
+    border-radius: var(--radius-sm);
+    .spark-level { font-size: 0.72rem; }
+    .spark-star { @include icon-size(11px); }
+    .spark-name { font-size: 0.72rem; }
+  }
+
+  &.spark-item--xs {
+    padding: 0.075rem 0.3rem;
+    font-size: 0.58rem;
+    border-radius: var(--radius-xs);
+    .spark-level { font-size: 0.58rem; }
+    .spark-star { @include icon-size(9px); }
+    .spark-name { font-size: 0.58rem; }
+  }
+}
+
+// Verification badge with verified state
+@mixin verification-badge($font-size: 0.8125rem, $radius: var(--radius-lg), $padding: 0.375rem 0.625rem) {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: $padding;
+  border-radius: $radius;
+  background: rgba(158, 158, 158, 0.1);
+  border: 1px solid rgba(158, 158, 158, 0.3);
+  font-size: $font-size;
+  font-weight: 500;
+  white-space: nowrap;
+
+  mat-icon { @include icon-size(16px); color: var(--text-muted); flex-shrink: 0; }
+  .badge-date { color: var(--text-muted); font-size: 0.75rem; }
+
+  &.verified {
+    background: rgba(76, 175, 80, 0.15);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    mat-icon { color: var(--color-green); }
+    .badge-date { color: rgba(76, 175, 80, 0.9); font-weight: 500; }
+  }
+}
+
+// Trainer info row (label + name + optional copy button)
+@mixin trainer-info($gap: 0.75rem) {
+  .trainer-info { display: flex; align-items: center; gap: $gap; }
+
+  .trainer-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .trainer-name {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .user-id-copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--surface-3);
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    min-height: auto;
+
+    &:hover { background: var(--surface-4); border-color: rgba(100, 181, 246, 0.5); }
+    .user-id { font-weight: 600; margin-left: -0.2rem; }
+  }
+}
+
+// Section card with header
+@mixin section-card($bg: #1e1e1e) {
+  background: $bg;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    mat-icon { color: var(--accent-primary); @include icon-size(20px); }
+    h2 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+  }
+
+  .card-content { padding: 0 1.5rem 1.25rem; }
+}
+
+// Empty state with icon
+@mixin empty-state($icon-size: 3rem, $padding: 3rem 2rem) {
+  @include flex-col-center;
+  padding: $padding;
+  color: var(--text-muted);
+
+  mat-icon {
+    font-size: $icon-size;
+    width: $icon-size;
+    height: $icon-size;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  p { margin: 0; font-size: 0.9rem; }
+}
+
+// Status badge (small colored pill)
+@mixin status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+// Data table with dark theme
+@mixin data-table($th-size: 0.6rem, $td-size: 0.78rem) {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.35rem 0.4rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: $td-size;
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: $th-size;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-disabled);
+    font-weight: 600;
+  }
+
+  tbody tr:hover { background: var(--surface-1); }
+}
+
+// Info row (key-value pair with divider)
+@mixin info-row($padding: 0.75rem 0) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $padding;
+  border-bottom: 1px solid var(--border-subtle);
+
+  &:first-child { padding-top: 0; }
+  &:last-child { border-bottom: none; padding-bottom: 0; }
+}
+
+// Tier badge
+@mixin tier-badge {
+  display: inline-block;
+  padding: 0.15rem 0.4rem;
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: var(--shadow-sm);
+  min-width: 24px;
+  text-align: center;
+
+  &.na-tier { background: #9e9e9e !important; color: var(--text-muted); }
 }
 
 // Factor row color variants (for filter factor items)
@@ -786,4 +1025,59 @@ $spark-palette: (
     color: var(--text-primary);
     font-weight: 600;
   }
+}
+
+// ===== SPARK TYPE INDICATOR (4px color bar) =====
+@mixin spark-type-indicator($width: 4px) {
+  width: $width;
+  border-radius: 2px;
+  flex-shrink: 0;
+  align-self: stretch;
+
+  @each $name, $vals in $spark-palette {
+    &.#{$name} { background: nth($vals, 1); }
+  }
+}
+
+// ===== SPARK BADGE COLORS (self-modifier variant: &.blue, &.pink, etc.) =====
+@mixin spark-badge-colors($bg-alpha: 0.08, $border-alpha: 0.2, $icon-class: '.tiny-icon') {
+  @each $name, $vals in $spark-palette {
+    $base: nth($vals, 1);
+    $text: nth($vals, 2);
+    $star: nth($vals, 3);
+    &.#{$name} {
+      background: rgba($base, $bg-alpha);
+      border-color: rgba($base, $border-alpha);
+      color: $text;
+      #{$icon-class} { color: $star; }
+    }
+  }
+}
+
+// ===== TIER CHIP (colored tier label) =====
+@mixin tier-chip {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+// ===== AFFINITY CHIP (small pink badge) =====
+@mixin aff-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 0.62rem;
+  background: rgba(233, 30, 99, 0.1);
+  border: 1px solid rgba(233, 30, 99, 0.25);
+  color: var(--color-pink);
+
+  strong { font-weight: 700; }
 }

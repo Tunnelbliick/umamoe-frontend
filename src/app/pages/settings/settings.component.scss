@@ -33,30 +33,11 @@
 }
 
 .settings-card {
-  background: var(--surface-1);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  @include section-card(var(--surface-1));
 }
 
 .card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-subtle);
-
-  mat-icon {
-    color: var(--accent-primary);
-    @include icon-size(20px);
-  }
-
-  h2 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
 }
 
 .card-body { padding: 1.25rem 1.5rem; }
@@ -64,16 +45,13 @@
 .loading-row { color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 0; }
 
 .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1.5rem 0;
+  @include empty-state(32px, 1.5rem 0);
   color: var(--text-disabled);
+  gap: 0.5rem;
 
-  mat-icon { @include icon-size(32px); }
+  mat-icon { margin-bottom: 0; opacity: 1; }
 
-  p { margin: 0; font-size: 0.85rem; }
+  p { font-size: 0.85rem; }
 }
 
 // --- Account List ---
