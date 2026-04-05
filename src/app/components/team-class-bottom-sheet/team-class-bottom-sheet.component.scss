@@ -3,14 +3,10 @@
 // Style the actual bottom sheet content with frosted glass effect
 :host {
   display: block;
-  background: rgba(26, 26, 30, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
+  @include frosted-sheet;
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--border-secondary);
   border-bottom: none;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  margin: 0; // Removed margin to attach to bottom
+  margin: 0;
   box-shadow: 
     0 -8px 32px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -68,13 +64,13 @@
   margin-bottom: 24px;
   
   &:last-child { margin-bottom: 8px; }
-  
-  .section-header h3 {
-    margin: 0 0 12px 0;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 500;
-  }
+}
+
+.section-header h3 {
+  margin: 0 0 12px 0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 // All Classes Toggle - more compact
@@ -115,14 +111,13 @@
     border-color: var(--border-strong);
     color: var(--text-primary);
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    
-    .chip-label { color: var(--text-primary); }
-    .chip-percent { color: var(--text-primary); }
   }
-
-  .chip-label { font-weight: 600; transition: color 0.2s; }
-  .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
 }
+
+.scenario-chip .chip-label { font-weight: 600; transition: color 0.2s; }
+.scenario-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
+.scenario-chip.active .chip-label { color: var(--text-primary); }
+.scenario-chip.active .chip-percent { color: var(--text-primary); }
 
 .class-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
 
@@ -141,37 +136,13 @@
   
   &:active { transform: scale(0.98); }
 
-  &.active {
-    // Frosted glass effect with color tint
-    background: var(--surface-2); // Fallback
-    border-color: var(--chip-color);
-    color: var(--text-primary);
-    box-shadow: 
-      inset 4px 0 0 0 var(--chip-color), // Left accent bar
-      0 4px 12px rgba(0,0,0,0.2); // Drop shadow
-    
-    // Create the frosted tint using a pseudo-element
-    position: relative;
-    overflow: hidden;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--chip-color);
-      opacity: 0.15; // Low opacity for the tint
-      z-index: 0;
-    }
-    
-    // Ensure content stays on top
-    .chip-label, .chip-percent { position: relative; z-index: 1; }
-    .chip-label { color: var(--text-primary); }
-    .chip-percent { color: var(--text-primary); }
-  }
-
-  .chip-label { font-weight: 600; transition: color 0.2s; }
-  .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
+  &.active { @include chip-active-tint(4px); }
 }
+
+.class-chip .chip-label { font-weight: 600; transition: color 0.2s; }
+.class-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
+.class-chip.active .chip-label,
+.class-chip.active .chip-percent { position: relative; z-index: 1; color: var(--text-primary); }
 
 // Distance options - more compact horizontal layout
 .distance-options {
@@ -210,7 +181,9 @@
     h2 { font-size: 18px; }
   }
   
-  .bottom-sheet-content { padding: 6px 16px 16px; }
-  .distance-options { grid-template-columns: 1fr; }
+  .bottom-sheet-content { padding: 6px 16px 16px; }
+
+  .distance-options { grid-template-columns: 1fr; }
+
   .class-option { padding: 4px 0; }
 }

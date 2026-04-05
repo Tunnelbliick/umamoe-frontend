@@ -23,7 +23,8 @@
   gap: 0.75rem;
 
   .search-row { width: 100%; }
-  .search-field { width: 100%; max-width: 100%; }
+  .search-field { width: 100%; max-width: 100%; }
+
   .filter-chips { display: flex; gap: 6px; flex-wrap: wrap; }
 
   .filter-dropdowns {
@@ -105,7 +106,8 @@
     color: var(--text-muted);
     transition: color 0.15s, background 0.15s;
 
-    mat-icon { @include icon-size(18px); }
+    mat-icon { @include icon-size(18px); }
+
     &:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-3); }
 
     &:disabled {
@@ -161,7 +163,8 @@
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 215, 0, 0.02) 100%);
     border-color: rgba(255, 215, 0, 0.3);
     
-    .rank-section .rank-number { color: #ffd700; font-size: 1.5rem; }
+    .rank-section .rank-number { color: #ffd700; font-size: 1.5rem; }
+
     &:hover { border-color: rgba(255, 215, 0, 0.5); }
   }
 
@@ -169,7 +172,8 @@
     background: linear-gradient(135deg, rgba(192, 192, 192, 0.07) 0%, rgba(192, 192, 192, 0.02) 100%);
     border-color: rgba(192, 192, 192, 0.25);
     
-    .rank-section .rank-number { color: #c0c0c0; font-size: 1.35rem; }
+    .rank-section .rank-number { color: #c0c0c0; font-size: 1.35rem; }
+
     &:hover { border-color: rgba(192, 192, 192, 0.45); }
   }
 
@@ -177,7 +181,8 @@
     background: linear-gradient(135deg, rgba(205, 127, 50, 0.07) 0%, rgba(205, 127, 50, 0.02) 100%);
     border-color: rgba(205, 127, 50, 0.25);
     
-    .rank-section .rank-number { color: #cd7f32; font-size: 1.25rem; }
+    .rank-section .rank-number { color: #cd7f32; font-size: 1.25rem; }
+
     &:hover { border-color: rgba(205, 127, 50, 0.45); }
   }
 
@@ -189,178 +194,183 @@
     gap: 0.75rem;
     flex-wrap: wrap;
   }
+}
 
-  .rank-section {
-    display: flex;
-    flex-direction: column;
+.rank-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.rank-main { display: flex; align-items: center; gap: 0.25rem; }
+
+.rank-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.rank-diff {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  mat-icon { @include icon-size(20px); }
+
+  &.positive { color: var(--color-green); }
+
+  &.negative { color: var(--color-red); }
+}
+
+.yesterday-rank { margin-top: 4px; color: var(--text-muted); font-size: 0.75rem; }
+
+.club-rank-icon {
+  @include flex-center;
+  flex-shrink: 0;
+
+  img { width: 48px; height: 48px; object-fit: contain; }
+}
+
+.circle-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.circle-name {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+
+  &:hover { text-decoration: underline; }
+}
+
+.circle-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  .label { color: var(--text-muted); }
+
+  &.join-style {
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    &.open { background: rgba(76, 175, 80, 0.2); color: var(--accent-secondary); }
+
+    &.approval { background: rgba(255, 152, 0, 0.2); color: var(--accent-warning); }
+
+    &.closed { background: rgba(244, 67, 54, 0.2); color: var(--accent-error); }
+  }
+
+  &.policy-badge {
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: rgba(156, 39, 176, 0.15);
+    color: var(--accent-purple);
+  }
+}
+
+.fans-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 120px;
+}
+
+.fans-count { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
+
+.gains-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+  font-size: 0.8125rem;
+}
+
+.gains-sep { color: var(--text-disabled); }
+
+.gain-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gain-label { color: var(--text-muted); }
+
+.gain-value {
+  font-weight: 600;
+  color: var(--text-secondary);
+
+  &.positive { color: var(--color-green); }
+
+  &.negative { color: var(--color-red); }
+}
+
+.fans-diff {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--color-green);
+
+  mat-icon { @include icon-size(16px); }
+}
+
+.circle-card .actions {
+  display: flex;
+  align-items: center;
+
+  a {
+    color: var(--text-secondary);
+    
+    &:hover { color: var(--text-primary); background: var(--surface-3); }
+  }
+}
+
+.card-body {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-primary);
+}
+
+.comment {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+
+  ::ng-deep .discord-link {
+    display: inline-flex;
     align-items: center;
-    min-width: 80px;
+    background: rgba(88, 101, 242, 0.15); // Discord Blurple
+    color: #5865F2;
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    margin: 0 2px;
+    font-size: 0.8125rem;
 
-    .rank-main { display: flex; align-items: center; gap: 0.25rem; }
-
-    .rank-number {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1;
-    }
-
-    .rank-diff {
-      display: flex;
-      align-items: center;
-      font-size: 0.875rem;
-      font-weight: 600;
-
-      mat-icon { @include icon-size(20px); }
-      &.positive { color: var(--color-green); }
-      &.negative { color: var(--color-red); }
-    }
-
-    .yesterday-rank { margin-top: 4px; color: var(--text-muted); font-size: 0.75rem; }
-  }
-
-  .club-rank-icon {
-    @include flex-center;
-    flex-shrink: 0;
-
-    img { width: 48px; height: 48px; object-fit: contain; }
-  }
-
-  .circle-info {
-    flex: 1;
-    min-width: 200px;
-
-    .circle-name {
-      display: block;
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--accent-primary);
-      text-decoration: none;
-      margin-bottom: 0.25rem;
-
-      &:hover { text-decoration: underline; }
-    }
-
-    .circle-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      font-size: 0.8125rem;
-      color: var(--text-secondary);
-
-      .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-
-        .label { color: var(--text-muted); }
-
-        &.join-style {
-          padding: 2px 8px;
-          border-radius: var(--radius-xs);
-          font-size: 0.75rem;
-          font-weight: 500;
-
-          &.open { background: rgba(76, 175, 80, 0.2); color: var(--accent-secondary); }
-          &.approval { background: rgba(255, 152, 0, 0.2); color: var(--accent-warning); }
-          &.closed { background: rgba(244, 67, 54, 0.2); color: var(--accent-error); }
-        }
-
-        &.policy-badge {
-          padding: 2px 8px;
-          border-radius: var(--radius-xs);
-          font-size: 0.75rem;
-          font-weight: 500;
-          background: rgba(156, 39, 176, 0.15);
-          color: var(--accent-purple);
-        }
-      }
-    }
-  }
-
-  .fans-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    min-width: 120px;
-
-    .fans-count { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
-
-    .gains-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 5px;
-      font-size: 0.8125rem;
-
-      .gains-sep { color: var(--text-disabled); }
-
-      .gain-item {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        .gain-label { color: var(--text-muted); }
-
-        .gain-value {
-          font-weight: 600;
-          color: var(--text-secondary);
-
-          &.positive { color: var(--color-green); }
-          &.negative { color: var(--color-red); }
-        }
-      }
-    }
-
-    .fans-diff {
-      display: flex;
-      align-items: center;
-      font-size: 0.875rem;
-      color: var(--color-green);
-
-      mat-icon { @include icon-size(16px); }
-    }
-  }
-
-  .actions {
-    display: flex;
-    align-items: center;
-
-    a {
-      color: var(--text-secondary);
-      
-      &:hover { color: var(--text-primary); background: var(--surface-3); }
-    }
-  }
-
-  .card-body {
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--border-primary);
-
-    .comment {
-      margin: 0;
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      line-height: 1.4;
-
-      ::ng-deep .discord-link {
-        display: inline-flex;
-        align-items: center;
-        background: rgba(88, 101, 242, 0.15); // Discord Blurple
-        color: #5865F2;
-        padding: 2px 8px;
-        border-radius: var(--radius-xs);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border: 1px solid rgba(88, 101, 242, 0.3);
-        margin: 0 2px;
-        font-size: 0.8125rem;
-
-        &:hover { background: rgba(88, 101, 242, 0.25); color: var(--text-primary); border-color: rgba(88, 101, 242, 0.6); }
-      }
-    }
+    &:hover { background: rgba(88, 101, 242, 0.25); color: var(--text-primary); border-color: rgba(88, 101, 242, 0.6); }
   }
 }
 
@@ -414,7 +424,8 @@ mat-paginator {
       margin-bottom: 0;
       align-items: center;
       
-      .rank-number { font-size: 1.1rem; }
+      .rank-number { font-size: 1.1rem; }
+
       .yesterday-rank { display: none; }
     }
 
@@ -457,7 +468,8 @@ mat-paginator {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      .fans-count { font-size: 0.9rem; }
+      .fans-count { font-size: 0.9rem; }
+
       .gains-row { font-size: 0.75rem; margin-top: 0; }
     }
 

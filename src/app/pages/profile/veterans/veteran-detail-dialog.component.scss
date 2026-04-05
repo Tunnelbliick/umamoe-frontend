@@ -25,31 +25,31 @@
     background: #1a1a1a;
     border-bottom: 1px solid var(--border-subtle);
     flex-shrink: 0;
+  }
 
-    .select-header-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-primary);
-      @include text-ellipsis;
+  .select-header-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    @include text-ellipsis;
+  }
+
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    @include flex-center;
+    color: var(--text-muted);
+    flex-shrink: 0;
+
+    .mat-mdc-button-touch-target { width: 32px; height: 32px; }
+
+    mat-icon {
+      @include icon-size(18px);
+      margin: 0;
     }
 
-    .close-btn {
-      width: 32px;
-      height: 32px;
-      padding: 0;
-      @include flex-center;
-      color: var(--text-muted);
-      flex-shrink: 0;
-
-      .mat-mdc-button-touch-target { width: 32px; height: 32px; }
-
-      mat-icon {
-        @include icon-size(18px);
-        margin: 0;
-      }
-
-      &:hover { color: var(--text-primary); background: var(--surface-2); }
-    }
+    &:hover { color: var(--text-primary); background: var(--surface-2); }
   }
 
   .header-avatar {
@@ -134,26 +134,26 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
 
-    .view-scheduler-btn {
-      margin-left: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xs);
-      background: var(--surface-2);
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
+  .view-scheduler-btn {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xs);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
 
-      mat-icon { @include icon-size(14px); }
+    mat-icon { @include icon-size(14px); }
 
-      &:hover { background: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.3); color: #ffc107; }
-    }
+    &:hover { background: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.3); color: #ffc107; }
   }
 
   // ─── Race History ──────────────────────────────

@@ -7,423 +7,414 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   overflow: hidden;
+}
 
-  .header {
-    padding: 16px 20px;
-    background: rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid var(--border-primary);
-    flex-shrink: 0;
+.header {
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-primary);
+  flex-shrink: 0;
+}
 
-    .header-info {
-      margin-bottom: 16px;
+.header-info {
+  margin-bottom: 16px;
 
-      h2 {
-        margin: 0 0 8px 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 1.5rem;
-        font-weight: 600;
+  h2 {
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
 
-        .page-icon { font-size: 1.5rem; }
-      }
+.page-icon { font-size: 1.5rem; }
 
-      .subtitle { margin: 0 0 4px 0; opacity: 0.8; font-size: 0.9rem; }
-      .event-count { margin: 0; opacity: 0.7; font-size: 0.8rem; }
-    }
+.subtitle { margin: 0 0 4px 0; opacity: 0.8; font-size: 0.9rem; }
 
-    .search-field {
-      width: 100%;
-      margin-bottom: 16px;
+.event-count { margin: 0; opacity: 0.7; font-size: 0.8rem; }
 
-      ::ng-deep {
-        .mat-mdc-form-field-flex { background: var(--surface-3); border-radius: var(--radius-md); }
-        .mat-mdc-text-field-wrapper { background: transparent; }
-        .mat-mdc-form-field-outline { color: var(--text-disabled); }
-        .mat-mdc-form-field-outline-thick { color: var(--text-secondary); }
-        .mdc-floating-label { color: var(--text-secondary); }
-        .mat-mdc-input-element { color: white; }
-        .mat-icon { color: var(--text-secondary); }
-      }
-    }
+.search-field {
+  width: 100%;
+  margin-bottom: 16px;
 
-    .search-navigation {
+  ::ng-deep {
+    .mat-mdc-form-field-flex { background: var(--surface-3); border-radius: var(--radius-md); }
+
+    .mat-mdc-text-field-wrapper { background: transparent; }
+
+    .mat-mdc-form-field-outline { color: var(--text-disabled); }
+
+    .mat-mdc-form-field-outline-thick { color: var(--text-secondary); }
+
+    .mdc-floating-label { color: var(--text-secondary); }
+
+    .mat-mdc-input-element { color: white; }
+
+    .mat-icon { color: var(--text-secondary); }
+  }
+}
+
+.search-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+
+  button { color: white; }
+}
+
+.search-results-count { color: var(--text-primary); }
+
+.no-results { color: var(--text-secondary); font-style: italic; }
+
+.filter-controls {
+  padding: 0 20px 16px 20px;
+  border-bottom: 1px solid var(--border-primary);
+  flex-shrink: 0;
+}
+
+.filter-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  mat-checkbox {
+    .checkbox-content {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
+      gap: 4px;
+      font-size: 0.85rem;
 
-      button { color: white; }
-      .search-results-count { color: var(--text-primary); }
-      .no-results { color: var(--text-secondary); font-style: italic; }
-    }
-  }
-
-  .filter-controls {
-    padding: 0 20px 16px 20px;
-    border-bottom: 1px solid var(--border-primary);
-    flex-shrink: 0;
-
-    .filter-toggles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-
-      mat-checkbox {
-        .checkbox-content {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          font-size: 0.85rem;
-
-          mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
-        }
-      }
-    }
-  }
-
-  .timeline-content {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-
-    .timeline-track {
-      width: 80px;
-      flex-shrink: 0;
-      position: relative;
-      background: rgba(0, 0, 0, 0.1);
-      border-right: 1px solid var(--border-primary);
-
-      .timeline-line {
-        position: absolute;
-        left: 39px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.3) 0%,
-            rgba(255, 255, 255, 0.6) 50%,
-            rgba(255, 255, 255, 0.3) 100%);
-      }
-
-      .timeline-markers {
-        position: relative;
-        z-index: 2;
-        padding: 20px 0;
-
-        .timeline-marker {
-          position: relative;
-          padding: 8px 0;
-
-          &.marker-year,
-          &.marker-month {
-            .marker-label {
-              position: absolute;
-              left: 8px;
-              top: 50%;
-              transform: translateY(-50%);
-              font-size: 0.7rem;
-              font-weight: 600;
-              color: var(--text-primary);
-              text-align: left;
-              line-height: 1.2;
-            }
-          }
-
-          &.marker-year .marker-label { font-size: 0.8rem; color: white; font-weight: 700; }
-
-          &.marker-event,
-          &.marker-grouped-events,
-          &.marker-today {
-            .marker-dot {
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%, -50%);
-              width: 24px;
-              height: 24px;
-              border-radius: 50%;
-              @include flex-center;
-              background: white;
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-              mat-icon { @include icon-size(14px); }
-            }
-          }
-
-          &.marker-today .marker-dot {
-            background: #ff9800;
-            animation: pulse 2s infinite;
-
-            .today-icon { color: white; }
-          }
-
-          &.marker-grouped-events .marker-dot {
-            background: #9c27b0;
-
-            .group-icon { color: white; }
-          }
-        }
-      }
-    }
-
-    .events-section {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      -webkit-overflow-scrolling: touch;
-
-      .timeline-item {
-        margin-bottom: 16px;
-
-        &.item-year {
-          .year-marker {
-            text-align: center;
-            margin: 32px 0 16px 0;
-
-            h3 {
-              margin: 0;
-              font-size: 1.8rem;
-              font-weight: 700;
-              color: white;
-              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            }
-          }
-        }
-
-        &.item-month {
-          .month-marker {
-            margin: 24px 0 12px 0;
-
-            h4 {
-              margin: 0;
-              font-size: 1.2rem;
-              font-weight: 600;
-              color: var(--text-primary);
-              text-align: center;
-            }
-          }
-        }
-
-        &.item-today {
-          .today-marker {
-            display: flex;
-            justify-content: center;
-            margin: 16px 0;
-
-            .today-label {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              padding: 8px 16px;
-              background: rgba(255, 152, 0, 0.2);
-              border: 2px solid #ff9800;
-              border-radius: 20px;
-              animation: pulse 2s infinite;
-
-              .today-icon { color: var(--color-orange); }
-              span { color: var(--color-orange); font-weight: 600; }
-            }
-          }
-        }
-
-        &.item-event {
-          .event-card {
-            mat-card {
-              background: rgba(255, 255, 255, 0.95);
-              border-radius: var(--radius-lg);
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-              border-left: 4px solid #2196f3;
-
-              // Event type colors
-              &.event-type-character_banner { border-left-color: #4fc3f7; }
-              &.event-type-support_banner { border-left-color: #66bb6a; }
-              &.event-type-story_event { border-left-color: var(--accent-warning); }
-              &.event-type-champions_meeting { border-left-color: #ab47bc; }
-              &.event-type-legend_race { border-left-color: #f06292; }
-              &.event-type-paid_banner { border-left-color: #ff8a65; }
-
-              ::ng-deep {
-                .mat-mdc-card-header { padding: 16px 16px 8px 16px; }
-                .mat-mdc-card-content { padding: 0 16px 8px 16px; }
-                .mat-mdc-card-actions { padding: 8px 16px 16px 16px; }
-
-                .mat-mdc-card-title {
-                  color: #333;
-                  font-weight: 600;
-                  font-size: 1rem;
-                  line-height: 1.3;
-                }
-
-                .mat-mdc-card-subtitle { color: #666; font-size: 0.9rem; }
-              }
-
-              .event-icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                @include flex-center;
-                background: #f5f5f5;
-
-                mat-icon { color: #666; }
-              }
-
-              .event-image {
-                margin: 8px 0;
-                border-radius: var(--radius-md);
-                overflow: hidden;
-
-                img { width: 100%; height: auto; display: block; }
-
-                // Campaign images need padding since logos have busy edges
-                &.campaign-image {
-                  padding: 8px 12px;
-                  overflow: visible;
-
-                  img { border-radius: var(--radius-md); }
-                }
-              }
-
-              .related-items {
-                mat-chip-set {
-                  margin-bottom: 8px;
-
-                  &:last-child { margin-bottom: 0; }
-                }
-
-                ::ng-deep .mat-mdc-chip { font-size: 0.75rem; height: 24px; }
-              }
-            }
-          }
-        }
-
-        &.item-grouped-events {
-          .grouped-events {
-            .group-header {
-              margin-bottom: 12px;
-
-              h5 {
-                margin: 0;
-                color: var(--text-primary);
-                font-size: 1rem;
-                font-weight: 600;
-                text-align: center;
-              }
-            }
-
-            .events-grid {
-              display: grid;
-              grid-template-columns: 1fr;
-              gap: 8px;
-
-              .mini-event-card {
-                background: rgba(255, 255, 255, 0.9);
-                border-radius: var(--radius-md);
-                border-left: 3px solid #2196f3;
-
-                // Event type colors
-                &.event-type-character_banner { border-left-color: #4fc3f7; }
-                &.event-type-support_banner { border-left-color: #66bb6a; }
-                &.event-type-story_event { border-left-color: var(--accent-warning); }
-                &.event-type-champions_meeting { border-left-color: #ab47bc; }
-                &.event-type-legend_race { border-left-color: #f06292; }
-                &.event-type-paid_banner { border-left-color: #ff8a65; }
-
-                ::ng-deep {
-                  .mat-mdc-card-header { padding: 12px; }
-                  .mat-mdc-card-content { padding: 0 12px 12px 12px; }
-
-                  .mat-mdc-card-title {
-                    color: #333;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    line-height: 1.3;
-                  }
-                }
-
-                .event-icon {
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 50%;
-                  @include flex-center;
-                  background: #f5f5f5;
-
-                  mat-icon {
-                    color: #666;
-                    @include icon-size(16px);
-                  }
-                }
-
-                .mini-event-image {
-                  margin-top: 8px;
-                  border-radius: var(--radius-xs);
-                  overflow: hidden;
-
-                  img { width: 100%; height: auto; display: block; }
-                }
-              }
-            }
-          }
-        }
-      }
+      mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
     }
   }
 }
 
+.timeline-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.timeline-track {
+  width: 80px;
+  flex-shrink: 0;
+  position: relative;
+  background: rgba(0, 0, 0, 0.1);
+  border-right: 1px solid var(--border-primary);
+}
+
+.timeline-line {
+  position: absolute;
+  left: 39px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.3) 100%);
+}
+
+.timeline-markers {
+  position: relative;
+  z-index: 2;
+  padding: 20px 0;
+}
+
+.timeline-marker {
+  position: relative;
+  padding: 8px 0;
+
+  &.marker-year,
+  &.marker-month {
+    .marker-label {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      line-height: 1.2;
+    }
+  }
+
+  &.marker-year .marker-label { font-size: 0.8rem; color: white; font-weight: 700; }
+
+  &.marker-event,
+  &.marker-grouped-events,
+  &.marker-today {
+    .marker-dot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      @include flex-center;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+      mat-icon { @include icon-size(14px); }
+    }
+  }
+
+  &.marker-today .marker-dot {
+    background: #ff9800;
+    animation: pulse 2s infinite;
+
+    .today-icon { color: white; }
+  }
+
+  &.marker-grouped-events .marker-dot {
+    background: #9c27b0;
+
+    .group-icon { color: white; }
+  }
+}
+
+.events-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline-item {
+  margin-bottom: 16px;
+}
+
+.year-marker {
+  text-align: center;
+  margin: 32px 0 16px 0;
+
+  h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.month-marker {
+  margin: 24px 0 12px 0;
+
+  h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+  }
+}
+
+.today-marker {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.today-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 152, 0, 0.2);
+  border: 2px solid #ff9800;
+  border-radius: 20px;
+  animation: pulse 2s infinite;
+
+  .today-icon { color: var(--color-orange); }
+
+  span { color: var(--color-orange); font-weight: 600; }
+}
+
+.event-card {
+  mat-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #2196f3;
+
+    // Event type colors
+    &.event-type-character_banner { border-left-color: #4fc3f7; }
+    &.event-type-support_banner { border-left-color: #66bb6a; }
+    &.event-type-story_event { border-left-color: var(--accent-warning); }
+    &.event-type-champions_meeting { border-left-color: #ab47bc; }
+    &.event-type-legend_race { border-left-color: #f06292; }
+    &.event-type-paid_banner { border-left-color: #ff8a65; }
+
+    ::ng-deep {
+      .mat-mdc-card-header { padding: 16px 16px 8px 16px; }
+      .mat-mdc-card-content { padding: 0 16px 8px 16px; }
+      .mat-mdc-card-actions { padding: 8px 16px 16px 16px; }
+      .mat-mdc-card-title {
+        color: #333;
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.3;
+      }
+      .mat-mdc-card-subtitle { color: #666; font-size: 0.9rem; }
+    }
+  }
+}
+
+.event-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @include flex-center;
+  background: #f5f5f5;
+
+  mat-icon { color: #666; }
+}
+
+.event-image {
+  margin: 8px 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+
+  img { width: 100%; height: auto; display: block; }
+
+  // Campaign images need padding since logos have busy edges
+  &.campaign-image {
+    padding: 8px 12px;
+    overflow: visible;
+
+    img { border-radius: var(--radius-md); }
+  }
+}
+
+.related-items {
+  mat-chip-set {
+    margin-bottom: 8px;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  ::ng-deep .mat-mdc-chip { font-size: 0.75rem; height: 24px; }
+}
+
+.grouped-events {
+  .group-header {
+    margin-bottom: 12px;
+
+    h5 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.mini-event-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  border-left: 3px solid #2196f3;
+
+  // Event type colors
+  &.event-type-character_banner { border-left-color: #4fc3f7; }
+  &.event-type-support_banner { border-left-color: #66bb6a; }
+  &.event-type-story_event { border-left-color: var(--accent-warning); }
+  &.event-type-champions_meeting { border-left-color: #ab47bc; }
+  &.event-type-legend_race { border-left-color: #f06292; }
+  &.event-type-paid_banner { border-left-color: #ff8a65; }
+
+  ::ng-deep {
+    .mat-mdc-card-header { padding: 12px; }
+    .mat-mdc-card-content { padding: 0 12px 12px 12px; }
+    .mat-mdc-card-title {
+      color: #333;
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+  }
+
+  .event-icon {
+    width: 32px;
+    height: 32px;
+
+    mat-icon {
+      color: #666;
+      @include icon-size(16px);
+    }
+  }
+}
+
+.mini-event-image {
+  margin-top: 8px;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+
+  img { width: 100%; height: auto; display: block; }
+}
+
 // Animations
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.8; }
+  0% { transform: scale(1); opacity: 1; }
+
+  50% { transform: scale(1.05); opacity: 0.8; }
+
   100% { transform: scale(1); opacity: 1; }
 }
 
 // Responsive adjustments for very small screens
 @media (max-width: 360px) {
-  .timeline-vertical {
-    .header { padding: 12px 16px; }
+  .header { padding: 12px 16px; }
 
-    .filter-controls {
-      padding: 0 16px 12px 16px;
+  .filter-controls {
+    padding: 0 16px 12px 16px;
+  }
 
-      .filter-toggles {
-        gap: 6px;
+  .filter-toggles {
+    gap: 6px;
 
-        mat-checkbox .checkbox-content {
-          font-size: 0.8rem;
+    mat-checkbox .checkbox-content {
+      font-size: 0.8rem;
 
-          span {
+      span {
             display: none; // Hide text on very small screens, keep only icons
-          }
-        }
       }
-    }
-
-    .timeline-content {
-      .timeline-track {
-        width: 60px;
-
-        .timeline-markers .timeline-marker {
-
-          &.marker-year,
-          &.marker-month {
-            .marker-label { font-size: 0.6rem; left: 4px; }
-          }
-
-          &.marker-event,
-          &.marker-grouped-events,
-          &.marker-today {
-            .marker-dot {
-              width: 20px;
-              height: 20px;
-
-              mat-icon { @include icon-size(12px); }
-            }
-          }
-        }
-      }
-
-      .events-section { padding: 16px; }
     }
   }
+
+  .timeline-track {
+    width: 60px;
+  }
+
+  .timeline-marker {
+    &.marker-year,
+    &.marker-month {
+      .marker-label { font-size: 0.6rem; left: 4px; }
+    }
+
+    &.marker-event,
+    &.marker-grouped-events,
+    &.marker-today {
+      .marker-dot {
+        width: 20px;
+        height: 20px;
+
+        mat-icon { @include icon-size(12px); }
+      }
+    }
+  }
+
+  .events-section { padding: 16px; }
 }

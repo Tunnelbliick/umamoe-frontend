@@ -29,28 +29,8 @@
     margin-bottom: 20px;
 
     .empty-card {
-      @include flex-center;
+      @include empty-placeholder;
       padding: 20px;
-      border: 2px solid #666;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: #666;
-      min-height: 80px;
-
-      &:hover {
-        border-color: var(--color-blue);
-        background-color: rgba(33, 150, 243, 0.08);
-        color: var(--color-blue);
-        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
-      }
-
-      mat-icon {
-        margin-right: 12px;
-        @include icon-size(28px);
-      }
-
-      span { font-size: 16px; font-weight: 500; }
     }
 
     .selected-card {
@@ -78,7 +58,8 @@
         flex-direction: column;
         gap: 4px;
 
-        .card-name { font-weight: 600; color: var(--text-primary); font-size: 1.1rem; }
+        .card-name { font-weight: 600; color: var(--text-primary); font-size: 1.1rem; }
+
         .card-character { color: var(--text-secondary); font-size: 0.9rem; }
 
         .card-meta {
@@ -94,7 +75,8 @@
             font-weight: 500;
           }
 
-          .card-type { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); }
+          .card-type { background: rgba(100, 181, 246, 0.2); color: var(--accent-primary); }
+
           .card-rarity { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
         }
       }
@@ -172,7 +154,8 @@
       .card-image { width: 48px; height: 48px; }
 
       .card-info {
-        .card-name { font-size: 1rem; }
+        .card-name { font-size: 1rem; }
+
         .card-character { font-size: 0.85rem; }
       }
     }

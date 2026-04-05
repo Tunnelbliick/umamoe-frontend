@@ -61,7 +61,8 @@
   flex: 1;
   max-height: none;
 
-  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar { width: 6px; }
+
   &::-webkit-scrollbar-track { background: transparent; }
 
   &::-webkit-scrollbar-thumb {
@@ -117,56 +118,60 @@
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+}
 
-  .filter-field {
-    flex: 1;
-    min-width: 0;
+.filter-field {
+  flex: 1;
+  min-width: 0;
 
-    ::ng-deep {
-      .mat-mdc-text-field-wrapper {
-        height: 36px !important;
-        padding: 0 10px !important;
-        background: var(--surface-2) !important;
-        border: 1px solid var(--border-subtle) !important;
-        border-radius: var(--radius-md) !important;
-      }
-
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing { border: none !important; }
-
-      .mat-mdc-form-field-infix {
-        padding: 4px 0 !important;
-        min-height: 36px !important;
-        display: flex !important;
-        align-items: center !important;
-      }
-
-      .mdc-line-ripple { display: none; }
-      .mat-mdc-form-field-subscript-wrapper { display: none; }
-
-      // Hide the floating label when a value is selected to prevent overlap
-      .mat-mdc-floating-label {
-        font-size: 13px !important;
-        color: var(--text-muted) !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-      }
-
-      // When focused or has value, shrink label out of the way
-      .mdc-floating-label--float-above { display: none !important; }
-      .mat-mdc-select { width: 100%; }
-      .mat-mdc-select-value { max-width: 100%; overflow: hidden; }
-
-      .mat-mdc-select-value-text {
-        font-size: 13px;
-        color: var(--text-primary);
-        @include text-ellipsis;
-      }
-
-      .mat-mdc-select-arrow-wrapper { flex-shrink: 0; }
-      .mat-mdc-select-arrow { color: var(--text-disabled); }
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      height: 36px !important;
+      padding: 0 10px !important;
+      background: var(--surface-2) !important;
+      border: 1px solid var(--border-subtle) !important;
+      border-radius: var(--radius-md) !important;
     }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing { border: none !important; }
+
+    .mat-mdc-form-field-infix {
+      padding: 4px 0 !important;
+      min-height: 36px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .mdc-line-ripple { display: none; }
+
+    .mat-mdc-form-field-subscript-wrapper { display: none; }
+
+    // Hide the floating label when a value is selected to prevent overlap
+    .mat-mdc-floating-label {
+      font-size: 13px !important;
+      color: var(--text-muted) !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+
+    // When focused or has value, shrink label out of the way
+    .mdc-floating-label--float-above { display: none !important; }
+
+    .mat-mdc-select { width: 100%; }
+
+    .mat-mdc-select-value { max-width: 100%; overflow: hidden; }
+
+    .mat-mdc-select-value-text {
+      font-size: 13px;
+      color: var(--text-primary);
+      @include text-ellipsis;
+    }
+
+    .mat-mdc-select-arrow-wrapper { flex-shrink: 0; }
+
+    .mat-mdc-select-arrow { color: var(--text-disabled); }
   }
 }
 
@@ -194,7 +199,8 @@
     background: rgba(100, 181, 246, 0.08);
     border-color: rgba(100, 181, 246, 0.4);
 
-    .card-thumb { border-color: rgba(100, 181, 246, 0.6); }
+    .card-thumb { border-color: rgba(100, 181, 246, 0.6); }
+
     .card-name { color: var(--text-primary); }
   }
 
@@ -243,7 +249,8 @@
       letter-spacing: 0.3px;
     }
 
-    .type-badge { background: rgba(33, 150, 243, 0.12); color: rgba(100, 181, 246, 0.8); }
+    .type-badge { background: rgba(33, 150, 243, 0.12); color: rgba(100, 181, 246, 0.8); }
+
     .rarity-badge { background: rgba(255, 193, 7, 0.12); color: rgba(255, 202, 40, 0.8); }
   }
 }
@@ -256,13 +263,15 @@
     border-radius: var(--radius-lg);
   }
 
-  .select-body { padding: 8px !important; }
+  .select-body { padding: 8px !important; }
+
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
 
   .card-item {
     padding: 6px 3px 5px;
 
-    .card-thumb { width: 64px; height: 64px; }
+    .card-thumb { width: 64px; height: 64px; }
+
     .card-name { font-size: 11px; }
   }
 

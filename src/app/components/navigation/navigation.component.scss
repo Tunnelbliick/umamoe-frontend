@@ -128,78 +128,76 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
 
-  .dropdown-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 7px;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-    text-align: left;
-    text-decoration: none;
-    transition: background 0.12s, color 0.12s;
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
 
-    mat-icon {
-      @include icon-size(17px);
-      line-height: 17px;
-      color: var(--text-disabled);
-      flex-shrink: 0;
-      transition: color 0.12s;
-    }
-
-    &:hover {
-      background: rgba(100, 181, 246, 0.08);
-      color: var(--text-primary);
-
-      mat-icon { color: var(--accent-primary); }
-    }
-
-    &:active { background: rgba(100, 181, 246, 0.14); }
+  mat-icon {
+    @include icon-size(17px);
+    line-height: 17px;
+    color: var(--text-disabled);
+    flex-shrink: 0;
+    transition: color 0.12s;
   }
 
-  .account-link {
-    .acct-avatar {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
+  &:hover {
+    background: rgba(100, 181, 246, 0.08);
+    color: var(--text-primary);
 
-    .acct-info { display: flex; flex-direction: column; min-width: 0; }
-
-    .acct-name {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.2;
-      @include text-ellipsis;
-    }
-
-    .acct-id {
-      font-size: 0.65rem;
-      color: var(--text-disabled);
-      font-family: monospace;
-      line-height: 1.2;
-    }
+    mat-icon { color: var(--accent-primary); }
   }
 
-  .dropdown-divider { height: 1px; background: var(--surface-2); margin: 3px 8px; }
+  &:active { background: rgba(100, 181, 246, 0.14); }
+}
 
-  .add-account {
-    color: var(--text-muted);
-    font-size: 0.8rem;
+.acct-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
-    mat-icon { color: var(--text-disabled); }
-  }
+.acct-info { display: flex; flex-direction: column; min-width: 0; }
+
+.acct-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+  @include text-ellipsis;
+}
+
+.acct-id {
+  font-size: 0.65rem;
+  color: var(--text-disabled);
+  font-family: monospace;
+  line-height: 1.2;
+}
+
+.dropdown-divider { height: 1px; background: var(--surface-2); margin: 3px 8px; }
+
+.add-account {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+
+  mat-icon { color: var(--text-disabled); }
 }
 
 .login-btn { margin-left: auto; }

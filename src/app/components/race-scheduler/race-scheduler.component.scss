@@ -26,10 +26,14 @@
   color: var(--text-secondary);
   transition: all 0.15s ease;
 
-  mat-icon { @include icon-size(14px); }
-  &:hover:not(:disabled) { background: var(--surface-3); color: var(--text-primary); border-color: var(--border-secondary); }
-  &:disabled { opacity: 0.35; cursor: default; }
-  &.import-btn:hover:not(:disabled) { border-color: rgba(33, 150, 243, 0.4); color: #90caf9; background: rgba(33, 150, 243, 0.08); }
+  mat-icon { @include icon-size(14px); }
+
+  &:hover:not(:disabled) { background: var(--surface-3); color: var(--text-primary); border-color: var(--border-secondary); }
+
+  &:disabled { opacity: 0.35; cursor: default; }
+
+  &.import-btn:hover:not(:disabled) { border-color: rgba(33, 150, 243, 0.4); color: #90caf9; background: rgba(33, 150, 243, 0.08); }
+
   &.export-btn:hover:not(:disabled) { border-color: rgba(151, 212, 52, 0.4); color: #a5d6a7; background: rgba(151, 212, 52, 0.08); }
 
   &.clear-btn {
@@ -120,35 +124,10 @@
   position: relative;
   box-sizing: border-box;
 
-  .badge-label {
-    @include text-ellipsis;
-    line-height: 1.2;
-  }
+  &.grade-g1 { background: rgba(54, 132, 227, 0.15); border: 1px solid rgba(54, 132, 227, 0.4); color: #7fb3ef; }
 
-  .badge-remove {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.5;
-    flex-shrink: 0;
+  &.grade-g2 { background: rgba(244, 85, 129, 0.15); border: 1px solid rgba(244, 85, 129, 0.4); color: #f48fab; }
 
-    mat-icon { @include icon-size(10px); }
-    &:hover { opacity: 1; }
-  }
-
-  .won-icon,
-  .ran-icon {
-    @include icon-size(10px);
-    flex-shrink: 0;
-  }
-
-  .won-icon { color: #f5c83a; }
-  &.grade-g1 { background: rgba(54, 132, 227, 0.15); border: 1px solid rgba(54, 132, 227, 0.4); color: #7fb3ef; }
-  &.grade-g2 { background: rgba(244, 85, 129, 0.15); border: 1px solid rgba(244, 85, 129, 0.4); color: #f48fab; }
   &.grade-g3 { background: rgba(57, 187, 84, 0.15); border: 1px solid rgba(57, 187, 84, 0.4); color: #6fcf85; }
 
   &.won {
@@ -159,14 +138,6 @@
 
   // Ran — position-based styling
   &.ran {
-    .position-num {
-      font-size: 9px;
-      font-weight: 800;
-      flex-shrink: 0;
-      min-width: 10px;
-      text-align: center;
-    }
-
     &.pos-1st {
       background: rgba(255, 215, 0, 0.15);
       border-color: rgba(255, 215, 0, 0.5);
@@ -194,6 +165,43 @@
   }
 }
 
+.badge-label {
+  @include text-ellipsis;
+  line-height: 1.2;
+}
+
+.badge-remove {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.5;
+  flex-shrink: 0;
+
+  mat-icon { @include icon-size(10px); }
+
+  &:hover { opacity: 1; }
+}
+
+.won-icon,
+.ran-icon {
+  @include icon-size(10px);
+  flex-shrink: 0;
+}
+
+.won-icon { color: #f5c83a; }
+
+.position-num {
+  font-size: 9px;
+  font-weight: 800;
+  flex-shrink: 0;
+  min-width: 10px;
+  text-align: center;
+}
+
 // Add race button
 .add-race-btn {
   @include flex-center;
@@ -208,7 +216,8 @@
   color: var(--text-disabled);
   transition: all 0.15s ease;
 
-  mat-icon { @include icon-size(16px); }
+  mat-icon { @include icon-size(16px); }
+
   &:hover { border-color: rgba(33, 150, 243, 0.3); color: rgba(33, 150, 243, 0.6); background: rgba(33, 150, 243, 0.05); }
 }
 
@@ -238,8 +247,10 @@
   mat-icon { @include icon-size(12px); }
 }
 
-.grade-g1-legend { background: rgba(54, 132, 227, 0.15); border: 1px solid rgba(54, 132, 227, 0.4); color: #7fb3ef; }
-.grade-g2-legend { background: rgba(244, 85, 129, 0.15); border: 1px solid rgba(244, 85, 129, 0.4); color: #f48fab; }
+.grade-g1-legend { background: rgba(54, 132, 227, 0.15); border: 1px solid rgba(54, 132, 227, 0.4); color: #7fb3ef; }
+
+.grade-g2-legend { background: rgba(244, 85, 129, 0.15); border: 1px solid rgba(244, 85, 129, 0.4); color: #f48fab; }
+
 .grade-g3-legend { background: rgba(57, 187, 84, 0.15); border: 1px solid rgba(57, 187, 84, 0.4); color: #6fcf85; }
 
 .won-legend {

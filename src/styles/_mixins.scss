@@ -1081,3 +1081,108 @@ $spark-palette: (
 
   strong { font-weight: 700; }
 }
+
+// ===== CHIP ACTIVE TINT (frosted glass effect with CSS var --chip-color) =====
+// Used by class-chip active state in class-filter and team-class-bottom-sheet
+@mixin chip-active-tint($inset-width: 4px) {
+  background: var(--surface-2);
+  border-color: var(--chip-color);
+  color: var(--text-primary);
+  box-shadow:
+    inset #{$inset-width} 0 0 0 var(--chip-color),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--chip-color);
+    opacity: 0.15;
+    z-index: 0;
+  }
+}
+
+// ===== DISTANCE PILL ACTIVE (gradient with CSS custom properties) =====
+@mixin distance-pill-active {
+  background: linear-gradient(135deg, var(--distance-primary, #64b5f6) 0%, var(--distance-secondary, #2196f3) 100%);
+  border-color: var(--border-secondary);
+  color: white;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 1px 3px var(--distance-shadow, rgba(100, 181, 246, 0.4));
+
+  .pill-icon { color: white; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)); }
+  .pill-label { font-weight: 600; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+}
+
+// ===== DISTANCE COLOR VARS (per-distance custom property sets) =====
+@mixin distance-color-vars($palette: 'default') {
+  $colors-default: (
+    sprint: (#ff9800, #f57c00),
+    mile: (#4caf50, #388e3c),
+    medium: (#2196f3, #1976d2),
+    long: (#9c27b0, #7b1fa2),
+    dirt: (#795548, #5d4037),
+  );
+  $colors-alt: (
+    sprint: (#e74c3c, #c0392b),
+    mile: (#f39c12, #e67e22),
+    medium: (#2ecc71, #27ae60),
+    long: (#3498db, #2980b9),
+    dirt: (#9b59b6, #8e44ad),
+  );
+  $map: if($palette == 'alt', $colors-alt, $colors-default);
+  @each $name, $pair in $map {
+    &[data-distance="#{$name}"] {
+      --distance-primary: #{nth($pair, 1)};
+      --distance-secondary: #{nth($pair, 2)};
+      --distance-shadow: #{rgba(nth($pair, 1), 0.3)};
+    }
+  }
+}
+
+// ===== DISTANCE HEADER (section header with icon) =====
+@mixin distance-header($font-size: 0.875rem, $icon-size: 16px) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: $font-size;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  mat-icon {
+    @include icon-size($icon-size);
+    color: var(--accent-primary);
+    filter: drop-shadow(0 1px 2px rgba(100, 181, 246, 0.3));
+  }
+}
+
+// ===== EMPTY PLACEHOLDER (clickable empty state box) =====
+@mixin empty-placeholder($min-height: 80px) {
+  @include flex-center;
+  padding: 15px;
+  border: 2px solid #666;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+  min-height: $min-height;
+
+  &:hover {
+    border-color: var(--color-blue);
+    background-color: rgba(33, 150, 243, 0.08);
+    color: var(--color-blue);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+  }
+
+  mat-icon {
+    margin-right: 12px;
+    @include icon-size(28px);
+  }
+
+  span { font-size: 16px; font-weight: 500; }
+}
