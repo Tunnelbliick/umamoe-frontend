@@ -2,7 +2,7 @@
   <!-- Loading -->
   <div class="loading-container" *ngIf="loading">
     <mat-icon class="spin">sync</mat-icon>
-    <span>Loading profile…</span>
+    <span>Loading profileï¿½</span>
   </div>
 
   <!-- Error -->
@@ -93,7 +93,7 @@
                   <td class="right mono">#{{ formatRank(m.rank) }}</td>
                   <td>
                     <a *ngIf="m.circle_name" [routerLink]="['/circles', m.circle_id]" class="circle-link">{{ m.circle_name }}</a>
-                    <span *ngIf="!m.circle_name" class="muted">—</span>
+                    <span *ngIf="!m.circle_name" class="muted">ï¿½</span>
                   </td>
                 </tr>
               </tbody>
@@ -251,7 +251,7 @@
                   <div class="timeline-period">
                     {{ getMonthName(m.from.month) }} {{ m.from.year }}
                     <span *ngIf="m.from.year !== m.to.year || m.from.month !== m.to.month">
-                      — {{ getMonthName(m.to.month) }} {{ m.to.year }}
+                      ï¿½ {{ getMonthName(m.to.month) }} {{ m.to.year }}
                     </span>
                     <span class="timeline-duration">({{ m.months }} {{ m.months === 1 ? 'month' : 'months' }})</span>
                   </div>
@@ -291,11 +291,11 @@
                   </td>
                   <td class="right mono">
                     <span *ngIf="entry.circle_rank != null">#{{ formatRank(entry.circle_rank) }}</span>
-                    <span *ngIf="entry.circle_rank == null" class="muted">—</span>
+                    <span *ngIf="entry.circle_rank == null" class="muted">ï¿½</span>
                   </td>
                   <td class="right mono">
                     <span *ngIf="entry.circle_points != null">{{ formatNumber(entry.circle_points) }}</span>
-                    <span *ngIf="entry.circle_points == null" class="muted">—</span>
+                    <span *ngIf="entry.circle_points == null" class="muted">ï¿½</span>
                   </td>
                 </tr>
               </tbody>
