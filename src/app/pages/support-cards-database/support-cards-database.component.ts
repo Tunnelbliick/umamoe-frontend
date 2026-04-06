@@ -27,6 +27,7 @@ import { SupportCardFilterComponent, SupportCardFilters } from './support-card-f
 import { TrainerSubmitDialogComponent, TrainerSubmissionConfig } from '../../components/trainer-submit-dialog/trainer-submit-dialog.component';
 import { TrainerIdFormatPipe } from "../../pipes/trainer-id-format.pipe";
 import { environment } from '../../../environments/environment';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 @Component({
   selector: 'app-support-cards-database',
   standalone: true,
@@ -40,7 +41,8 @@ import { environment } from '../../../environments/environment';
     MatDialogModule,
     MatTooltipModule,
     SupportCardFilterComponent,
-    TrainerIdFormatPipe
+    TrainerIdFormatPipe,
+    LocaleNumberPipe
   ],
   templateUrl: './support-cards-database.component.html',
   styleUrl: './support-cards-database.component.scss'

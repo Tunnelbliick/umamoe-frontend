@@ -157,7 +157,7 @@
 
   h4 { margin: 0 0 4px; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); }
   p { margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
-  code { padding: 1px 6px; border-radius: var(--radius-xs); background: var(--surface-3); border: 1px solid var(--border-primary); color: var(--text-secondary); font-size: 0.75rem; font-family: 'Fira Code', 'Consolas', monospace; }
+  code { padding: 1px 6px; border-radius: var(--radius-xs); background: var(--surface-3); border: 1px solid var(--border-primary); color: var(--text-secondary); font-size: 0.75rem; font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; }
   strong { color: var(--text-secondary); font-weight: 600; }
 }
 
@@ -2487,9 +2487,6 @@ $v-tap-gp: 16px; // avatar-center offset for GP nodes
 
 .no-factors { font-size: 0.72rem; color: var(--text-disabled); }
 
-// Mono
-.mono { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; font-variant-numeric: tabular-nums; }
-
 .star-filled {
   color: #ffd700;
   @include icon-size(14px);
@@ -2592,7 +2589,6 @@ $v-tap-gp: 16px; // avatar-center offset for GP nodes
   font-size: 8px;
   color: var(--text-disabled);
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
   line-height: 1;
   margin-top: 2px;
 }
@@ -2609,7 +2605,6 @@ $v-tap-gp: 16px; // avatar-center offset for GP nodes
   font-size: 11px;
   font-weight: 700;
   color: var(--color-blue);
-  font-variant-numeric: tabular-nums;
   letter-spacing: 0.2px;
 }
 

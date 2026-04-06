@@ -34,7 +34,7 @@
         <div class="results-info">
           <h2>Results</h2>
           <p *ngIf="!loading">
-            {{ totalRecords || 0 }} records found
+            {{ (totalRecords || 0) | localeNumber }} records found
             <span *ngIf="trainerIdFilter" class="trainer-filter-indicator">
               for trainer {{ trainerIdFilter }}
             </span>

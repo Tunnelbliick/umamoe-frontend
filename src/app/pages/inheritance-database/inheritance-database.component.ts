@@ -31,6 +31,7 @@ import { environment } from '../../../environments/environment';
 import { AdvancedFilterComponent, UnifiedSearchParams } from '../../components/advanced-filter/advanced-filter.component';
 import { InheritanceEntryComponent } from '../../components/inheritance-entry/inheritance-entry.component';
 import { getCharacterById } from '../../data/character.data';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 @Component({
   selector: 'app-inheritance-database',
   standalone: true,
@@ -50,7 +51,8 @@ import { getCharacterById } from '../../data/character.data';
     TrainerIdFormatPipe,
     ResolveSparksPipe,
     AdvancedFilterComponent,
-    InheritanceEntryComponent
+    InheritanceEntryComponent,
+    LocaleNumberPipe
   ],
   templateUrl: './inheritance-database.component.html',
   styleUrl: './inheritance-database.component.scss'

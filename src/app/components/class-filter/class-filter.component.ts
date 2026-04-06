@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ColorsService } from '../../services/colors.service';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 export interface ClassFilterState {
   [key: string]: boolean;
 }
@@ -27,7 +28,8 @@ interface ClassOption {
     MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LocaleNumberPipe
   ],
   template: `
     <!-- Desktop Mode Only - Class Filter Card -->
@@ -46,7 +48,7 @@ interface ClassOption {
                   [style.--chip-color]="getBadgeColor(classOption.value)"
                   (click)="onClassToggle(classOption.value)">
              <span class="chip-label">{{ classOption.label }}</span>
-             <span class="chip-percent" *ngIf="classOption.percentage">{{ classOption.percentage | number:'1.0-0' }}%</span>
+             <span class="chip-percent mono" *ngIf="classOption.percentage">{{ classOption.percentage | localeNumber:'1.0-0' }}%</span>
           </button>
         </ng-container>
       </div>
@@ -208,13 +210,10 @@ export class ClassFilterComponent implements OnInit, OnDestroy, OnChanges {
     
     this.filtersChanged.emit(currentState);
   }
+  private static compactFmt = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
   formatNumber(num: number): string {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
-    }
-    return num.toString();
+    if (Math.abs(num) >= 100_000) return ClassFilterComponent.compactFmt.format(num);
+    return num.toLocaleString();
   }
   getBadgeStyle(classValue: string): any {
     const color = this.colorsService.getClassColor(classValue);

@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { AnimationSchedulerService } from './animation-scheduler.service';
 // Shared formatter — one instance for all components in the app.
-const sharedFmt = new Intl.NumberFormat('en-US');
+const sharedFmt = new Intl.NumberFormat(undefined);
 /**
  * Renders a number that smoothly counts from its previous value to the new one.
  * All instances share a single RAF loop via AnimationSchedulerService so that

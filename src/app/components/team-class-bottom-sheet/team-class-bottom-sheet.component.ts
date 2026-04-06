@@ -54,7 +54,7 @@ interface ScenarioOption {
             [class.active]="localScenarioFilters[scenario.value]"
             (click)="toggleScenario(scenario.value)">
             <span class="chip-label">{{ scenario.label }}</span>
-            <span class="chip-percent" *ngIf="scenario.percentage !== undefined">{{ (scenario.percentage || 0).toFixed(0) }}%</span>
+            <span class="chip-percent mono" *ngIf="scenario.percentage !== undefined">{{ (scenario.percentage || 0).toFixed(0) }}%</span>
           </button>
         </div>
       </div>
@@ -82,7 +82,7 @@ interface ScenarioOption {
             [style.--chip-color]="getBadgeColor(classOption.value)"
             (click)="toggleClass(classOption.value)">
             <span class="chip-label">{{ classOption.label }}</span>
-            <span class="chip-percent">{{ (classOption.percentage || 0).toFixed(0) }}%</span>
+            <span class="chip-percent mono">{{ (classOption.percentage || 0).toFixed(0) }}%</span>
           </button>
         </div>
       </div>
@@ -197,13 +197,10 @@ export class TeamClassBottomSheetComponent implements OnInit {
   getBadgeColor(classValue: string): string {
     return this.colorsService.getClassColor(classValue);
   }
+  private static compactFmt = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
   formatNumber(num: number): string {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
-    }
-    return num.toString();
+    if (Math.abs(num) >= 100_000) return TeamClassBottomSheetComponent.compactFmt.format(num);
+    return num.toLocaleString();
   }
   getDistanceIcon(distance: string): string {
     const icons: { [key: string]: string } = {

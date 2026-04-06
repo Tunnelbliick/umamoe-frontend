@@ -273,8 +273,6 @@
     color: var(--text-muted);
   }
 
-  .mono { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; font-variant-numeric: tabular-nums; }
-
   // ─── Spark items (factor pills) ────────────────
   .spark-item {
     @include spark-item(0.3rem, 0.25rem 0.6rem, var(--radius-sm), 0.8rem, 700, 13px);

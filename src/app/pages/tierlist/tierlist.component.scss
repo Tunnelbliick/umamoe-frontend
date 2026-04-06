@@ -84,8 +84,10 @@
   min-height: 24px;
 }
 
-.lb-diamond { flex-shrink: 0; display: block; }
-.lb-diamond.filled { fill: #2196F3; }
+.lb-diamond { flex-shrink: 0; display: block; }
+
+.lb-diamond.filled { fill: #2196F3; }
+
 .lb-diamond.empty { fill: var(--text-disabled); }
 
 .loading-container {
@@ -110,7 +112,8 @@
   width: 100%;
 }
 
-.sidenav-container { height: auto; background: transparent; }
+.sidenav-container { height: auto; background: transparent; }
+
 .main-tierlist { padding: 0; background: transparent; }
 
 .upcoming-sidebar {
@@ -289,7 +292,8 @@
   opacity: 0.7;
 }
 
-.tierlist .no-cards p { font-size: 1.1rem; font-weight: 500; }
+.tierlist .no-cards p { font-size: 1.1rem; font-weight: 500; }
+
 .tierlist-info { margin: 2rem; margin-top: 3rem; }
 
 .info-card {
@@ -302,8 +306,10 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
-.tier-legend { margin-top: 16px; }
-.tier-legend h4 { margin: 0 0 12px 0; color: var(--text-primary); font-weight: 600; }
+.tier-legend { margin-top: 16px; }
+
+.tier-legend h4 { margin: 0 0 12px 0; color: var(--text-primary); font-weight: 600; }
+
 .legend-items { flex-wrap: wrap; gap: 12px; }
 
 .legend-item {
@@ -328,9 +334,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.tier-threshold { color: var(--text-secondary); font-size: 11px; font-weight: 500; }
-.features-info { margin-top: 1.5rem; }
-.features-info h4 { margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 600; }
+.tier-threshold { color: var(--text-secondary); font-size: 11px; font-weight: 500; }
+
+.features-info { margin-top: 1.5rem; }
+
+.features-info h4 { margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 600; }
+
 .features-info ul { margin: 0; padding-left: 1.5rem; }
 
 .features-info ul li {
@@ -381,8 +390,10 @@
   font-weight: 600;
 }
 
-.mobile-popover-header button { color: var(--text-secondary); }
-.mobile-popover-header button:hover { color: var(--text-primary); background: var(--surface-3); }
+.mobile-popover-header button { color: var(--text-secondary); }
+
+.mobile-popover-header button:hover { color: var(--text-primary); background: var(--surface-3); }
+
 .mobile-popover-content { padding: 0; max-height: calc(85vh - 80px); overflow-y: auto; }
 
 .mobile-popover-content app-card-hover-menu {

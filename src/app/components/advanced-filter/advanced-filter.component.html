@@ -801,6 +801,6 @@
         [class.top-mode]="floatingBtnMode === 'top'"
         (click)="onFloatingBtnClick()">
   <mat-icon>{{ floatingBtnMode === 'results' ? 'arrow_downward' : 'arrow_upward' }}</mat-icon>
-  <span *ngIf="floatingBtnMode === 'results'">Results<ng-container *ngIf="resultCount !== null"> ({{ resultCount }})</ng-container></span>
+  <span *ngIf="floatingBtnMode === 'results'">Results<ng-container *ngIf="resultCount !== null"> ({{ resultCount | localeNumber }})</ng-container></span>
   <span *ngIf="floatingBtnMode === 'top'">Back to Top</span>
 </button>

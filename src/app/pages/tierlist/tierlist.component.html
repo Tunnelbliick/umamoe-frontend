@@ -131,7 +131,7 @@
                       (click)="onCardClickMobile(card, $event)"
                       (mouseenter)="onCardHoverDesktop(card, $event)"
                       (mouseleave)="onCardLeaveDesktop()"
-                      [title]="card.name + ' - Score: ' + card.scores[selectedLB].toFixed(0)">
+                      [title]="card.name + ' - Score: ' + (card.scores[selectedLB] | localeNumber:'1.0-0')">
                       
                       <div class="card-image-container">
                         <img 
@@ -143,8 +143,8 @@
                         
                         <div class="card-overlay">
                           <div class="card-name">{{ card.name }}</div>
-                          <div class="card-score" [style.color]="getScoreColor(card)">
-                            {{ card.scores[selectedLB].toFixed(0) }}
+                          <div class="card-score mono" [style.color]="getScoreColor(card)">
+                            {{ card.scores[selectedLB] | localeNumber:'1.0-0' }}
                           </div>
                         </div>
                       </div>

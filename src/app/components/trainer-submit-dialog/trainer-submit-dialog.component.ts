@@ -55,7 +55,7 @@ export interface TrainerSubmissionConfig {
           <div class="form-group">
             <div class="label-row">
               <label class="input-label">Trainer ID</label>
-              <span class="digit-count" [class.complete]="getDigitCount() === 12">{{ getDigitCount() }} / 12</span>
+              <span class="digit-count mono" [class.complete]="getDigitCount() === 12">{{ getDigitCount() }} / 12</span>
             </div>
             <div class="custom-input-wrapper" [class.has-error]="submissionForm.get('trainerId')?.touched && submissionForm.get('trainerId')?.invalid">
               <mat-icon class="input-prefix-icon">badge</mat-icon>

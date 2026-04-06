@@ -11,11 +11,12 @@ import { ResolveSparksPipe } from '../../pipes/resolve-sparks.pipe';
 import { TrainerIdFormatPipe } from '../../pipes/trainer-id-format.pipe';
 import { RaceResultsDialogComponent, RaceResultsDialogData } from '../race-results-dialog/race-results-dialog.component';
 import { RankBadgeComponent } from '../rank-badge/rank-badge.component';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 
 @Component({
     selector: 'app-inheritance-entry',
     standalone: true,
-    imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, ResolveSparksPipe, TrainerIdFormatPipe, DatePipe, RankBadgeComponent],
+    imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, ResolveSparksPipe, TrainerIdFormatPipe, DatePipe, RankBadgeComponent, LocaleNumberPipe],
     templateUrl: './inheritance-entry.component.html',
     styleUrl: './inheritance-entry.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

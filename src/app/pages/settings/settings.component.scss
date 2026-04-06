@@ -114,7 +114,6 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-muted);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 .account-badge {
@@ -194,7 +193,7 @@
     font-size: 1rem;
     font-weight: 700;
     color: var(--accent-warning);
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
     user-select: all;
     letter-spacing: 2px;
   }
@@ -255,7 +254,7 @@
     padding: 8px 12px;
     font-size: 0.85rem;
     font-weight: 500;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
     color: var(--text-primary);
     background: var(--surface-2);
     border: 1px solid var(--border-primary);
@@ -421,7 +420,7 @@
 
 .api-key-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
 
-.api-key-prefix { font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+.api-key-prefix { font-size: 0.8rem; color: var(--text-muted); }
 
 .revoked-badge { background: rgba(239, 83, 80, 0.15); color: #ef5350; }
 
@@ -475,7 +474,7 @@
 
     code {
       color: var(--text-primary);
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
       font-size: 0.75rem;
       background: var(--surface-2);
       padding: 2px 5px;
@@ -494,7 +493,7 @@
   code {
     font-size: 0.8rem;
     color: #a5d6a7;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
     white-space: nowrap;
   }
 }

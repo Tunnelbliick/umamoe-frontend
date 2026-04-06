@@ -258,7 +258,7 @@
   border-left: 2px solid var(--border-primary);
   padding-left: 0.75rem;
   word-break: break-all;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
 // --- Quick Stats (header) ------------------------
@@ -685,7 +685,6 @@
 .empty-state { @include empty-state; }
 
 // --- Utility -------------------------------------
-.mono { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; font-variant-numeric: tabular-nums; }
 
 .mt { margin-top: 1rem; }
 .muted { color: var(--text-disabled); }

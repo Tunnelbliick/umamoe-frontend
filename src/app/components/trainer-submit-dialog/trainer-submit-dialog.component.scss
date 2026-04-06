@@ -66,15 +66,16 @@
   flex-direction: column;
   gap: 14px;
 
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .label-row { @include flex-between; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .label-row { @include flex-between; }
+
   .input-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 
   .digit-count {
     font-size: 11px;
     font-weight: 600;
     color: var(--text-disabled);
-    font-variant-numeric: tabular-nums;
     transition: color 0.2s;
 
     &.complete { color: #66bb6a; }
@@ -114,7 +115,7 @@
       font-weight: 500;
       letter-spacing: 2px;
       padding: 0;
-      font-family: 'Roboto Mono', 'Consolas', monospace;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
       &::placeholder { color: var(--text-disabled); letter-spacing: 2px; }
     }
@@ -189,7 +190,8 @@
       align-items: center;
       gap: 6px;
 
-      &:hover:not(:disabled) { background: #1565c0; box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35); }
+      &:hover:not(:disabled) { background: #1565c0; box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35); }
+
       &:disabled { background: var(--surface-3); color: var(--text-disabled); box-shadow: none; }
 
       mat-icon {
@@ -205,7 +207,8 @@
 }
 
 @media (max-width: 600px) {
-  .select-dialog { width: calc(100vw - 8px) !important; max-width: calc(100vw - 8px); }
+  .select-dialog { width: calc(100vw - 8px) !important; max-width: calc(100vw - 8px); }
+
   .select-body { padding: 12px 14px 8px !important; }
 
   .dialog-actions {

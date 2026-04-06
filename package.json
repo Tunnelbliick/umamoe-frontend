@@ -5,9 +5,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run precompute && ng build",
-    "build:prod": "npm run precompute && ng build --configuration production",
-    "build:beta": "npm run precompute && ng build --configuration beta",
+    "compress": "node scripts/compress-images.js",
+    "build": "npm run precompute && ng build && npm run compress",
+    "build:prod": "npm run precompute && ng build --configuration production && npm run compress",
+    "build:beta": "npm run precompute && ng build --configuration beta && npm run compress",
     "build:dev": "ng build",
     "precompute": "node scripts/precompute-tierlist.js",
     "watch": "ng build --watch --configuration development",
@@ -50,12 +51,14 @@
     "@angular/cli": "^17.3.0",
     "@angular/compiler-cli": "^17.3.0",
     "@types/jasmine": "~5.1.0",
+    "archiver": "^7.0.1",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "sharp": "^0.34.5",
     "typescript": "~5.4.2"
   }
 }

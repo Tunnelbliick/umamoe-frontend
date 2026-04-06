@@ -77,19 +77,19 @@
         <div class="card-header">
           <div class="rank-section">
             <div class="rank-main">
-              <span class="rank-number"><app-animated-number [value]="circle.monthly_rank" prefix="#"></app-animated-number></span>
+              <span class="rank-number mono"><app-animated-number [value]="circle.monthly_rank" prefix="#"></app-animated-number></span>
               
               <div class="rank-diff" 
                    [class.positive]="(circle.yesterday_rank - circle.monthly_rank) > 0"
                    [class.negative]="(circle.yesterday_rank - circle.monthly_rank) < 0"
                    *ngIf="circle.yesterday_rank && circle.yesterday_rank !== circle.monthly_rank">
                 <mat-icon>{{ (circle.yesterday_rank - circle.monthly_rank) > 0 ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
-                <span>{{ Math.abs(circle.yesterday_rank - circle.monthly_rank) }}</span>
+                <span class="mono">{{ Math.abs(circle.yesterday_rank - circle.monthly_rank) }}</span>
               </div>
             </div>
 
             <div class="yesterday-rank" *ngIf="circle.yesterday_rank">
-              <small>Yesterday: #{{circle.yesterday_rank}}</small>
+              <small class="mono">Yesterday: #{{circle.yesterday_rank}}</small>
             </div>
           </div>
 
@@ -116,17 +116,17 @@
           </div>
 
           <div class="fans-section">
-            <span class="fans-count"><app-animated-number [value]="(circle.live_points != null && circle.live_points > circle.monthly_point) ? circle.live_points : circle.monthly_point" suffix=" Fans"></app-animated-number></span>
+            <span class="fans-count mono"><app-animated-number [value]="(circle.live_points != null && circle.live_points > circle.monthly_point) ? circle.live_points : circle.monthly_point" suffix=" Fans"></app-animated-number></span>
 
             <div class="gains-row" *ngIf="circle.yesterday_points || getTodayGain(circle) !== null">
               <span class="gain-item" *ngIf="circle.yesterday_points">
                 <span class="gain-label">Daily</span>
-                <span class="gain-value positive"><app-animated-number [value]="circle.monthly_point - circle.yesterday_points" [sign]="true"></app-animated-number></span>
+                <span class="gain-value positive mono"><app-animated-number [value]="circle.monthly_point - circle.yesterday_points" [sign]="true"></app-animated-number></span>
               </span>
               <span class="gains-sep" *ngIf="circle.yesterday_points && getTodayGain(circle) !== null">·</span>
               <span class="gain-item" *ngIf="getTodayGain(circle) !== null">
                 <span class="gain-label">Today</span>
-                <span class="gain-value" [class.positive]="getTodayGain(circle)! > 0"><app-animated-number [value]="getTodayGain(circle)!" [sign]="true"></app-animated-number></span>
+                <span class="gain-value mono" [class.positive]="getTodayGain(circle)! > 0"><app-animated-number [value]="getTodayGain(circle)!" [sign]="true"></app-animated-number></span>
               </span>
             </div>
           </div>

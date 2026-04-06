@@ -16,7 +16,7 @@
     </div>
     <div class="header-rank" *ngIf="v.rank_score">
       <app-rank-badge [score]="v.rank_score" size="md"></app-rank-badge>
-      <span class="sm-score-value mono">{{ v.rank_score | number }}</span>
+      <span class="sm-score-value mono">{{ v.rank_score | localeNumber }}</span>
     </div>
     <button mat-icon-button class="close-btn" (click)="close()">
       <mat-icon>close</mat-icon>
@@ -26,12 +26,12 @@
   <div class="select-body">
     <!-- Stats -->
     <div class="sm-stats">
-      <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span class="sm-stat-value mono">{{ v.speed || 0 }}</span></div>
-      <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span class="sm-stat-value mono">{{ v.stamina || 0 }}</span></div>
-      <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span class="sm-stat-value mono">{{ v.power || 0 }}</span></div>
-      <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span class="sm-stat-value mono">{{ v.guts || 0 }}</span></div>
-      <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span class="sm-stat-value mono">{{ v.wiz || 0 }}</span></div>
-      <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{ getTotalStats(v) }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span class="sm-stat-value mono">{{ (v.speed || 0) | localeNumber }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span class="sm-stat-value mono">{{ (v.stamina || 0) | localeNumber }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span class="sm-stat-value mono">{{ (v.power || 0) | localeNumber }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span class="sm-stat-value mono">{{ (v.guts || 0) | localeNumber }}</span></div>
+      <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span class="sm-stat-value mono">{{ (v.wiz || 0) | localeNumber }}</span></div>
+      <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{ getTotalStats(v) | localeNumber }}</span></div>
     </div>
 
     <!-- Aptitudes -->

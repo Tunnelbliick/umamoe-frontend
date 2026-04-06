@@ -6,15 +6,15 @@
       <div class="performance-section">
         <div class="main-stats">
           <span *ngIf="record.affinity_score !== undefined" class="affinity-stat">
-            <span class="stat-number">{{ record.affinity_score }}</span>
+            <span class="stat-number mono">{{ record.affinity_score | localeNumber }}</span>
             <span class="stat-label">Affinity</span>
           </span>
           <span *ngIf="record.win_count !== undefined" class="wins-stat">
-            <span class="stat-number">{{ record.win_count }}</span>
+            <span class="stat-number mono">{{ record.win_count | localeNumber }}</span>
             <span class="stat-label">G1 Wins</span>
           </span>
           <span *ngIf="record.white_count !== undefined" class="white-stat">
-            <span class="stat-number">{{ record.white_count }}</span>
+            <span class="stat-number mono">{{ record.white_count | localeNumber }}</span>
             <span class="stat-label">White Skills</span>
           </span>
         </div>
@@ -24,7 +24,7 @@
             <span class="stat-label">Rank</span>
           </span>
           <span *ngIf="record.parent_rank" class="score-stat">
-            <span class="stat-number">{{ record.parent_rank }}</span>
+            <span class="stat-number mono">{{ record.parent_rank | localeNumber }}</span>
             <span class="stat-label">Score</span>
           </span>
         </div>

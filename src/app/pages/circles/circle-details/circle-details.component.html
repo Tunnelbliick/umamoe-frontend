@@ -8,8 +8,8 @@
         <img [src]="getClubRankIcon(clubRank)" alt="Club Rank" class="header-rank-icon" *ngIf="clubRank && getClubRankIcon(clubRank)" />
         <h1>{{circle?.name}}</h1>
         <div class="badges">
-          <span class="badge rank-badge" *ngIf="displayedRank !== undefined">Rank #<app-animated-number [value]="displayedRank"></app-animated-number></span>
-          <span class="badge members-badge"><app-animated-number [value]="circle?.member_count ?? 0"></app-animated-number>/30</span>
+          <span class="badge rank-badge mono" *ngIf="displayedRank !== undefined">Rank #<app-animated-number [value]="displayedRank"></app-animated-number></span>
+          <span class="badge members-badge mono"><app-animated-number [value]="circle?.member_count ?? 0"></app-animated-number>/30</span>
           <span class="badge join-badge" [ngClass]="{'open': circle?.join_style === 1, 'approval': circle?.join_style === 2, 'closed': circle?.join_style === 3}">
             {{circle?.join_style === 1 ? 'Open' : (circle?.join_style === 2 ? 'Approval' : 'Closed')}}
           </span>
@@ -20,7 +20,7 @@
         <div class="live-refresh-bar" *ngIf="isLiveCircle">
           <span class="live-dot"></span>
           <span class="live-label">Live</span>
-          <span class="countdown" *ngIf="!liveRefreshing">{{formatCountdown(secondsUntilRefresh)}}</span>
+          <span class="countdown mono" *ngIf="!liveRefreshing">{{formatCountdown(secondsUntilRefresh)}}</span>
           <span class="countdown refreshing" *ngIf="liveRefreshing">Updating…</span>
           <button class="refresh-now-btn" (click)="refreshNow()" [disabled]="liveRefreshing" title="Update now">
             <mat-icon>refresh</mat-icon>
@@ -30,7 +30,7 @@
           <button mat-icon-button (click)="changeMonth(-1)">
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <span class="current-month">{{currentYear}} / {{currentMonth | number:'2.0'}}</span>
+          <span class="current-month">{{currentYear}} / {{('' + currentMonth).padStart(2, '0')}}</span>
           <button mat-icon-button (click)="changeMonth(1)">
             <mat-icon>chevron_right</mat-icon>
           </button>
@@ -74,11 +74,11 @@
           </div>
           <div class="info-row" [class.no-border]="!isLiveDataFresh">
             <span class="label">Monthly Fans</span>
-            <span class="value highlight"><app-animated-number [value]="displayedMonthlyPoint"></app-animated-number></span>
+            <span class="value highlight mono"><app-animated-number [value]="displayedMonthlyPoint"></app-animated-number></span>
           </div>
           <div class="info-row live-row no-border" *ngIf="isLiveDataFresh">
             <span class="label"><span class="live-dot"></span> Live Points</span>
-            <span class="value highlight"><app-animated-number [value]="circle!.live_points!"></app-animated-number></span>
+            <span class="value highlight mono"><app-animated-number [value]="circle!.live_points!"></app-animated-number></span>
           </div>
           <div class="club-rank-row" *ngIf="clubRank" [class.max-rank]="!fansToNextTier">
             <div class="tier-side lower" *ngIf="fansToLowerTier !== undefined && fansToLowerTier !== null">
@@ -86,8 +86,8 @@
               <mat-icon class="tier-arrow">chevron_left</mat-icon>
               <div class="tier-info">
                 <span class="tier-gap-label">Buffer</span>
-                <span class="tier-gap-value safe"><app-animated-number [value]="fansToLowerTier"></app-animated-number></span>
-                <span class="tier-delta" *ngIf="yesterdayFansToLowerTier !== undefined && yesterdayFansToLowerTier !== null"
+                <span class="tier-gap-value safe mono"><app-animated-number [value]="fansToLowerTier"></app-animated-number></span>
+                <span class="tier-delta mono" *ngIf="yesterdayFansToLowerTier !== undefined && yesterdayFansToLowerTier !== null"
                       [class.positive]="(fansToLowerTier - yesterdayFansToLowerTier) > 0"
                       [class.negative]="(fansToLowerTier - yesterdayFansToLowerTier) < 0">
                   <app-animated-number [value]="fansToLowerTier - yesterdayFansToLowerTier" [sign]="true"></app-animated-number>
@@ -97,14 +97,14 @@
 
             <div class="rank-center">
               <img [src]="getClubRankIcon(clubRank)" alt="Club Rank" class="club-rank-icon" *ngIf="getClubRankIcon(clubRank)" />
-              <span class="rank-label" *ngIf="displayedRank !== undefined">Rank #<app-animated-number [value]="displayedRank"></app-animated-number></span>
+              <span class="rank-label mono" *ngIf="displayedRank !== undefined">Rank #<app-animated-number [value]="displayedRank"></app-animated-number></span>
             </div>
 
             <div class="tier-side upper" *ngIf="fansToNextTier">
               <div class="tier-info">
                 <span class="tier-gap-label">Needed</span>
-                <span class="tier-gap-value needed"><app-animated-number [value]="fansToNextTier"></app-animated-number></span>
-                <span class="tier-delta" *ngIf="yesterdayFansToNextTier !== undefined && yesterdayFansToNextTier !== null"
+                <span class="tier-gap-value needed mono"><app-animated-number [value]="fansToNextTier"></app-animated-number></span>
+                <span class="tier-delta mono" *ngIf="yesterdayFansToNextTier !== undefined && yesterdayFansToNextTier !== null"
                       [class.positive]="(fansToNextTier - yesterdayFansToNextTier) < 0"
                       [class.negative]="(fansToNextTier - yesterdayFansToNextTier) > 0">
                   <app-animated-number [value]="fansToNextTier - yesterdayFansToNextTier" [sign]="true"></app-animated-number>
@@ -135,7 +135,7 @@
     <div class="details-card full-width-chart">
       <div class="card-header">
         <h2>Member Progression</h2>
-        <span class="card-header-date" *ngIf="memberViewMode === 'calendar'">{{currentYear}} / {{currentMonth | number:'2.0'}}</span>
+        <span class="card-header-date" *ngIf="memberViewMode === 'calendar'">{{currentYear}} / {{('' + currentMonth).padStart(2, '0')}}</span>
         <div class="view-toggles">
           <button mat-icon-button (click)="toggleMemberChartMode()"
                   class="toggle-btn" [class.active]="memberChartMode === 'delta'"
@@ -177,7 +177,7 @@
               <ng-container *ngIf="day.day > 0">
                 <div class="day-top">
                   <span class="day-number">{{day.day}}</span>
-                  <span class="day-delta-badge" *ngIf="day.hasData && day.dailyDelta !== 0"
+                  <span class="day-delta-badge mono" *ngIf="day.hasData && day.dailyDelta !== 0"
                         [class.positive]="day.dailyDelta > 0"
                         [class.negative]="day.dailyDelta < 0">
                     {{formatCompact(day.dailyDelta)}}
@@ -190,23 +190,23 @@
                   <div class="contrib-row" *ngFor="let c of day.memberDeltas.slice(0, 4); let r = index">
                     <span class="rank-dot" [class.gold]="r === 0" [class.silver]="r === 1" [class.bronze]="r === 2"></span>
                     <span class="contrib-name">{{c.name}}</span>
-                    <span class="contrib-delta">{{formatCompact(c.delta)}}</span>
+                    <span class="contrib-delta mono">{{formatCompact(c.delta)}}</span>
                   </div>
                 </div>
                 <!-- Hover Popover -->
                 <div class="day-popover" *ngIf="day.hasData && day.memberDeltas.length > 0">
                   <div class="popover-header">
                     <span class="popover-day">Day {{day.day}}</span>
-                    <span class="popover-delta" [class.positive]="day.dailyDelta > 0" [class.negative]="day.dailyDelta < 0">
-                      {{day.dailyDelta > 0 ? '+' : ''}}{{day.dailyDelta | number:'1.0-0'}}
+                    <span class="popover-delta mono" [class.positive]="day.dailyDelta > 0" [class.negative]="day.dailyDelta < 0">
+                      {{day.dailyDelta > 0 ? '+' : ''}}{{day.dailyDelta | localeNumber:'1.0-0'}}
                     </span>
                   </div>
                   <div class="popover-list custom-scrollbar">
                     <div class="popover-row" *ngFor="let c of day.memberDeltas; let r = index">
                       <span class="rank-dot" [class.gold]="r === 0" [class.silver]="r === 1" [class.bronze]="r === 2"></span>
-                      <span class="popover-rank">{{r + 1}}</span>
+                      <span class="popover-rank mono">{{r + 1}}</span>
                       <span class="popover-name">{{c.name}}</span>
-                      <span class="popover-value">+{{c.delta | number:'1.0-0'}}</span>
+                      <span class="popover-value mono">+{{c.delta | localeNumber:'1.0-0'}}</span>
                     </div>
                   </div>
                 </div>
@@ -245,7 +245,7 @@
            [class.rank-2]="i === 1 && member.isActive"
            [class.rank-3]="i === 2 && member.isActive">
         <div class="member-header">
-          <div class="rank">#{{i + 1}}</div>
+          <div class="rank mono">#{{i + 1}}</div>
           <div class="name">{{member.name}}</div>
           <span class="role-badge" [ngClass]="member.role">{{member.role | titlecase}}</span>
           <span class="status-badge inactive" *ngIf="!member.isActive">Left</span>
@@ -254,62 +254,62 @@
         <div class="member-stats">
           <div class="stat-row" *ngIf="config.showTotalFans && config.selectedCalculation !== 'total_fans'">
             <span class="label">Total Fans</span>
-            <span class="value"><app-animated-number [value]="member.fan_count"></app-animated-number></span>
+            <span class="value mono"><app-animated-number [value]="member.fan_count"></app-animated-number></span>
           </div>
           
           <!-- Primary Metric (Always Visible) -->
           <div class="stat-row highlight-stat">
             <span class="label">{{getCalculationLabel()}}</span>
-            <span class="value gain" [class.positive]="config.selectedCalculation !== 'total_fans' && getMemberValue(member) > 0">
+            <span class="value gain mono" [class.positive]="config.selectedCalculation !== 'total_fans' && getMemberValue(member) > 0">
               <app-animated-number [value]="getMemberValue(member)" [sign]="config.selectedCalculation !== 'total_fans'"></app-animated-number>
             </span>
           </div>
           <div class="stat-row prior-circle-row" *ngIf="config.includePriorClubData && member.hasPriorCircleData && config.selectedCalculation !== 'total_fans'">
             <span class="label prior-circle-label">
               <mat-icon class="prior-icon">swap_horiz</mat-icon>
-              <ng-container *ngIf="getPriorContribution(member) > 0">Includes {{getPriorContribution(member) | number}} from prior club</ng-container>
+              <ng-container *ngIf="getPriorContribution(member) > 0">Includes {{getPriorContribution(member) | localeNumber}} from prior club</ng-container>
               <ng-container *ngIf="getPriorContribution(member) <= 0">Includes prior club data</ng-container>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showProjectedMonthly && config.selectedCalculation !== 'projected_monthly'">
             <span class="label">Projected Monthly</span>
-            <span class="value gain" [class.positive]="(member.projected_monthly || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.projected_monthly || 0) > 0">
               <app-animated-number [value]="member.projected_monthly || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showMonthlyGain && config.selectedCalculation !== 'monthly_gain'">
             <span class="label">Monthly Gain</span>
-            <span class="value gain" [class.positive]="(member.monthly_gain || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.monthly_gain || 0) > 0">
               <app-animated-number [value]="member.monthly_gain || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showWeeklyGain && config.selectedCalculation !== 'weekly_gain'">
             <span class="label">Weekly Gain</span>
-            <span class="value gain" [class.positive]="(member.weekly_gain || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.weekly_gain || 0) > 0">
               <app-animated-number [value]="member.weekly_gain || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showSevenDayAvg && config.selectedCalculation !== 'avg_daily_gain'">
             <span class="label">7 Day Avg</span>
-            <span class="value gain" [class.positive]="(member.seven_day_avg || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.seven_day_avg || 0) > 0">
               <app-animated-number [value]="member.seven_day_avg || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showDailyAvg && config.selectedCalculation !== 'daily_avg'">
             <span class="label">Daily Avg</span>
-            <span class="value gain" [class.positive]="(member.daily_avg || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.daily_avg || 0) > 0">
               <app-animated-number [value]="member.daily_avg || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
 
           <div class="stat-row" *ngIf="config.showDailyGain && config.selectedCalculation !== 'daily_gain'">
             <span class="label">Daily Gain</span>
-            <span class="value gain" [class.positive]="(member.daily_gain || 0) > 0">
+            <span class="value gain mono" [class.positive]="(member.daily_gain || 0) > 0">
               <app-animated-number [value]="member.daily_gain || 0" [sign]="true"></app-animated-number>
             </span>
           </div>
@@ -340,7 +340,7 @@
            [class.rank-1]="i === 0 && member.isActive"
            [class.rank-2]="i === 1 && member.isActive"
            [class.rank-3]="i === 2 && member.isActive">
-        <span class="col-rank">#{{i + 1}}</span>
+        <span class="col-rank mono">#{{i + 1}}</span>
         <span class="col-name">
           {{member.name}}
           <span class="status-badge-inline inactive" *ngIf="!member.isActive">Left</span>
@@ -348,22 +348,22 @@
         <span class="col-role" *ngIf="config.showRole">
           <span class="role-badge-sm" [ngClass]="member.role">{{member.role | titlecase}}</span>
         </span>
-        <span class="col-value gain" [class.positive]="config.selectedCalculation !== 'total_fans' && getMemberValue(member) > 0"
+        <span class="col-value gain mono" [class.positive]="config.selectedCalculation !== 'total_fans' && getMemberValue(member) > 0"
               [class.has-prior-circle]="config.includePriorClubData && member.hasPriorCircleData && config.selectedCalculation !== 'total_fans'">
           <app-animated-number [value]="getMemberValue(member)" [sign]="config.selectedCalculation !== 'total_fans'"></app-animated-number>
           <span class="prior-circle-marker" *ngIf="config.includePriorClubData && member.hasPriorCircleData && config.selectedCalculation !== 'total_fans'"
-                [title]="getPriorContribution(member) > 0 ? 'Includes ' + (getPriorContribution(member) | number) + ' from prior club' : 'Includes prior club data'">*</span>
+                [title]="getPriorContribution(member) > 0 ? 'Includes ' + (getPriorContribution(member) | localeNumber) + ' from prior club' : 'Includes prior club data'">*</span>
         </span>
         <span class="col-total" *ngIf="config.showTotalFans && config.selectedCalculation !== 'total_fans'">
           <app-animated-number [value]="member.fan_count"></app-animated-number>
         </span>
-        <span class="col-daily gain" [class.positive]="(member.daily_gain || 0) > 0" *ngIf="config.showDailyGain && config.selectedCalculation !== 'daily_gain'">
+        <span class="col-daily gain mono" [class.positive]="(member.daily_gain || 0) > 0" *ngIf="config.showDailyGain && config.selectedCalculation !== 'daily_gain'">
           <app-animated-number [value]="member.daily_gain || 0" [sign]="true"></app-animated-number>
         </span>
-        <span class="col-weekly gain" [class.positive]="(member.weekly_gain || 0) > 0" *ngIf="config.showWeeklyGain && config.selectedCalculation !== 'weekly_gain'">
+        <span class="col-weekly gain mono" [class.positive]="(member.weekly_gain || 0) > 0" *ngIf="config.showWeeklyGain && config.selectedCalculation !== 'weekly_gain'">
           <app-animated-number [value]="member.weekly_gain || 0" [sign]="true"></app-animated-number>
         </span>
-        <span class="col-avg gain" [class.positive]="(member.seven_day_avg || 0) > 0" *ngIf="config.showSevenDayAvg && config.selectedCalculation !== 'avg_daily_gain'">
+        <span class="col-avg gain mono" [class.positive]="(member.seven_day_avg || 0) > 0" *ngIf="config.showSevenDayAvg && config.selectedCalculation !== 'avg_daily_gain'">
           <app-animated-number [value]="member.seven_day_avg || 0" [sign]="true"></app-animated-number>
         </span>
         <span class="col-date" *ngIf="config.showLastUpdated">

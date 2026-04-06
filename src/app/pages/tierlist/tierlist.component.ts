@@ -16,6 +16,7 @@ import { TIER_NAMES, TIER_PERCENTILES, TYPE_NAMES, UpcomingCard } from '../../mo
 import { PrecomputedCardData } from '../../models/precomputed-tierlist.model';
 import { TierlistScatterChartComponent } from '../../components/tierlist-scatter-chart/tierlist-scatter-chart.component';
 import { CardHoverMenuComponent as CardHoverMenuSimpleComponent } from '../../components/card-hover-menu/card-hover-menu.component';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 import { CardDetailsDialogComponent } from '../../components/card-details-dialog/card-details-dialog.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 interface TierGroup {
@@ -47,7 +48,8 @@ interface TypeTierlist {
     MatSelectModule,
     MatFormFieldModule,
     TierlistScatterChartComponent,
-    CardHoverMenuSimpleComponent
+    CardHoverMenuSimpleComponent,
+    LocaleNumberPipe
   ],
   templateUrl: './tierlist.component.html',
   styleUrls: ['./tierlist.component.scss'],

@@ -6,11 +6,12 @@ import { UserProfileResponse, ProfileVisibility } from '../../../models/profile.
 import { getCharacterById } from '../../../data/character.data';
 import { ProfileService } from '../../../services/profile.service';
 import { AuthService } from '../../../services/auth.service';
+import { LocaleNumberPipe } from '../../../pipes/locale-number.pipe';
 
 @Component({
   selector: 'app-profile-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [CommonModule, RouterModule, MatIconModule, LocaleNumberPipe],
   template: `
     <div class="page-header">
       <div class="header-content">
@@ -33,11 +34,11 @@ import { AuthService } from '../../../services/auth.service';
               </span>
               <span class="meta-item" *ngIf="profile.trainer.follower_num">
                 <mat-icon>people</mat-icon>
-                <span>{{ profile.trainer.follower_num | number }} followers</span>
+                <span>{{ profile.trainer.follower_num | localeNumber }} followers</span>
               </span>
               <span class="meta-item" *ngIf="profile.trainer.own_follow_num != null">
                 <mat-icon>person_add</mat-icon>
-                <span>{{ profile.trainer.own_follow_num | number }} following</span>
+                <span>{{ profile.trainer.own_follow_num | localeNumber }} following</span>
               </span>
               <span class="meta-item" *ngIf="profile.circle">
                 <mat-icon>groups</mat-icon>
@@ -51,7 +52,7 @@ import { AuthService } from '../../../services/auth.service';
               </span>
               <span class="meta-item" *ngIf="profile.trainer.rank_score != null">
                 <mat-icon>star_rate</mat-icon>
-                <span class="mono">{{ profile.trainer.rank_score | number }}</span>
+                <span class="mono">{{ profile.trainer.rank_score | localeNumber }}</span>
               </span>
             </div>
             <p class="trainer-comment" *ngIf="profile.trainer.comment">{{ profile.trainer.comment }}</p>
@@ -70,11 +71,11 @@ import { AuthService } from '../../../services/auth.service';
             <div class="stat-label">7-Day Gain</div>
           </div>
           <div class="stat-card" *ngIf="profile.fan_history.alltime">
-            <div class="stat-value mono">#{{ profile.fan_history.alltime.rank_total_fans | number }}</div>
+            <div class="stat-value mono">#{{ profile.fan_history.alltime.rank_total_fans | localeNumber }}</div>
             <div class="stat-label">Global Rank</div>
           </div>
           <div class="stat-card" *ngIf="profile.trainer.team_evaluation_point != null">
-            <div class="stat-value mono">{{ profile.trainer.team_evaluation_point | number }}</div>
+            <div class="stat-value mono">{{ profile.trainer.team_evaluation_point | localeNumber }}</div>
             <div class="stat-label">Team Eval</div>
           </div>
           <div class="stat-card" *ngIf="profile.trainer.best_team_class != null">
@@ -276,10 +277,10 @@ export class ProfileHeaderComponent implements OnInit {
     return char?.name || `Character ${charId}`;
   }
 
+  private static compactFmt = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+
   formatNumber(n: number): string {
-    if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2) + 'B';
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M';
-    if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+    if (Math.abs(n) >= 100_000) return ProfileHeaderComponent.compactFmt.format(n);
     return n.toLocaleString();
   }
 

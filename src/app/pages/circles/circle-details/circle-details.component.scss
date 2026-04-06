@@ -125,7 +125,6 @@
 }
 
 .countdown {
-  font-variant-numeric: tabular-nums;
   min-width: 32px;
   text-align: right;
   &.refreshing { font-style: italic; color: var(--text-disabled); }
@@ -928,7 +927,6 @@
         color: rgba(129, 199, 132, 0.7);
         flex-shrink: 0;
         font-weight: 600;
-        font-variant-numeric: tabular-nums;
         text-align: right;
         @include text-ellipsis;
       }
@@ -1004,7 +1002,6 @@
           font-weight: 600;
           color: var(--text-disabled);
           min-width: 14px;
-          font-variant-numeric: tabular-nums;
         }
 
         .popover-value {
@@ -1012,7 +1009,6 @@
           font-size: 0.7rem;
           font-weight: 600;
           color: rgba(129, 199, 132, 0.7);
-          font-variant-numeric: tabular-nums;
         }
       }
     }

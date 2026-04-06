@@ -17,6 +17,7 @@ import { debounceTime } from 'rxjs/operators';
 import { CharacterSelectDialogComponent } from '../../pages/inheritance-database/character-select-dialog.component';
 import { SupportCardSelectDialogComponent } from '../../pages/support-cards-database/support-card-select-dialog.component';
 import { SupportCardService } from '../../services/support-card.service';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 import { SupportCard, SupportCardShort, SupportCardType, Rarity } from '../../models/support-card.model';
 import factorsData from '../../../data/factors.json';
 import characterData from '../../../data/character.json';
@@ -164,7 +165,8 @@ export interface FactorFilter {
     MatAutocompleteModule,
     MatChipsModule,
     FormsModule,
-    RaceSchedulerComponent
+    RaceSchedulerComponent,
+    LocaleNumberPipe
   ],
   templateUrl: './advanced-filter.component.html',
   styleUrl: './advanced-filter.component.scss'

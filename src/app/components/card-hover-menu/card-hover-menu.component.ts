@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { PrecomputedCardData } from '../../models/precomputed-tierlist.model';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 Chart.register(...registerables);
 @Component({
   selector: 'app-card-hover-menu',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, LocaleNumberPipe],
   template: `
     <div 
       class="hover-menu" 
@@ -27,7 +28,7 @@ Chart.register(...registerables);
           <div class="card-info">
             <h4 class="card-name">{{ card.name }}</h4>
             <div class="card-stats">
-              <span class="current-score">{{ getCurrentScore().toFixed(0) }} pts</span>
+              <span class="current-score mono">{{ getCurrentScore() | localeNumber:'1.0-0' }} pts</span>
               <span class="tier-chip" [style.background-color]="getTierColor(getCurrentTier())">
                 {{ getCurrentTier() }}
               </span>
@@ -67,8 +68,8 @@ Chart.register(...registerables);
                 [class.na-tier]="tier === 'N/A' || card.scores[i] <= 0">
                 {{ card.scores[i] > 0 ? tier : 'N/A' }}
               </span>
-              <span class="score" *ngIf="card.scores[i] > 0">
-                {{ card.scores[i] }}
+              <span class="score mono" *ngIf="card.scores[i] > 0">
+                {{ card.scores[i] | localeNumber:'1.0-0' }}
               </span>
             </div>
           </div>

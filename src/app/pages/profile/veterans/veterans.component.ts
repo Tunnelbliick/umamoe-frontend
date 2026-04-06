@@ -15,6 +15,7 @@ import { VeteranDetailDialogComponent, VeteranDetailData } from './veteran-detai
 import { CharacterSelectDialogComponent } from '../../inheritance-database/character-select-dialog.component';
 import { RaceSchedulerComponent } from '../../../components/race-scheduler/race-scheduler.component';
 import { RankBadgeComponent } from '../../../components/rank-badge/rank-badge.component';
+import { LocaleNumberPipe } from '../../../pipes/locale-number.pipe';
 import RACE_DATA from '../../../../data/race_to_saddle_mapping.json';
 import { ProfileService } from '../../../services/profile.service';
 import { FactorService, SparkInfo } from '../../../services/factor.service';
@@ -129,6 +130,7 @@ const APT_GRADES = ['S', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatAutocompleteModule, MatTooltipModule, MatDialogModule, MatSliderModule,
     MatButtonToggleModule, RaceSchedulerComponent, RankBadgeComponent,
+    LocaleNumberPipe,
   ],
   templateUrl: './veterans.component.html',
   styleUrls: ['./veterans.component.scss'],

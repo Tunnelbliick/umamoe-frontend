@@ -52,22 +52,22 @@
     <div class="stats-grid">
       <div class="stat-card">
         <mat-icon>task_alt</mat-icon>
-        <div class="stat-value">{{ tasksToday | number }}</div>
+        <div class="stat-value">{{ tasksToday | localeNumber }}</div>
         <div class="stat-label">Tasks Today</div>
       </div>
       <div class="stat-card">
         <mat-icon>sync</mat-icon>
-        <div class="stat-value">{{ accountsUpdatedToday | number }}</div>
+        <div class="stat-value">{{ accountsUpdatedToday | localeNumber }}</div>
         <div class="stat-label">Updated Today</div>
       </div>
       <div class="stat-card">
         <mat-icon>group</mat-icon>
-        <div class="stat-value">{{ accounts7d | number }}</div>
+        <div class="stat-value">{{ accounts7d | localeNumber }}</div>
         <div class="stat-label">Active (7d)</div>
       </div>
       <div class="stat-card">
         <mat-icon>face</mat-icon>
-        <div class="stat-value">{{ umasTracked | number }}</div>
+        <div class="stat-value">{{ umasTracked | localeNumber }}</div>
         <div class="stat-label">Total Umas Tracked</div>
       </div>
     </div>

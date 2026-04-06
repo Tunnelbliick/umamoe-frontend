@@ -115,7 +115,7 @@
 }
 
 .scenario-chip .chip-label { font-weight: 600; transition: color 0.2s; }
-.scenario-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
+.scenario-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); }
 .scenario-chip.active .chip-label { color: var(--text-primary); }
 .scenario-chip.active .chip-percent { color: var(--text-primary); }
 
@@ -140,7 +140,7 @@
 }
 
 .class-chip .chip-label { font-weight: 600; transition: color 0.2s; }
-.class-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); font-family: monospace; }
+.class-chip .chip-percent { font-size: 0.8rem; color: var(--text-disabled); }
 .class-chip.active .chip-label,
 .class-chip.active .chip-percent { position: relative; z-index: 1; color: var(--text-primary); }
 

@@ -15,8 +15,29 @@ $dark-theme: mat.define-dark-theme((color: (primary: $primary-palette,
         warn: $warn-palette,
       )));
 
-// Apply theme
-@include mat.all-component-themes($dark-theme);
+// Apply only the Material component themes actually used
+@include mat.autocomplete-theme($dark-theme);
+@include mat.button-theme($dark-theme);
+@include mat.card-theme($dark-theme);
+@include mat.checkbox-theme($dark-theme);
+@include mat.chips-theme($dark-theme);
+@include mat.dialog-theme($dark-theme);
+@include mat.bottom-sheet-theme($dark-theme);
+@include mat.fab-theme($dark-theme);
+@include mat.form-field-theme($dark-theme);
+@include mat.icon-theme($dark-theme);
+@include mat.icon-button-theme($dark-theme);
+@include mat.input-theme($dark-theme);
+@include mat.menu-theme($dark-theme);
+@include mat.option-theme($dark-theme);
+@include mat.paginator-theme($dark-theme);
+@include mat.progress-spinner-theme($dark-theme);
+@include mat.select-theme($dark-theme);
+@include mat.sidenav-theme($dark-theme);
+@include mat.slider-theme($dark-theme);
+@include mat.snack-bar-theme($dark-theme);
+@include mat.tabs-theme($dark-theme);
+@include mat.tooltip-theme($dark-theme);
 
 // Import mixins (must come before utilities and shared components)
 @import 'styles/mixins';
@@ -163,36 +184,6 @@ html {
   background-color: #121212 !important;
 }
 
-// Angular Material overrides
-.mat-mdc-card {
-  background: var(--bg-secondary) !important;
-  color: var(--text-primary) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  background: var(--bg-tertiary) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-form-field-input-control {
-  color: var(--text-primary) !important;
-}
-
-.mat-mdc-menu-panel {
-  background: var(--bg-secondary) !important;
-  border: 1px solid var(--border-primary) !important;
-}
-
-.mat-mdc-chip {
-  background: var(--bg-tertiary) !important;
-  color: var(--text-primary) !important;
-}
-
-.mat-mdc-paginator {
-  background: var(--bg-secondary) !important;
-  color: var(--text-primary) !important;
-}
-
-
 // Typography improvements
 h1,
 h2,
@@ -218,254 +209,6 @@ a {
 
   &:hover {
     color: var(--accent-secondary);
-  }
-}
-
-// Utility classes
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--content-padding);
-}
-
-.container-sm {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--content-padding);
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-primary {
-  color: var(--text-primary);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
-.text-accent {
-  color: var(--accent-primary);
-}
-
-.text-success {
-  color: var(--accent-success);
-}
-
-.text-warning {
-  color: var(--accent-warning);
-}
-
-.text-error {
-  color: var(--accent-error);
-}
-
-.bg-primary {
-  background: var(--bg-primary);
-}
-
-.bg-secondary {
-  background: var(--bg-secondary);
-}
-
-.bg-tertiary {
-  background: var(--bg-tertiary);
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.gap-1 {
-  gap: 0.25rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
-.gap-3 {
-  gap: 0.75rem;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.rounded {
-  border-radius: var(--border-radius);
-}
-
-.rounded-lg {
-  border-radius: 12px;
-}
-
-.rounded-xl {
-  border-radius: 16px;
-}
-
-.shadow-sm {
-  box-shadow: var(--shadow-sm);
-}
-
-.shadow-md {
-  box-shadow: var(--shadow-md);
-}
-
-.shadow-lg {
-  box-shadow: var(--shadow-lg);
-}
-
-// Card component
-.card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  transition: var(--transition);
-
-  &:hover {
-    border-color: var(--border-secondary);
-    box-shadow: var(--shadow-md);
-  }
-}
-
-// Button improvements
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-primary);
-  border-radius: var(--border-radius);
-  background: transparent;
-  color: var(--text-primary);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--transition);
-
-  &:hover {
-    background: var(--bg-tertiary);
-    border-color: var(--accent-primary);
-    color: var(--accent-primary);
-  }
-
-  &.btn-primary {
-    background: var(--accent-primary);
-    color: white;
-    border-color: var(--accent-primary);
-
-    &:hover {
-      background: var(--accent-secondary);
-      border-color: var(--accent-secondary);
-    }
-  }
-}
-
-// Form controls
-.form-field {
-  margin-bottom: 1rem;
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-    font-weight: 500;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-primary);
-    border-radius: var(--border-radius);
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    font-size: var(--font-size-base);
-    transition: var(--transition);
-
-    &:focus {
-      outline: none;
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
-    }
-
-    &::placeholder {
-      color: var(--text-muted);
-    }
-  }
-}
-
-// Loading states
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-}
-
-// Responsive breakpoints
-@media (max-width: 1200px) {
-
-  .container,
-  .container-sm {
-    padding: 0 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --content-padding: 1rem;
-  }
-
-  .container,
-  .container-sm {
-    padding: 0 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --content-padding: 0.75rem;
-  }
-
-  .container,
-  .container-sm {
-    padding: 0 0.75rem;
   }
 }
 

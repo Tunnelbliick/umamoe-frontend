@@ -32,7 +32,7 @@
                 </div>
                 <span class="trainer-name" *ngIf="acct.trainer_name">{{ acct.trainer_name }}</span>
                 <span class="info-divider" *ngIf="acct.trainer_name"></span>
-                <span class="account-id">{{ acct.account_id }}</span>
+                <span class="account-id mono">{{ acct.account_id }}</span>
                 <span class="account-badge" [class.verified]="acct.verification_status === 'verified'" [class.pending]="acct.verification_status !== 'verified'">
                   <mat-icon>{{ acct.verification_status === 'verified' ? 'check_circle' : 'pending' }}</mat-icon>
                   {{ acct.verification_status === 'verified' ? 'Verified' : 'Pending Verification' }}
@@ -167,13 +167,13 @@
             <div class="api-key-info">
               <div class="api-key-name-row">
                 <span class="api-key-name">{{ key.name }}</span>
-                <span class="api-key-prefix">{{ key.key_prefix }}…</span>
+                <span class="api-key-prefix mono">{{ key.key_prefix }}…</span>
                 <span class="account-badge revoked-badge" *ngIf="key.revoked">Revoked</span>
               </div>
               <div class="api-key-meta">
                 <span>Created {{ key.created_at | date:'mediumDate' }}</span>
                 <span *ngIf="key.last_used">· Last used {{ key.last_used | date:'mediumDate' }}</span>
-                <span *ngIf="key.total_requests">· {{ key.total_requests | number }} requests</span>
+                <span *ngIf="key.total_requests">· {{ key.total_requests | localeNumber }} requests</span>
               </div>
             </div>
             <button class="action-btn danger small" *ngIf="!key.revoked" (click)="revokeApiKey(key)">

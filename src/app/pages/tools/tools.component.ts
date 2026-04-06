@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { StatsService, StatsResponse } from '../../services/stats.service';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 @Component({
   selector: 'app-tools',
   standalone: true,
@@ -13,7 +14,8 @@ import { StatsService, StatsResponse } from '../../services/stats.service';
     CommonModule,
     RouterModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    LocaleNumberPipe
   ],
   templateUrl: './tools.component.html',
   styleUrl: './tools.component.scss'

@@ -99,13 +99,13 @@
         <div class="lb-stats">
           <div class="stat">
             <span class="label">Fans</span>
-            <span class="value full">{{ entry.total_fans | number }}</span>
+            <span class="value full">{{ entry.total_fans | localeNumber }}</span>
             <span class="value compact">{{ entry.total_fans | compactNumber }}</span>
           </div>
           <div class="stat">
             <span class="label">Monthly Gain</span>
             <span class="value gain full" [class.positive]="entry.monthly_gain > 0">
-              {{ entry.monthly_gain > 0 ? '+' : '' }}{{ entry.monthly_gain | number }}
+              {{ entry.monthly_gain > 0 ? '+' : '' }}{{ entry.monthly_gain | localeNumber }}
             </span>
             <span class="value gain compact" [class.positive]="entry.monthly_gain > 0">
               {{ entry.monthly_gain | compactNumber:(entry.monthly_gain > 0 ? '+' : '') }}
@@ -113,7 +113,7 @@
           </div>
           <div class="stat hide-mobile">
             <span class="label">Avg/Day</span>
-            <span class="value" *ngIf="entry.avg_daily !== null">{{ entry.avg_daily | number:'1.0-0' }}</span>
+            <span class="value" *ngIf="entry.avg_daily !== null">{{ entry.avg_daily | localeNumber:'1.0-0' }}</span>
             <span class="value muted" *ngIf="entry.avg_daily === null">-</span>
           </div>
           <div class="stat hide-mobile">
@@ -142,13 +142,13 @@
         <div class="lb-stats">
           <div class="stat" [class.active-col]="alltimeSortBy === 'total_fans'">
             <span class="label">Total Fans</span>
-            <span class="value full">{{ entry.total_fans | number }}</span>
+            <span class="value full">{{ entry.total_fans | localeNumber }}</span>
             <span class="value compact">{{ entry.total_fans | compactNumber }}</span>
           </div>
           <div class="stat" [class.hide-mobile]="alltimeSortBy !== 'total_gain'" [class.active-col]="alltimeSortBy === 'total_gain'">
             <span class="label">Total Gain</span>
             <span class="value gain full" [class.positive]="entry.total_gain > 0">
-              {{ entry.total_gain > 0 ? '+' : '' }}{{ entry.total_gain | number }}
+              {{ entry.total_gain > 0 ? '+' : '' }}{{ entry.total_gain | localeNumber }}
             </span>
             <span class="value gain compact" [class.positive]="entry.total_gain > 0">
               {{ entry.total_gain | compactNumber:(entry.total_gain > 0 ? '+' : '') }}
@@ -156,17 +156,17 @@
           </div>
           <div class="stat" [class.hide-mobile]="alltimeSortBy !== 'avg_day'" [class.active-col]="alltimeSortBy === 'avg_day'">
             <span class="label">Avg/Day</span>
-            <span class="value" *ngIf="entry.avg_day !== null">{{ entry.avg_day | number:'1.0-0' }}</span>
+            <span class="value" *ngIf="entry.avg_day !== null">{{ entry.avg_day | localeNumber:'1.0-0' }}</span>
             <span class="value muted" *ngIf="entry.avg_day === null">-</span>
           </div>
           <div class="stat" [class.hide-mobile]="alltimeSortBy !== 'avg_week'" [class.active-col]="alltimeSortBy === 'avg_week'">
             <span class="label">Avg/Week</span>
-            <span class="value" *ngIf="entry.avg_week !== null">{{ entry.avg_week | number:'1.0-0' }}</span>
+            <span class="value" *ngIf="entry.avg_week !== null">{{ entry.avg_week | localeNumber:'1.0-0' }}</span>
             <span class="value muted" *ngIf="entry.avg_week === null">-</span>
           </div>
           <div class="stat" [class.active-col]="alltimeSortBy === 'avg_month'">
             <span class="label">Avg/Month</span>
-            <span class="value full" *ngIf="entry.avg_month !== null">{{ entry.avg_month | number:'1.0-0' }}</span>
+            <span class="value full" *ngIf="entry.avg_month !== null">{{ entry.avg_month | localeNumber:'1.0-0' }}</span>
             <span class="value compact" *ngIf="entry.avg_month !== null">{{ entry.avg_month | compactNumber }}</span>
             <span class="value muted" *ngIf="entry.avg_month === null">-</span>
           </div>
@@ -192,22 +192,22 @@
         <div class="lb-stats">
           <div class="stat hide-mobile" [class.active-col]="gainsSortBy === 'gain_30d'">
             <span class="label">{{ getGainLabel() }} Gain</span>
-            <span class="value gain positive full">+{{ getGainValue(entry) | number }}</span>
+            <span class="value gain positive full">+{{ getGainValue(entry) | localeNumber }}</span>
             <span class="value gain positive compact">{{ getGainValue(entry) | compactNumber:'+' }}</span>
           </div>
           <div class="stat" [class.active-col]="gainsSortBy === 'gain_3d'">
             <span class="label">3d</span>
-            <span class="value full">+{{ entry.gain_3d | number }}</span>
+            <span class="value full">+{{ entry.gain_3d | localeNumber }}</span>
             <span class="value compact">{{ entry.gain_3d | compactNumber:'+' }}</span>
           </div>
           <div class="stat" [class.active-col]="gainsSortBy === 'gain_7d'">
             <span class="label">7d</span>
-            <span class="value full">+{{ entry.gain_7d | number }}</span>
+            <span class="value full">+{{ entry.gain_7d | localeNumber }}</span>
             <span class="value compact">{{ entry.gain_7d | compactNumber:'+' }}</span>
           </div>
           <div class="stat" [class.active-col]="gainsSortBy === 'gain_30d'">
             <span class="label">30d</span>
-            <span class="value full">+{{ entry.gain_30d | number }}</span>
+            <span class="value full">+{{ entry.gain_30d | localeNumber }}</span>
             <span class="value compact">{{ entry.gain_30d | compactNumber:'+' }}</span>
           </div>
         </div>

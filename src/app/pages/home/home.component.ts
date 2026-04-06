@@ -10,13 +10,15 @@ import { CookieConsentService } from '../../services/cookie-consent.service';
 import { DomainMigrationPopupComponent } from '../../components/domain-migration-popup/domain-migration-popup.component';
 import { Meta, Title } from '@angular/platform-browser';
 import { ThemeService } from '../../services/theme.service';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
-    MatIconModule
+    MatIconModule,
+    LocaleNumberPipe
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

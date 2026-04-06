@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { LinkedAccount, Identity, User, ApiKey } from '../../models/auth.model';
 import { getCharacterById } from '../../data/character.data';
+import { LocaleNumberPipe } from '../../pipes/locale-number.pipe';
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +19,7 @@ import { getCharacterById } from '../../data/character.data';
     FormsModule,
     MatIconModule,
     MatButtonModule,
-
+    LocaleNumberPipe,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'

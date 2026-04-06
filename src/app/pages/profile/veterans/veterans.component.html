@@ -1,4 +1,4 @@
-﻿<div class="veterans-page">
+<div class="veterans-page">
   <div class="page-body">
 
     <!-- Loading -->
@@ -172,7 +172,7 @@
                       <div class="stat-range-item stat-speed">
                         <div class="stat-range-header">
                           <span class="stat-range-label">Speed</span>
-                          <span class="stat-range-value">{{ filterSpeedMin }} – {{ filterSpeedMax }}</span>
+                          <span class="stat-range-value mono">{{ filterSpeedMin }} – {{ filterSpeedMax }}</span>
                         </div>
                         <div class="slider-labeled">
                           <mat-slider [min]="statBoundsMin.speed" [max]="statBoundsMax.speed" step="50">
@@ -182,7 +182,7 @@
                           <div class="slider-ticks">
                             <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['speed']" [style.left.%]="t.percent">
                               <span class="tick-line"></span>
-                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                              <span class="tick-label mono" *ngIf="t.label">{{ t.value }}</span>
                             </span>
                           </div>
                         </div>
@@ -192,7 +192,7 @@
                       <div class="stat-range-item stat-stamina">
                         <div class="stat-range-header">
                           <span class="stat-range-label">Stamina</span>
-                          <span class="stat-range-value">{{ filterStaminaMin }} – {{ filterStaminaMax }}</span>
+                          <span class="stat-range-value mono">{{ filterStaminaMin }} – {{ filterStaminaMax }}</span>
                         </div>
                         <div class="slider-labeled">
                           <mat-slider [min]="statBoundsMin.stamina" [max]="statBoundsMax.stamina" step="50">
@@ -202,7 +202,7 @@
                           <div class="slider-ticks">
                             <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['stamina']" [style.left.%]="t.percent">
                               <span class="tick-line"></span>
-                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                              <span class="tick-label mono" *ngIf="t.label">{{ t.value }}</span>
                             </span>
                           </div>
                         </div>
@@ -212,7 +212,7 @@
                       <div class="stat-range-item stat-power">
                         <div class="stat-range-header">
                           <span class="stat-range-label">Power</span>
-                          <span class="stat-range-value">{{ filterPowerMin }} – {{ filterPowerMax }}</span>
+                          <span class="stat-range-value mono">{{ filterPowerMin }} – {{ filterPowerMax }}</span>
                         </div>
                         <div class="slider-labeled">
                           <mat-slider [min]="statBoundsMin.power" [max]="statBoundsMax.power" step="50">
@@ -222,7 +222,7 @@
                           <div class="slider-ticks">
                             <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['power']" [style.left.%]="t.percent">
                               <span class="tick-line"></span>
-                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                              <span class="tick-label mono" *ngIf="t.label">{{ t.value }}</span>
                             </span>
                           </div>
                         </div>
@@ -232,7 +232,7 @@
                       <div class="stat-range-item stat-guts">
                         <div class="stat-range-header">
                           <span class="stat-range-label">Guts</span>
-                          <span class="stat-range-value">{{ filterGutsMin }} – {{ filterGutsMax }}</span>
+                          <span class="stat-range-value mono">{{ filterGutsMin }} – {{ filterGutsMax }}</span>
                         </div>
                         <div class="slider-labeled">
                           <mat-slider [min]="statBoundsMin.guts" [max]="statBoundsMax.guts" step="50">
@@ -242,7 +242,7 @@
                           <div class="slider-ticks">
                             <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['guts']" [style.left.%]="t.percent">
                               <span class="tick-line"></span>
-                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                              <span class="tick-label mono" *ngIf="t.label">{{ t.value }}</span>
                             </span>
                           </div>
                         </div>
@@ -252,7 +252,7 @@
                       <div class="stat-range-item stat-wiz">
                         <div class="stat-range-header">
                           <span class="stat-range-label">Wiz</span>
-                          <span class="stat-range-value">{{ filterWizMin }} – {{ filterWizMax }}</span>
+                          <span class="stat-range-value mono">{{ filterWizMin }} – {{ filterWizMax }}</span>
                         </div>
                         <div class="slider-labeled">
                           <mat-slider [min]="statBoundsMin.wiz" [max]="statBoundsMax.wiz" step="50">
@@ -262,7 +262,7 @@
                           <div class="slider-ticks">
                             <span class="tick" [class.has-label]="t.label" *ngFor="let t of statTicks['wiz']" [style.left.%]="t.percent">
                               <span class="tick-line"></span>
-                              <span class="tick-label" *ngIf="t.label">{{ t.value }}</span>
+                              <span class="tick-label mono" *ngIf="t.label">{{ t.value }}</span>
                             </span>
                           </div>
                         </div>
@@ -518,7 +518,7 @@
                   <div class="factor-list">
                     <div class="factor-row-wrapper" *ngFor="let ff of parentFactorFilters; let i = index">
                       <div class="factor-row-item" [ngClass]="ff.factorId != null ? (ff.color + '-factor') : 'empty-row'">
-                        <!-- Populated row — single compact line -->
+                        <!-- Populated row � single compact line -->
                         <div class="factor-row-single" *ngIf="ff.factorId != null">
                           <span class="spark-dot" [ngClass]="ff.color + '-dot'"></span>
                           <span class="factor-name">{{ ff.name }}</span>
@@ -533,13 +533,13 @@
                               </button>
                             </div>
                             <div class="scope-toggle level-toggle">
-                              <button class="scope-btn" [class.active]="ff.minLevel === 1" (click)="ff.minLevel = 1; scheduleFilter()">★</button>
-                              <button class="scope-btn" [class.active]="ff.minLevel === 2" (click)="ff.minLevel = 2; scheduleFilter()">★★</button>
-                              <button class="scope-btn" [class.active]="ff.minLevel === 3" (click)="ff.minLevel = 3; scheduleFilter()">★★★</button>
+                              <button class="scope-btn" [class.active]="ff.minLevel === 1" (click)="ff.minLevel = 1; scheduleFilter()">?</button>
+                              <button class="scope-btn" [class.active]="ff.minLevel === 2" (click)="ff.minLevel = 2; scheduleFilter()">??</button>
+                              <button class="scope-btn" [class.active]="ff.minLevel === 3" (click)="ff.minLevel = 3; scheduleFilter()">???</button>
                             </div>
                           </div>
                         </div>
-                        <!-- Empty row – inline search -->
+                        <!-- Empty row � inline search -->
                         <div class="factor-row-search" *ngIf="ff.factorId == null">
                           <mat-form-field appearance="fill" class="custom-search-field inline-search" subscriptSizing="dynamic">
                             <input matInput placeholder="Search factors..."
@@ -612,7 +612,7 @@
               </div>
               <div class="tree-node-score" *ngIf="d.veteran.rank_score">
                 <app-rank-badge [score]="d.veteran.rank_score" size="sm"></app-rank-badge>
-                <span class="sm-score-value mono">{{ d.veteran.rank_score | number }}</span>
+                <span class="sm-score-value mono">{{ d.veteran.rank_score | localeNumber }}</span>
               </div>
             </div>
             <div class="tree-node-sparks tree-node-sparks--flat" *ngIf="d.factors.length > 0">
@@ -711,24 +711,24 @@
             </div>
             <div class="sm-rank-block" *ngIf="d.veteran.rank_score">
               <app-rank-badge [score]="d.veteran.rank_score" size="md"></app-rank-badge>
-              <span class="sm-score-value mono">{{ d.veteran.rank_score | number }}</span>
+              <span class="sm-score-value mono">{{ d.veteran.rank_score | localeNumber }}</span>
             </div>
           </div>
 
           <!-- Stats Bar -->
           <div class="sm-stats">
             <div class="sm-stat"><img src="assets/images/icon/stats/speed.png" class="stat-icon" alt="SPD"><span
-                class="sm-stat-value mono">{{ d.veteran.speed || 0 }}</span></div>
+                class="sm-stat-value mono">{{ (d.veteran.speed || 0) | localeNumber }}</span></div>
             <div class="sm-stat"><img src="assets/images/icon/stats/stamina.png" class="stat-icon" alt="STA"><span
-                class="sm-stat-value mono">{{ d.veteran.stamina || 0 }}</span></div>
+                class="sm-stat-value mono">{{ (d.veteran.stamina || 0) | localeNumber }}</span></div>
             <div class="sm-stat"><img src="assets/images/icon/stats/power.png" class="stat-icon" alt="POW"><span
-                class="sm-stat-value mono">{{ d.veteran.power || 0 }}</span></div>
+                class="sm-stat-value mono">{{ (d.veteran.power || 0) | localeNumber }}</span></div>
             <div class="sm-stat"><img src="assets/images/icon/stats/guts.png" class="stat-icon" alt="GUT"><span
-                class="sm-stat-value mono">{{ d.veteran.guts || 0 }}</span></div>
+                class="sm-stat-value mono">{{ (d.veteran.guts || 0) | localeNumber }}</span></div>
             <div class="sm-stat"><img src="assets/images/icon/stats/wit.png" class="stat-icon" alt="WIZ"><span
-                class="sm-stat-value mono">{{ d.veteran.wiz || 0 }}</span></div>
+                class="sm-stat-value mono">{{ (d.veteran.wiz || 0) | localeNumber }}</span></div>
             <div class="sm-stat total"><span class="sm-stat-label">TOT</span><span class="sm-stat-value mono">{{
-                d.totalStats }}</span></div>
+                d.totalStats | localeNumber }}</span></div>
           </div>
 
           <!-- Aptitudes -->
@@ -819,16 +819,16 @@
                   </div>
                 </td>
                 <!-- Stats -->
-                <td class="td-stat mono">{{ d.veteran.speed || 0 }}</td>
-                <td class="td-stat mono">{{ d.veteran.stamina || 0 }}</td>
-                <td class="td-stat mono">{{ d.veteran.power || 0 }}</td>
-                <td class="td-stat mono">{{ d.veteran.guts || 0 }}</td>
-                <td class="td-stat mono">{{ d.veteran.wiz || 0 }}</td>
-                <td class="td-stat td-total mono">{{ d.totalStats }}</td>
+                <td class="td-stat mono">{{ (d.veteran.speed || 0) | localeNumber }}</td>
+                <td class="td-stat mono">{{ (d.veteran.stamina || 0) | localeNumber }}</td>
+                <td class="td-stat mono">{{ (d.veteran.power || 0) | localeNumber }}</td>
+                <td class="td-stat mono">{{ (d.veteran.guts || 0) | localeNumber }}</td>
+                <td class="td-stat mono">{{ (d.veteran.wiz || 0) | localeNumber }}</td>
+                <td class="td-stat td-total mono">{{ d.totalStats | localeNumber }}</td>
                 <!-- Rank -->
                 <td class="td-score">
                   <app-rank-badge *ngIf="d.veteran.rank_score" [score]="d.veteran.rank_score" size="sm"></app-rank-badge>
-                  <span class="score-num mono" *ngIf="d.veteran.rank_score">{{ d.veteran.rank_score | number }}</span>
+                  <span class="score-num mono" *ngIf="d.veteran.rank_score">{{ d.veteran.rank_score | localeNumber }}</span>
                 </td>
                 <!-- Aptitudes -->
                 <td class="td-apt">
@@ -865,7 +865,7 @@
                       <mat-icon>star</mat-icon>{{ d.whiteStarSum }}
                     </span>
                   </div>
-                  <span class="no-factors" *ngIf="d.factors.length === 0">–</span>
+                  <span class="no-factors" *ngIf="d.factors.length === 0">�</span>
                 </td>
               </tr>
             </ng-container>

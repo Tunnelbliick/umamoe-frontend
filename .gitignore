@@ -56,3 +56,6 @@ scripts/
 
 .github/copilot-instructions.md
 /src/assets/*
+
+# WebP conversion cache
+.webp-cache/
